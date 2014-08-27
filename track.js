@@ -77,8 +77,8 @@ var onHtmlResponse = function(response) {
         if (!isNaN(cssVersion) && !isNaN(jsVersion)) {
             log('Found css: ' + cssVersion + ', js: ' + jsVersion);
 
-            if (jsVersion > state.jsVersion) {
-                log('These are new, loading and formatting');
+            if (true || jsVersion > state.jsVersion) {
+                // log('These are new, loading and formatting');
                 loadNewJavaScripts(jsVersion);
                 loadNewCss(cssVersion);
             } else {
