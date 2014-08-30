@@ -97,6 +97,17 @@ var onHtmlResponse = function(response) {
     // log(dom);
 }
 
+var loadFile = function(url, name) {
+    request(url, function(error, response, body) {
+        if (!error && response.statusCode == 200) {
+            log('Loaded ' + name);
+            fs.writeFileSync(name, body);
+        } else {
+            log('Error loading ' + name);
+        }
+    });
+}
+
 var load = function() {
     loadState();
     
@@ -108,6 +119,11 @@ var load = function() {
     });
 
     loadJavaScriptAndBeautify('https://a.4cdn.org/boards.json', 'api/boards.json');
+
+    loadFile('https://www.4chan.org/faq', 'pages/faq.html');
+    loadFile('https://www.4chan.org/rules', 'pages/rules.html');
+    loadFile('https://www.4chan.org/news', 'pages/news.html');
+    loadFile('https://www.4chan.org/blotter', 'pages/blotter.html');
 }
 
 load();
