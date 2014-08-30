@@ -1,3 +1,5 @@
+git pull --rebase origin master
+
 node track.js
 
 git add -A
