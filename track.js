@@ -124,6 +124,7 @@ var load = function() {
     loadFile('https://www.4chan.org/rules', 'pages/rules.html');
     loadFile('https://www.4chan.org/news', 'pages/news.html');
     loadFile('https://www.4chan.org/blotter', 'pages/blotter.html');
+    loadFile('https://www.4chan.org/legal', 'pages/legal.html');
 }
 
 load();
