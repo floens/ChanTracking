@@ -1,0 +1,10 @@
+{
+    "name": "ChanTracking",
+    "description": "Tracing some website",
+    "dependencies": {
+        "request": "2.40.x",
+        "js-beautify": "1.5.x",
+        "PrettyCSS": "0.3.x",
+        "html": "0.0.7"
+    }
+}
