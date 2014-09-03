@@ -1,8 +1,8 @@
 var request = require('request');
-var cheerio = require('cheerio');
 var jsBeautify = require('js-beautify');
 var prettyCss = require('PrettyCSS');
 var fs = require('fs');
+var htmlBeautify = require('html');
 
 var state = {};
 
@@ -67,6 +67,19 @@ var loadNewCss = function(version) {
     loadNewCssAndBeautify('https://s.4cdn.org/css/yotsubluemobile.' + version + '.css', 'yotsubluemobile');
 }
 
+var loadPageAndBeautify = function(url, name) {
+    request(url, function(error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var nice = htmlBeautify.prettyPrint(body);
+
+            log('Loaded ' + name);
+            fs.writeFileSync(name, nice);
+        } else {
+            log('Error loading ' + name);
+        }
+    });
+}
+
 var onHtmlResponse = function(response) {
     var versionRegex = /cssVersion = (\d+).+jsVersion = (\d+)/g;
 
@@ -77,13 +90,16 @@ var onHtmlResponse = function(response) {
         if (!isNaN(cssVersion) && !isNaN(jsVersion)) {
             log('Found css: ' + cssVersion + ', js: ' + jsVersion);
 
-            if (true || jsVersion > state.jsVersion) {
-                // log('These are new, loading and formatting');
-                loadNewJavaScripts(jsVersion);
-                loadNewCss(cssVersion);
-            } else {
-                log('css and js aren\'t newer');
+            if (jsVersion > state.jsVersion) {
+                log('JS version is newer');
             }
+
+            if (cssVersion > state.cssVersion) {
+                log('CSS version is newer');
+            }
+
+            loadNewJavaScripts(jsVersion);
+            loadNewCss(cssVersion);
 
             state.cssVersion = cssVersion;
             state.jsVersion = jsVersion;
@@ -92,9 +108,6 @@ var onHtmlResponse = function(response) {
     } else {
         log('Warning, no css/js version found');
     }
-
-    // var dom = cheerio.load(response);
-    // log(dom);
 }
 
 var loadFile = function(url, name) {
@@ -118,6 +131,9 @@ var load = function() {
         }
     });
 
+    // The /g/ sticky
+    loadPageAndBeautify('https://boards.4chan.org/g/thread/39894014', 'boards/sticky.html');
+
     loadJavaScriptAndBeautify('https://a.4cdn.org/boards.json', 'api/boards.json');
 
     loadFile('https://www.4chan.org/faq', 'pages/faq.html');
@@ -128,5 +144,3 @@ var load = function() {
 }
 
 load();
-
-

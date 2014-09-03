@@ -1,5 +1,7 @@
 git pull --rebase origin master
 
+npm install --silent
+
 node track.js
 
 git add -A
