@@ -65,6 +65,7 @@ var loadNewCss = function(version) {
     loadNewCssAndBeautify('https://s.4cdn.org/css/photon.' + version + '.css', 'photon');
     loadNewCssAndBeautify('https://s.4cdn.org/css/tomorrow.' + version + '.css', 'tomorrow');
     loadNewCssAndBeautify('https://s.4cdn.org/css/yotsubluemobile.' + version + '.css', 'yotsubluemobile');
+    loadNewCssAndBeautify('https://s.4cdn.org/css/yui.1.css', 'yui');
 }
 
 var loadPageAndBeautify = function(url, name) {
