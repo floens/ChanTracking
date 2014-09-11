@@ -841,7 +841,7 @@
 		width: 280px !important;
 	}
 	
-	#postForm:not(.hideMobile) {  /*max-width: 280px !important;*/
+	#postForm:not(.hideMobile) {
 		overflow: hidden;
 		margin-top: 20px;
 		display: table;
@@ -860,8 +860,6 @@
 	input:focus, textarea:focus {
 		border: 1px solid #9988ee !important;
 	}
-	
-	/** fix stupid google recaptcha padding in webkit **/
 	
 	iframe[src="about:blank"] {
 		display: none;
