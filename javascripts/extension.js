@@ -1556,7 +1556,7 @@ var Parser = {
                 k = +g.id.slice(2);
                 f = Parser.parseThreadJSON(this.responseText);
                 b = !!f[0].archived;
-                b != window.thread_archived && (QR.enabled && $.id("quickReply") && QR.lock(), Main.setThreadState("archived", b));
+                void 0 !== window.thread_archived && b != window.thread_archived && (QR.enabled && $.id("quickReply") && QR.lock(), Main.setThreadState("archived", b));
                 b = !!f[0].closed;
                 b != Main.threadClosed && (f[0].archived ? b = !1 : QR.enabled && $.id("quickReply") && (b ? QR.lock() : QR.unlock()), Main.setThreadState("closed", b));
                 b = !!f[0].sticky;
@@ -1652,9 +1652,9 @@ var Parser = {
             e = [];
             Main.threadSticky && e.push("Sticky");
             window.thread_archived ? e.push("Archived") : Main.threadClosed && e.push("Closed");
-            c ? e.push('<em data-tip="Bump limit reached">' + a + "</em>") : e.push('<span data-tip="Replies">' + a + "</span>");
-            d ? e.push('<em data-tip="Image limit reached">' +
-                b + "</em>") : e.push('<span data-tip="Images">' + b + "</span>");
+            c ? e.push('<em data-tip="Bump limit reached">' + a + "</em>") : e.push('<span data-tip="Replies">' +
+                a + "</span>");
+            d ? e.push('<em data-tip="Image limit reached">' + b + "</em>") : e.push('<span data-tip="Images">' + b + "</span>");
             window.thread_archived || e.push('<span data-tip="Page" class="ts-page">' + (this.pageNumber || "?") + "</span>");
             this.nodeTop.innerHTML = this.nodeBot.innerHTML = e.join(" / ")
         },
