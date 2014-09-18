@@ -16,6 +16,68 @@ body {
 	padding-right: 5px;
 }
 
+#disclaimer {
+	font-size: 14px;
+	position: absolute;
+	overflow: hidden;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9998;
+}
+
+#disclaimer-bg {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.25);
+}
+
+#disclaimer-modal {
+	z-index: 9999;
+	width: 320px;
+	top: 0;
+	left: 50%;
+	margin-left: -170px;
+	display: block;
+	padding: 10px;
+	position: relative;
+	background-color: #f0e0d6;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+}
+
+#disclaimer ol {
+	margin-left: 20px;
+	padding: 0;
+}
+
+#disclaimer li {
+	margin: 10px 0;
+}
+
+#disclaimer h3 {
+	border-bottom: 1px solid #d9bfb7;
+	margin: 0;
+	padding-bottom: 5px;
+	text-align: center;
+}
+
+#disclaimer-modal div {
+	margin-top: 10px;
+	text-align: center;
+}
+
+#disclaimer-modal button {
+	margin: 0 10px;
+}
+
+#disclaimer-accept {
+	font-weight: bold;
+}
+
 .isMobileDevice blockquote.postMessage {
 	font-size: 11pt;
 }
@@ -598,7 +660,7 @@ div.closed {
 	width: 16px;
 }
 
-.closedIcon {
+.archivedIcon, .closedIcon {
 	margin-bottom: -1px;
 	margin-left: -1px;
 	height: 16px;
