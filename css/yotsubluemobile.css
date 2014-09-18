@@ -570,7 +570,7 @@
 		width: 16px;
 	}
 	
-	.closedIcon {
+	.archivedIcon, .closedIcon {
 		margin-bottom: -2px;
 		margin-left: -1px;
 		height: 16px;
