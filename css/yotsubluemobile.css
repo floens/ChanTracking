@@ -4,6 +4,13 @@
 		-ms-text-size-adjust: 100%;
 	}
 	
+	.party-hat {
+		left: -15px;
+		margin-top: -30px;
+		position: absolute;
+		width: 100px;
+	}
+	
 	body {
 		background: #eef2ff url(/image/fade-blue.png) center top repeat-x;
 		color: #000000;
