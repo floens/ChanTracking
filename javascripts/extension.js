@@ -2335,7 +2335,6 @@ var Parser = {
         quickReply: !0,
         threadUpdater: !0,
         threadHiding: !0,
-        pageTitle: !0,
         alwaysAutoUpdate: !1,
         topPageNav: !1,
         threadWatcher: !1,
@@ -2415,8 +2414,7 @@ var SettingsMenu = {
                 autoScroll: ["Auto-scroll with auto-updated posts", "Automatically scroll the page as new posts are added"],
                 updaterSound: ["Sound notification", "Play a sound when somebody replies to your post(s)"],
                 fixedThreadWatcher: ["Pin Thread Watcher to the page", "Thread Watcher will scroll with you"],
-                threadStats: ["Thread statistics", "Display post and image counts on the right of the page, <em>italics</em> signify bump/image limit has been met"],
-                pageTitle: ["Snippets in page title", "Show post subjects or comment snippets in page (tab) title"]
+                threadStats: ["Thread statistics", "Display post and image counts on the right of the page, <em>italics</em> signify bump/image limit has been met"]
             },
             "Filters &amp; Post Hiding": {
                 filter: ['Filter and highlight specific threads/posts [<a href="javascript:;" data-cmd="filters-open">Edit</a>]', "Enable pattern-based filters"],
@@ -2470,8 +2468,7 @@ var SettingsMenu = {
             f = document.createElement("div");
             f.id = "settingsMenu";
             f.className = "UIPanel";
-            e = '<div class="extPanel reply"><div class="panelHeader">Settings<span><img alt="Close" title="Close" class="pointer" data-cmd="settings-toggle" src="' +
-                Main.icons.cross + '"></a></span></div><ul>';
+            e = '<div class="extPanel reply"><div class="panelHeader">Settings<span><img alt="Close" title="Close" class="pointer" data-cmd="settings-toggle" src="' + Main.icons.cross + '"></a></span></div><ul>';
             e += '<ul><li id="settings-exp-all">[<a href="#" data-cmd="settings-exp-all">Expand All Settings</a>]</li></ul>';
             if (Main.hasMobileLayout)
                 for (b in c = {}, SettingsMenu.options) {
@@ -2487,11 +2484,11 @@ var SettingsMenu = {
                 h = c[b];
                 e += '<ul><li class="settings-cat-lbl"><img alt="" class="settings-expand" src="' + Main.icons.plus + '"><span class="settings-expand pointer">' + b + '</span></li><ul class="settings-cat">';
                 for (d in h)
-                    if (!h[d][4] || Main.hasMobileLayout) e += "<li" + (h[d][3] ? ' class="settings-sub">' : ">") + '<label><input type="checkbox" class="menuOption" data-option="' + d + '"' + (Config[d] ? ' checked="checked">' : ">") + h[d][0] + "</label>" + (!1 !== h[d][1] ? '</li><li class="settings-tip' + (h[d][3] ? ' settings-sub">' : '">') + h[d][1] : "") + "</li>";
+                    if (!h[d][4] || Main.hasMobileLayout) e += "<li" + (h[d][3] ? ' class="settings-sub">' : ">") + '<label><input type="checkbox" class="menuOption" data-option="' +
+                        d + '"' + (Config[d] ? ' checked="checked">' : ">") + h[d][0] + "</label>" + (!1 !== h[d][1] ? '</li><li class="settings-tip' + (h[d][3] ? ' settings-sub">' : '">') + h[d][1] : "") + "</li>";
                 e += "</ul></ul>"
             }
-            e += '</ul><ul><li class="settings-off"><label title="Completely disable the native extension (overrides any checked boxes)"><input type="checkbox" class="menuOption" data-option="disableAll"' +
-                (Config.disableAll ? ' checked="checked">' : ">") + 'Disable the native extension</label></li></ul><div class="center"><button data-cmd="settings-export">Export Settings</button><button data-cmd="settings-save">Save Settings</button></div>';
+            e += '</ul><ul><li class="settings-off"><label title="Completely disable the native extension (overrides any checked boxes)"><input type="checkbox" class="menuOption" data-option="disableAll"' + (Config.disableAll ? ' checked="checked">' : ">") + 'Disable the native extension</label></li></ul><div class="center"><button data-cmd="settings-export">Export Settings</button><button data-cmd="settings-save">Save Settings</button></div>';
             f.innerHTML = e;
             f.addEventListener("click", SettingsMenu.onClick, !1);
             document.body.appendChild(f);
@@ -2500,8 +2497,8 @@ var SettingsMenu = {
         },
         showExport: function() {
             var a, b;
-            $.id("exportSettings") || (b = location.href.replace(location.hash, "") + "#cfg=" + Config.toURL(), a = document.createElement("div"), a.id = "exportSettings", a.className = "UIPanel", a.setAttribute("data-cmd", "export-close"), a.innerHTML = '<div class="extPanel reply"><div class="panelHeader">Export Settings<span><img data-cmd="export-close" class="pointer" alt="Close" title="Close" src="' + Main.icons.cross + '"></span></div><p class="center">Copy and save the URL below, and visit it from another browser or computer to restore your extension and catalog settings.</p><p class="center"><input class="export-field" type="text" readonly="readonly" value="' +
-                b + '"></p><p style="margin-top:15px" class="center">Alternatively, you can drag the link below into your bookmarks bar and click it to restore.</p><p class="center">[<a target="_blank" href="' + b + '">Restore 4chan Settings</a>]</p>', document.body.appendChild(a), a.addEventListener("click", this.onExportClick, !1), a = $.cls("export-field", a)[0], a.focus(), a.select())
+            $.id("exportSettings") || (b = location.href.replace(location.hash, "") + "#cfg=" + Config.toURL(), a = document.createElement("div"), a.id = "exportSettings", a.className = "UIPanel", a.setAttribute("data-cmd", "export-close"), a.innerHTML = '<div class="extPanel reply"><div class="panelHeader">Export Settings<span><img data-cmd="export-close" class="pointer" alt="Close" title="Close" src="' +
+                Main.icons.cross + '"></span></div><p class="center">Copy and save the URL below, and visit it from another browser or computer to restore your extension and catalog settings.</p><p class="center"><input class="export-field" type="text" readonly="readonly" value="' + b + '"></p><p style="margin-top:15px" class="center">Alternatively, you can drag the link below into your bookmarks bar and click it to restore.</p><p class="center">[<a target="_blank" href="' + b + '">Restore 4chan Settings</a>]</p>', document.body.appendChild(a), a.addEventListener("click", this.onExportClick, !1), a = $.cls("export-field", a)[0], a.focus(), a.select())
         },
         closeExport: function() {
             var a;
@@ -2591,7 +2588,7 @@ var SettingsMenu = {
                 ReplyHiding.init();
                 Config.quotePreview && QuotePreview.init();
                 Parser.init();
-                Main.tid ? (Main.threadClosed = !document.forms.post, Main.threadSticky = !!$.cls("stickyIcon", $.id("pi" + Main.tid))[0], Config.threadStats && ThreadStats.init(), Config.pageTitle && Main.setTitle(), Parser.parseThread(Main.tid), Config.threadUpdater && ThreadUpdater.init()) : (Main.page || Depager.init(), Config.topPageNav && Main.setPageNav(), Config.threadHiding && ThreadHiding.init(), Parser.parseBoard());
+                Main.tid ? (Main.threadClosed = !document.forms.post, Main.threadSticky = !!$.cls("stickyIcon", $.id("pi" + Main.tid))[0], Config.threadStats && ThreadStats.init(), Parser.parseThread(Main.tid), Config.threadUpdater && ThreadUpdater.init()) : (Main.page || Depager.init(), Config.topPageNav && Main.setPageNav(), Config.threadHiding && ThreadHiding.init(), Parser.parseBoard());
                 "f" === Main.board && SWFEmbed.init();
                 Config.quickReply && QR.init();
                 ReplyHiding.purge()
@@ -2681,11 +2678,6 @@ var SettingsMenu = {
             Draggable.set(b);
             a.appendChild(b);
             document.body.appendChild(a)
-        },
-        setTitle: function() {
-            var a, b;
-            (a = $.cls("subject", $.id("pi" + Main.tid))[0].textContent) || ((a = $.id("m" + Main.tid).innerHTML) ? (b = document.createElement("span"), b.innerHTML = a.replace(/<br>/g, " "), a = b.textContent.slice(0, 50)) : a = (a = $.id("fT" + Main.tid)) ? a.lastElementChild.innerHTML : "No." + Main.tid);
-            document.title = "/" + Main.board + "/ - " + a
         },
         getCookie: function(a) {
             var b, c, d;
