@@ -121,7 +121,7 @@ var Parser = {
                 k = "",
                 l = "",
                 g = "",
-                n, m, p, l = '"',
+                m, n, p, l = '"',
                 w = "",
                 C = "",
                 x = p = "",
@@ -139,7 +139,7 @@ var Parser = {
                 I = "",
                 v = "",
                 J = !1;
-            m = "//i.4cdn.org/" + b;
+            n = "//i.4cdn.org/" + b;
             0 == a.resto ? (f = !0, c && (H = '<div class="postLink mobile"><span class="info"></span><a href="thread/' + a.no + '" class="button">View Thread</a></div>', B = "op", G = '&nbsp; <span>[<a href="thread/' + a.no + (a.semantic_url ? "/" + a.semantic_url : "") + '" class="replylink" rel="canonical">Reply</a>]</span>'), c = a.no) : c = a.resto;
             Main.tid && b == Main.board ? (z = "#p" + a.no, A = "javascript:quote('" + a.no + "')") : (z = "thread/" + c + "#p" + a.no, A = "thread/" + c + "#q" + a.no);
             h = !a.capcode && a.id ? ' <span class="posteruid id_' + a.id + '">(ID: <span class="hand" title="Highlight posts by this ID">' + a.id + "</span>)</span> " : "";
@@ -166,8 +166,8 @@ var Parser = {
             }
             a.email && (E = '<a href="mailto:' + a.email.replace(/ /g, "%20") + '" class="useremail">', F = "</a>");
             y = a.country ? "pol" == b ? ' <img src="//s.4cdn.org/image/country/troll/' + a.country.toLowerCase() + '.gif" alt="' + a.country + '" title="' + a.country_name + '" class="countryFlag">' : ' <span title="' + a.country_name + '" class="flag flag-' + a.country.toLowerCase() + '"></span>' : "";
-            a.filedeleted ? g = '<div id="f' + a.no + '" class="file"><span class="fileThumb"><img src="' + Parser.icons.del + '" class="fileDeletedRes" alt="File deleted."></span></div>' : a.ext && (g = Parser.decodeSpecialChars(a.filename), p = x = a.filename + a.ext, g.length > (f ? 40 : 30) && (p = Parser.encodeSpecialChars(g.slice(0, f ? 35 : 25)) + "(...)" + a.ext, J = !0), a.tn_w || a.tn_h || ".gif" != a.ext || (a.tn_w = a.w, a.tn_h = a.h), w = 1048576 <= a.fsize ? (0 | a.fsize / 1048576 * 100 + .5) / 100 + " M" : 1024 < a.fsize ? (0 | a.fsize / 1024 + .5) + " K" : a.fsize + " ", a.spoiler && !Config.revealSpoilers && (p = "Spoiler Image", l = '" title="' + x + '"', C = " imgspoiler", n = "//s.4cdn.org/image/spoiler" + (Parser.customSpoiler[b] || "") + ".png", a.tn_w = 100, a.tn_h = 100), n || (n = "//0.t.4cdn.org/" + b + "/" + a.tim + "s.jpg"), g = ".pdf" == a.ext ? "PDF" : a.w + "x" + a.h, "f" != b ? (m = m + "/" + a.tim + a.ext, k = '<a class="fileThumb' + C + '" href="' + m + '" target="_blank"><img src="' + n + '" alt="' + w + 'B" data-md5="' + a.md5 + '" style="height: ' + a.tn_h + "px; width: " + a.tn_w + 'px;"><div class="mFileInfo mobile">' + w + "B " + a.ext.slice(1).toUpperCase() + "</div></a>", l = '<div class="fileText" id="fT' + a.no + l + ">File: <a" + (J ? ' title="' + x + '"' : "") + ' href="' + m + '" target="_blank">' + p + "</a> (" + w + "B, " + g + ")</div>") : (m = m + "/" + a.filename + a.ext, g += ", " + a.tag, l = '<div class="fileText" id="fT' + a.no + '">File: <a href="' +
-                m + '" target="_blank">' + a.filename + ".swf</a> (" + w + "B, " + g + ")</div>"), g = '<div id="f' + a.no + '" class="file">' + l + k + "</div>");
+            a.filedeleted ? g = '<div id="f' + a.no + '" class="file"><span class="fileThumb"><img src="' + Parser.icons.del + '" class="fileDeletedRes" alt="File deleted."></span></div>' : a.ext && (g = Parser.decodeSpecialChars(a.filename), p = x = a.filename + a.ext, g.length > (f ? 40 : 30) && (p = Parser.encodeSpecialChars(g.slice(0, f ? 35 : 25)) + "(...)" + a.ext, J = !0), a.tn_w || a.tn_h || ".gif" != a.ext || (a.tn_w = a.w, a.tn_h = a.h), w = 1048576 <= a.fsize ? (0 | a.fsize / 1048576 * 100 + .5) / 100 + " M" : 1024 < a.fsize ? (0 | a.fsize / 1024 + .5) + " K" : a.fsize + " ", a.spoiler && !Config.revealSpoilers && (p = "Spoiler Image", l = '" title="' + x + '"', C = " imgspoiler", m = "//s.4cdn.org/image/spoiler" + (Parser.customSpoiler[b] || "") + ".png", a.tn_w = 100, a.tn_h = 100), m || (m = "//0.t.4cdn.org/" + b + "/" + a.tim + "s.jpg"), g = ".pdf" == a.ext ? "PDF" : a.w + "x" + a.h, "f" != b ? (n = n + "/" + a.tim + a.ext, k = '<a class="fileThumb' + C + '" href="' + n + '" target="_blank"><img src="' + m + '" alt="' + w + 'B" data-md5="' + a.md5 + '" style="height: ' + a.tn_h + "px; width: " + a.tn_w + 'px;"><div class="mFileInfo mobile">' + w + "B " + a.ext.slice(1).toUpperCase() + "</div></a>", l = '<div class="fileText" id="fT' + a.no + l + ">File: <a" + (J ? ' title="' + x + '"' : "") + ' href="' + n + '" target="_blank">' + p + "</a> (" + w + "B, " + g + ")</div>") : (n = n + "/" + a.filename + a.ext, g += ", " + a.tag, l = '<div class="fileText" id="fT' + a.no + '">File: <a href="' +
+                n + '" target="_blank">' + a.filename + ".swf</a> (" + w + "B, " + g + ")</div>"), g = '<div id="f' + a.no + '" class="file">' + l + k + "</div>");
             a.trip && (r = ' <span class="postertrip">' + a.trip + "</span>");
             k = a.name || "";
             f ? (a.capcode_replies && (I = Parser.buildCapcodeReplies(a.capcode_replies, b, a.no)), d && a.replies && (u = a.replies + " post" + (1 < a.replies ? "s" : ""), a.images && (u += " and " + a.images + " image repl" + (1 < a.images ? "ies" : "y")), u = '<span class="summary preview-summary">' + u + ".</span>"), a.sticky && (v += '<img class="stickyIcon retina" title="Sticky" alt="Sticky" src="' +
@@ -359,18 +359,18 @@ var Parser = {
             Depager.boardHasAds && window.ados_load && window.ados_load()
         },
         renderNext: function() {
-            var a, b, c, d, e, f, h, g, k, l, n, m;
+            var a, b, c, d, e, f, h, g, k, l, m, n;
             k = [];
             l = window.pageYOffset;
             b = document.createDocumentFragment();
             if (a = Depager.threadQueue.shift()) {
                 e = a.threads;
-                n = a.page;
-                m = !Depager.threadQueue.length;
-                Depager.insertAd(n, b, a.adZone, m);
+                m = a.page;
+                n = !Depager.threadQueue.length;
+                Depager.insertAd(m, b, a.adZone, n);
                 a = document.createElement("span");
                 a.className = "depageNumber";
-                a.textContent = "Page " + n;
+                a.textContent = "Page " + m;
                 b.appendChild(a);
                 for (c = 0; a = e[c]; ++c)
                     if (!$.id("t" + a.no)) {
@@ -385,10 +385,10 @@ var Parser = {
                         b.appendChild(document.createElement("hr"));
                         k.push(a.no)
                     }
-                m && (Depager.unbindHandlers(), Depager.isComplete = !0, Depager.setStatus("disabled"));
+                n && (Depager.unbindHandlers(), Depager.isComplete = !0, Depager.setStatus("disabled"));
                 boardDiv = $.cls("board")[0];
                 boardDiv.insertBefore(b, boardDiv.lastElementChild);
-                Depager.trackPageview(n);
+                Depager.trackPageview(m);
                 Depager.loadAds();
                 for (b = 0; a = k[b]; ++b) Parser.parseThread(a);
                 window.scrollTo(0, l)
@@ -803,7 +803,7 @@ var Parser = {
             d.focus()
         },
         show: function(a) {
-            var b, c, d, e, f, h, g, k, l, n, m, p;
+            var b, c, d, e, f, h, g, k, l, m, n, p;
             if (QR.currentTid) Main.tid || QR.currentTid == a || ($.id("qrTid").textContent = $.id("qrResto").value = QR.currentTid = a, $.byName("com")[1].value = "", QR.startCooldown()), Main.hasMobileLayout && ($.id("quickReply").style.top = window.pageYOffset + 25 + "px");
             else {
                 QR.currentTid = a;
@@ -826,16 +826,16 @@ var Parser = {
                     if ("captchaFormPart" == h[b].id) {
                         if (QR.noCaptcha) continue;
                         g.id = "qrCaptchaContainer"
-                    } else if (m = h[b].getAttribute("data-type"), "Password" == m || "Spoilers" == m) continue;
-                    else if ("File" == m) k = h[b].children[1].firstChild.cloneNode(!1), k.tabIndex += 20, k.id = "qrFile", k.size = "19", k.addEventListener("change", QR.onFileChange, !1), g.appendChild(k), UA.hasDragAndDrop && ($.addClass(k, "qrRealFile"), k = document.createElement("div"), k.id = "qrDummyFile", l = document.createElement("button"), l.id = "qrDummyFileButton", l.type = "button", l.textContent = "Browse\u2026", k.appendChild(l), l = document.createElement("span"), l.id = "qrDummyFileLabel", l.textContent = "No file selected.", k.appendChild(l), g.appendChild(k)), k.title = "Shift + Click to remove the file";
+                    } else if (n = h[b].getAttribute("data-type"), "Password" == n || "Spoilers" == n) continue;
+                    else if ("File" == n) k = h[b].children[1].firstChild.cloneNode(!1), k.tabIndex += 20, k.id = "qrFile", k.size = "19", k.addEventListener("change", QR.onFileChange, !1), g.appendChild(k), UA.hasDragAndDrop && ($.addClass(k, "qrRealFile"), k = document.createElement("div"), k.id = "qrDummyFile", l = document.createElement("button"), l.id = "qrDummyFileButton", l.type = "button", l.textContent = "Browse\u2026", k.appendChild(l), l = document.createElement("span"), l.id = "qrDummyFileLabel", l.textContent = "No file selected.", k.appendChild(l), g.appendChild(k)), k.title = "Shift + Click to remove the file";
                     else if (g.innerHTML = h[b].children[1].innerHTML, l = "hidden" == g.firstChild.type ? g.lastChild.previousSibling : g.firstChild, 0 < l.tabIndex && (l.tabIndex += 20), "INPUT" == l.nodeName || "TEXTAREA" == l.nodeName) {
                         if ("name" == l.name) {
                             if (p = Main.getCookie("4chan_name")) l.value = p
                         } else if ("email" == l.name) l.id = "qrEmail";
                         else if ("com" == l.name) QR.comField = l, l.addEventListener("keydown", QR.onKeyDown, !1), l.addEventListener("paste", QR.onKeyDown, !1), l.addEventListener("cut", QR.onKeyDown, !1), g.children[1] && g.removeChild(l.nextSibling);
                         else if ("sub" == l.name) continue;
-                        null !== m && l.setAttribute("placeholder", m)
-                    } else "flag" == l.name && ((n = l.querySelector("option[selected]")) && n.removeAttribute("selected"), (p = Main.getCookie("4chan_flag")) && (n = l.querySelector('option[value="' + p + '"]')) && n.setAttribute("selected", "selected"));
+                        null !== n && l.setAttribute("placeholder", n)
+                    } else "flag" == l.name && ((m = l.querySelector("option[selected]")) && m.removeAttribute("selected"), (p = Main.getCookie("4chan_flag")) && (m = l.querySelector('option[value="' + p + '"]')) && m.setAttribute("selected", "selected"));
                     a.appendChild(g)
                 }
                 this.btn = a.querySelector('input[type="submit"]');
@@ -1551,7 +1551,7 @@ var Parser = {
             for (b = 0; c = a[b]; ++b) d[c.id] || $.hasClass(c, "deleted") || (this.deletionQueue[c.id] ? (e = document.createElement("img"), e.src = Main.icons2.trash, e.className = "trashIcon", e.title = "This post has been deleted", $.addClass(c, "deleted"), $.cls("postNum", c)[1].appendChild(e), delete this.deletionQueue[c.id]) : this.deletionQueue[c.id] = 1)
         },
         onload: function() {
-            var a, b, c, d, e, f, h, g, k, l, n, m;
+            var a, b, c, d, e, f, h, g, k, l, m, n;
             c = ThreadUpdater;
             d = [];
             c.setStatus("");
@@ -1572,11 +1572,11 @@ var Parser = {
                 !Config.revealSpoilers && f[0].custom_spoiler && Parser.setCustomSpoiler(Main.board, f[0].custom_spoiler);
                 for (a = f.length - 1; 0 <= a && !(f[a].no <= k); a--) d.push(f[a]);
                 b = d.length;
-                1 == b && QR.lastReplyId == d[0].no && (m = !0, QR.lastReplyId = null);
-                m || c.markDeletedReplies(f);
+                1 == b && QR.lastReplyId == d[0].no && (n = !0, QR.lastReplyId = null);
+                n || c.markDeletedReplies(f);
                 if (b) {
                     l = document.documentElement;
-                    n = Config.autoScroll && document[c.hidden] && l.scrollHeight == window.innerHeight + window.pageYOffset;
+                    m = Config.autoScroll && document[c.hidden] && l.scrollHeight == window.innerHeight + window.pageYOffset;
                     h = document.createDocumentFragment();
                     for (a = d.length - 1; 0 <= a; a--) h.appendChild(Parser.buildHTMLFromJSON(d[a], Main.board));
                     e.appendChild(h);
@@ -1585,8 +1585,8 @@ var Parser = {
                     Parser.hasHighlightedPosts = !1;
                     Parser.parseThread(e.id.slice(1), -d.length);
                     a != g.offsetTop && window.scrollBy(0, g.offsetTop - a);
-                    m || (!c.force && l.scrollHeight > window.innerHeight ? (c.lastReply || k == Main.tid || ((c.lastReply = g.lastChild).className += " newPostsMarker"), Parser.hasYouMarkers ? (c.setIcon("rep"), c.audioEnabled && document[c.hidden] && c.audio.play()) : Parser.hasHighlightedPosts && "rep" !== c.currentIcon ? c.setIcon("hl") : 0 == c.unreadCount && c.setIcon("new"), c.unreadCount += b, document.title = "(" + c.unreadCount + ") " + c.pageTitle) : c.setStatus(b + " new post" + (1 < b ? "s" : "")));
-                    n && window.scrollTo(0, document.documentElement.scrollHeight);
+                    n || (!c.force && l.scrollHeight > window.innerHeight ? (c.lastReply || k == Main.tid || ((c.lastReply = g.lastChild).className += " newPostsMarker"), Parser.hasYouMarkers ? (c.setIcon("rep"), c.audioEnabled && document[c.hidden] && c.audio.play()) : Parser.hasHighlightedPosts && "rep" !== c.currentIcon ? c.setIcon("hl") : 0 == c.unreadCount && c.setIcon("new"), c.unreadCount += b, document.title = "(" + c.unreadCount + ") " + c.pageTitle) : c.setStatus(b + " new post" + (1 < b ? "s" : "")));
+                    m && window.scrollTo(0, document.documentElement.scrollHeight);
                     Config.threadWatcher && ThreadWatcher.refreshCurrent(!0);
                     Config.threadStats && (e = f[0], ThreadStats.update(e.replies, e.images, e.bumplimit, e.imagelimit));
                     c.invalidateAds();
@@ -1745,39 +1745,44 @@ var Parser = {
             }
         },
         exec: function(a, b, c, d) {
-            var e, f, h, g, k, l, n, m;
+            var e, f, h, g, k, l, m, n, p;
             if (Parser.trackedReplies && Parser.trackedReplies[">>" + b.id.slice(2)]) return !1;
             n = Filter.activeFilters;
-            m = !1;
-            for (i = 0; l = n[i]; ++i)
-                if (0 == l.type) {
-                    if ((e || (e = b.getElementsByClassName("postertrip")[0])) && l.pattern == e.textContent) {
-                        m = !0;
+            p = !1;
+            for (i = 0; m = n[i]; ++i)
+                if (0 == m.type) {
+                    if ((void 0 !== e || (e = b.getElementsByClassName("postertrip")[0])) && m.pattern == e.textContent) {
+                        p = !0;
                         break
                     }
-                } else if (1 == l.type) {
-                if ((f || (f = b.getElementsByClassName("name")[0])) && l.pattern == f.textContent) {
-                    m = !0;
+                } else if (1 == m.type) {
+                if ((f || (f = b.getElementsByClassName("name")[0])) && m.pattern == f.textContent) {
+                    p = !0;
                     break
                 }
-            } else if (2 == l.type) {
-                if (h || (this.entities.innerHTML = c.innerHTML.replace(/<br>/g, "\n").replace(/[<[^>]+>/g, ""), h = this.entities.textContent), l.pattern.test(h)) {
-                    m = !0;
+            } else if (2 == m.type) {
+                if (void 0 === h && (this.entities.innerHTML = c.innerHTML.replace(/<br>/g, "\n").replace(/[<[^>]+>/g, ""), h = this.entities.textContent), m.pattern.test(h)) {
+                    p = !0;
                     break
                 }
-            } else if (4 == l.type) {
-                if ((g || (g = b.getElementsByClassName("posteruid")[0]) && (g = g.firstElementChild.textContent)) && l.pattern == g) {
-                    m = !0;
+            } else if (4 == m.type) {
+                if ((g || (g = b.getElementsByClassName("posteruid")[0]) && (g = g.firstElementChild.textContent)) && m.pattern == g) {
+                    p = !0;
                     break
                 }
-            } else if (!Main.tid && 5 == l.type && (k || (k = b.getElementsByClassName("subject")[0]) && (k = k.textContent)) && l.pattern.test(k)) {
-                m = !0;
+            } else if (!Main.tid && 5 == m.type) {
+                if ((k || (k = b.getElementsByClassName("subject")[0]) && (k = k.textContent)) && m.pattern.test(k)) {
+                    p = !0;
+                    break
+                }
+            } else if (6 == m.type && (void 0 === l && (l = (l = b.parentNode.getElementsByClassName("fileText")[0]) ? l.firstElementChild.textContent : ""), m.pattern.test(l))) {
+                p = !0;
                 break
             }
-            if (m) {
-                if (l.hide) return a.className += " post-hidden", el = document.createElement("span"), d ? el.innerHTML = '[<a data-filtered="1" href="thread/' + d + '">View</a>]' : (el.textContent = "[View]", el.setAttribute("data-filtered", "1")), el.className = "filter-preview", b.appendChild(el), !0;
+            if (p) {
+                if (m.hide) return a.className += " post-hidden", el = document.createElement("span"), d ? el.innerHTML = '[<a data-filtered="1" href="thread/' + d + '">View</a>]' : (el.textContent = "[View]", el.setAttribute("data-filtered", "1")), el.className = "filter-preview", b.appendChild(el), !0;
                 a.className += " filter-hl";
-                a.style.boxShadow = "-3px 0 " + l.color;
+                a.style.boxShadow = "-3px 0 " + m.color;
                 Parser.hasHighlightedPosts = !0
             }
             return !1
@@ -1811,19 +1816,20 @@ var Parser = {
                                 hide: b.hide
                             })
                         }
-                } catch (n) {
-                    alert("There was an error processing one of the filters: " + n + " in: " + d)
+                } catch (m) {
+                    alert("There was an error processing one of the filters: " + m + " in: " + d)
                 }
             }
         },
         addSelection: function() {
             var a, b;
             a = UA.getSelection(!0);
-            !1 !== Filter.open() && ("string" == typeof a ? a = a.trim() : (b = a.anchorNode.parentNode, a = a.toString().trim(), b = $.hasClass(b, "name") ? 1 : $.hasClass(b, "postertrip") ? 0 : $.hasClass(b, "subject") ? 5 : $.hasClass(b, "posteruid") || $.hasClass(b, "hand") ? 4 : 2), Filter.add(a, b))
+            !1 !== Filter.open() && ("string" == typeof a ? a = a.trim() : (b = a.anchorNode.parentNode, a = a.toString().trim(), b = $.hasClass(b, "name") ? 1 : $.hasClass(b, "postertrip") ? 0 : $.hasClass(b, "subject") ? 5 : $.hasClass(b, "posteruid") || $.hasClass(b, "hand") ? 4 : $.hasClass(b, "fileText") ? 6 : 2), Filter.add(a, b))
         },
         openHelp: function() {
             var a;
-            $.id("filtersHelp") || (a = document.createElement("div"), a.id = "filtersHelp", a.className = "UIPanel", a.setAttribute("data-cmd", "filters-help-close"), a.innerHTML = '<div class="extPanel reply"><div class="panelHeader">Filters &amp; Highlights Help<span><img alt="Close" title="Close" class="pointer" data-cmd="filters-help-close" src="' + Main.icons.cross + '"></span></div><h4>Tripcode, Name and ID filters:</h4><ul><li>Those use simple string comparison.</li><li>Type them exactly as they appear on 4chan, including the exclamation mark for tripcode filters.</li><li>Example: <code>!Ep8pui8Vw2</code></li></ul><h4>Comment, Subject and E-mail filters:</h4><ul><li><strong>Matching whole words:</strong></li><li><code>feel</code> &mdash; will match <em>"feel"</em> but not <em>"feeling"</em>. This search is case-insensitive.</li></ul><ul><li><strong>AND operator:</strong></li><li><code>feel girlfriend</code> &mdash; will match <em>"feel"</em> AND <em>"girlfriend"</em> in any order.</li></ul><ul><li><strong>Exact match:</strong></li><li><code>"that feel when"</code> &mdash; place double quotes around the pattern to search for an exact string</li></ul><ul><li><strong>Wildcards:</strong></li><li><code>feel*</code> &mdash; matches expressions such as <em>"feel"</em>, <em>"feels"</em>, <em>"feeling"</em>, <em>"feeler"</em>, etc\u2026</li><li><code>idolm*ster</code> &mdash; this can match <em>"idolmaster"</em> or <em>"idolm@ster"</em>, etc\u2026</li></ul><ul><li><strong>Regular expressions:</strong></li><li><code>/feel when no (girl|boy)friend/i</code></li><li><code>/^(?!.*touhou).*$/i</code> &mdash; NOT operator.</li><li><code>/^>/</code> &mdash; comments starting with a quote.</li><li><code>/^$/</code> &mdash; comments with no text.</li></ul><h4>Colors:</h4><ul><li>The color field can accept any valid CSS color:</li><li><code>red</code>, <code>#0f0</code>, <code>#00ff00</code>, <code>rgba( 34, 12, 64, 0.3)</code>, etc\u2026</li></ul><h4>Shortcut:</h4><ul><li>If you have <code>Keyboard shortcuts</code> enabled, pressing <kbd>F</kbd> will add the selected text to your filters.</li></ul>', document.body.appendChild(a), a.addEventListener("click", this.onClick, !1))
+            $.id("filtersHelp") || (a = document.createElement("div"), a.id = "filtersHelp", a.className = "UIPanel", a.setAttribute("data-cmd", "filters-help-close"), a.innerHTML = '<div class="extPanel reply"><div class="panelHeader">Filters &amp; Highlights Help<span><img alt="Close" title="Close" class="pointer" data-cmd="filters-help-close" src="' +
+                Main.icons.cross + '"></span></div><h4>Tripcode, Name and ID filters:</h4><ul><li>Those use simple string comparison.</li><li>Type them exactly as they appear on 4chan, including the exclamation mark for tripcode filters.</li><li>Example: <code>!Ep8pui8Vw2</code></li></ul><h4>Comment, Subject and E-mail filters:</h4><ul><li><strong>Matching whole words:</strong></li><li><code>feel</code> &mdash; will match <em>"feel"</em> but not <em>"feeling"</em>. This search is case-insensitive.</li></ul><ul><li><strong>AND operator:</strong></li><li><code>feel girlfriend</code> &mdash; will match <em>"feel"</em> AND <em>"girlfriend"</em> in any order.</li></ul><ul><li><strong>Exact match:</strong></li><li><code>"that feel when"</code> &mdash; place double quotes around the pattern to search for an exact string</li></ul><ul><li><strong>Wildcards:</strong></li><li><code>feel*</code> &mdash; matches expressions such as <em>"feel"</em>, <em>"feels"</em>, <em>"feeling"</em>, <em>"feeler"</em>, etc\u2026</li><li><code>idolm*ster</code> &mdash; this can match <em>"idolmaster"</em> or <em>"idolm@ster"</em>, etc\u2026</li></ul><ul><li><strong>Regular expressions:</strong></li><li><code>/feel when no (girl|boy)friend/i</code></li><li><code>/^(?!.*touhou).*$/i</code> &mdash; NOT operator.</li><li><code>/^>/</code> &mdash; comments starting with a quote.</li><li><code>/^$/</code> &mdash; comments with no text.</li></ul><h4>Colors:</h4><ul><li>The color field can accept any valid CSS color:</li><li><code>red</code>, <code>#0f0</code>, <code>#00ff00</code>, <code>rgba( 34, 12, 64, 0.3)</code>, etc\u2026</li></ul><h4>Shortcut:</h4><ul><li>If you have <code>Keyboard shortcuts</code> enabled, pressing <kbd>F</kbd> will add the selected text to your filters.</li></ul>', document.body.appendChild(a), a.addEventListener("click", this.onClick, !1))
         },
         closeHelp: function() {
             var a;
@@ -1899,9 +1905,9 @@ var Parser = {
             d += '<td><input class="fPattern" type="text" value="' +
                 a.pattern.replace(/"/g, "&quot;") + '"></td>';
             3 === a.type && (a.type = 4);
-            e = "     ".split(" ");
+            e = "      ".split(" ");
             e[a.type] = ' selected="selected"';
-            d += '<td><select size="1"><option value="0"' + e[0] + '>Tripcode</option><option value="1"' + e[1] + '>Name</option><option value="2"' + e[2] + '>Comment</option><option value="4"' + e[4] + '>ID</option><option value="5"' + e[5] + ">Subject</option></select></td>";
+            d += '<td><select size="1"><option value="0"' + e[0] + '>Tripcode</option><option value="1"' + e[1] + '>Name</option><option value="2"' + e[2] + '>Comment</option><option value="4"' + e[4] + '>ID</option><option value="5"' + e[5] + '>Subject</option><option value="6"' + e[6] + ">Filename</option></select></td>";
             d += '<td><span data-cmd="filters-palette" title="Change Color" class="colorbox fColor" ';
             d = a.color ? d + (' style="background-color:' + a.color + '">') : d + ' data-nocolor="1">&#x2215;';
             d += "</span></td>";
