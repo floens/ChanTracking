@@ -166,17 +166,13 @@ var Parser = {
             }
             a.email && (E = '<a href="mailto:' + a.email.replace(/ /g, "%20") + '" class="useremail">', F = "</a>");
             y = a.country ? "pol" == b ? ' <img src="//s.4cdn.org/image/country/troll/' + a.country.toLowerCase() + '.gif" alt="' + a.country + '" title="' + a.country_name + '" class="countryFlag">' : ' <span title="' + a.country_name + '" class="flag flag-' + a.country.toLowerCase() + '"></span>' : "";
-            a.filedeleted ? g = '<div id="f' + a.no + '" class="file"><span class="fileThumb"><img src="' + Parser.icons.del + '" class="fileDeletedRes" alt="File deleted."></span></div>' : a.ext && (g = Parser.decodeSpecialChars(a.filename), p = x = a.filename + a.ext, g.length > (f ? 40 : 30) && (p = Parser.encodeSpecialChars(g.slice(0, f ? 35 : 25)) + "(...)" + a.ext, J = !0), a.tn_w || a.tn_h || ".gif" != a.ext || (a.tn_w = a.w, a.tn_h = a.h), q = 1048576 <= a.fsize ? (0 | a.fsize / 1048576 * 100 + .5) / 100 + " M" : 1024 < a.fsize ? (0 | a.fsize / 1024 + .5) + " K" : a.fsize + " ", a.spoiler && !Config.revealSpoilers && (p = "Spoiler Image", l = '" title="' + x + '"', C = " imgspoiler", m = "//s.4cdn.org/image/spoiler" + (Parser.customSpoiler[b] || "") + ".png", a.tn_w = 100, a.tn_h = 100), m || (m = "//0.t.4cdn.org/" + b + "/" + a.tim + "s.jpg"), g = ".pdf" == a.ext ? "PDF" : a.w + "x" + a.h, "f" != b ? (n = n + "/" + a.tim + a.ext, k = '<a class="fileThumb' + C + '" href="' + n + '" target="_blank"><img src="' + m + '" alt="' + q + 'B" data-md5="' + a.md5 + '" style="height: ' + a.tn_h + "px; width: " + a.tn_w + 'px;"><div class="mFileInfo mobile">' + q + "B " + a.ext.slice(1).toUpperCase() + "</div></a>", l = '<div class="fileText" id="fT' + a.no + l + ">File: <a" + (J ? ' title="' + x + '"' : "") + ' href="' + n + '" target="_blank">' + p + "</a> (" + q + "B, " + g + ")</div>") : (n = n + "/" + a.filename + a.ext, g += ", " + a.tag, l = '<div class="fileText" id="fT' + a.no + '">File: <a href="' +
-                n + '" target="_blank">' + a.filename + ".swf</a> (" + q + "B, " + g + ")</div>"), g = '<div id="f' + a.no + '" class="file">' + l + k + "</div>");
+            a.filedeleted ? g = '<div id="f' + a.no + '" class="file"><span class="fileThumb"><img src="' + Parser.icons.del + '" class="fileDeletedRes" alt="File deleted."></span></div>' : a.ext && (g = Parser.decodeSpecialChars(a.filename), p = x = a.filename + a.ext, g.length > (f ? 40 : 30) && (p = Parser.encodeSpecialChars(g.slice(0, f ? 35 : 25)) + "(...)" + a.ext, J = !0), a.tn_w || a.tn_h || ".gif" != a.ext || (a.tn_w = a.w, a.tn_h = a.h), q = 1048576 <= a.fsize ? (0 | a.fsize / 1048576 * 100 + .5) / 100 + " M" : 1024 < a.fsize ? (0 | a.fsize / 1024 + .5) + " K" : a.fsize + " ", a.spoiler && !Config.revealSpoilers && (p = "Spoiler Image", l = '" title="' + x + '"', C = " imgspoiler", m = "//s.4cdn.org/image/spoiler" + (Parser.customSpoiler[b] || "") + ".png", a.tn_w = 100, a.tn_h = 100), m || (m = "//0.t.4cdn.org/" + b + "/" + a.tim + "s.jpg"), g = ".pdf" == a.ext ? "PDF" : a.w + "x" + a.h, "f" != b ? (n = n + "/" + a.tim + a.ext, k = '<a class="fileThumb' + C + '" href="' + n + '" target="_blank"><img src="' + m + '" alt="' + q + 'B" data-md5="' + a.md5 + '" style="height: ' + a.tn_h + "px; width: " + a.tn_w + 'px;"><div class="mFileInfo mobile">' + q + "B " + a.ext.slice(1).toUpperCase() + "</div></a>", l = '<div class="fileText" id="fT' + a.no + l + ">File: <a" + (J ? ' title="' + x + '"' : "") + ' href="' + n + '" target="_blank">' + p + "</a> (" + q + "B, " + g + ")</div>") : (n = n + "/" + a.filename + a.ext, g += ", " + a.tag, l = '<div class="fileText" id="fT' + a.no + '">File: <a href="' + n + '" target="_blank">' + a.filename + ".swf</a> (" + q + "B, " + g + ")</div>"), g = '<div id="f' + a.no + '" class="file">' + l + k + "</div>");
             a.trip && (s = ' <span class="postertrip">' + a.trip + "</span>");
             k = a.name || "";
-            f ? (a.capcode_replies && (I = Parser.buildCapcodeReplies(a.capcode_replies, b, a.no)), d && a.replies && (v = a.replies + " post" + (1 < a.replies ? "s" : ""), a.images && (v += " and " + a.images + " image repl" + (1 < a.images ? "ies" : "y")), v = '<span class="summary preview-summary">' + v + ".</span>"), a.sticky && (w += '<img class="stickyIcon retina" title="Sticky" alt="Sticky" src="' +
-                Main.icons2.sticky + '"> '), a.closed && (w = a.archived ? w + ('<img class="archivedIcon retina" title="Archived" alt="Archived" src="' + Main.icons2.archived + '"> ') : w + ('<img class="closedIcon retina" title="Closed" alt="Closed" src="' + Main.icons2.closed + '"> ')), d = '<span class="subject">' + (a.sub || "") + "</span> ") : d = "";
+            f ? (a.capcode_replies && (I = Parser.buildCapcodeReplies(a.capcode_replies, b, a.no)), d && a.replies && (v = a.replies + " post" + (1 < a.replies ? "s" : ""), a.images && (v += " and " + a.images + " image repl" + (1 < a.images ? "ies" : "y")), v = '<span class="summary preview-summary">' + v + ".</span>"), a.sticky && (w += '<img class="stickyIcon retina" title="Sticky" alt="Sticky" src="' + Main.icons2.sticky + '"> '), a.closed && (w = a.archived ? w + ('<img class="archivedIcon retina" title="Archived" alt="Archived" src="' + Main.icons2.archived + '"> ') : w + ('<img class="closedIcon retina" title="Closed" alt="Closed" src="' + Main.icons2.closed + '"> ')), d = '<span class="subject">' + (a.sub || "") + "</span> ") : d = "";
             e.className = "postContainer " + B + "Container";
             e.id = "pc" + a.no;
-            e.innerHTML = (f ? "" : '<div class="sideArrows" id="sa' + a.no + '">&gt;&gt;</div>') + '<div id="p' + a.no + '" class="post ' + B + D + '"><div class="postInfoM mobile" id="pim' +
-                a.no + '"><span class="nameBlock' + t + '"><span class="name">' + k + "</span>" + s + r + u + h + y + "<br>" + d + '</span><span class="dateTime postNum" data-utc="' + a.time + '">' + a.now + ' <a href="' + a.no + "#p" + a.no + '" title="Link to this post">No.</a><a href="javascript:quote(\'' + a.no + '\');" title="Reply to this post">' + a.no + "</a></span></div>" + (f ? g : "") + '<div class="postInfo desktop" id="pi' + a.no + '"' + (b != Main.board ? ' data-board="' + b + '"' : "") + '><input type="checkbox" name="' + a.no + '" value="delete"> ' + d + '<span class="nameBlock' +
-                t + '">' + E + '<span class="name">' + k + "</span>" + s + r + F + u + h + y + ' </span> <span class="dateTime" data-utc="' + a.time + '">' + a.now + '</span> <span class="postNum desktop"><a href="' + z + '" title="Link to this post">No.</a><a href="' + A + '" title="Reply to this post">' + a.no + "</a> " + w + G + "</span></div>" + (f ? "" : g) + '<blockquote class="postMessage" id="m' + a.no + '">' + (a.com || "") + I + v + "</blockquote> </div>" + H;
+            e.innerHTML = (f ? "" : '<div class="sideArrows" id="sa' + a.no + '">&gt;&gt;</div>') + '<div id="p' + a.no + '" class="post ' + B + D + '"><div class="postInfoM mobile" id="pim' + a.no + '"><span class="nameBlock' + t + '"><span class="name">' + k + "</span>" + s + r + u + h + y + "<br>" + d + '</span><span class="dateTime postNum" data-utc="' + a.time + '">' + a.now + ' <a href="' + a.no + "#p" + a.no + '" title="Link to this post">No.</a><a href="javascript:quote(\'' + a.no + '\');" title="Reply to this post">' + a.no + "</a></span></div>" + (f ? g : "") + '<div class="postInfo desktop" id="pi' + a.no + '"' + (b != Main.board ? ' data-board="' + b + '"' : "") + '><input type="checkbox" name="' + a.no + '" value="delete"> ' + d + '<span class="nameBlock' + t + '">' + E + '<span class="name">' + k + "</span>" + s + r + F + u + h + y + ' </span> <span class="dateTime" data-utc="' + a.time + '">' + a.now + '</span> <span class="postNum desktop"><a href="' + z + '" title="Link to this post">No.</a><a href="' + A + '" title="Reply to this post">' + a.no + "</a> " + w + G + "</span></div>" + (f ? "" : g) + '<blockquote class="postMessage" id="m' + a.no + '">' + (a.com || "") + I + v + "</blockquote> </div>" + H;
             if (!Main.tid || b != Main.board)
                 for (r = e.getElementsByClassName("quotelink"), a = 0; f = r[a]; ++a) s = f.getAttribute("href"), "/" != s.charAt(0) && (f.href = "/" + b + "/thread/" + c + s);
             return e
@@ -258,8 +254,7 @@ var Parser = {
             Config.embedSoundCloud && Media.parseSoundCloud(h);
             Config.embedYouTube && Media.parseYouTube(h);
             Config.embedVocaroo && Media.parseVocaroo(h);
-            Config.revealSpoilers && (f = document.getElementById("f" + a)) && (f = f.children[1]) && $.hasClass(f, "imgspoiler") && (d = f.firstChild, f.removeChild(d), d.removeAttribute("style"), k = $.hasClass(e.parentNode, "op"), d.style.maxWidth = d.style.maxHeight = k ? "250px" : "125px", d.src = "//0.t.4cdn.org" +
-                f.pathname.replace(/([0-9]+).+$/, "/$1s.jpg"), h = f.previousElementSibling, g = h.title.split("."), g[0].length > (k ? 40 : 30) ? g = g[0].slice(0, k ? 35 : 25) + "(...)" + g[1] : (g = h.title, h.removeAttribute("title")), h.firstElementChild.innerHTML = g, f.insertBefore(d, f.firstElementChild));
+            Config.revealSpoilers && (f = document.getElementById("f" + a)) && (f = f.children[1]) && $.hasClass(f, "imgspoiler") && (d = f.firstChild, f.removeChild(d), d.removeAttribute("style"), k = $.hasClass(e.parentNode, "op"), d.style.maxWidth = d.style.maxHeight = k ? "250px" : "125px", d.src = "//0.t.4cdn.org" + f.pathname.replace(/([0-9]+).+$/, "/$1s.jpg"), h = f.previousElementSibling, g = h.title.split("."), g[0].length > (k ? 40 : 30) ? g = g[0].slice(0, k ? 35 : 25) + "(...)" + g[1] : (g = h.title, h.removeAttribute("title")), h.firstElementChild.innerHTML = g, f.insertBefore(d, f.firstElementChild));
             Config.localTime && (c ? (d = e.parentNode.getElementsByClassName("dateTime")[0], d.firstChild.nodeValue = Parser.getLocaleDate(new Date(1E3 * d.getAttribute("data-utc"))) + " ") : (d = e.getElementsByClassName("dateTime")[0], d.title = this.utcOffset, d.textContent = Parser.getLocaleDate(new Date(1E3 * d.getAttribute("data-utc")))))
         },
         getLocaleDate: function(a) {
@@ -291,8 +286,7 @@ var Parser = {
             e = !b && !!$.id("t" + d);
             c = '<ul><li data-cmd="report" data-id="' + d + (b ? '" data-board="' + b + '"' : '"') + '">Report post</li>';
             if (e) Main.tid || (c += '<li data-cmd="hide" data-id="' + d + '">' + ($.hasClass($.id("t" + d), "post-hidden") ? "Unhide" : "Hide") + " thread</li>"), Config.threadWatcher && (c += '<li data-cmd="watch" data-id="' + d + '">' + (ThreadWatcher.watched[d + "-" + Main.board] ? "Remove from" : "Add to") + " watch list</li>");
-            else if (b = $.id("pc" + d)) c += '<li data-cmd="hide-r" data-id="' +
-                d + '">' + ($.hasClass(b, "post-hidden") ? "Unhide" : "Hide") + " post</li>";
+            else if (b = $.id("pc" + d)) c += '<li data-cmd="hide-r" data-id="' + d + '">' + ($.hasClass(b, "post-hidden") ? "Unhide" : "Hide") + " post</li>";
             if (file = $.id("fT" + d))
                 if (b = $.cls("fileThumb", file.parentNode)[0]) b = /\.(png|jpg)$/.test(b.href) ? b.href : "http://0.t.4cdn.org/" + Main.board + "/" + b.href.match(/\/([0-9]+)\..+$/)[1] + "s.jpg", c += '<li><ul><li><a href="//www.google.com/searchbyimage?image_url=' + b + '" target="_blank">Google</a></li><li><a href="http://iqdb.org/?url=' + b + '" target="_blank">iqdb</a></li></ul>Image search &raquo</li>';
             Config.filter && (c += '<li><a href="#" data-cmd="filter-sel">Filter selected text</a></li>');
@@ -352,8 +346,7 @@ var Parser = {
         },
         insertAd: function(a, b, c, d) {
             var e;
-            Depager.boardHasAds && window.ados_add_placement && (d ? (b = $.cls("bottomad"), d = b[b.length -
-                1], e = document.createElement("div"), e.id = "azkDepage" + a, d.appendChild(e), window.ados_add_placement(3536, 18130, e.id, 4).setZone(c)) : (d = document.createElement("div"), d.className = "bottomad center", 2 == a ? e = $.id(Depager.adId) : (e = document.createElement("div"), e.id = "azkDepage" + a), d.appendChild(e), b.appendChild(d), Depager.adPlea && b.appendChild(Depager.adPlea.cloneNode(!0)), b.appendChild(document.createElement("hr")), 2 != a && window.ados_add_placement(3536, 18130, e.id, 4).setZone(c)))
+            Depager.boardHasAds && window.ados_add_placement && (d ? (b = $.cls("bottomad"), d = b[b.length - 1], e = document.createElement("div"), e.id = "azkDepage" + a, d.appendChild(e), window.ados_add_placement(3536, 18130, e.id, 4).setZone(c)) : (d = document.createElement("div"), d.className = "bottomad center", 2 == a ? e = $.id(Depager.adId) : (e = document.createElement("div"), e.id = "azkDepage" + a), d.appendChild(e), b.appendChild(d), Depager.adPlea && b.appendChild(Depager.adPlea.cloneNode(!0)), b.appendChild(document.createElement("hr")), 2 != a && window.ados_add_placement(3536, 18130, e.id, 4).setZone(c)))
         },
         loadAds: function() {
             Depager.boardHasAds && window.ados_load && window.ados_load()
@@ -462,8 +455,7 @@ var Parser = {
         },
         toggle: function(a, b) {
             var c, d, e;
-            (c = a.getAttribute("href").match(/^(?:\/([^\/]+)\/)?(?:thread\/)?([0-9]+)?#p([0-9]+)$/)) && "rs" != c[1] && !QuoteInline.isSelfQuote(a, c[3], c[1]) && (b && b.preventDefault(), (d = a.getAttribute("data-pfx")) ? (a.removeAttribute("data-pfx"), $.removeClass(a, "linkfade"), d = $.id(d + "p" + c[3]), d.parentNode.removeChild(d), "backlink" == a.parentNode.parentNode.className && (d = $.id("pc" +
-                c[3]), c = +d.getAttribute("data-inline-count") - 1, 0 == c ? (d.style.display = "", d.removeAttribute("data-inline-count")) : d.setAttribute("data-inline-count", c))) : (e = $.id("p" + c[3])) ? QuoteInline.inline(a, e, c[3]) : QuoteInline.inlineRemote(a, c[1] || Main.board, c[2], c[3]))
+            (c = a.getAttribute("href").match(/^(?:\/([^\/]+)\/)?(?:thread\/)?([0-9]+)?#p([0-9]+)$/)) && "rs" != c[1] && !QuoteInline.isSelfQuote(a, c[3], c[1]) && (b && b.preventDefault(), (d = a.getAttribute("data-pfx")) ? (a.removeAttribute("data-pfx"), $.removeClass(a, "linkfade"), d = $.id(d + "p" + c[3]), d.parentNode.removeChild(d), "backlink" == a.parentNode.parentNode.className && (d = $.id("pc" + c[3]), c = +d.getAttribute("data-inline-count") - 1, 0 == c ? (d.style.display = "", d.removeAttribute("data-inline-count")) : d.setAttribute("data-inline-count", c))) : (e = $.id("p" + c[3])) ? QuoteInline.inline(a, e, c[3]) : QuoteInline.inlineRemote(a, c[1] || Main.board, c[2], c[3]))
         },
         inlineRemote: function(a, b, c, d) {
             var e, f, h, g;
@@ -865,8 +857,7 @@ var Parser = {
         onFileChange: function(a) {
             var b;
             QR.needPreuploadCaptcha = !1;
-            this.value ? (b = window.maxFilesize, this.files ? (a = this.files[0].size, "video/webm" == this.files[0].type && window.maxWebmFilesize && (b = window.maxWebmFilesize)) : a = 0, QR.fileDisabled ? QR.showPostError("Image limit reached.", "imagelimit", !0) : a > b ? QR.showPostError("Error: Maximum file size allowed is " +
-                Math.floor(b / 1048576) + " MB", "filesize", !0) : QR.hidePostError(), a >= QR.preuploadSizeLimit && (QR.needPreuploadCaptcha = !0)) : QR.hidePostError();
+            this.value ? (b = window.maxFilesize, this.files ? (a = this.files[0].size, "video/webm" == this.files[0].type && window.maxWebmFilesize && (b = window.maxWebmFilesize)) : a = 0, QR.fileDisabled ? QR.showPostError("Image limit reached.", "imagelimit", !0) : a > b ? QR.showPostError("Error: Maximum file size allowed is " + Math.floor(b / 1048576) + " MB", "filesize", !0) : QR.hidePostError(), a >= QR.preuploadSizeLimit && (QR.needPreuploadCaptcha = !0)) : QR.hidePostError();
             QR.startCooldown()
         },
         onKeyDown: function(a) {
@@ -907,8 +898,7 @@ var Parser = {
         cloneCaptcha: function() {
             var a = $.id("qrCaptchaContainer");
             if (!a) return !1;
-            a.innerHTML = '<img id="qrCaptcha" title="Reload" width="300" height="57" src="' + $.id("recaptcha_challenge_image").src + '" alt="reCAPTCHA challenge image">' + (window.preupload_captcha ? '<input id="qrCapToken" type="hidden" name="captcha_token" disabled>' : "") + '<input id="qrCapField" tabindex="25" name="recaptcha_response_field" placeholder="Type the text (Required)" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"><input id="qrChallenge" name="recaptcha_challenge_field" type="hidden" value="' +
-                $.id("recaptcha_challenge_field").value + '">';
+            a.innerHTML = '<img id="qrCaptcha" title="Reload" width="300" height="57" src="' + $.id("recaptcha_challenge_image").src + '" alt="reCAPTCHA challenge image">' + (window.preupload_captcha ? '<input id="qrCapToken" type="hidden" name="captcha_token" disabled>' : "") + '<input id="qrCapField" tabindex="25" name="recaptcha_response_field" placeholder="Type the text (Required)" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"><input id="qrChallenge" name="recaptcha_challenge_field" type="hidden" value="' + $.id("recaptcha_challenge_field").value + '">';
             return !0
         },
         reloadCaptcha: function(a) {
@@ -1005,8 +995,7 @@ var Parser = {
                             a = f[1];
                             f = f[2];
                             QR.lastTid = a;
-                            localStorage.setItem("4chan-cd-" +
-                                Main.board + "-tid", a);
+                            localStorage.setItem("4chan-cd-" + Main.board + "-tid", a);
                             e = (b = $.id("qrFile")) && b.value;
                             QR.setPostTime();
                             if (Config.persistentQR) {
@@ -1048,8 +1037,7 @@ var Parser = {
         onPulse: function() {
             QR.cdElapsed = Date.now() - QR.timestamp;
             QR.cooldown = Math.floor((QR.activeDelay - QR.cdElapsed) / 1E3);
-            0 >= QR.cooldown ? (clearInterval(QR.pulse), QR.btn.value = "Post", QR.cooldown = !1, QR.auto && QR.submit()) : QR.btn.value = QR.cooldown +
-                (QR.auto ? "s (auto)" : "s")
+            0 >= QR.cooldown ? (clearInterval(QR.pulse), QR.btn.value = "Post", QR.cooldown = !1, QR.auto && QR.submit()) : QR.btn.value = QR.cooldown + (QR.auto ? "s (auto)" : "s")
         }
     },
     ThreadHiding = {
@@ -1193,8 +1181,7 @@ var Parser = {
             a.className = "extPanel reply";
             a.setAttribute("data-trackpos", "TW-position");
             Main.hasMobileLayout ? a.style.display = "none" : (Config["TW-position"] ? a.style.cssText = Config["TW-position"] : (a.style.left = "10px", a.style.top = "380px"), a.style.position = Config.fixedThreadWatcher ? "fixed" : "");
-            a.innerHTML = '<div class="drag" id="twHeader">' + (Main.hasMobileLayout ? '<img id="twClose" class="pointer" src="' + Main.icons.cross + '" alt="X">' : "") + "Thread Watcher" + (UA.hasCORS ? '<img id="twPrune" class="pointer right" src="' +
-                Main.icons.refresh + '" alt="R" title="Refresh"></div>' : "</div>");
+            a.innerHTML = '<div class="drag" id="twHeader">' + (Main.hasMobileLayout ? '<img id="twClose" class="pointer" src="' + Main.icons.cross + '" alt="X">' : "") + "Thread Watcher" + (UA.hasCORS ? '<img id="twPrune" class="pointer right" src="' + Main.icons.refresh + '" alt="R" title="Refresh"></div>' : "</div>");
             this.listNode = document.createElement("ul");
             this.listNode.id = "watchList";
             this.load();
@@ -1254,8 +1241,7 @@ var Parser = {
         toggle: function(a, b, c) {
             var d, e;
             b = a + "-" + (b || Main.board);
-            this.watched[b] ? delete this.watched[b] : (d = (d = $.cls("subject", $.id("pi" + a))[0].textContent) ? d.slice(0, this.charLimit) : (d = $.id("m" + a).innerHTML) ? d.replace(/(?:<br>)+/g, " ").replace(/<[^>]*?>/g, "").slice(0, this.charLimit) : "No." +
-                a, a = (e = $.id("t" + a)).children[1] ? e.lastElementChild.id.slice(2) : a, this.watched[b] = [d, a, 0]);
+            this.watched[b] ? delete this.watched[b] : (d = (d = $.cls("subject", $.id("pi" + a))[0].textContent) ? d.slice(0, this.charLimit) : (d = $.id("m" + a).innerHTML) ? d.replace(/(?:<br>)+/g, " ").replace(/<[^>]*?>/g, "").slice(0, this.charLimit) : "No." + a, a = (e = $.id("t" + a)).children[1] ? e.lastElementChild.id.slice(2) : a, this.watched[b] = [d, a, 0]);
             this.save();
             this.load();
             this.build(!0)
@@ -1414,8 +1400,7 @@ var Parser = {
             f = document.createElement("input");
             f.type = "checkbox";
             f.setAttribute("data-cmd", "auto");
-            this["autoNode" +
-                b] = f;
+            this["autoNode" + b] = f;
             h.appendChild(f);
             h.appendChild(document.createTextNode("Auto"));
             e.appendChild(h);
@@ -1658,8 +1643,7 @@ var Parser = {
             e = [];
             Main.threadSticky && e.push("Sticky");
             window.thread_archived ? e.push("Archived") : Main.threadClosed && e.push("Closed");
-            c ? e.push('<em data-tip="Bump limit reached">' + a + "</em>") : e.push('<span data-tip="Replies">' +
-                a + "</span>");
+            c ? e.push('<em data-tip="Bump limit reached">' + a + "</em>") : e.push('<span data-tip="Replies">' + a + "</span>");
             d ? e.push('<em data-tip="Image limit reached">' + b + "</em>") : e.push('<span data-tip="Images">' + b + "</span>");
             window.thread_archived || e.push('<span data-tip="Page" class="ts-page">' + (this.pageNumber || "?") + "</span>");
             this.nodeTop.innerHTML = this.nodeBot.innerHTML = e.join(" / ")
@@ -1834,8 +1818,7 @@ var Parser = {
         },
         openHelp: function() {
             var a;
-            $.id("filtersHelp") || (a = document.createElement("div"), a.id = "filtersHelp", a.className = "UIPanel", a.setAttribute("data-cmd", "filters-help-close"), a.innerHTML = '<div class="extPanel reply"><div class="panelHeader">Filters &amp; Highlights Help<span><img alt="Close" title="Close" class="pointer" data-cmd="filters-help-close" src="' +
-                Main.icons.cross + '"></span></div><h4>Tripcode, Name and ID filters:</h4><ul><li>Those use simple string comparison.</li><li>Type them exactly as they appear on 4chan, including the exclamation mark for tripcode filters.</li><li>Example: <code>!Ep8pui8Vw2</code></li></ul><h4>Comment, Subject and E-mail filters:</h4><ul><li><strong>Matching whole words:</strong></li><li><code>feel</code> &mdash; will match <em>"feel"</em> but not <em>"feeling"</em>. This search is case-insensitive.</li></ul><ul><li><strong>AND operator:</strong></li><li><code>feel girlfriend</code> &mdash; will match <em>"feel"</em> AND <em>"girlfriend"</em> in any order.</li></ul><ul><li><strong>Exact match:</strong></li><li><code>"that feel when"</code> &mdash; place double quotes around the pattern to search for an exact string</li></ul><ul><li><strong>Wildcards:</strong></li><li><code>feel*</code> &mdash; matches expressions such as <em>"feel"</em>, <em>"feels"</em>, <em>"feeling"</em>, <em>"feeler"</em>, etc\u2026</li><li><code>idolm*ster</code> &mdash; this can match <em>"idolmaster"</em> or <em>"idolm@ster"</em>, etc\u2026</li></ul><ul><li><strong>Regular expressions:</strong></li><li><code>/feel when no (girl|boy)friend/i</code></li><li><code>/^(?!.*touhou).*$/i</code> &mdash; NOT operator.</li><li><code>/^>/</code> &mdash; comments starting with a quote.</li><li><code>/^$/</code> &mdash; comments with no text.</li></ul><h4>Colors:</h4><ul><li>The color field can accept any valid CSS color:</li><li><code>red</code>, <code>#0f0</code>, <code>#00ff00</code>, <code>rgba( 34, 12, 64, 0.3)</code>, etc\u2026</li></ul><h4>Boards:</h4><ul><li>A space separated list of boards on which the filter will be active. Leave blank to apply to all boards.</li></ul><h4>Shortcut:</h4><ul><li>If you have <code>Keyboard shortcuts</code> enabled, pressing <kbd>F</kbd> will add the selected text to your filters.</li></ul>', document.body.appendChild(a), a.addEventListener("click", this.onClick, !1))
+            $.id("filtersHelp") || (a = document.createElement("div"), a.id = "filtersHelp", a.className = "UIPanel", a.setAttribute("data-cmd", "filters-help-close"), a.innerHTML = '<div class="extPanel reply"><div class="panelHeader">Filters &amp; Highlights Help<span><img alt="Close" title="Close" class="pointer" data-cmd="filters-help-close" src="' + Main.icons.cross + '"></span></div><h4>Tripcode, Name and ID filters:</h4><ul><li>Those use simple string comparison.</li><li>Type them exactly as they appear on 4chan, including the exclamation mark for tripcode filters.</li><li>Example: <code>!Ep8pui8Vw2</code></li></ul><h4>Comment, Subject and E-mail filters:</h4><ul><li><strong>Matching whole words:</strong></li><li><code>feel</code> &mdash; will match <em>"feel"</em> but not <em>"feeling"</em>. This search is case-insensitive.</li></ul><ul><li><strong>AND operator:</strong></li><li><code>feel girlfriend</code> &mdash; will match <em>"feel"</em> AND <em>"girlfriend"</em> in any order.</li></ul><ul><li><strong>Exact match:</strong></li><li><code>"that feel when"</code> &mdash; place double quotes around the pattern to search for an exact string</li></ul><ul><li><strong>Wildcards:</strong></li><li><code>feel*</code> &mdash; matches expressions such as <em>"feel"</em>, <em>"feels"</em>, <em>"feeling"</em>, <em>"feeler"</em>, etc\u2026</li><li><code>idolm*ster</code> &mdash; this can match <em>"idolmaster"</em> or <em>"idolm@ster"</em>, etc\u2026</li></ul><ul><li><strong>Regular expressions:</strong></li><li><code>/feel when no (girl|boy)friend/i</code></li><li><code>/^(?!.*touhou).*$/i</code> &mdash; NOT operator.</li><li><code>/^>/</code> &mdash; comments starting with a quote.</li><li><code>/^$/</code> &mdash; comments with no text.</li></ul><h4>Colors:</h4><ul><li>The color field can accept any valid CSS color:</li><li><code>red</code>, <code>#0f0</code>, <code>#00ff00</code>, <code>rgba( 34, 12, 64, 0.3)</code>, etc\u2026</li></ul><h4>Boards:</h4><ul><li>A space separated list of boards on which the filter will be active. Leave blank to apply to all boards.</li></ul><h4>Shortcut:</h4><ul><li>If you have <code>Keyboard shortcuts</code> enabled, pressing <kbd>F</kbd> will add the selected text to your filters.</li></ul>', document.body.appendChild(a), a.addEventListener("click", this.onClick, !1))
         },
         closeHelp: function() {
             var a;
@@ -1849,8 +1832,7 @@ var Parser = {
             c.className = "UIPanel";
             c.style.display = "none";
             c.setAttribute("data-cmd", "filters-close");
-            c.innerHTML = '<div class="extPanel reply"><div class="panelHeader">Filters &amp; Highlights<span><img alt="Help" class="pointer" title="Help" data-cmd="filters-help-open" src="' +
-                Main.icons.help + '"><img alt="Close" title="Close" class="pointer" data-cmd="filters-close" src="' + Main.icons.cross + '"></span></div><table><thead><tr><th>Order</th><th>On</th><th>Pattern</th><th>Boards</th><th>Type</th><th>Color</th><th>Hide</th><th>Del</th></tr></thead><tbody id="filter-list"></tbody><tfoot><tr><td colspan="8"><button data-cmd="filters-add">Add</button><button class="right" data-cmd="filters-save">Save</button></td></tr></tfoot></table></div>';
+            c.innerHTML = '<div class="extPanel reply"><div class="panelHeader">Filters &amp; Highlights<span><img alt="Help" class="pointer" title="Help" data-cmd="filters-help-open" src="' + Main.icons.help + '"><img alt="Close" title="Close" class="pointer" data-cmd="filters-close" src="' + Main.icons.cross + '"></span></div><table><thead><tr><th>Order</th><th>On</th><th>Pattern</th><th>Boards</th><th>Type</th><th>Color</th><th>Hide</th><th>Del</th></tr></thead><tbody id="filter-list"></tbody><tfoot><tr><td colspan="8"><button data-cmd="filters-add">Add</button><button class="right" data-cmd="filters-save">Save</button></td></tr></tfoot></table></div>';
             document.body.appendChild(c);
             c.addEventListener("click", this.onClick, !1);
             e = $.id("filter-list");
@@ -1914,8 +1896,7 @@ var Parser = {
             3 === a.type && (a.type = 4);
             e = "      ".split(" ");
             e[a.type] = ' selected="selected"';
-            d += '<td><select size="1"><option value="0"' + e[0] + '>Tripcode</option><option value="1"' + e[1] + '>Name</option><option value="2"' + e[2] + '>Comment</option><option value="4"' + e[4] + '>ID</option><option value="5"' + e[5] + '>Subject</option><option value="6"' +
-                e[6] + ">Filename</option></select></td>";
+            d += '<td><select size="1"><option value="0"' + e[0] + '>Tripcode</option><option value="1"' + e[1] + '>Name</option><option value="2"' + e[2] + '>Comment</option><option value="4"' + e[4] + '>ID</option><option value="5"' + e[5] + '>Subject</option><option value="6"' + e[6] + ">Filename</option></select></td>";
             d += '<td><span data-cmd="filters-palette" title="Change Color" class="colorbox fColor" ';
             d = a.color ? d + (' style="background-color:' + a.color + '">') : d + ' data-nocolor="1">&#x2215;';
             d += "</span></td>";
@@ -2094,8 +2075,7 @@ var Parser = {
             var b, c;
             "Remove" == a.textContent ? (a.parentNode.removeChild(a.nextElementSibling), a.textContent = "Embed") : "Embed" == a.textContent && (c = a.previousElementSibling.textContent, b = new XMLHttpRequest, b.open("GET", "//soundcloud.com/oembed?show_artwork=false&maxwidth=500px&show_comments=false&format=json&url=http://" + c), b.onload = function() {
                 var b;
-                200 == this.status || 304 == this.status ? (b = document.createElement("div"), b.className = "media-embed", b.innerHTML = JSON.parse(this.responseText).html, a.parentNode.insertBefore(b, a.nextElementSibling), a.textContent = "Remove") : (a.textContent = "Error", console.log("SoundCloud Error (HTTP " +
-                    this.status + ")"))
+                200 == this.status || 304 == this.status ? (b = document.createElement("div"), b.className = "media-embed", b.innerHTML = JSON.parse(this.responseText).html, a.parentNode.insertBefore(b, a.nextElementSibling), a.textContent = "Remove") : (a.textContent = "Error", console.log("SoundCloud Error (HTTP " + this.status + ")"))
             }, a.textContent = "Loading...", b.send(null))
         },
         parseYouTube: function(a) {
@@ -2139,8 +2119,7 @@ var Parser = {
         },
         toggleVocaroo: function(a) {
             var b, c;
-            "Remove" == a.textContent ? (a.parentNode.removeChild(a.nextElementSibling), a.textContent = "Embed") : (b = a.previousElementSibling.textContent, (b = b.match(Media.matchVocaroo)) && (b = b[0].split("/").pop()) ? (b = encodeURIComponent(b), c = document.createElement("div"), c.className = "media-embed", c.innerHTML = '<embed width="220" height="140" class="media-embed" src="//vocaroo.com/mediafoo.swf?playMediaID=' +
-                b + '&autoplay=0">', a.parentNode.insertBefore(c, a.nextElementSibling), a.textContent = "Remove") : a.textContent = "Error")
+            "Remove" == a.textContent ? (a.parentNode.removeChild(a.nextElementSibling), a.textContent = "Embed") : (b = a.previousElementSibling.textContent, (b = b.match(Media.matchVocaroo)) && (b = b[0].split("/").pop()) ? (b = encodeURIComponent(b), c = document.createElement("div"), c.className = "media-embed", c.innerHTML = '<embed width="220" height="140" class="media-embed" src="//vocaroo.com/mediafoo.swf?playMediaID=' + b + '&autoplay=0">', a.parentNode.insertBefore(c, a.nextElementSibling), a.textContent = "Remove") : a.textContent = "Error")
         },
         toggleEmbed: function(a) {
             var b, c = a.getAttribute("data-type");
@@ -2333,8 +2312,7 @@ var Parser = {
         onDrag: function(a) {
             var b, c;
             b = a.clientX - Draggable.dx + Draggable.scrollX;
-            a = a.clientY - Draggable.dy +
-                Draggable.scrollY;
+            a = a.clientY - Draggable.dy + Draggable.scrollY;
             c = Draggable.el.style;
             1 > b ? (c.left = "0", c.right = "") : Draggable.right < b ? (c.left = "", c.right = "0") : (c.left = b / document.documentElement.clientWidth * 100 + "%", c.right = "");
             1 > a ? (c.top = "0", c.bottom = "") : Draggable.bottom < a ? (c.bottom = "0", c.top = "") : (c.top = a / document.documentElement.clientHeight * 100 + "%", c.bottom = "")
@@ -2515,8 +2493,7 @@ var SettingsMenu = {
                 h = c[b];
                 e += '<ul><li class="settings-cat-lbl"><img alt="" class="settings-expand" src="' + Main.icons.plus + '"><span class="settings-expand pointer">' + b + '</span></li><ul class="settings-cat">';
                 for (d in h)
-                    if (!h[d][4] || Main.hasMobileLayout) e += "<li" + (h[d][3] ? ' class="settings-sub">' : ">") + '<label><input type="checkbox" class="menuOption" data-option="' +
-                        d + '"' + (Config[d] ? ' checked="checked">' : ">") + h[d][0] + "</label>" + (!1 !== h[d][1] ? '</li><li class="settings-tip' + (h[d][3] ? ' settings-sub">' : '">') + h[d][1] : "") + "</li>";
+                    if (!h[d][4] || Main.hasMobileLayout) e += "<li" + (h[d][3] ? ' class="settings-sub">' : ">") + '<label><input type="checkbox" class="menuOption" data-option="' + d + '"' + (Config[d] ? ' checked="checked">' : ">") + h[d][0] + "</label>" + (!1 !== h[d][1] ? '</li><li class="settings-tip' + (h[d][3] ? ' settings-sub">' : '">') + h[d][1] : "") + "</li>";
                 e += "</ul></ul>"
             }
             e += '</ul><ul><li class="settings-off"><label title="Completely disable the native extension (overrides any checked boxes)"><input type="checkbox" class="menuOption" data-option="disableAll"' + (Config.disableAll ? ' checked="checked">' : ">") + 'Disable the native extension</label></li></ul><div class="center"><button data-cmd="settings-export">Export Settings</button><button data-cmd="settings-save">Save Settings</button></div>';
@@ -2528,8 +2505,7 @@ var SettingsMenu = {
         },
         showExport: function() {
             var a, b;
-            $.id("exportSettings") || (b = location.href.replace(location.hash, "") + "#cfg=" + Config.toURL(), a = document.createElement("div"), a.id = "exportSettings", a.className = "UIPanel", a.setAttribute("data-cmd", "export-close"), a.innerHTML = '<div class="extPanel reply"><div class="panelHeader">Export Settings<span><img data-cmd="export-close" class="pointer" alt="Close" title="Close" src="' +
-                Main.icons.cross + '"></span></div><p class="center">Copy and save the URL below, and visit it from another browser or computer to restore your extension and catalog settings.</p><p class="center"><input class="export-field" type="text" readonly="readonly" value="' + b + '"></p><p style="margin-top:15px" class="center">Alternatively, you can drag the link below into your bookmarks bar and click it to restore.</p><p class="center">[<a target="_blank" href="' + b + '">Restore 4chan Settings</a>]</p>', document.body.appendChild(a), a.addEventListener("click", this.onExportClick, !1), a = $.cls("export-field", a)[0], a.focus(), a.select())
+            $.id("exportSettings") || (b = location.href.replace(location.hash, "") + "#cfg=" + Config.toURL(), a = document.createElement("div"), a.id = "exportSettings", a.className = "UIPanel", a.setAttribute("data-cmd", "export-close"), a.innerHTML = '<div class="extPanel reply"><div class="panelHeader">Export Settings<span><img data-cmd="export-close" class="pointer" alt="Close" title="Close" src="' + Main.icons.cross + '"></span></div><p class="center">Copy and save the URL below, and visit it from another browser or computer to restore your extension and catalog settings.</p><p class="center"><input class="export-field" type="text" readonly="readonly" value="' + b + '"></p><p style="margin-top:15px" class="center">Alternatively, you can drag the link below into your bookmarks bar and click it to restore.</p><p class="center">[<a target="_blank" href="' + b + '">Restore 4chan Settings</a>]</p>', document.body.appendChild(a), a.addEventListener("click", this.onExportClick, !1), a = $.cls("export-field", a)[0], a.focus(), a.select())
         },
         closeExport: function() {
             var a;
