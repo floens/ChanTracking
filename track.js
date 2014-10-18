@@ -29,7 +29,7 @@ var loadJavaScriptAndBeautify = function(url, name) {
     request(url, function(error, response, body) {
         if (!error && response.statusCode == 200) {
             log('Beautifying ' + name);
-            var nice = jsBeautify.js_beautify(body, {});
+            var nice = jsBeautify.js_beautify(body, { "preserve_newlines": false });
 
             fs.writeFileSync(name, nice);
         } else {
