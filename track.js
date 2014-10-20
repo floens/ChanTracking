@@ -100,7 +100,10 @@ var onHtmlResponse = function(response) {
 
     var dom = cheerio.load(response);
     var sticky = dom('#t39894014');
-    fs.writeFileSync('html/post.html', htmlBeautify.prettyPrint(sticky.html()));
+    var stickyHtml = sticky.html();
+    // Force 0
+    stickyHtml = stickyHtml.replace(/\d.t.4cdn.org/gi, '0.t.4cdn.org');
+    fs.writeFileSync('html/post.html', htmlBeautify.prettyPrint(stickyHtml));
 }
 
 var loadFile = function(url, name) {
