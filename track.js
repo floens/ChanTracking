@@ -104,6 +104,9 @@ var onHtmlResponse = function(response) {
     // Force 0
     stickyHtml = stickyHtml.replace(/\d.t.4cdn.org/gi, '0.t.4cdn.org');
     fs.writeFileSync('html/post.html', htmlBeautify.prettyPrint(stickyHtml));
+
+    var newThread = dom('form[name=post]');
+    fs.writeFileSync('html/form_thread.html', htmlBeautify.prettyPrint(newThread.html()));
 }
 
 var loadFile = function(url, name) {

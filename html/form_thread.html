@@ -1,0 +1,107 @@
+<input type="hidden" name="MAX_FILE_SIZE" value="4194304">
+<input type="hidden" name="mode" value="regist">
+<input id="postPassword" name="pwd" type="hidden">
+<div id="togglePostFormLink" class="desktop">[<a href="#">Start a New Thread</a>]</div>
+<noscript>
+    <style type="text/css">
+        #postForm{display:table!important;}
+    </style>
+</noscript>
+<table class="postForm hideMobile" id="postForm">
+    <tbody>
+        <tr data-type="Name">
+            <td>Name</td>
+            <td>
+                <input name="name" type="text" tabindex="1">
+            </td>
+        </tr>
+        <tr data-type="Subject">
+            <td>Subject</td>
+            <td>
+                <input name="sub" type="text" tabindex="2">
+            </td>
+        </tr>
+        <tr data-type="Options">
+            <td>Options</td>
+            <td>
+                <input name="email" type="text" tabindex="3">
+                <input type="submit" value="Post" tabindex="6">
+            </td>
+        </tr>
+        <tr data-type="Comment">
+            <td>Comment</td>
+            <td>
+                <textarea name="com" cols="48" rows="4" wrap="soft" tabindex="4"></textarea>
+            </td>
+        </tr>
+        <tr id="captchaFormPart">
+            <td class="desktop">Verification</td>
+            <td colspan="2">
+                <div id="captchaContainer"><span class="placeholder">Start typing to load the verification image.</span>
+                </div>
+                <script>
+                    window.recaptchaKey = "6Ldp2bsSAAAAAAJ5uyx_lx34lJeEpTLVkP5k04qc";window.recaptchaId = "";document.addEventListener('DOMContentLoaded', initRecaptcha, false);
+                </script>
+                <noscript>
+                    <iframe src="//www.google.com/recaptcha/api/noscript?k=6Ldp2bsSAAAAAAJ5uyx_lx34lJeEpTLVkP5k04qc"
+                    height="300" width="400" style="border: none"></iframe>
+                    <br>
+                    <textarea id="recaptcha_challenge_field" name="recaptcha_challenge_field"
+                    rows="3" cols="40"></textarea>
+                    <input type="hidden" name="recaptcha_response_field" value="manual_challenge">
+                </noscript>
+                <div class="passNotice">4chan Pass users can bypass this verification. [<a href="https://www.4chan.org/pass"
+                    target="_blank">Learn More</a>] [<a href="https://sys.4chan.org/auth">Login</a>]</div>
+            </td>
+        </tr>
+        <tr data-type="File">
+            <td>File</td>
+            <td>
+                <input id="postFile" name="upfile" type="file" tabindex="7">
+                <div id="fileError"></div>
+            </td>
+        </tr>
+        <tr class="rules">
+            <td colspan="2">
+                <ul class="rules">
+                    <li>Please read the <a href="//www.4chan.org/rules#g">Rules</a> and <a href="//www.4chan.org/faq">FAQ</a> before
+                        posting.</li>
+                    <li>You may highlight syntax and preserve whitespace by using [code] tags.</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table id="blotter" class="desktop">
+    <thead>
+        <tr>
+            <td colspan="2">
+                <hr class="aboveMidAd">
+            </td>
+        </tr>
+    </thead>
+    <tbody id="blotter-msgs">
+        <tr>
+            <td data-utc="1412136275" class="blotter-date">10/01/14</td>
+            <td class="blotter-content"><span class="redtxt">Happy 11th Birthday, 4chan!</span>
+            </td>
+        </tr>
+        <tr>
+            <td data-utc="1412136251" class="blotter-date">10/01/14</td>
+            <td class="blotter-content">News Post: <a href="//www.4chan.org/news?all#117" target="_blank">HAPPY 11TH BIRTHD-</a>
+            </td>
+        </tr>
+        <tr>
+            <td data-utc="1407860788" class="blotter-date">08/12/14</td>
+            <td class="blotter-content">Blog Post: <a href="http://blog.4chan.org/post/94542880437/sayonara-e-mail-field-and-delayed-thread-pruning"
+                target="_blank">Sayonara E-mail field, and delayed thread pruning</a>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="2">[<a data-utc="1412136275" id="toggleBlotter" href="#">Hide</a>]<span> [<a href="//www.4chan.org/blotter" target="_blank">Show All</a>]</span>
+            </td>
+        </tr>
+    </tfoot>
+</table>
