@@ -5,6 +5,7 @@
         "request": "2.40.x",
         "js-beautify": "1.5.x",
         "PrettyCSS": "0.3.x",
-        "html": "0.0.7"
+        "html": "0.0.7",
+        "cheerio": "0.17.0"
     }
 }
