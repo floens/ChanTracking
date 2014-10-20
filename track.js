@@ -3,6 +3,7 @@ var jsBeautify = require('js-beautify');
 var prettyCss = require('PrettyCSS');
 var fs = require('fs');
 var htmlBeautify = require('html');
+var cheerio = require('cheerio');
 
 var state = {};
 
@@ -68,19 +69,6 @@ var loadNewCss = function(version) {
     loadNewCssAndBeautify('https://s.4cdn.org/css/yui.1.css', 'yui');
 }
 
-var loadPageAndBeautify = function(url, name) {
-    request(url, function(error, response, body) {
-        if (!error && response.statusCode == 200) {
-            var nice = htmlBeautify.prettyPrint(body);
-
-            log('Loaded ' + name);
-            fs.writeFileSync(name, nice);
-        } else {
-            log('Error loading ' + name);
-        }
-    });
-}
-
 var onHtmlResponse = function(response) {
     var versionRegex = /cssVersion = (\d+).+jsVersion = (\d+)/g;
 
@@ -109,6 +97,10 @@ var onHtmlResponse = function(response) {
     } else {
         log('Warning, no css/js version found');
     }
+
+    var dom = cheerio.load(response);
+    var sticky = dom('#t39894014');
+    fs.writeFileSync('html/post.html', htmlBeautify.prettyPrint(sticky.html()));
 }
 
 var loadFile = function(url, name) {
@@ -131,9 +123,6 @@ var load = function() {
             onHtmlResponse(body);
         }
     });
-
-    // The /g/ sticky
-    loadPageAndBeautify('https://boards.4chan.org/g/thread/39894014', 'boards/sticky.html');
 
     loadJavaScriptAndBeautify('https://a.4cdn.org/boards.json', 'api/boards.json');
 
