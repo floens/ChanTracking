@@ -989,7 +989,7 @@ var Parser = {
                 QR.xhr = null;
                 QR.btn.value = "Post";
                 if (200 == this.status)
-                    if (a = this.responseText.match(/"errmsg"[^>]*>(.*?)<\/span/)) QR.reloadCaptcha(), QR.showPostError(a[1]);
+                    if (a = this.responseText.match(/"errmsg"[^>]*>(.*?)<\/span/)) QR.reloadCaptcha(true), QR.showPostError(a[1]);
                     else {
                         if (f = this.responseText.match(/\x3c!-- thread:([0-9]+),no:([0-9]+) --\x3e/)) {
                             a = f[1];
