@@ -1716,7 +1716,7 @@ var Parser = {
             this.nodeTop.className = "thread-stats";
             Main.hasMobileLayout ? (this.nodeBot = {}, a = $.cls("navLinks"), a[0] && (a = a[a.length - 1].nextElementSibling, a.parentNode.insertBefore(this.nodeTop, a))) : (this.nodeBot = this.nodeTop.cloneNode(!1), a = $.cls("navLinks"), a[1] && a[1].appendChild(this.nodeTop), a[2] && a[2].appendChild(this.nodeBot));
             this.pageNumber = null;
-            this.update(null, null, window.bumplimit, window.imagelimit);
+            this.update(null, null, null, window.bumplimit, window.imagelimit);
             window.thread_archived || (this.updatePageNumber(), this.pageInterval = setInterval(this.updatePageNumber, 18E4))
         },
         update: function(a, b, c, d, e) {
