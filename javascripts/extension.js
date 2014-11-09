@@ -1720,14 +1720,15 @@ var Parser = {
             window.thread_archived || (this.updatePageNumber(), this.pageInterval = setInterval(this.updatePageNumber, 18E4))
         },
         update: function(a, b, c, d, e) {
+            var f;
             null === a && (a = $.cls("replyContainer").length, b = $.cls("fileText").length - ($.id("fT" + Main.tid) ? 1 : 0));
-            c = [];
-            Main.threadSticky && c.push("Sticky");
-            window.thread_archived ? c.push("Archived") : Main.threadClosed && c.push("Closed");
-            d ? c.push('<em class="ts-replies" data-tip="Bump limit reached">' + a + "</em>") : c.push('<span class="ts-replies" data-tip="Replies">' + a + "</span>");
-            e ? c.push('<em class="ts-images" data-tip="Image limit reached">' + b + "</em>") : c.push('<span class="ts-images" data-tip="Images">' + b + "</span>");
-            window.thread_archived || (c.push('<span data-tip="Unique Posters" class="ts-ips">' + window.unique_ips + "</span>"), c.push('<span data-tip="Page" class="ts-page">' + (this.pageNumber || "?") + "</span>"));
-            this.nodeTop.innerHTML = this.nodeBot.innerHTML = c.join(" / ")
+            f = [];
+            Main.threadSticky && f.push("Sticky");
+            window.thread_archived ? f.push("Archived") : Main.threadClosed && f.push("Closed");
+            d ? f.push('<em class="ts-replies" data-tip="Bump limit reached">' + a + "</em>") : f.push('<span class="ts-replies" data-tip="Replies">' + a + "</span>");
+            e ? f.push('<em class="ts-images" data-tip="Image limit reached">' + b + "</em>") : f.push('<span class="ts-images" data-tip="Images">' + b + "</span>");
+            window.thread_archived || (f.push('<span data-tip="Unique Posters" class="ts-ips">' + (c || window.unique_ips) + "</span>"), f.push('<span data-tip="Page" class="ts-page">' + (this.pageNumber || "?") + "</span>"));
+            this.nodeTop.innerHTML = this.nodeBot.innerHTML = f.join(" / ")
         },
         updatePageNumber: function() {
             $.get("//a.4cdn.org/" + Main.board + "/threads.json", {
