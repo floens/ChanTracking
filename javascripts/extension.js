@@ -1133,18 +1133,40 @@ var Parser = {
             var b;
             b = $.id("pc" + a);
             $.removeClass(b, "post-hidden");
-            b = $.id("sa" + a);
-            b.removeAttribute("data-hidden");
-            b.firstChild.src = Main.icons.minus;
-            delete this.hidden[a]
+            $.id("sa" + a).removeAttribute("data-hidden");
+            delete ReplyHiding.hidden[a]
         },
         hide: function(a) {
             var b;
-            $.id("pc" + a).className += " post-hidden";
-            b = $.id("sa" + a);
-            b.setAttribute("data-hidden", a);
-            b.firstChild.src = Main.icons.plus;
-            this.hidden[a] = Date.now()
+            b = $.id("pc" + a);
+            $.addClass(b, "post-hidden");
+            $.id("sa" + a).setAttribute("data-hidden", a);
+            ReplyHiding.hidden[a] = Date.now()
+        },
+        toggleR: function(a) {
+            var b;
+            b = this.isHidden(a) ? this.show : this.hide;
+            this.toggleRFunc(a, b);
+            this.save()
+        },
+        toggleRFunc: function(a, b) {
+            var c, d, e, f, h, g, k, l = {};
+            d = $.id("m" + a);
+            h = $.cls("postMessage");
+            l[">>" + a] = !0;
+            b(a);
+            for (c = 1; h[c] !== d; ++c);
+            for (; f = h[c]; ++c)
+                if (!f.parentNode.hasAttribute("data-pfx") && (g = f.querySelectorAll("#" + f.id + " > .quotelink"), g[0])) {
+                    if (1 === g.length && l[g[0].textContent]) k = !0;
+                    else
+                        for (k = !0, d = 0; e = g[d]; ++d)
+                            if (!l[e.textContent]) {
+                                k = !1;
+                                break
+                            }
+                    k && (d = f.id.slice(1), b(d), l[">>" + d] = !0)
+                }
         },
         load: function() {
             var a;
@@ -1170,6 +1192,7 @@ var Parser = {
             this.listNode = null;
             this.charLimit = 45;
             this.watched = {};
+            this.blacklisted = {};
             this.isRefreshing = !1;
             Main.hasMobileLayout && (c = document.createElement("a"), c.href = "#", c.textContent = "TW", c.addEventListener("click", ThreadWatcher.toggleList, !1), a = $.id("settingsWindowLinkMobile"), a.parentNode.insertBefore(c, a), a.parentNode.insertBefore(document.createTextNode(" "), a));
             if (location.hash && (b = location.hash.split("lr")[1])) {
@@ -1205,7 +1228,8 @@ var Parser = {
             a.key && (b = a.key.split("-"), "4chan" == b[0] && "watch" == b[1] && a.newValue != a.oldValue && (ThreadWatcher.watched = JSON.parse(a.newValue), ThreadWatcher.build(!0)))
         },
         load: function() {
-            if (storage = localStorage.getItem("4chan-watch")) this.watched = JSON.parse(storage)
+            if (storage = localStorage.getItem("4chan-watch")) this.watched = JSON.parse(storage);
+            if (storage = localStorage.getItem("4chan-watch-bl")) this.blacklisted = JSON.parse(storage)
         },
         build: function(a) {
             var b, c, d, e;
@@ -1236,19 +1260,33 @@ var Parser = {
         },
         onClick: function(a) {
             a = a.target;
-            a.hasAttribute("data-id") ? ThreadWatcher.toggle(a.getAttribute("data-id"), a.getAttribute("data-board")) : "twPrune" != a.id || ThreadWatcher.isRefreshing ? "twClose" == a.id && ThreadWatcher.toggleList() : ThreadWatcher.refresh()
+            a.hasAttribute("data-id") ? ThreadWatcher.toggle(a.getAttribute("data-id"), a.getAttribute("data-board")) : "twPrune" != a.id || ThreadWatcher.isRefreshing ? "twClose" == a.id && ThreadWatcher.toggleList() : ThreadWatcher.refreshWithAutoWatch()
         },
-        toggle: function(a, b, c) {
-            var d, e;
-            b = a + "-" + (b || Main.board);
-            this.watched[b] ? delete this.watched[b] : (d = (d = $.cls("subject", $.id("pi" + a))[0].textContent) ? d.slice(0, this.charLimit) : (d = $.id("m" + a).innerHTML) ? d.replace(/(?:<br>)+/g, " ").replace(/<[^>]*?>/g, "").slice(0, this.charLimit) : "No." + a, a = (e = $.id("t" + a)).children[1] ? e.lastElementChild.id.slice(2) : a, this.watched[b] = [d, a, 0]);
+        generateLabel: function(a, b, c) {
+            var d;
+            return d = (d = a) ? d.slice(0, this.charLimit) : (d = b) ? d.replace(/(?:<br>)+/g, " ").replace(/<[^>]*?>/g, "").slice(0, this.charLimit) : "No." + c
+        },
+        toggle: function(a, b) {
+            var c, d, e;
+            c = a + "-" + (b || Main.board);
+            this.watched[c] ? (this.blacklisted[c] = 1, delete this.watched[c]) : (d = $.cls("subject", $.id("pi" + a))[0].textContent, e = $.id("m" + a).innerHTML, d = ThreadWatcher.generateLabel(d, e, a), e = (thread = $.id("t" + a)).children[1] ? thread.lastElementChild.id.slice(2) : a, this.watched[c] = [d, e, 0]);
             this.save();
             this.load();
             this.build(!0)
         },
+        addRaw: function(a, b) {
+            var c, d;
+            c = a.no + "-" + b;
+            this.watched[c] || (d = ThreadWatcher.generateLabel(a.sub, a.com, a.no), this.watched[c] = [d, 0, 0])
+        },
         save: function() {
+            var a;
             ThreadWatcher.sortByBoard();
-            localStorage.setItem("4chan-watch", JSON.stringify(ThreadWatcher.watched))
+            localStorage.setItem("4chan-watch", JSON.stringify(ThreadWatcher.watched));
+            for (a in ThreadWatcher.blacklisted) {
+                localStorage.setItem("4chan-watch-bl", JSON.stringify(ThreadWatcher.blacklisted));
+                break
+            }
         },
         sortByBoard: function() {
             var a, b, c, d, e;
@@ -1270,6 +1308,53 @@ var Parser = {
         },
         setRefreshTimestamp: function() {
             localStorage.setItem("4chan-tw-timestamp", Date.now())
+        },
+        refreshWithAutoWatch: function() {
+            var a, b, c, d, e;
+            if (Config.filter) {
+                Filter.load();
+                e = {};
+                for (a = c = 0; b = Filter.activeFilters[a]; ++a)
+                    if (b.auto && b.boards)
+                        for (d in b.boards) e[d] || (e[d] = !0, ++c);
+                c ? (a = $.id("twPrune"), a.src = Main.icons.rotate, this.isRefreshing = !0, this.fetchCatalogs(e, c)) : this.refresh()
+            } else this.refresh()
+        },
+        fetchCatalogs: function(a, b) {
+            var c, d, e, f;
+            e = {};
+            f = {
+                count: b
+            };
+            c = 0;
+            for (d in a) setTimeout(ThreadWatcher.fetchCatalog, c, d, e, f), c += 200
+        },
+        fetchCatalog: function(a, b, c) {
+            var d;
+            d = new XMLHttpRequest;
+            d.open("GET", "//a.4cdn.org/" + a + "/catalog.json");
+            d.onload = function() {
+                c.count--;
+                b[a] = Parser.parseCatalogJSON(this.responseText);
+                if (!c.count) ThreadWatcher.onCatalogsLoaded(b)
+            };
+            d.onerror = function() {
+                c.count--;
+                if (!c.count) ThreadWatcher.onCatalogsLoaded(b)
+            };
+            d.send(null)
+        },
+        onCatalogsLoaded: function(a) {
+            var b, c, d, e, f, h, g, k;
+            $.id("twPrune").src = Main.icons.refresh;
+            this.isRefreshing = !1;
+            k = {};
+            for (d in a)
+                for (e = a[d], b = 0; c = e[b]; ++b)
+                    for (f = c.threads, c = 0; h = f[c]; ++c) g = h.no + "-" + d, this.blacklisted[g] ? k[g] = 1 : Filter.match(h, d) && this.addRaw(h, d);
+            this.blacklisted = k;
+            this.build(!0);
+            this.refresh()
         },
         refresh: function() {
             var a, b, c, d, e;
@@ -1411,7 +1496,7 @@ var Parser = {
             c.appendChild(this["statusNode" + b] = h);
             d.appendChild(c);
             g.parentNode.removeChild(g);
-            $.id("mpostform").parentNode.style.marginTop = ""
+            if (d = $.id("mpostform")) d.parentNode.style.marginTop = ""
         },
         buildDesktopControl: function(a) {
             var b, c, d;
@@ -1573,7 +1658,7 @@ var Parser = {
                     m || (!c.force && l.scrollHeight > window.innerHeight ? (c.lastReply || k == Main.tid || ((c.lastReply = g.lastChild).className += " newPostsMarker"), Parser.hasYouMarkers ? (c.setIcon("rep"), c.audioEnabled && document[c.hidden] && c.audio.play()) : Parser.hasHighlightedPosts && "rep" !== c.currentIcon ? c.setIcon("hl") : 0 == c.unreadCount && c.setIcon("new"), c.unreadCount += b, document.title = "(" + c.unreadCount + ") " + c.pageTitle) : c.setStatus(b + " new post" + (1 < b ? "s" : "")));
                     n && window.scrollTo(0, document.documentElement.scrollHeight);
                     Config.threadWatcher && ThreadWatcher.refreshCurrent(!0);
-                    Config.threadStats && (e = f[0], ThreadStats.update(e.replies, e.images, e.bumplimit, e.imagelimit));
+                    Config.threadStats && (e = f[0], ThreadStats.update(e.replies, e.images, e.unique_ips, e.bumplimit, e.imagelimit));
                     c.invalidateAds();
                     c.refreshAds();
                     UA.dispatchEvent("4chanThreadUpdated", {
@@ -1629,24 +1714,20 @@ var Parser = {
             var a;
             this.nodeTop = document.createElement("div");
             this.nodeTop.className = "thread-stats";
-            this.nodeBot = this.nodeTop.cloneNode(!1);
-            a = $.cls("navLinks");
-            a[1] && a[1].appendChild(this.nodeTop);
-            a[2] && a[2].appendChild(this.nodeBot);
+            Main.hasMobileLayout ? (this.nodeBot = {}, a = $.cls("navLinks"), a[0] && (a = a[a.length - 1].nextElementSibling, a.parentNode.insertBefore(this.nodeTop, a))) : (this.nodeBot = this.nodeTop.cloneNode(!1), a = $.cls("navLinks"), a[1] && a[1].appendChild(this.nodeTop), a[2] && a[2].appendChild(this.nodeBot));
             this.pageNumber = null;
             this.update(null, null, window.bumplimit, window.imagelimit);
             window.thread_archived || (this.updatePageNumber(), this.pageInterval = setInterval(this.updatePageNumber, 18E4))
         },
-        update: function(a, b, c, d) {
-            var e;
+        update: function(a, b, c, d, e) {
             null === a && (a = $.cls("replyContainer").length, b = $.cls("fileText").length - ($.id("fT" + Main.tid) ? 1 : 0));
-            e = [];
-            Main.threadSticky && e.push("Sticky");
-            window.thread_archived ? e.push("Archived") : Main.threadClosed && e.push("Closed");
-            c ? e.push('<em data-tip="Bump limit reached">' + a + "</em>") : e.push('<span data-tip="Replies">' + a + "</span>");
-            d ? e.push('<em data-tip="Image limit reached">' + b + "</em>") : e.push('<span data-tip="Images">' + b + "</span>");
-            window.thread_archived || e.push('<span data-tip="Page" class="ts-page">' + (this.pageNumber || "?") + "</span>");
-            this.nodeTop.innerHTML = this.nodeBot.innerHTML = e.join(" / ")
+            c = [];
+            Main.threadSticky && c.push("Sticky");
+            window.thread_archived ? c.push("Archived") : Main.threadClosed && c.push("Closed");
+            d ? c.push('<em class="ts-replies" data-tip="Bump limit reached">' + a + "</em>") : c.push('<span class="ts-replies" data-tip="Replies">' + a + "</span>");
+            e ? c.push('<em class="ts-images" data-tip="Image limit reached">' + b + "</em>") : c.push('<span class="ts-images" data-tip="Images">' + b + "</span>");
+            window.thread_archived || (c.push('<span data-tip="Unique Posters" class="ts-ips">' + window.unique_ips + "</span>"), c.push('<span data-tip="Page" class="ts-page">' + (this.pageNumber || "?") + "</span>"));
+            this.nodeTop.innerHTML = this.nodeBot.innerHTML = c.join(" / ")
         },
         updatePageNumber: function() {
             $.get("//a.4cdn.org/" + Main.board + "/threads.json", {
@@ -1727,6 +1808,43 @@ var Parser = {
                 case "palette-close":
                     Filter.closePalette()
             }
+        },
+        match: function(a, b) {
+            var c, d, e, f, h;
+            h = !1;
+            f = Filter.activeFilters;
+            for (c = 0; e = f[c]; ++c)
+                if (e.boards[b])
+                    if (0 == e.type) {
+                        if (e.pattern === a.trip) {
+                            h = !0;
+                            break
+                        }
+                    } else if (1 == e.type) {
+                if (e.pattern === a.name) {
+                    h = !0;
+                    break
+                }
+            } else if (2 == e.type && a.com) {
+                if (void 0 === d && (this.entities.innerHTML = a.com.replace(/<br>/g, "\n").replace(/[<[^>]+>/g, ""), d = this.entities.textContent), e.pattern.test(d)) {
+                    h = !0;
+                    break
+                }
+            } else if (4 == e.type) {
+                if (e.pattern === a.id) {
+                    h = !0;
+                    break
+                }
+            } else if (5 == e.type) {
+                if (e.pattern.test(a.sub)) {
+                    h = !0;
+                    break
+                }
+            } else if (6 == e.type && e.pattern.test(a.filename)) {
+                h = !0;
+                break
+            }
+            return h
         },
         exec: function(a, b, c, d) {
             var e, f, h, g, k, l, n, m, q, p, x;
@@ -1809,7 +1927,8 @@ var Parser = {
                                 pattern: pattern,
                                 boards: boards,
                                 color: c.color,
-                                hide: c.hide
+                                hide: c.hide,
+                                auto: c.auto
                             })
                         }
                 } catch (m) {
@@ -1824,7 +1943,7 @@ var Parser = {
         },
         openHelp: function() {
             var a;
-            $.id("filtersHelp") || (a = document.createElement("div"), a.id = "filtersHelp", a.className = "UIPanel", a.setAttribute("data-cmd", "filters-help-close"), a.innerHTML = '<div class="extPanel reply"><div class="panelHeader">Filters &amp; Highlights Help<span><img alt="Close" title="Close" class="pointer" data-cmd="filters-help-close" src="' + Main.icons.cross + '"></span></div><h4>Tripcode, Name and ID filters:</h4><ul><li>Those use simple string comparison.</li><li>Type them exactly as they appear on 4chan, including the exclamation mark for tripcode filters.</li><li>Example: <code>!Ep8pui8Vw2</code></li></ul><h4>Comment, Subject and E-mail filters:</h4><ul><li><strong>Matching whole words:</strong></li><li><code>feel</code> &mdash; will match <em>"feel"</em> but not <em>"feeling"</em>. This search is case-insensitive.</li></ul><ul><li><strong>AND operator:</strong></li><li><code>feel girlfriend</code> &mdash; will match <em>"feel"</em> AND <em>"girlfriend"</em> in any order.</li></ul><ul><li><strong>Exact match:</strong></li><li><code>"that feel when"</code> &mdash; place double quotes around the pattern to search for an exact string</li></ul><ul><li><strong>Wildcards:</strong></li><li><code>feel*</code> &mdash; matches expressions such as <em>"feel"</em>, <em>"feels"</em>, <em>"feeling"</em>, <em>"feeler"</em>, etc\u2026</li><li><code>idolm*ster</code> &mdash; this can match <em>"idolmaster"</em> or <em>"idolm@ster"</em>, etc\u2026</li></ul><ul><li><strong>Regular expressions:</strong></li><li><code>/feel when no (girl|boy)friend/i</code></li><li><code>/^(?!.*touhou).*$/i</code> &mdash; NOT operator.</li><li><code>/^>/</code> &mdash; comments starting with a quote.</li><li><code>/^$/</code> &mdash; comments with no text.</li></ul><h4>Colors:</h4><ul><li>The color field can accept any valid CSS color:</li><li><code>red</code>, <code>#0f0</code>, <code>#00ff00</code>, <code>rgba( 34, 12, 64, 0.3)</code>, etc\u2026</li></ul><h4>Boards:</h4><ul><li>A space separated list of boards on which the filter will be active. Leave blank to apply to all boards.</li></ul><h4>Shortcut:</h4><ul><li>If you have <code>Keyboard shortcuts</code> enabled, pressing <kbd>F</kbd> will add the selected text to your filters.</li></ul>', document.body.appendChild(a), a.addEventListener("click", this.onClick, !1))
+            $.id("filtersHelp") || (a = document.createElement("div"), a.id = "filtersHelp", a.className = "UIPanel", a.setAttribute("data-cmd", "filters-help-close"), a.innerHTML = '<div class="extPanel reply"><div class="panelHeader">Filters &amp; Highlights Help<span><img alt="Close" title="Close" class="pointer" data-cmd="filters-help-close" src="' + Main.icons.cross + '"></span></div><h4>Tripcode, Name and ID filters:</h4><ul><li>Those use simple string comparison.</li><li>Type them exactly as they appear on 4chan, including the exclamation mark for tripcode filters.</li><li>Example: <code>!Ep8pui8Vw2</code></li></ul><h4>Comment, Subject and E-mail filters:</h4><ul><li><strong>Matching whole words:</strong></li><li><code>feel</code> &mdash; will match <em>"feel"</em> but not <em>"feeling"</em>. This search is case-insensitive.</li></ul><ul><li><strong>AND operator:</strong></li><li><code>feel girlfriend</code> &mdash; will match <em>"feel"</em> AND <em>"girlfriend"</em> in any order.</li></ul><ul><li><strong>Exact match:</strong></li><li><code>"that feel when"</code> &mdash; place double quotes around the pattern to search for an exact string</li></ul><ul><li><strong>Wildcards:</strong></li><li><code>feel*</code> &mdash; matches expressions such as <em>"feel"</em>, <em>"feels"</em>, <em>"feeling"</em>, <em>"feeler"</em>, etc\u2026</li><li><code>idolm*ster</code> &mdash; this can match <em>"idolmaster"</em> or <em>"idolm@ster"</em>, etc\u2026</li></ul><ul><li><strong>Regular expressions:</strong></li><li><code>/feel when no (girl|boy)friend/i</code></li><li><code>/^(?!.*touhou).*$/i</code> &mdash; NOT operator.</li><li><code>/^>/</code> &mdash; comments starting with a quote.</li><li><code>/^$/</code> &mdash; comments with no text.</li></ul><h4>Colors:</h4><ul><li>The color field can accept any valid CSS color:</li><li><code>red</code>, <code>#0f0</code>, <code>#00ff00</code>, <code>rgba( 34, 12, 64, 0.3)</code>, etc\u2026</li></ul><h4>Boards:</h4><ul><li>A space separated list of boards on which the filter will be active. Leave blank to apply to all boards.</li></ul><h4>Auto-watching:</h4><ul><li>Enabling the "Auto" option will automatically add matched threads to the Thread Watcher when it is manually refreshed. This only works when the "Boards" field is not empty, and searches catalog JSON for the selected boards(s).</li></ul><h4>Shortcut:</h4><ul><li>If you have <code>Keyboard shortcuts</code> enabled, pressing <kbd>F</kbd> will add the selected text to your filters.</li></ul>', document.body.appendChild(a), a.addEventListener("click", this.onClick, !1))
         },
         closeHelp: function() {
             var a;
@@ -1838,7 +1957,7 @@ var Parser = {
             c.className = "UIPanel";
             c.style.display = "none";
             c.setAttribute("data-cmd", "filters-close");
-            c.innerHTML = '<div class="extPanel reply"><div class="panelHeader">Filters &amp; Highlights<span><img alt="Help" class="pointer" title="Help" data-cmd="filters-help-open" src="' + Main.icons.help + '"><img alt="Close" title="Close" class="pointer" data-cmd="filters-close" src="' + Main.icons.cross + '"></span></div><table><thead><tr><th>Order</th><th>On</th><th>Pattern</th><th>Boards</th><th>Type</th><th>Color</th><th>Hide</th><th>Del</th></tr></thead><tbody id="filter-list"></tbody><tfoot><tr><td colspan="8"><button data-cmd="filters-add">Add</button><button class="right" data-cmd="filters-save">Save</button></td></tr></tfoot></table></div>';
+            c.innerHTML = '<div class="extPanel reply"><div class="panelHeader">Filters &amp; Highlights<span><img alt="Help" class="pointer" title="Help" data-cmd="filters-help-open" src="' + Main.icons.help + '"><img alt="Close" title="Close" class="pointer" data-cmd="filters-close" src="' + Main.icons.cross + '"></span></div><table><thead><tr><th></th><th>On</th><th>Pattern</th><th>Boards</th><th>Type</th><th>Color</th><th>Auto</th><th>Hide</th><th>Del</th></tr></thead><tbody id="filter-list"></tbody><tfoot><tr><td colspan="9"><button data-cmd="filters-add">Add</button><button class="right" data-cmd="filters-save">Save</button></td></tr></tfoot></table></div>';
             document.body.appendChild(c);
             c.addEventListener("click", this.onClick, !1);
             e = $.id("filter-list");
@@ -1861,6 +1980,7 @@ var Parser = {
                 pattern: a || "",
                 boards: c || "",
                 color: "",
+                auto: !1,
                 hide: !1
             };
             b = this.getNextFilterId();
@@ -1880,7 +2000,8 @@ var Parser = {
                 pattern: d.children[2].firstChild.value,
                 boards: d.children[3].firstChild.value,
                 type: +e.options[e.selectedIndex].value,
-                hide: d.children[6].firstChild.checked
+                auto: d.children[6].firstChild.checked,
+                hide: d.children[7].firstChild.checked
             }, d = d.children[5].firstChild, d.hasAttribute("data-nocolor") || (e.color = d.style.backgroundColor), b.push(e);
             b[0] ? localStorage.setItem("4chan-filters", JSON.stringify(b)) : localStorage.removeItem("4chan-filters")
         },
@@ -1896,7 +2017,7 @@ var Parser = {
             var c, d, e;
             c = document.createElement("tr");
             c.id = "filter-" + b;
-            d = '<td><span data-cmd="filters-up" class="pointer">&uarr;</span></td><td><input type="checkbox"' + (a.active ? ' checked="checked"></td>' : "></td>");
+            d = '<td><span data-tip="Move Up" data-cmd="filters-up" class="pointer">&uarr;</span></td><td><input type="checkbox"' + (a.active ? ' checked="checked"></td>' : "></td>");
             d += '<td><input class="fPattern" type="text" value="' + a.pattern.replace(/"/g, "&quot;") + '"></td>';
             d += '<td><input class="fBoards" type="text" value="' + (void 0 !== a.boards ? a.boards : "") + '"></td>';
             3 === a.type && (a.type = 4);
@@ -1906,6 +2027,7 @@ var Parser = {
             d += '<td><span data-cmd="filters-palette" title="Change Color" class="colorbox fColor" ';
             d = a.color ? d + (' style="background-color:' + a.color + '">') : d + ' data-nocolor="1">&#x2215;';
             d += "</span></td>";
+            d += '<td><input type="checkbox"' + (a.auto ? ' checked="checked"></td>' : "></td>");
             d += '<td><input type="checkbox"' + (a.hide ? ' checked="checked"></td>' : "></td>");
             d += '<td><span data-cmd="filters-del" class="pointer fDel">&times;</span></td>';
             c.innerHTML = d;
@@ -2429,7 +2551,7 @@ var SettingsMenu = {
                 autoScroll: ["Auto-scroll with auto-updated posts", "Automatically scroll the page as new posts are added"],
                 updaterSound: ["Sound notification", "Play a sound when somebody replies to your post(s)"],
                 fixedThreadWatcher: ["Pin Thread Watcher to the page", "Thread Watcher will scroll with you"],
-                threadStats: ["Thread statistics", "Display post and image counts on the right of the page, <em>italics</em> signify bump/image limit has been met"]
+                threadStats: ["Thread statistics", "Display post and image counts on the right of the page, <em>italics</em> signify bump/image limit has been met", !0]
             },
             "Filters &amp; Post Hiding": {
                 filter: ['Filter and highlight specific threads/posts [<a href="javascript:;" data-cmd="filters-open">Edit</a>]', "Enable pattern-based filters"],
@@ -2568,7 +2690,7 @@ var SettingsMenu = {
         },
         checkMobileLayout: function() {
             var a, b;
-            if (window.matchMedia) return window.matchMedia("(max-width: 480px)").matches && "true" != localStorage.getItem("4chan_never_show_mobile");
+            if (window.matchMedia) return (window.matchMedia("(max-width: 480px)").matches || window.matchMedia("(max-device-width: 480px)").matches) && "true" != localStorage.getItem("4chan_never_show_mobile");
             a = $.id("boardNavMobile");
             b = $.id("boardNavDesktop");
             return a && b && 0 < a.offsetWidth && 0 == b.offsetWidth
@@ -2595,8 +2717,8 @@ var SettingsMenu = {
                 Main.hasMobileLayout || Main.initGlobalMessage();
                 Config.stickyNav && Main.setStickyNav();
                 Config.threadExpansion && ThreadExpansion.init();
-                Config.threadWatcher && ThreadWatcher.init();
                 Config.filter && Filter.init();
+                Config.threadWatcher && ThreadWatcher.init();
                 (Config.embedSoundCloud || Config.embedYouTube || Config.embedVocaroo) && Media.init();
                 ReplyHiding.init();
                 Config.quotePreview && QuotePreview.init();
@@ -2737,7 +2859,7 @@ var SettingsMenu = {
                         ThreadWatcher.toggle(id);
                         break;
                     case "hide-r":
-                        ReplyHiding.toggle(id);
+                        b.hasAttribute("data-recurse") ? ReplyHiding.toggleR(id) : ReplyHiding.toggle(id);
                         break;
                     case "expand":
                         ThreadExpansion.toggle(id);
@@ -2813,7 +2935,7 @@ var SettingsMenu = {
             var a;
             a = document.createElement("style");
             a.setAttribute("type", "text/css");
-            a.textContent = 'body.hasDropDownNav {  margin-top: 45px;}.extButton.threadHideButton {  float: left;  margin-right: 5px;  margin-top: -1px;}.extButton.replyHideButton {  margin-top: 1px;}div.op > span .postHideButtonCollapsed {  margin-right: 1px;}.dropDownNav #boardNavMobile, {  display: block !important;}.extPanel {  border: 1px solid rgba(0, 0, 0, 0.20);}.tomorrow .extPanel {  border: 1px solid #111;}.extButton,img.pointer {  width: 18px;  height: 18px;}.extControls {  display: inline;  margin-left: 5px;}.extButton {  cursor: pointer;  margin-bottom: -4px;}.trashIcon {  width: 16px;  height: 16px;  margin-bottom: -2px;  margin-left: 5px;}.threadUpdateStatus {  margin-left: 0.5ex;}.futaba_new .stub,.burichan_new .stub {  line-height: 1;  padding-bottom: 1px;}.stub .extControls,.stub .wbtn,.stub input {  display: none;}.stub .threadHideButton {  float: none;  margin-right: 2px;}div.post div.postInfo {  width: auto;  display: inline;}.right {  float: right;}.center {  display: block;  margin: auto;}.pointer {  cursor: pointer;}.drag {  cursor: move !important;  user-select: none !important;  -moz-user-select: none !important;  -webkit-user-select: none !important;}#quickReport,#quickReply {  display: block;  position: fixed;  padding: 2px;  font-size: 10pt;}#qrepHeader,#qrHeader {  text-align: center;  margin-bottom: 1px;  padding: 0;  height: 18px;  line-height: 18px;}#qrepClose,#qrClose {  float: right;}#quickReport iframe {  overflow: hidden;}#quickReport {  height: 190px;}#qrForm > div {  clear: both;}#quickReply input[type="text"],#quickReply textarea,#quickReply #recaptcha_response_field {  border: 1px solid #aaa;  font-family: arial,helvetica,sans-serif;  font-size: 10pt;  outline: medium none;  width: 296px;  padding: 2px;  margin: 0 0 1px 0;}#quickReply textarea {  min-width: 296px;  float: left;}#quickReply input::-moz-placeholder,#quickReply textarea::-moz-placeholder {  color: #aaa !important;  opacity: 1 !important;}#quickReply input[type="submit"] {  width: 83px;  margin: 0;  font-size: 10pt;  float: left;}#quickReply #qrCapField {  display: block;  margin-top: 1px;}#qrCaptcha {  width: 300px;  height: 53px;  cursor: pointer;  border: 1px solid #aaa;  display: block;}#quickReply input.presubmit {  margin-right: 1px;  width: 212px;  float: left;}#qrFile {  width: 215px;  margin-right: 5px;}.qrRealFile {  position: absolute;  left: 0;  visibility: hidden;}.yotsuba_new #qrFile {  color:black;}#qrSpoiler {  display: inline;}#qrError {  width: 292px;  display: none;  font-family: monospace;  background-color: #E62020;  font-size: 12px;  color: white;  padding: 3px 5px;  text-shadow: 0 1px rgba(0, 0, 0, 0.20);  clear: both;}#qrError a:hover,#qrError a {  color: white !important;  text-decoration: underline;}#twHeader {  font-weight: bold;  text-align: center;  height: 17px;}.futaba_new #twHeader,.burichan_new #twHeader {  line-height: 1;}#twPrune {  margin-left: 3px;  margin-top: -1px;}#twClose {  float: left;  margin-top: -1px;}#threadWatcher {  max-width: 265px;  display: block;  position: absolute;  padding: 3px;}#watchList {  margin: 0;  padding: 0;  user-select: none;  -moz-user-select: none;  -webkit-user-select: none;}#watchList li:first-child {  margin-top: 3px;  padding-top: 2px;  border-top: 1px solid rgba(0, 0, 0, 0.20);}.photon #watchList li:first-child {  border-top: 1px solid #ccc;}.yotsuba_new #watchList li:first-child {  border-top: 1px solid #d9bfb7;}.yotsuba_b_new #watchList li:first-child {  border-top: 1px solid #b7c5d9;}.tomorrow #watchList li:first-child {  border-top: 1px solid #111;}#watchList a {  text-decoration: none;}#watchList li {  overflow: hidden;  white-space: nowrap;  text-overflow: ellipsis;}div.post div.image-expanded {  display: table;}div.op div.file .image-expanded-anti {  margin-left: -3px;}#quote-preview {  display: block;  position: absolute;  top: 0;  padding: 3px 6px 6px 3px;  margin: 0;}#quote-preview .dateTime {  white-space: nowrap;}#quote-preview s {  background: transparent !important;  color: inherit !important;  text-decoration: line-through !important;}#quote-preview s a {  background: transparent !important;\ttext-decoration: underline;}.yotsuba_b_new #quote-preview s a, .burichan_new #quote-preview s a {  color: #D00 !important;}.yotsuba_new #quote-preview s a, .futaba_new #quote-preview s a {  color: #000080 !important;}.tomorrow #quote-preview s a {  color: #5F89AC !important;}.photon #quote-preview s a {  color: #FF6600 !important;}.yotsuba_new #quote-preview.highlight,.yotsuba_b_new #quote-preview.highlight {  border-width: 1px 2px 2px 1px !important;  border-style: solid !important;}.yotsuba_new #quote-preview.highlight {  border-color: #D99F91 !important;}.yotsuba_b_new #quote-preview.highlight {  border-color: #BA9DBF !important;}.yotsuba_b_new .highlight-anti,.burichan_new .highlight-anti {  border-width: 1px !important;  background-color: #bfa6ba !important;}.yotsuba_new .highlight-anti,.futaba_new .highlight-anti {  background-color: #e8a690 !important;}.tomorrow .highlight-anti {  background-color: #111 !important;  border-color: #111;}.photon .highlight-anti {  background-color: #bbb !important;}.op.inlined {  display: block;}#quote-preview .inlined,#quote-preview .postMenuBtn,#quote-preview .extButton,#quote-preview .extControls {  display: none;}.hasNewReplies {  font-weight: bold;}.archivelink {  opacity: 0.5;}.deadlink {  text-decoration: line-through !important;}div.backlink {  font-size: 0.8em !important;  display: inline;  padding: 0;  padding-left: 5px;}.backlink.mobile {  padding: 3px 5px;  display: block;  clear: both;  line-height: 2;}.op .backlink.mobile,#quote-preview .backlink.mobile {  display: none !important;}.backlink.mobile .quoteLink {  padding-right: 2px;}.backlink span {  padding: 0;}.burichan_new .backlink a,.yotsuba_b_new .backlink a {  color: #34345C !important;}.burichan_new .backlink a:hover,.yotsuba_b_new .backlink a:hover {  color: #dd0000 !important;}.expbtn {  margin-right: 3px;  margin-left: 2px;}.tCollapsed .rExpanded {  display: none;}#stickyNav {  position: fixed;  font-size: 0;}#stickyNav img {  vertical-align: middle;}.tu-error {  color: red;}.topPageNav {  position: absolute;}.yotsuba_b_new .topPageNav {  border-top: 1px solid rgba(255, 255, 255, 0.25);  border-left: 1px solid rgba(255, 255, 255, 0.25);}.newPostsMarker:not(#quote-preview) {  box-shadow: 0 3px red;}#toggleMsgBtn {  float: left;  margin-bottom: 6px;}.panelHeader {  font-weight: bold;  font-size: 16px;  text-align: center;  margin-bottom: 5px;  margin-top: 5px;  padding-bottom: 5px;  border-bottom: 1px solid rgba(0, 0, 0, 0.20);}.yotsuba_new .panelHeader {  border-bottom: 1px solid #d9bfb7;}.yotsuba_b_new .panelHeader {  border-bottom: 1px solid #b7c5d9;}.tomorrow .panelHeader {  border-bottom: 1px solid #111;}.panelHeader span {  position: absolute;  right: 5px;  top: 5px;}.UIMenu,.UIPanel {  position: fixed;  width: 100%;  height: 100%;  z-index: 9002;  top: 0;  left: 0;}.UIPanel {  line-height: 14px;  font-size: 14px;  background-color: rgba(0, 0, 0, 0.25);}.UIPanel:after {  display: inline-block;  height: 100%;  vertical-align: middle;  content: "";}.UIPanel > div {  -moz-box-sizing: border-box;  box-sizing: border-box;  display: inline-block;  height: auto;  max-height: 100%;  position: relative;  width: 400px;  left: 50%;  margin-left: -200px;  overflow: auto;  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);  vertical-align: middle;}#settingsMenu > div {  top: 25px;;  vertical-align: top;  max-height: 85%;}.extPanel input[type="text"],.extPanel textarea {  border: 1px solid #AAA;  outline: none;}.UIPanel .center {  margin-bottom: 5px;}.UIPanel button {  display: inline-block;  margin-right: 5px;}.UIPanel code {  background-color: #eee;  color: #000000;  padding: 1px 4px;  font-size: 12px;}.UIPanel ul {  list-style: none;  padding: 0;  margin: 0 0 10px;}.UIPanel .export-field {  width: 385px;}#settingsMenu label input {  margin-right: 5px;}.tomorrow #settingsMenu ul {  border-bottom: 1px solid #282a2e;}.settings-off {  padding-left: 3px;}.settings-cat-lbl {  font-weight: bold;  margin: 10px 0 5px;  padding-left: 5px;}.settings-cat-lbl img {  vertical-align: text-bottom;  margin-right: 5px;  cursor: pointer;  width: 18px;  height: 18px;}.settings-tip {  font-size: 0.85em;  margin: 2px 0 5px 0;  padding-left: 23px;}#settings-exp-all {  padding-left: 7px;  text-align: center;}#settingsMenu .settings-cat {  display: none;  margin-left: 3px;}#customCSSMenu textarea {  display: block;  max-width: 100%;  min-width: 100%;  -moz-box-sizing: border-box;  box-sizing: border-box;  height: 200px;  margin: 0 0 5px;  font-family: monospace;}#customCSSMenu .right,#settingsMenu .right {  margin-top: 2px;}#settingsMenu label {  display: inline-block;  user-select: none;  -moz-user-select: none;  -webkit-user-select: none;}#filtersHelp > div {  width: 600px;  left: 50%;  margin-left: -300px;}#filtersHelp h4 {  font-size: 15px;  margin: 20px 0 0 10px;}#filtersHelp h4:before {  content: "\u00bb";  margin-right: 3px;}#filtersHelp ul {  padding: 0;  margin: 10px;}#filtersHelp li {  padding: 3px 0;  list-style: none;}#filtersMenu table {  width: 100%;}#filtersMenu th {  font-size: 12px;}#filtersMenu tbody {  text-align: center;}#filtersMenu select,#filtersMenu .fPattern,#filtersMenu .fBoards,#palette-custom-input {  padding: 1px;  font-size: 11px;}#filtersMenu select {  width: 75px;}#filtersMenu tfoot td {  padding-top: 10px;}#keybindsHelp li {  padding: 3px 5px;}.fPattern {  width: 110px;}.fBoards {  width: 25px;}.fColor {  width: 60px;}.fDel {  font-size: 16px;}.filter-preview {  cursor: pointer;  margin-left: 3px;}#quote-preview iframe,#quote-preview .filter-preview {  display: none;}.post-hidden .extButton,.post-hidden:not(#quote-preview) .postInfo {  opacity: 0.5;}.post-hidden:not(.thread) .postInfo {  padding-left: 5px;}.post-hidden:not(#quote-preview) input,.post-hidden:not(#quote-preview) .replyContainer,.post-hidden:not(#quote-preview) .summary,.post-hidden:not(#quote-preview) .op .file,.post-hidden:not(#quote-preview) .file,.post-hidden .wbtn,.post-hidden .postNum span,.post-hidden:not(#quote-preview) .backlink,div.post-hidden:not(#quote-preview) div.file,div.post-hidden:not(#quote-preview) blockquote.postMessage {  display: none;}.click-me {  border-radius: 5px;  margin-top: 5px;  padding: 2px 5px;  position: absolute;  font-weight: bold;  z-index: 2;  white-space: nowrap;}.yotsuba_new .click-me,.futaba_new .click-me {  color: #800000;  background-color: #F0E0D6;  border: 2px solid #D9BFB7;}.yotsuba_b_new .click-me,.burichan_new .click-me {  color: #000;  background-color: #D6DAF0;  border: 2px solid #B7C5D9;}.tomorrow .click-me {  color: #C5C8C6;  background-color: #282A2E;  border: 2px solid #111;}.photon .click-me {  color: #333;  background-color: #ddd;  border: 2px solid #ccc;}.click-me:before {  content: "";  border-width: 0 6px 6px;  border-style: solid;  left: 50%;  margin-left: -6px;  position: absolute;  width: 0;  height: 0;  top: -6px;}.yotsuba_new .click-me:before,.futaba_new .click-me:before {  border-color: #D9BFB7 transparent;}.yotsuba_b_new .click-me:before,.burichan_new .click-me:before {  border-color: #B7C5D9 transparent;}.tomorrow .click-me:before {  border-color: #111 transparent;}.photon .click-me:before {  border-color: #ccc transparent;}.click-me:after {  content: "";  border-width: 0 4px 4px;  top: -4px;  display: block;  left: 50%;  margin-left: -4px;  position: absolute;  width: 0;  height: 0;}.yotsuba_new .click-me:after,.futaba_new .click-me:after {  border-color: #F0E0D6 transparent;  border-style: solid;}.yotsuba_b_new .click-me:after,.burichan_new .click-me:after {  border-color: #D6DAF0 transparent;  border-style: solid;}.tomorrow .click-me:after {  border-color: #282A2E transparent;  border-style: solid;}.photon .click-me:after {  border-color: #DDD transparent;  border-style: solid;}#image-hover {  position: fixed;  max-width: 100%;  max-height: 100%;  top: 0px;  right: 0px;  z-index: 9002;}.thread-stats {  float: right;  margin-right: 5px;  cursor: default;}.compact .thread {  max-width: 75%;}.dotted {  text-decoration: none;  border-bottom: 1px dashed;}.linkfade {  opacity: 0.5;}#quote-preview .linkfade {  opacity: 1.0;}kbd {  background-color: #f7f7f7;  color: black;  border: 1px solid #ccc;  border-radius: 3px 3px 3px 3px;  box-shadow: 0 1px 0 #ccc, 0 0 0 2px #fff inset;  font-family: monospace;  font-size: 11px;  line-height: 1.4;  padding: 0 5px;}.deleted {  opacity: 0.66;}.noPictures a.fileThumb img:not(.expanded-thumb) {  opacity: 0;}.noPictures.futaba_new a.fileThumb,.noPictures.yotsuba_new a.fileThumb {  border: 1px solid #800;}.noPictures.burichan_new a.fileThumb,.noPictures.yotsuba_b_new a.fileThumb {  border: 1px solid #34345C;}.noPictures.tomorrow a.fileThumb:not(.expanded-thumb) {  border: 1px solid #C5C8C6;}.noPictures.photon a.fileThumb:not(.expanded-thumb) {  border: 1px solid #004A99;}.spinner {  margin-top: 2px;  padding: 3px;  display: table;}#settings-presets {  position: relative;  top: -1px;}#colorpicker {   position: fixed;  text-align: center;}.colorbox {  font-size: 10px;  width: 16px;  height: 16px;  line-height: 17px;  display: inline-block;  text-align: center;  background-color: #fff;  border: 1px solid #aaa;  text-decoration: none;  color: #000;  cursor: pointer;  vertical-align: top;}#palette-custom-input {  vertical-align: top;  width: 45px;  margin-right: 2px;}#qrDummyFile {  float: left;  margin-right: 5px;  width: 220px;  cursor: default;  -moz-user-select: none;  -webkit-user-select: none;  -ms-user-select: none;  user-select: none;  white-space: nowrap;  text-overflow: ellipsis;  overflow: hidden;}#qrDummyFileLabel {  margin-left: 3px;}.depageNumber {  position: absolute;  right: 5px;}.depagerEnabled .depagelink {  font-weight: bold;}.depagerEnabled strong {  font-weight: normal;}.depagelink {  display: inline-block;  padding: 4px 0;  cursor: pointer;  text-decoration: none;}.burichan_new .depagelink,.futaba_new .depagelink {  text-decoration: underline;}#customMenuBox {  margin: 0 auto 5px auto;  width: 385px;  display: block;}.preview-summary {  display: block;}#swf-embed-header {  padding: 0 0 0 3px;  font-weight: normal;  height: 20px;  line-height: 20px;}.yotsuba_new #swf-embed-header,.yotsuba_b_new #swf-embed-header {  height: 18px;  line-height: 18px;}#swf-embed-close {  position: absolute;  right: 0;  top: 1px;}.open-qr-wrap {  text-align: center;  width: 200px;  position: absolute;  margin-left: 50%;  left: -100px;}.postMenuBtn {  margin-left: 5px;  text-decoration: none;  line-height: 1em;  display: inline-block;  -webkit-transition: -webkit-transform 0.1s;  -moz-transition: -moz-transform 0.1s;  transition: transform 0.1s;  width: 1em;  height: 1em;  text-align: center;  outline: none;  opacity: 0.8;}.postMenuBtn:hover{  opacity: 1;}.yotsuba_new .postMenuBtn,.futaba_new .postMenuBtn {  color: #000080;}.tomorrow .postMenuBtn {  color: #5F89AC !important;}.tomorrow .postMenuBtn:hover {  color: #81a2be !important;}.photon .postMenuBtn {  color: #FF6600 !important;}.photon .postMenuBtn:hover {  color: #FF3300 !important;}.menuOpen {  -webkit-transform: rotate(90deg);  -moz-transform: rotate(90deg);  -ms-transform: rotate(90deg);  transform: rotate(90deg);}.settings-sub label:before {  border-bottom: 1px solid;  border-left: 1px solid;  content: " ";  display: inline-block;  height: 8px;  margin-bottom: 5px;  width: 8px;}.settings-sub {  margin-left: 25px;}.settings-tip.settings-sub {  padding-left: 32px;}.centeredThreads .opContainer {  display: block;}.centeredThreads .postContainer {  margin: auto;  width: 75%;}.centeredThreads .sideArrows {  display: none;}.centre-exp {  width: auto !important;  clear: both;}.centeredThreads .expandedWebm {  float: none;}.centeredThreads .summary {  margin-left: 12.5%;  display: block;}.centre-exp div.op{  display: table;}#yt-preview { position: absolute; }#yt-preview img { display: block; }@media only screen and (max-width: 480px) {#threadWatcher {  max-width: none;  padding: 3px 0;  left: 0;  width: 100%;  border-left: none;  border-right: none;}#watchList {  padding: 0 10px;}.btn-row {  margin-top: 5px;}.image-expanded .mFileInfo {  display: none !important;}.mobile-report {  float: right;  font-size: 11px;  margin-bottom: 3px;  margin-left: 10px;}.mobile-report:after {  content: "]";}.mobile-report:before {  content: "[";}.nws .mobile-report:after {  color: #800000;}.nws .mobile-report:before {  color: #800000;}.ws .mobile-report {  color: #34345C;}.nws .mobile-report {  color:#0000EE;}.reply .mobile-report {  margin: 5px 5px 0 5px;}.postLink .mobileHideButton {  margin-right: 3px;}.board .mobile-hr-hidden {  margin-top: 10px !important;}.board > .mobileHideButton {  margin-top: -20px !important;}.board > .mobileHideButton:first-child {  margin-top: 10px !important;}.extButton.threadHideButton {  float: none;  margin: 0;  margin-bottom: 5px;}.mobile-post-hidden {  display: none;}#toggleMsgBtn {  display: none;}.mobile-tu-status {  height: 20px;  line-height: 20px;}.mobile-tu-show {  width: 150px;  margin: auto;  display: block;  text-align: center;}.button input {  margin: 0 3px 0 0;  position: relative;  top: -2px;  border-radius: 0;  height: 10px;  width: 10px;}.UIPanel > div {  width: 320px;  margin-left: -160px;}.UIPanel .export-field {  width: 300px;}.yotsuba_new #quote-preview.highlight,#quote-preview {  border-width: 1px !important;}.yotsuba_new #quote-preview.highlight {  border-color: #D9BFB7 !important;}#quickReply input[type="text"],#quickReply textarea,.extPanel input[type="text"],.extPanel textarea {  font-size: 16px;}#quickReply {  position: absolute;  left: 50%;  margin-left: -154px;}}';
+            a.textContent = 'body.hasDropDownNav {  margin-top: 45px;}.extButton.threadHideButton {  float: left;  margin-right: 5px;  margin-top: -1px;}.extButton.replyHideButton {  margin-top: 1px;}div.op > span .postHideButtonCollapsed {  margin-right: 1px;}.dropDownNav #boardNavMobile, {  display: block !important;}.extPanel {  border: 1px solid rgba(0, 0, 0, 0.20);}.tomorrow .extPanel {  border: 1px solid #111;}.extButton,img.pointer {  width: 18px;  height: 18px;}.extControls {  display: inline;  margin-left: 5px;}.extButton {  cursor: pointer;  margin-bottom: -4px;}.trashIcon {  width: 16px;  height: 16px;  margin-bottom: -2px;  margin-left: 5px;}.threadUpdateStatus {  margin-left: 0.5ex;}.futaba_new .stub,.burichan_new .stub {  line-height: 1;  padding-bottom: 1px;}.stub .extControls,.stub .wbtn,.stub input {  display: none;}.stub .threadHideButton {  float: none;  margin-right: 2px;}div.post div.postInfo {  width: auto;  display: inline;}.right {  float: right;}.center {  display: block;  margin: auto;}.pointer {  cursor: pointer;}.drag {  cursor: move !important;  user-select: none !important;  -moz-user-select: none !important;  -webkit-user-select: none !important;}#quickReport,#quickReply {  display: block;  position: fixed;  padding: 2px;  font-size: 10pt;}#qrepHeader,#qrHeader {  text-align: center;  margin-bottom: 1px;  padding: 0;  height: 18px;  line-height: 18px;}#qrepClose,#qrClose {  float: right;}#quickReport iframe {  overflow: hidden;}#quickReport {  height: 190px;}#qrForm > div {  clear: both;}#quickReply input[type="text"],#quickReply textarea,#quickReply #recaptcha_response_field {  border: 1px solid #aaa;  font-family: arial,helvetica,sans-serif;  font-size: 10pt;  outline: medium none;  width: 296px;  padding: 2px;  margin: 0 0 1px 0;}#quickReply textarea {  min-width: 296px;  float: left;}#quickReply input::-moz-placeholder,#quickReply textarea::-moz-placeholder {  color: #aaa !important;  opacity: 1 !important;}#quickReply input[type="submit"] {  width: 83px;  margin: 0;  font-size: 10pt;  float: left;}#quickReply #qrCapField {  display: block;  margin-top: 1px;}#qrCaptcha {  width: 300px;  height: 53px;  cursor: pointer;  border: 1px solid #aaa;  display: block;}#quickReply input.presubmit {  margin-right: 1px;  width: 212px;  float: left;}#qrFile {  width: 215px;  margin-right: 5px;}.qrRealFile {  position: absolute;  left: 0;  visibility: hidden;}.yotsuba_new #qrFile {  color:black;}#qrSpoiler {  display: inline;}#qrError {  width: 292px;  display: none;  font-family: monospace;  background-color: #E62020;  font-size: 12px;  color: white;  padding: 3px 5px;  text-shadow: 0 1px rgba(0, 0, 0, 0.20);  clear: both;}#qrError a:hover,#qrError a {  color: white !important;  text-decoration: underline;}#twHeader {  font-weight: bold;  text-align: center;  height: 17px;}.futaba_new #twHeader,.burichan_new #twHeader {  line-height: 1;}#twPrune {  margin-left: 3px;  margin-top: -1px;}#twClose {  float: left;  margin-top: -1px;}#threadWatcher {  max-width: 265px;  display: block;  position: absolute;  padding: 3px;}#watchList {  margin: 0;  padding: 0;  user-select: none;  -moz-user-select: none;  -webkit-user-select: none;}#watchList li:first-child {  margin-top: 3px;  padding-top: 2px;  border-top: 1px solid rgba(0, 0, 0, 0.20);}.photon #watchList li:first-child {  border-top: 1px solid #ccc;}.yotsuba_new #watchList li:first-child {  border-top: 1px solid #d9bfb7;}.yotsuba_b_new #watchList li:first-child {  border-top: 1px solid #b7c5d9;}.tomorrow #watchList li:first-child {  border-top: 1px solid #111;}#watchList a {  text-decoration: none;}#watchList li {  overflow: hidden;  white-space: nowrap;  text-overflow: ellipsis;}div.post div.image-expanded {  display: table;}div.op div.file .image-expanded-anti {  margin-left: -3px;}#quote-preview {  display: block;  position: absolute;  top: 0;  padding: 3px 6px 6px 3px;  margin: 0;}#quote-preview .dateTime {  white-space: nowrap;}#quote-preview s {  background: transparent !important;  color: inherit !important;  text-decoration: line-through !important;}#quote-preview s a {  background: transparent !important;  text-decoration: underline;}.yotsuba_b_new #quote-preview s a, .burichan_new #quote-preview s a {  color: #D00 !important;}.yotsuba_new #quote-preview s a, .futaba_new #quote-preview s a {  color: #000080 !important;}.tomorrow #quote-preview s a {  color: #5F89AC !important;}.photon #quote-preview s a {  color: #FF6600 !important;}.yotsuba_new #quote-preview.highlight,.yotsuba_b_new #quote-preview.highlight {  border-width: 1px 2px 2px 1px !important;  border-style: solid !important;}.yotsuba_new #quote-preview.highlight {  border-color: #D99F91 !important;}.yotsuba_b_new #quote-preview.highlight {  border-color: #BA9DBF !important;}.yotsuba_b_new .highlight-anti,.burichan_new .highlight-anti {  border-width: 1px !important;  background-color: #bfa6ba !important;}.yotsuba_new .highlight-anti,.futaba_new .highlight-anti {  background-color: #e8a690 !important;}.tomorrow .highlight-anti {  background-color: #111 !important;  border-color: #111;}.photon .highlight-anti {  background-color: #bbb !important;}.op.inlined {  display: block;}#quote-preview .inlined,#quote-preview .postMenuBtn,#quote-preview .extButton,#quote-preview .extControls {  display: none;}.hasNewReplies {  font-weight: bold;}.archivelink {  opacity: 0.5;}.deadlink {  text-decoration: line-through !important;}div.backlink {  font-size: 0.8em !important;  display: inline;  padding: 0;  padding-left: 5px;}.backlink.mobile {  padding: 3px 5px;  display: block;  clear: both;  line-height: 2;}.op .backlink.mobile,#quote-preview .backlink.mobile {  display: none !important;}.backlink.mobile .quoteLink {  padding-right: 2px;}.backlink span {  padding: 0;}.burichan_new .backlink a,.yotsuba_b_new .backlink a {  color: #34345C !important;}.burichan_new .backlink a:hover,.yotsuba_b_new .backlink a:hover {  color: #dd0000 !important;}.expbtn {  margin-right: 3px;  margin-left: 2px;}.tCollapsed .rExpanded {  display: none;}#stickyNav {  position: fixed;  font-size: 0;}#stickyNav img {  vertical-align: middle;}.tu-error {  color: red;}.topPageNav {  position: absolute;}.yotsuba_b_new .topPageNav {  border-top: 1px solid rgba(255, 255, 255, 0.25);  border-left: 1px solid rgba(255, 255, 255, 0.25);}.newPostsMarker:not(#quote-preview) {  box-shadow: 0 3px red;}#toggleMsgBtn {  float: left;  margin-bottom: 6px;}.panelHeader {  font-weight: bold;  font-size: 16px;  text-align: center;  margin-bottom: 5px;  margin-top: 5px;  padding-bottom: 5px;  border-bottom: 1px solid rgba(0, 0, 0, 0.20);}.yotsuba_new .panelHeader {  border-bottom: 1px solid #d9bfb7;}.yotsuba_b_new .panelHeader {  border-bottom: 1px solid #b7c5d9;}.tomorrow .panelHeader {  border-bottom: 1px solid #111;}.panelHeader span {  position: absolute;  right: 5px;  top: 5px;}.UIMenu,.UIPanel {  position: fixed;  width: 100%;  height: 100%;  z-index: 9002;  top: 0;  left: 0;}.UIPanel {  line-height: 14px;  font-size: 14px;  background-color: rgba(0, 0, 0, 0.25);}.UIPanel:after {  display: inline-block;  height: 100%;  vertical-align: middle;  content: "";}.UIPanel > div {  -moz-box-sizing: border-box;  box-sizing: border-box;  display: inline-block;  height: auto;  max-height: 100%;  position: relative;  width: 400px;  left: 50%;  margin-left: -200px;  overflow: auto;  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);  vertical-align: middle;}#settingsMenu > div {  top: 25px;;  vertical-align: top;  max-height: 85%;}.extPanel input[type="text"],.extPanel textarea {  border: 1px solid #AAA;  outline: none;}.UIPanel .center {  margin-bottom: 5px;}.UIPanel button {  display: inline-block;  margin-right: 5px;}.UIPanel code {  background-color: #eee;  color: #000000;  padding: 1px 4px;  font-size: 12px;}.UIPanel ul {  list-style: none;  padding: 0;  margin: 0 0 10px;}.UIPanel .export-field {  width: 385px;}#settingsMenu label input {  margin-right: 5px;}.tomorrow #settingsMenu ul {  border-bottom: 1px solid #282a2e;}.settings-off {  padding-left: 3px;}.settings-cat-lbl {  font-weight: bold;  margin: 10px 0 5px;  padding-left: 5px;}.settings-cat-lbl img {  vertical-align: text-bottom;  margin-right: 5px;  cursor: pointer;  width: 18px;  height: 18px;}.settings-tip {  font-size: 0.85em;  margin: 2px 0 5px 0;  padding-left: 23px;}#settings-exp-all {  padding-left: 7px;  text-align: center;}#settingsMenu .settings-cat {  display: none;  margin-left: 3px;}#customCSSMenu textarea {  display: block;  max-width: 100%;  min-width: 100%;  -moz-box-sizing: border-box;  box-sizing: border-box;  height: 200px;  margin: 0 0 5px;  font-family: monospace;}#customCSSMenu .right,#settingsMenu .right {  margin-top: 2px;}#settingsMenu label {  display: inline-block;  user-select: none;  -moz-user-select: none;  -webkit-user-select: none;}#filtersHelp > div {  width: 600px;  left: 50%;  margin-left: -300px;}#filtersHelp h4 {  font-size: 15px;  margin: 20px 0 0 10px;}#filtersHelp h4:before {  content: "\u00bb";  margin-right: 3px;}#filtersHelp ul {  padding: 0;  margin: 10px;}#filtersHelp li {  padding: 3px 0;  list-style: none;}#filtersMenu table {  width: 100%;}#filtersMenu th {  font-size: 12px;}#filtersMenu tbody {  text-align: center;}#filtersMenu select,#filtersMenu .fPattern,#filtersMenu .fBoards,#palette-custom-input {  padding: 1px;  font-size: 11px;}#filtersMenu select {  width: 75px;}#filtersMenu tfoot td {  padding-top: 10px;}#keybindsHelp li {  padding: 3px 5px;}.fPattern {  width: 110px;}.fBoards {  width: 25px;}.fColor {  width: 60px;}.fDel {  font-size: 16px;}.filter-preview {  cursor: pointer;  margin-left: 3px;}#quote-preview iframe,#quote-preview .filter-preview {  display: none;}.post-hidden .extButton,.post-hidden:not(#quote-preview) .postInfo {  opacity: 0.5;}.post-hidden:not(.thread) .postInfo {  padding-left: 5px;}.post-hidden:not(#quote-preview) input,.post-hidden:not(#quote-preview) .replyContainer,.post-hidden:not(#quote-preview) .summary,.post-hidden:not(#quote-preview) .op .file,.post-hidden:not(#quote-preview) .file,.post-hidden .wbtn,.post-hidden .postNum span,.post-hidden:not(#quote-preview) .backlink,div.post-hidden:not(#quote-preview) div.file,div.post-hidden:not(#quote-preview) blockquote.postMessage {  display: none;}.click-me {  border-radius: 5px;  margin-top: 5px;  padding: 2px 5px;  position: absolute;  font-weight: bold;  z-index: 2;  white-space: nowrap;}.yotsuba_new .click-me,.futaba_new .click-me {  color: #800000;  background-color: #F0E0D6;  border: 2px solid #D9BFB7;}.yotsuba_b_new .click-me,.burichan_new .click-me {  color: #000;  background-color: #D6DAF0;  border: 2px solid #B7C5D9;}.tomorrow .click-me {  color: #C5C8C6;  background-color: #282A2E;  border: 2px solid #111;}.photon .click-me {  color: #333;  background-color: #ddd;  border: 2px solid #ccc;}.click-me:before {  content: "";  border-width: 0 6px 6px;  border-style: solid;  left: 50%;  margin-left: -6px;  position: absolute;  width: 0;  height: 0;  top: -6px;}.yotsuba_new .click-me:before,.futaba_new .click-me:before {  border-color: #D9BFB7 transparent;}.yotsuba_b_new .click-me:before,.burichan_new .click-me:before {  border-color: #B7C5D9 transparent;}.tomorrow .click-me:before {  border-color: #111 transparent;}.photon .click-me:before {  border-color: #ccc transparent;}.click-me:after {  content: "";  border-width: 0 4px 4px;  top: -4px;  display: block;  left: 50%;  margin-left: -4px;  position: absolute;  width: 0;  height: 0;}.yotsuba_new .click-me:after,.futaba_new .click-me:after {  border-color: #F0E0D6 transparent;  border-style: solid;}.yotsuba_b_new .click-me:after,.burichan_new .click-me:after {  border-color: #D6DAF0 transparent;  border-style: solid;}.tomorrow .click-me:after {  border-color: #282A2E transparent;  border-style: solid;}.photon .click-me:after {  border-color: #DDD transparent;  border-style: solid;}#image-hover {  position: fixed;  max-width: 100%;  max-height: 100%;  top: 0px;  right: 0px;  z-index: 9002;}.thread-stats {  float: right;  margin-right: 5px;  cursor: default;}.compact .thread {  max-width: 75%;}.dotted {  text-decoration: none;  border-bottom: 1px dashed;}.linkfade {  opacity: 0.5;}#quote-preview .linkfade {  opacity: 1.0;}kbd {  background-color: #f7f7f7;  color: black;  border: 1px solid #ccc;  border-radius: 3px 3px 3px 3px;  box-shadow: 0 1px 0 #ccc, 0 0 0 2px #fff inset;  font-family: monospace;  font-size: 11px;  line-height: 1.4;  padding: 0 5px;}.deleted {  opacity: 0.66;}.noPictures a.fileThumb img:not(.expanded-thumb) {  opacity: 0;}.noPictures.futaba_new a.fileThumb,.noPictures.yotsuba_new a.fileThumb {  border: 1px solid #800;}.noPictures.burichan_new a.fileThumb,.noPictures.yotsuba_b_new a.fileThumb {  border: 1px solid #34345C;}.noPictures.tomorrow a.fileThumb:not(.expanded-thumb) {  border: 1px solid #C5C8C6;}.noPictures.photon a.fileThumb:not(.expanded-thumb) {  border: 1px solid #004A99;}.spinner {  margin-top: 2px;  padding: 3px;  display: table;}#settings-presets {  position: relative;  top: -1px;}#colorpicker {   position: fixed;  text-align: center;}.colorbox {  font-size: 10px;  width: 16px;  height: 16px;  line-height: 17px;  display: inline-block;  text-align: center;  background-color: #fff;  border: 1px solid #aaa;  text-decoration: none;  color: #000;  cursor: pointer;  vertical-align: top;}#palette-custom-input {  vertical-align: top;  width: 45px;  margin-right: 2px;}#qrDummyFile {  float: left;  margin-right: 5px;  width: 220px;  cursor: default;  -moz-user-select: none;  -webkit-user-select: none;  -ms-user-select: none;  user-select: none;  white-space: nowrap;  text-overflow: ellipsis;  overflow: hidden;}#qrDummyFileLabel {  margin-left: 3px;}.depageNumber {  position: absolute;  right: 5px;}.depagerEnabled .depagelink {  font-weight: bold;}.depagerEnabled strong {  font-weight: normal;}.depagelink {  display: inline-block;  padding: 4px 0;  cursor: pointer;  text-decoration: none;}.burichan_new .depagelink,.futaba_new .depagelink {  text-decoration: underline;}#customMenuBox {  margin: 0 auto 5px auto;  width: 385px;  display: block;}.preview-summary {  display: block;}#swf-embed-header {  padding: 0 0 0 3px;  font-weight: normal;  height: 20px;  line-height: 20px;}.yotsuba_new #swf-embed-header,.yotsuba_b_new #swf-embed-header {  height: 18px;  line-height: 18px;}#swf-embed-close {  position: absolute;  right: 0;  top: 1px;}.open-qr-wrap {  text-align: center;  width: 200px;  position: absolute;  margin-left: 50%;  left: -100px;}.postMenuBtn {  margin-left: 5px;  text-decoration: none;  line-height: 1em;  display: inline-block;  -webkit-transition: -webkit-transform 0.1s;  -moz-transition: -moz-transform 0.1s;  transition: transform 0.1s;  width: 1em;  height: 1em;  text-align: center;  outline: none;  opacity: 0.8;}.postMenuBtn:hover{  opacity: 1;}.yotsuba_new .postMenuBtn,.futaba_new .postMenuBtn {  color: #000080;}.tomorrow .postMenuBtn {  color: #5F89AC !important;}.tomorrow .postMenuBtn:hover {  color: #81a2be !important;}.photon .postMenuBtn {  color: #FF6600 !important;}.photon .postMenuBtn:hover {  color: #FF3300 !important;}.menuOpen {  -webkit-transform: rotate(90deg);  -moz-transform: rotate(90deg);  -ms-transform: rotate(90deg);  transform: rotate(90deg);}.settings-sub label:before {  border-bottom: 1px solid;  border-left: 1px solid;  content: " ";  display: inline-block;  height: 8px;  margin-bottom: 5px;  width: 8px;}.settings-sub {  margin-left: 25px;}.settings-tip.settings-sub {  padding-left: 32px;}.centeredThreads .opContainer {  display: block;}.centeredThreads .postContainer {  margin: auto;  width: 75%;}.centeredThreads .sideArrows {  display: none;}.centre-exp {  width: auto !important;  clear: both;}.centeredThreads .expandedWebm {  float: none;}.centeredThreads .summary {  margin-left: 12.5%;  display: block;}.centre-exp div.op{  display: table;}#yt-preview { position: absolute; }#yt-preview img { display: block; }@media only screen and (max-width: 480px) {.thread-stats { float: none; text-align: center; }.ts-replies:before { content: "Replies: "; }.ts-images:before { content: "Images: "; }.ts-ips:before { content: "Posters: "; }.ts-page:before { content: "Page: "; }#threadWatcher {  max-width: none;  padding: 3px 0;  left: 0;  width: 100%;  border-left: none;  border-right: none;}#watchList {  padding: 0 10px;}.btn-row {  margin-top: 5px;}.image-expanded .mFileInfo {  display: none !important;}.mobile-report {  float: right;  font-size: 11px;  margin-bottom: 3px;  margin-left: 10px;}.mobile-report:after {  content: "]";}.mobile-report:before {  content: "[";}.nws .mobile-report:after {  color: #800000;}.nws .mobile-report:before {  color: #800000;}.ws .mobile-report {  color: #34345C;}.nws .mobile-report {  color:#0000EE;}.reply .mobile-report {  margin: 5px 5px 0 5px;}.postLink .mobileHideButton {  margin-right: 3px;}.board .mobile-hr-hidden {  margin-top: 10px !important;}.board > .mobileHideButton {  margin-top: -20px !important;}.board > .mobileHideButton:first-child {  margin-top: 10px !important;}.extButton.threadHideButton {  float: none;  margin: 0;  margin-bottom: 5px;}.mobile-post-hidden {  display: none;}#toggleMsgBtn {  display: none;}.mobile-tu-status {  height: 20px;  line-height: 20px;}.mobile-tu-show {  width: 150px;  margin: auto;  display: block;  text-align: center;}.button input {  margin: 0 3px 0 0;  position: relative;  top: -2px;  border-radius: 0;  height: 10px;  width: 10px;}.UIPanel > div {  width: 320px;  margin-left: -160px;}.UIPanel .export-field {  width: 300px;}.yotsuba_new #quote-preview.highlight,#quote-preview {  border-width: 1px !important;}.yotsuba_new #quote-preview.highlight {  border-color: #D9BFB7 !important;}#quickReply input[type="text"],#quickReply textarea,.extPanel input[type="text"],.extPanel textarea {  font-size: 16px;}#quickReply {  position: absolute;  left: 50%;  margin-left: -154px;}}';
             document.head.appendChild(a)
         }
     };
