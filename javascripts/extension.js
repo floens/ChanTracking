@@ -1727,7 +1727,7 @@ var Parser = {
             window.thread_archived ? f.push("Archived") : Main.threadClosed && f.push("Closed");
             d ? f.push('<em class="ts-replies" data-tip="Replies (bump limit reached)">' + a + "</em>") : f.push('<span class="ts-replies" data-tip="Replies">' + a + "</span>");
             e ? f.push('<em class="ts-images" data-tip="Images (limit reached)">' + b + "</em>") : f.push('<span class="ts-images" data-tip="Images">' + b + "</span>");
-            window.thread_archived || (f.push('<span data-tip="Posters" class="ts-ips">' + (c || window.unique_ips) + "</span>"), f.push('<span data-tip="Page" class="ts-page">' + (this.pageNumber || "?") + "</span>"));
+            window.thread_archived || (window.unique_ips && f.push('<span data-tip="Posters" class="ts-ips">' + (c || window.unique_ips) + "</span>"), f.push('<span data-tip="Page" class="ts-page">' + (this.pageNumber || "?") + "</span>"));
             this.nodeTop.innerHTML = this.nodeBot.innerHTML = f.join(" / ")
         },
         updatePageNumber: function() {
