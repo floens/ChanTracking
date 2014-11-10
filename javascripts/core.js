@@ -455,8 +455,8 @@ function submitPreupload() {
 }
 
 function showPostForm(a) {
-    a.preventDefault();
-    if (a = document.getElementById("postForm")) this.parentNode.style.display = "none", a.style.display = "table"
+    a && a.preventDefault();
+    if (a = document.getElementById("postForm")) $.id("togglePostFormLink").style.display = "none", a.style.display = "table"
 }
 
 function contentLoaded() {
@@ -468,7 +468,7 @@ function contentLoaded() {
     window.passEnabled && setPassMsg();
     (b = document.getElementById("bottomReportBtn")) && b.addEventListener("click", onReportClick, !1);
     (b = document.getElementById("styleSelector")) && b.addEventListener("change", onStyleSheetChange, !1);
-    (b = document.getElementById("togglePostFormLink")) && (b = b.firstElementChild) && b.addEventListener("click", showPostForm, !1);
+    if (b = document.getElementById("togglePostFormLink"))(b = b.firstElementChild) && b.addEventListener("click", showPostForm, !1), "#reply" === location.hash && showPostForm();
     if ("int" == d || "sp" == d) b = document.getElementById("delform"), b.addEventListener("click", onCoreClick, !1);
     !window.passEnabled && window.preupload_captcha && "FormData" in window && (b = document.forms.post) && b.addEventListener("submit", onPostSubmit, !1);
     (b = document.forms.post) && b.flag && (e = readCookie("4chan_flag")) && (a = b.querySelector('option[value="' + e + '"]')) && a.setAttribute("selected", "selected");
