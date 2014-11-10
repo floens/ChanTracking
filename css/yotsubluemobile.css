@@ -319,7 +319,6 @@
 	
 	div.post div.postInfoM span.dateTime {
 		float: right;
-		font-style: italic;
 		text-align: right;
 		color: black !important;
 	}
