@@ -1745,8 +1745,8 @@ var Parser = {
                 for (b = 0; d = h[b]; ++b)
                     for (f = d.threads, c = 0; e = f[c]; ++c)
                         if (e.no == g) {
-                            b = $.cls("ts-page");
-                            b[0].textContent = b[1].textContent = d.page;
+                            e = $.cls("ts-page");
+                            for (b = 0; c = e[b]; ++b) c.textContent = d.page;
                             a.pageNumber = d.page;
                             return
                         }
