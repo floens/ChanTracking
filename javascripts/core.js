@@ -7,8 +7,10 @@ var Tip = {
         document.addEventListener("mouseout", this.onMouseOut, !1)
     },
     onMouseOver: function(a) {
+        var b, c, d;
+        d = a.target;
         Tip.timeout && (clearTimeout(Tip.timeout), Tip.timeout = null);
-        a.target.hasAttribute("data-tip") && (Tip.timeout = setTimeout(Tip.show, Tip.delay, a.target))
+        d.hasAttribute("data-tip") && (c = null, d.hasAttribute("data-tip-cb") && (b = d.getAttribute("data-tip-cb"), window[b] && (c = window[b](d))), Tip.timeout = setTimeout(Tip.show, Tip.delay, a.target, c))
     },
     onMouseOut: function(a) {
         Tip.timeout && (clearTimeout(Tip.timeout), Tip.timeout = null);
@@ -35,6 +37,16 @@ var Tip = {
         Tip.node && (document.body.removeChild(Tip.node), Tip.node = null)
     }
 };
+
+function mShowFull(a) {
+    var b, c;
+    if ("name" === a.className) {
+        if (b = a.parentNode.parentNode.parentNode.getElementsByClassName("name")[1]) c = b.innerHTML
+    } else if ("subject" === a.parentNode.className) {
+        if (b = a.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("subject")[1]) c = b.innerHTML
+    } else /fileThumb/.test(a.parentNode.className) && (b = a.parentNode.parentNode.getElementsByClassName("fileText")[0]) && (b = b.firstElementChild, c = b.getAttribute("title") || b.innerHTML);
+    return c
+}
 
 function loadBannerImage() {
     var a;
