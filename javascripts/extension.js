@@ -1237,7 +1237,7 @@ var Parser = {
         },
         syncStorage: function(a) {
             var b;
-            a.key && (b = a.key.split("-"), "4chan" == b[0] && "watch" == b[1] && a.newValue != a.oldValue && (ThreadWatcher.watched = JSON.parse(a.newValue), ThreadWatcher.build(!0)))
+            a.key && (b = a.key.split("-"), "4chan" != b[0] || "watch" != b[1] || b[2] || a.newValue == a.oldValue || (ThreadWatcher.load(), ThreadWatcher.build(!0)))
         },
         load: function() {
             if (storage = localStorage.getItem("4chan-watch")) this.watched = JSON.parse(storage);
