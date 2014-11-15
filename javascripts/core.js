@@ -91,7 +91,7 @@ function initRecaptcha() {
 
 function loadRecaptcha() {
     var a;
-    document.getElementById("recaptcha_area") || ((a = document.getElementById("captchaContainer")) && a.textContent && a.setAttribute("data-placeholder", a.textContent), Recaptcha.create(window.recaptchaKey, "captchaContainer" + window.recaptchaId, {
+    window.Recaptcha && !document.getElementById("recaptcha_area") && ((a = document.getElementById("captchaContainer")) && a.textContent && a.setAttribute("data-placeholder", a.textContent), Recaptcha.create(window.recaptchaKey, "captchaContainer" + window.recaptchaId, {
         theme: "clean",
         tabindex: 5,
         callback: onCaptchaReady
@@ -298,7 +298,7 @@ function init() {
     a || (document.getElementById("delPassword").value = get_pass("4chan_pass"));
     "i" == b || "ic" == b || "f" == b || a || window.File && window.FileReader && window.FileList && window.Blob && document.getElementById("postFile").addEventListener("change", handleFileSelect, !1);
     "undefined" != typeof extra && extra && !a && extra.init();
-    check_for_block && checkForBlock()
+    window.check_for_block && checkForBlock()
 }
 
 function onCaptchaClick(a) {
