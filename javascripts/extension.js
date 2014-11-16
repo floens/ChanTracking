@@ -2545,10 +2545,9 @@ Config.toURL = function() {
     if (a = localStorage.getItem("catalog-settings")) b.catalogSettings = a;
     return encodeURIComponent(JSON.stringify(b))
 };
-Config.save = function() {
+Config.save = function(a) {
     localStorage.setItem("4chan-settings", JSON.stringify(Config));
-    Config.forceHTTPS ? Main.setCookie("https", 1) : Main.removeCookie("https");
-    Config.darkTheme ? (Main.setCookie("nws_style", "Tomorrow", ".4chan.org"), Main.setCookie("ws_style", "Tomorrow", ".4chan.org")) : (Main.removeCookie("nws_style", ".4chan.org"), Main.removeCookie("ws_style", ".4chan.org"))
+    a && (Config.forceHTTPS ? Main.setCookie("https", 1) : Main.removeCookie("https"), a.darkTheme != Config.darkTheme && (Config.darkTheme ? (Main.setCookie("nws_style", "Tomorrow", ".4chan.org"), Main.setCookie("ws_style", "Tomorrow", ".4chan.org")) : (Main.removeCookie("nws_style", ".4chan.org"), Main.removeCookie("ws_style", ".4chan.org"))))
 };
 var SettingsMenu = {
         options: {
@@ -2605,10 +2604,12 @@ var SettingsMenu = {
             }
         },
         save: function() {
-            var a, b, c, d;
+            var a, b, c, d, e;
+            e = {};
+            $.extend(e, Config);
             b = $.id("settingsMenu").getElementsByClassName("menuOption");
             for (a = 0; c = b[a]; ++a) d = c.getAttribute("data-option"), Config[d] = "checkbox" == c.type ? c.checked : c.value;
-            Config.save();
+            Config.save(e);
             SettingsMenu.close();
             location.href = location.href.replace(/#.+$/, "")
         },
