@@ -2604,7 +2604,7 @@ var SettingsMenu = {
                 embedVocaroo: ["Embed Vocaroo links", "Embed Vocaroo player into replies"]
             },
             Miscellaneous: {
-                darkTheme: ["Use a dark theme", "Use the Tomorrow theme for night-time browsing", !0, !1, !0],
+                darkTheme: ["Use a dark theme", "Use the Tomorrow theme for nighttime browsing", !0, !1, !0],
                 customCSS: ['Custom CSS [<a href="javascript:;" data-cmd="css-open">Edit</a>]', "Include your own CSS rules", !0],
                 IDColor: ["Color user IDs", "Assign unique colors to user IDs on boards that use them", !0],
                 compactThreads: ["Force long posts to wrap", "Long posts will wrap at 75% browser width"],
