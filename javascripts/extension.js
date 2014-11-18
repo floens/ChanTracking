@@ -834,6 +834,7 @@ var Parser = {
                 f.innerHTML = '<input type="hidden" value="' + $.byName("MAX_FILE_SIZE")[0].value + '" name="MAX_FILE_SIZE"><input type="hidden" value="regist" name="mode"><input id="qrResto" type="hidden" value="' + a + '" name="resto">';
                 a = document.createElement("div");
                 a.id = "qrForm";
+                this.btn = null;
                 h = e.firstElementChild.children;
                 b = 0;
                 for (c = h.length - 1; b < c; ++b) {
@@ -846,15 +847,14 @@ var Parser = {
                     else if (g.innerHTML = h[b].children[1].innerHTML, l = "hidden" == g.firstChild.type ? g.lastChild.previousSibling : g.firstChild, 0 < l.tabIndex && (l.tabIndex += 20), "INPUT" == l.nodeName || "TEXTAREA" == l.nodeName) {
                         if ("name" == l.name) {
                             if (q = Main.getCookie("4chan_name")) l.value = q
-                        } else if ("email" == l.name) l.id = "qrEmail";
+                        } else if ("email" == l.name) l.id = "qrEmail", Main.tid || l.nextElementSibling || (l.className = "presubmit", this.btn = e.querySelector('input[type="submit"]').cloneNode(), l.parentNode.appendChild(this.btn));
                         else if ("com" == l.name) QR.comField = l, l.addEventListener("keydown", QR.onKeyDown, !1), l.addEventListener("paste", QR.onKeyDown, !1), l.addEventListener("cut", QR.onKeyDown, !1), g.children[1] && g.removeChild(l.nextSibling);
                         else if ("sub" == l.name) continue;
                         null !== m && l.setAttribute("placeholder", m)
                     } else "flag" == l.name && ((n = l.querySelector("option[selected]")) && n.removeAttribute("selected"), (q = Main.getCookie("4chan_flag")) && (n = l.querySelector('option[value="' + q + '"]')) && n.setAttribute("selected", "selected"));
                     a.appendChild(g)
                 }
-                this.btn = a.querySelector('input[type="submit"]');
-                this.btn.previousSibling.className = "presubmit";
+                this.btn || (this.btn = a.querySelector('input[type="submit"]'), this.btn.previousElementSibling.className = "presubmit");
                 this.btn.tabIndex += 20;
                 if (l = e.querySelector('.desktop > label > input[name="spoiler"]')) e = document.createElement("span"), e.id = "qrSpoiler", e.innerHTML = '<label>[<input type="checkbox" tabindex="' + (l.tabIndex + 20) + '" value="on" name="spoiler">Spoiler?]</label>', k.parentNode.insertBefore(e, k.nextSibling);
                 f.appendChild(a);
