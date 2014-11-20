@@ -255,7 +255,7 @@ var Parser = {
             b ? e = document.getElementById("pi" + a) : (e = a.getElementsByClassName("postInfo")[0], a = e.id.slice(2));
             Parser.needMsg && (h = document.getElementById("m" + a));
             c ? Config.reportButton && (d = document.createElement("span"), d.className = "mobile mobile-report", d.setAttribute("data-cmd", "report"), d.setAttribute("data-id", a), d.textContent = "Report", e.parentNode.appendChild(d)) : (d = document.createElement("a"), d.href = "#", d.className = "postMenuBtn", d.title = "Post menu", d.setAttribute("data-cmd", "post-menu"), d.textContent = "\u25b6", e.appendChild(d));
-            b && a != b && (Config.filter && (g = Filter.exec(e.parentNode, e, h)), !g && ReplyHiding.hidden[a] && (ReplyHiding.hidden[a] = Main.now, ReplyHiding.hide(a)), Config.backlinks && Parser.parseBacklinks(a, b));
+            b && (a != b && (Config.filter && (g = Filter.exec(e.parentNode, e, h)), !g && ReplyHiding.hidden[a] && (ReplyHiding.hidden[a] = Main.now, ReplyHiding.hide(a))), Config.backlinks && Parser.parseBacklinks(a, b));
             IDColor.enabled && (k = $.cls("posteruid", e.parentNode)[c ? 0 : 1]) && IDColor.apply(k.firstElementChild);
             Config.embedSoundCloud && Media.parseSoundCloud(h);
             Config.embedYouTube && Media.parseYouTube(h);
