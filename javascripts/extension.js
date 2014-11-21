@@ -139,7 +139,7 @@ var Parser = {
                 w = "",
                 J = !1;
             n = "//i.4cdn.org/" + b;
-            0 == a.resto ? (f = !0, c && (H = '<div class="postLink mobile"><span class="info"></span><a href="thread/' + a.no + '" class="button">View Thread</a></div>', C = "op", G = '&nbsp; <span>[<a href="thread/' + a.no + (a.semantic_url ? "/" + a.semantic_url : "") + '" class="replylink" rel="canonical">Reply</a>]</span>'), c = a.no) : c = a.resto;
+            0 == a.resto ? (f = !0, c && (0 < a.replies ? (c = a.replies + " Repl" + (1 < a.replies ? "ies" : "y"), 0 < a.images && (c += " / " + a.images + " Image" + (1 < a.images ? "s" : ""))) : c = "", H = '<div class="postLink mobile"><span class="info">' + c + '</span><a href="thread/' + a.no + '" class="button">View Thread</a></div>', C = "op", G = '&nbsp; <span>[<a href="thread/' + a.no + (a.semantic_url ? "/" + a.semantic_url : "") + '" class="replylink" rel="canonical">Reply</a>]</span>'), c = a.no) : c = a.resto;
             Main.tid && b == Main.board ? (A = "#p" + a.no, B = "javascript:quote('" + a.no + "')") : (A = "thread/" + c + "#p" + a.no, B = "thread/" + c + "#q" + a.no);
             h = !a.capcode && a.id ? ' <span class="posteruid id_' + a.id + '">(ID: <span class="hand" title="Highlight posts by this ID">' + a.id + "</span>)</span> " : "";
             switch (a.capcode) {
