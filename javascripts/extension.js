@@ -2283,7 +2283,7 @@ StickyNav = {
     timeout: null,
     el: null,
     init: function() {
-        this.el = $.id("boardNavMobile");
+        this.el = Config.classicNav ? $.id("boardNavDesktop") : $.id("boardNavMobile");
         $.addClass(this.el, "autohide-nav");
         window.addEventListener("scroll", this.onScroll, !1)
     },
@@ -2541,6 +2541,7 @@ var CustomCSS = {
         compactThreads: !1,
         centeredThreads: !1,
         dropDownNav: !1,
+        autoHideNav: !1,
         classicNav: !1,
         fixedThreadWatcher: !1,
         persistentQR: !1,
@@ -2606,6 +2607,7 @@ var SettingsMenu = {
                 threadExpansion: ["Thread expansion", "Expand threads inline on board indexes", !0],
                 dropDownNav: ["Use persistent drop-down navigation bar", ""],
                 classicNav: ["Use traditional board list", "", !1, !0],
+                autoHideNav: ["Auto-hide", "", !1, !0],
                 customMenu: ['Custom board list [<a href="javascript:;" data-cmd="custom-menu-edit">Edit</a>]', "Only show selected boards in top and bottom board lists"],
                 alwaysDepage: ["Always use infinite scroll", "Enable infinite scroll by default, so reaching the bottom of the board index will load subsequent pages", !0],
                 topPageNav: ["Page navigation at top of page", "Show the page switcher at the top of the page, hold Shift and drag to move"],
@@ -2767,7 +2769,7 @@ var SettingsMenu = {
                 Config.customMenu && CustomMenu.apply(Config.customMenuList);
                 if (Config.quotePreview || Config.imageHover || Config.filter) a = $.id("delform"), a.addEventListener("mouseover", Main.onThreadMouseOver, !1), a.addEventListener("mouseout", Main.onThreadMouseOut, !1);
                 Config.stickyNav && Main.setStickyNav();
-                Main.hasMobileLayout ? StickyNav.init() : Main.initGlobalMessage();
+                Main.hasMobileLayout ? StickyNav.init() : (Main.initGlobalMessage(), Config.autoHideNav && StickyNav.init());
                 Config.threadExpansion && ThreadExpansion.init();
                 Config.filter && Filter.init();
                 Config.threadWatcher && ThreadWatcher.init();
@@ -2778,7 +2780,8 @@ var SettingsMenu = {
                 Main.tid ? (Main.threadClosed = !document.forms.post, Main.threadSticky = !!$.cls("stickyIcon", $.id("pi" + Main.tid))[0], Config.threadStats && ThreadStats.init(), Parser.parseThread(Main.tid), Config.threadUpdater && ThreadUpdater.init()) : (Main.page || Depager.init(), Config.topPageNav && Main.setPageNav(), Config.threadHiding && ThreadHiding.init(), Parser.parseBoard());
                 "f" === Main.board && SWFEmbed.init();
                 Config.quickReply && QR.init();
-                ReplyHiding.purge()
+                ReplyHiding.purge();
+                Config.alwaysDepage && !Main.hasMobileLayout && $.docEl.scrollHeight <= $.docEl.clientHeight && Depager.depage()
             }
         },
         isThreadClosed: function(a) {
