@@ -59,7 +59,7 @@ $.cache = {};
 var Parser = {
         init: function() {
             var a, b, c, d;
-            if (Config.filter || Config.embedSoundCloud || Config.embedYouTube || Config.embedVocaroo) this.needMsg = !0;
+            if (Config.filter || Config.embedSoundCloud || Config.embedYouTube || Config.embedVocaroo || Main.hasMobileLayout) this.needMsg = !0;
             a = 2 <= window.devicePixelRatio ? "@2x.gif" : ".gif";
             this.icons = {
                 admin: "//s.4cdn.org/image/adminicon" + a,
@@ -258,7 +258,7 @@ var Parser = {
             b && (a != b && (Config.filter && (g = Filter.exec(e.parentNode, e, h)), !g && ReplyHiding.hidden[a] && (ReplyHiding.hidden[a] = Main.now, ReplyHiding.hide(a))), Config.backlinks && Parser.parseBacklinks(a, b));
             IDColor.enabled && (k = $.cls("posteruid", e.parentNode)[c ? 0 : 1]) && IDColor.apply(k.firstElementChild);
             Config.embedSoundCloud && Media.parseSoundCloud(h);
-            Config.embedYouTube && Media.parseYouTube(h);
+            (Config.embedYouTube || Main.hasMobileLayout) && Media.parseYouTube(h);
             Config.embedVocaroo && Media.parseVocaroo(h);
             Config.revealSpoilers && (f = document.getElementById("f" + a)) && (f = f.children[1]) && $.hasClass(f, "imgspoiler") && (d = f.firstChild, f.removeChild(d), d.removeAttribute("style"), k = $.hasClass(e.parentNode, "op"), d.style.maxWidth = d.style.maxHeight = k ? "250px" : "125px", d.src = "//0.t.4cdn.org" + f.pathname.replace(/([0-9]+).+$/, "/$1s.jpg"), h = f.previousElementSibling, g = h.title.split("."), g[0].length > (k ? 40 : 30) ? g = g[0].slice(0, k ? 35 : 25) + "(...)" + g[1] : (g = h.title, h.removeAttribute("title")), h.firstElementChild.innerHTML = g, f.insertBefore(d, f.firstElementChild));
             Config.localTime && (c ? (d = e.parentNode.getElementsByClassName("dateTime")[0], d.firstChild.nodeValue = Parser.getLocaleDate(new Date(1E3 * d.getAttribute("data-utc"))) + " ") : (d = e.getElementsByClassName("dateTime")[0], d.title = this.utcOffset, d.textContent = Parser.getLocaleDate(new Date(1E3 * d.getAttribute("data-utc")))))
@@ -2233,7 +2233,7 @@ var Parser = {
             a.innerHTML = a.innerHTML.replace(this.matchYT, this.replaceYouTube)
         },
         replaceYouTube: function(a) {
-            return "<span>" + a + '</span> [<a href="javascript:;" data-cmd="embed" data-type="yt">Embed</a>]'
+            return "<span>" + a + '</span> [<a href="javascript:;" data-cmd="embed" data-type="yt">' + (Main.hasMobileLayout ? "Open" : "Embed") + "</a>]"
         },
         showYTPreview: function(a) {
             var b, c, d;
@@ -2260,7 +2260,7 @@ var Parser = {
         },
         toggleYouTube: function(a) {
             var b, c;
-            "Remove" == a.textContent ? (a.parentNode.removeChild(a.nextElementSibling), a.textContent = "Embed") : (c = a.previousElementSibling.textContent, b = c.match(this.toggleYT), c = c.match(this.timeYT), b && (b = b[1]) ? (b = encodeURIComponent(b), c && (c = c[1]) && (b += "#t=" + encodeURIComponent(c)), c = document.createElement("div"), c.className = "media-embed", c.innerHTML = '<iframe src="//www.youtube.com/embed/' + b + '" width="640" height="360" frameborder="0"></iframe>', a.parentNode.insertBefore(c, a.nextElementSibling), a.textContent = "Remove") : a.textContent = "Error")
+            "Remove" == a.textContent ? (a.parentNode.removeChild(a.nextElementSibling), a.textContent = "Embed") : (c = a.previousElementSibling.textContent, b = c.match(this.toggleYT), c = c.match(this.timeYT), b && (b = b[1]) ? (b = encodeURIComponent(b), c && (c = c[1]) && (b += "#t=" + encodeURIComponent(c)), Main.hasMobileLayout ? window.open("//www.youtube.com/watch?v=" + b) : (c = document.createElement("div"), c.className = "media-embed", c.innerHTML = '<iframe src="//www.youtube.com/embed/' + b + '" width="640" height="360" frameborder="0"></iframe>', a.parentNode.insertBefore(c, a.nextElementSibling), a.textContent = "Remove")) : a.textContent = "Error")
         },
         parseVocaroo: function(a) {
             a.innerHTML = a.innerHTML.replace(this.matchVocaroo, this.replaceVocaroo)
@@ -2607,7 +2607,7 @@ var SettingsMenu = {
                 threadExpansion: ["Thread expansion", "Expand threads inline on board indexes", !0],
                 dropDownNav: ["Use persistent drop-down navigation bar", ""],
                 classicNav: ["Use traditional board list", "", !1, !0],
-                autoHideNav: ["Auto-hide", "", !1, !0],
+                autoHideNav: ["Auto-hide on scroll", "", !1, !0],
                 customMenu: ['Custom board list [<a href="javascript:;" data-cmd="custom-menu-edit">Edit</a>]', "Only show selected boards in top and bottom board lists"],
                 alwaysDepage: ["Always use infinite scroll", "Enable infinite scroll by default, so reaching the bottom of the board index will load subsequent pages", !0],
                 topPageNav: ["Page navigation at top of page", "Show the page switcher at the top of the page, hold Shift and drag to move"],
@@ -2773,7 +2773,7 @@ var SettingsMenu = {
                 Config.threadExpansion && ThreadExpansion.init();
                 Config.filter && Filter.init();
                 Config.threadWatcher && ThreadWatcher.init();
-                (Config.embedSoundCloud || Config.embedYouTube || Config.embedVocaroo) && Media.init();
+                (Main.hasMobileLayout || Config.embedSoundCloud || Config.embedYouTube || Config.embedVocaroo) && Media.init();
                 ReplyHiding.init();
                 Config.quotePreview && QuotePreview.init();
                 Parser.init();
