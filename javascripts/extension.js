@@ -2618,7 +2618,7 @@ var SettingsMenu = {
                 imageExpansion: ["Image expansion", "Enable inline image expansion, limited to browser width", !0],
                 fitToScreenExpansion: ["Fit expanded images to screen", "Limit expanded images to both browser width and height"],
                 imageHover: ["Image hover", "Mouse over images to view full size, limited to browser size"],
-                revealSpoilers: ["Don't spoiler images", "Show image thumbnail and original filename instead of spoiler placeholders"],
+                revealSpoilers: ["Don't spoiler images", "Show image thumbnail and original filename instead of spoiler placeholders", !0],
                 noPictures: ["Hide thumbnails", "Don't display thumbnails while browsing", !0],
                 embedYouTube: ["Embed YouTube links", "Embed YouTube player into replies"],
                 embedSoundCloud: ["Embed SoundCloud links", "Embed SoundCloud player into replies"],
