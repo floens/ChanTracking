@@ -16,6 +16,12 @@ $ = {
     },
     extend: function(a, b) {
         for (var c in b) a[c] = b[c]
+    },
+    on: function(a, b, c) {
+        a.addEventListener(b, c, !1)
+    },
+    off: function(a, b, c) {
+        a.removeEventListener(b, c, !1)
     }
 };
 document.documentElement.classList ? ($.hasClass = function(a, b) {
@@ -676,6 +682,7 @@ var Parser = {
         },
         onError: function(a) {
             var b;
+            Feedback.error("File no longer exists (404).", 2E3);
             b = a.target;
             a = $.qs("img[data-expanding]", b.parentNode);
             b.parentNode.removeChild(b);
@@ -717,7 +724,7 @@ var Parser = {
         show: function(a) {
             var b, c;
             c = a.parentNode.getAttribute("href");
-            (b = c.match(/\.(?:webm|pdf)$/)) ? ".webm" == b[0] && ImageHover.showWebm(a) : (b = document.createElement("img"), b.id = "image-hover", b.alt = "Image", b.setAttribute("src", c), document.body.appendChild(b), UA.hasCORS ? (b.style.display = "none", this.timeout = ImageHover.checkLoadStart(b, a)) : b.style.left = a.getBoundingClientRect().right + 10 + "px")
+            (b = c.match(/\.(?:webm|pdf)$/)) ? ".webm" == b[0] && ImageHover.showWebm(a) : (b = document.createElement("img"), b.id = "image-hover", b.alt = "Image", b.onerror = ImageHover.onLoadError, b.setAttribute("src", c), document.body.appendChild(b), UA.hasCORS ? (b.style.display = "none", this.timeout = ImageHover.checkLoadStart(b, a)) : b.style.left = a.getBoundingClientRect().right + 10 + "px")
         },
         hide: function() {
             var a;
@@ -733,6 +740,7 @@ var Parser = {
             b.loop = !0;
             b.muted = !0;
             b.autoplay = !0;
+            b.onerror = ImageHover.onLoadError;
             b.onloadedmetadata = function() {
                 ImageHover.showWebMDuration(this, a)
             };
@@ -746,6 +754,9 @@ var Parser = {
                 var c = $.prettySeconds(a.duration);
                 Tip.show(b, c[0] + ":" + ("0" + c[1]).slice(-2))
             }
+        },
+        onLoadError: function() {
+            Feedback.error("File no longer exists (404).", 2E3)
         },
         onLoadStart: function(a, b) {
             var c;
@@ -2581,419 +2592,443 @@ Config.save = function(a) {
     a && (Config.forceHTTPS ? Main.setCookie("https", 1) : Main.removeCookie("https"), a.darkTheme != Config.darkTheme && (Config.darkTheme ? (Main.setCookie("nws_style", "Tomorrow", ".4chan.org"), Main.setCookie("ws_style", "Tomorrow", ".4chan.org")) : (Main.removeCookie("nws_style", ".4chan.org"), Main.removeCookie("ws_style", ".4chan.org"))))
 };
 var SettingsMenu = {
-        options: {
-            "Quotes &amp; Replying": {
-                quotePreview: ["Quote preview", "Show post when mousing over post links", !0],
-                backlinks: ["Backlinks", "Show who has replied to a post", !0],
-                inlineQuotes: ["Inline quote links", "Clicking quote links will inline expand the quoted post, Shift-click to bypass inlining"],
-                quickReply: ["Quick Reply", "Quickly respond to a post by clicking its post number", !0],
-                persistentQR: ["Persistent Quick Reply", "Keep Quick Reply window open after posting"]
-            },
-            Monitoring: {
-                threadUpdater: ["Thread updater", "Append new posts to bottom of thread without refreshing the page", !0],
-                alwaysAutoUpdate: ["Auto-update by default", "Always auto-update threads", !0],
-                threadWatcher: ["Thread Watcher", "Keep track of threads you're watching and see when they receive new posts", !0],
-                autoScroll: ["Auto-scroll with auto-updated posts", "Automatically scroll the page as new posts are added"],
-                updaterSound: ["Sound notification", "Play a sound when somebody replies to your post(s)"],
-                fixedThreadWatcher: ["Pin Thread Watcher to the page", "Thread Watcher will scroll with you"],
-                threadStats: ["Thread statistics", "Display post and image counts on the right of the page, <em>italics</em> signify bump/image limit has been met", !0]
-            },
-            "Filters &amp; Post Hiding": {
-                filter: ['Filter and highlight specific threads/posts [<a href="javascript:;" data-cmd="filters-open">Edit</a>]', "Enable pattern-based filters"],
-                threadHiding: ['Thread hiding [<a href="javascript:;" data-cmd="thread-hiding-clear">Clear History</a>]', "Hide entire threads by clicking the minus button", !0],
-                hideStubs: ["Hide thread stubs", "Don't display stubs of hidden threads"]
-            },
-            Navigation: {
-                threadExpansion: ["Thread expansion", "Expand threads inline on board indexes", !0],
-                dropDownNav: ["Use persistent drop-down navigation bar", ""],
-                classicNav: ["Use traditional board list", "", !1, !0],
-                autoHideNav: ["Auto-hide on scroll", "", !1, !0],
-                customMenu: ['Custom board list [<a href="javascript:;" data-cmd="custom-menu-edit">Edit</a>]', "Only show selected boards in top and bottom board lists"],
-                alwaysDepage: ["Always use infinite scroll", "Enable infinite scroll by default, so reaching the bottom of the board index will load subsequent pages", !0],
-                topPageNav: ["Page navigation at top of page", "Show the page switcher at the top of the page, hold Shift and drag to move"],
-                stickyNav: ["Navigation arrows", "Show top and bottom navigation arrows, hold Shift and drag to move"],
-                keyBinds: ['Use keyboard shortcuts [<a href="javascript:;" data-cmd="keybinds-open">Show</a>]', "Enable handy keyboard shortcuts for common actions"]
-            },
-            "Images &amp; Media": {
-                imageExpansion: ["Image expansion", "Enable inline image expansion, limited to browser width", !0],
-                fitToScreenExpansion: ["Fit expanded images to screen", "Limit expanded images to both browser width and height"],
-                imageHover: ["Image hover", "Mouse over images to view full size, limited to browser size"],
-                revealSpoilers: ["Don't spoiler images", "Show image thumbnail and original filename instead of spoiler placeholders", !0],
-                noPictures: ["Hide thumbnails", "Don't display thumbnails while browsing", !0],
-                embedYouTube: ["Embed YouTube links", "Embed YouTube player into replies"],
-                embedSoundCloud: ["Embed SoundCloud links", "Embed SoundCloud player into replies"],
-                embedVocaroo: ["Embed Vocaroo links", "Embed Vocaroo player into replies"]
-            },
-            Miscellaneous: {
-                darkTheme: ["Use a dark theme", "Use the Tomorrow theme for nighttime browsing", !0, !1, !0],
-                customCSS: ['Custom CSS [<a href="javascript:;" data-cmd="css-open">Edit</a>]', "Include your own CSS rules", !0],
-                IDColor: ["Color user IDs", "Assign unique colors to user IDs on boards that use them", !0],
-                compactThreads: ["Force long posts to wrap", "Long posts will wrap at 75% browser width"],
-                centeredThreads: ["Center threads", "Align threads to the center of page", !1],
-                reportButton: ["Report button", "Add a report button next to posts for easy reporting", !0, !1, !0],
-                localTime: ["Convert dates to local time", "Convert 4chan server time (US Eastern Time) to your local time", !0],
-                forceHTTPS: ["Always use HTTPS", "Rewrite 4chan URLs to always use HTTPS", !0]
-            }
+    options: {
+        "Quotes &amp; Replying": {
+            quotePreview: ["Quote preview", "Show post when mousing over post links", !0],
+            backlinks: ["Backlinks", "Show who has replied to a post", !0],
+            inlineQuotes: ["Inline quote links", "Clicking quote links will inline expand the quoted post, Shift-click to bypass inlining"],
+            quickReply: ["Quick Reply", "Quickly respond to a post by clicking its post number", !0],
+            persistentQR: ["Persistent Quick Reply", "Keep Quick Reply window open after posting"]
         },
-        save: function() {
-            var a, b, c, d, e;
-            e = {};
-            $.extend(e, Config);
-            b = $.id("settingsMenu").getElementsByClassName("menuOption");
-            for (a = 0; c = b[a]; ++a) d = c.getAttribute("data-option"), Config[d] = "checkbox" == c.type ? c.checked : c.value;
-            Config.save(e);
-            SettingsMenu.close();
-            location.href = location.href.replace(/#.+$/, "")
+        Monitoring: {
+            threadUpdater: ["Thread updater", "Append new posts to bottom of thread without refreshing the page", !0],
+            alwaysAutoUpdate: ["Auto-update by default", "Always auto-update threads", !0],
+            threadWatcher: ["Thread Watcher", "Keep track of threads you're watching and see when they receive new posts", !0],
+            autoScroll: ["Auto-scroll with auto-updated posts", "Automatically scroll the page as new posts are added"],
+            updaterSound: ["Sound notification", "Play a sound when somebody replies to your post(s)"],
+            fixedThreadWatcher: ["Pin Thread Watcher to the page", "Thread Watcher will scroll with you"],
+            threadStats: ["Thread statistics", "Display post and image counts on the right of the page, <em>italics</em> signify bump/image limit has been met", !0]
         },
-        toggle: function() {
-            $.id("settingsMenu") ? SettingsMenu.close() : SettingsMenu.open()
+        "Filters &amp; Post Hiding": {
+            filter: ['Filter and highlight specific threads/posts [<a href="javascript:;" data-cmd="filters-open">Edit</a>]', "Enable pattern-based filters"],
+            threadHiding: ['Thread hiding [<a href="javascript:;" data-cmd="thread-hiding-clear">Clear History</a>]', "Hide entire threads by clicking the minus button", !0],
+            hideStubs: ["Hide thread stubs", "Don't display stubs of hidden threads"]
         },
-        open: function() {
-            var a, b, c, d, e, f, h, g, k;
-            Main.firstRun && ((k = $.id("settingsTip")) && k.parentNode.removeChild(k), (k = $.id("settingsTipBottom")) && k.parentNode.removeChild(k), Config.save());
-            f = document.createElement("div");
-            f.id = "settingsMenu";
-            f.className = "UIPanel";
-            e = '<div class="extPanel reply"><div class="panelHeader">Settings<span><img alt="Close" title="Close" class="pointer" data-cmd="settings-toggle" src="' + Main.icons.cross + '"></a></span></div><ul>';
-            e += '<ul><li id="settings-exp-all">[<a href="#" data-cmd="settings-exp-all">Expand All Settings</a>]</li></ul>';
-            if (Main.hasMobileLayout)
-                for (b in c = {}, SettingsMenu.options) {
-                    g = {};
-                    h = SettingsMenu.options[b];
-                    for (d in h) h[d][2] && (g[d] = h[d]);
-                    for (a in g) {
-                        c[b] = g;
-                        break
-                    }
-                } else c = SettingsMenu.options;
-            for (b in c) {
-                h = c[b];
-                e += '<ul><li class="settings-cat-lbl"><img alt="" class="settings-expand" src="' + Main.icons.plus + '"><span class="settings-expand pointer">' + b + '</span></li><ul class="settings-cat">';
-                for (d in h)
-                    if (!h[d][4] || Main.hasMobileLayout) e += "<li" + (h[d][3] ? ' class="settings-sub">' : ">") + '<label><input type="checkbox" class="menuOption" data-option="' + d + '"' + (Config[d] ? ' checked="checked">' : ">") + h[d][0] + "</label>" + (!1 !== h[d][1] ? '</li><li class="settings-tip' + (h[d][3] ? ' settings-sub">' : '">') + h[d][1] : "") + "</li>";
-                e += "</ul></ul>"
-            }
-            e += '</ul><ul><li class="settings-off"><label title="Completely disable the native extension (overrides any checked boxes)"><input type="checkbox" class="menuOption" data-option="disableAll"' + (Config.disableAll ? ' checked="checked">' : ">") + 'Disable the native extension</label></li></ul><div class="center"><button data-cmd="settings-export">Export Settings</button><button data-cmd="settings-save">Save Settings</button></div>';
-            f.innerHTML = e;
-            f.addEventListener("click", SettingsMenu.onClick, !1);
-            document.body.appendChild(f);
-            Main.firstRun && SettingsMenu.expandAll();
-            (k = $.cls("menuOption", f)[0]) && k.focus()
+        Navigation: {
+            threadExpansion: ["Thread expansion", "Expand threads inline on board indexes", !0],
+            dropDownNav: ["Use persistent drop-down navigation bar", ""],
+            classicNav: ["Use traditional board list", "", !1, !0],
+            autoHideNav: ["Auto-hide on scroll", "", !1, !0],
+            customMenu: ['Custom board list [<a href="javascript:;" data-cmd="custom-menu-edit">Edit</a>]', "Only show selected boards in top and bottom board lists"],
+            alwaysDepage: ["Always use infinite scroll", "Enable infinite scroll by default, so reaching the bottom of the board index will load subsequent pages", !0],
+            topPageNav: ["Page navigation at top of page", "Show the page switcher at the top of the page, hold Shift and drag to move"],
+            stickyNav: ["Navigation arrows", "Show top and bottom navigation arrows, hold Shift and drag to move"],
+            keyBinds: ['Use keyboard shortcuts [<a href="javascript:;" data-cmd="keybinds-open">Show</a>]', "Enable handy keyboard shortcuts for common actions"]
         },
-        showExport: function() {
-            var a, b;
-            $.id("exportSettings") || (b = location.href.replace(location.hash, "") + "#cfg=" + Config.toURL(), a = document.createElement("div"), a.id = "exportSettings", a.className = "UIPanel", a.setAttribute("data-cmd", "export-close"), a.innerHTML = '<div class="extPanel reply"><div class="panelHeader">Export Settings<span><img data-cmd="export-close" class="pointer" alt="Close" title="Close" src="' + Main.icons.cross + '"></span></div><p class="center">Copy and save the URL below, and visit it from another browser or computer to restore your extension and catalog settings.</p><p class="center"><input class="export-field" type="text" readonly="readonly" value="' + b + '"></p><p style="margin-top:15px" class="center">Alternatively, you can drag the link below into your bookmarks bar and click it to restore.</p><p class="center">[<a target="_blank" href="' + b + '">Restore 4chan Settings</a>]</p>', document.body.appendChild(a), a.addEventListener("click", this.onExportClick, !1), a = $.cls("export-field", a)[0], a.focus(), a.select())
+        "Images &amp; Media": {
+            imageExpansion: ["Image expansion", "Enable inline image expansion, limited to browser width", !0],
+            fitToScreenExpansion: ["Fit expanded images to screen", "Limit expanded images to both browser width and height"],
+            imageHover: ["Image hover", "Mouse over images to view full size, limited to browser size"],
+            revealSpoilers: ["Don't spoiler images", "Show image thumbnail and original filename instead of spoiler placeholders", !0],
+            noPictures: ["Hide thumbnails", "Don't display thumbnails while browsing", !0],
+            embedYouTube: ["Embed YouTube links", "Embed YouTube player into replies"],
+            embedSoundCloud: ["Embed SoundCloud links", "Embed SoundCloud player into replies"],
+            embedVocaroo: ["Embed Vocaroo links", "Embed Vocaroo player into replies"]
         },
-        closeExport: function() {
-            var a;
-            if (a = $.id("exportSettings")) a.removeEventListener("click", this.onExportClick, !1), document.body.removeChild(a)
-        },
-        onExportClick: function(a) {
-            "exportSettings" == a.target.id && (a.preventDefault(), a.stopPropagation(), SettingsMenu.closeExport())
-        },
-        expandAll: function() {
-            var a, b, c = $.cls("settings-expand");
-            for (a = 0; b = c[a]; ++a) b.src = Main.icons.minus, b.parentNode.nextElementSibling.style.display = "block"
-        },
-        toggleCat: function(a) {
-            var b, c, d = a.parentNode.nextElementSibling;
-            d.style.display ? (c = "", b = "plus") : (c = "block", b = "minus");
-            d.style.display = c;
-            a.parentNode.firstElementChild.src = Main.icons[b]
-        },
-        onClick: function(a) {
-            var b, c;
-            c = a.target;
-            $.hasClass(c, "settings-expand") ? SettingsMenu.toggleCat(c) : "settings-exp-all" == c.getAttribute("data-cmd") ? (a.preventDefault(), SettingsMenu.expandAll()) : "settingsMenu" == c.id && (b = $.id("settingsMenu")) && (a.preventDefault(), SettingsMenu.close(b))
-        },
-        close: function(a) {
-            if (a = a || $.id("settingsMenu")) a.removeEventListener("click", SettingsMenu.onClick, !1), document.body.removeChild(a)
+        Miscellaneous: {
+            darkTheme: ["Use a dark theme", "Use the Tomorrow theme for nighttime browsing", !0, !1, !0],
+            customCSS: ['Custom CSS [<a href="javascript:;" data-cmd="css-open">Edit</a>]', "Include your own CSS rules", !0],
+            IDColor: ["Color user IDs", "Assign unique colors to user IDs on boards that use them", !0],
+            compactThreads: ["Force long posts to wrap", "Long posts will wrap at 75% browser width"],
+            centeredThreads: ["Center threads", "Align threads to the center of page", !1],
+            reportButton: ["Report button", "Add a report button next to posts for easy reporting", !0, !1, !0],
+            localTime: ["Convert dates to local time", "Convert 4chan server time (US Eastern Time) to your local time", !0],
+            forceHTTPS: ["Always use HTTPS", "Rewrite 4chan URLs to always use HTTPS", !0]
         }
     },
-    Main = {
-        addTooltip: function(a, b, c) {
-            var d;
-            d = document.createElement("div");
-            d.className = "click-me";
-            c && (d.id = c);
-            d.innerHTML = b || "Change your settings";
-            a.parentNode.appendChild(d);
-            d.style.marginLeft = (a.offsetWidth - d.offsetWidth + a.offsetLeft - d.offsetLeft) / 2 + "px";
-            return d
-        },
-        init: function() {
-            var a;
-            document.addEventListener("DOMContentLoaded", Main.run, !1);
-            Main.now = Date.now();
-            UA.init();
-            Config.load();
-            Config.forceHTTPS && "https:" != location.protocol ? location.href = location.href.replace(/^http:/, "https:") : (Main.firstRun && Config.loadFromURL() && (Main.firstRun = !1), (Main.stylesheet = Main.getCookie(style_group)) ? Main.stylesheet = Main.stylesheet.toLowerCase().replace(/ /g, "_") : Main.stylesheet = "nws_style" == style_group ? "yotsuba_new" : "yotsuba_b_new", Main.passEnabled = Main.getCookie("pass_enabled"), QR.noCaptcha = QR.noCaptcha || Main.passEnabled, Main.initIcons(), Main.addCSS(), Main.type = style_group.split("_")[0], a = location.pathname.split(/\//), Main.board = a[1], Main.page = a[2], Main.tid = a[3], Report.init(), Config.IDColor && IDColor.init(), Config.customCSS && CustomCSS.init(), Config.keyBinds && Keybinds.init(), UA.dispatchEvent("4chanMainInit"))
-        },
-        initPersistentNav: function() {
-            var a, b, c;
-            b = $.id("boardNavDesktop");
-            c = $.id("boardNavDesktopFoot");
-            Config.classicNav ? (a = document.createElement("div"), a.className = "pageJump", a.innerHTML = '<a href="#bottom">&#9660;</a><a href="javascript:void(0);" id="settingsWindowLinkClassic">Settings</a><a href="//www.4chan.org" target="_top">Home</a></div>', b.appendChild(a), $.id("settingsWindowLinkClassic").addEventListener("click", SettingsMenu.toggle, !1), $.addClass(b, "persistentNav")) : (b.style.display = "none", $.removeClass($.id("boardNavMobile"), "mobile"));
-            c.style.display = "none";
-            $.addClass(document.body, "hasDropDownNav")
-        },
-        checkMobileLayout: function() {
-            var a, b;
-            if (window.matchMedia) return (window.matchMedia("(max-width: 480px)").matches || window.matchMedia("(max-device-width: 480px)").matches) && "true" != localStorage.getItem("4chan_never_show_mobile");
-            a = $.id("boardNavMobile");
-            b = $.id("boardNavDesktop");
-            return a && b && 0 < a.offsetWidth && 0 == b.offsetWidth
-        },
-        disableDarkTheme: function() {
-            Config.darkTheme = !1;
-            localStorage.setItem("4chan-settings", JSON.stringify(Config))
-        },
-        run: function() {
-            var a;
-            document.removeEventListener("DOMContentLoaded", Main.run, !1);
-            document.addEventListener("click", Main.onclick, !1);
-            $.id("settingsWindowLink").addEventListener("click", SettingsMenu.toggle, !1);
-            $.id("settingsWindowLinkBot").addEventListener("click", SettingsMenu.toggle, !1);
-            $.id("settingsWindowLinkMobile").addEventListener("click", SettingsMenu.toggle, !1);
-            if (!Config.disableAll) {
-                Main.hasMobileLayout = Main.checkMobileLayout();
-                Main.isMobileDevice = /Mobile|Android|Dolfin|Opera Mobi|PlayStation Vita|Nintendo DS/.test(navigator.userAgent);
-                Main.hasMobileLayout ? $.extend(Config, ConfigMobile) : ($.id("bottomReportBtn").style.display = "none", Main.isMobileDevice && $.addClass(document.body, "isMobileDevice"));
-                Main.firstRun && Main.isMobileDevice && (Config.topPageNav = !1, Config.dropDownNav = !0);
-                Config.dropDownNav && !Main.hasMobileLayout && Main.initPersistentNav();
-                $.addClass(document.body, Main.stylesheet);
-                $.addClass(document.body, Main.type);
-                Config.darkTheme && ($.addClass(document.body, "m-dark"), Main.hasMobileLayout || $.cls("stylechanger")[0].addEventListener("change", Main.disableDarkTheme, !1));
-                Config.compactThreads ? $.addClass(document.body, "compact") : Config.centeredThreads && $.addClass(document.body, "centeredThreads");
-                Config.noPictures && $.addClass(document.body, "noPictures");
-                Config.customMenu && CustomMenu.apply(Config.customMenuList);
-                if (Config.quotePreview || Config.imageHover || Config.filter) a = $.id("delform"), a.addEventListener("mouseover", Main.onThreadMouseOver, !1), a.addEventListener("mouseout", Main.onThreadMouseOut, !1);
-                Config.stickyNav && Main.setStickyNav();
-                Main.hasMobileLayout ? StickyNav.init() : (Main.initGlobalMessage(), Config.autoHideNav && StickyNav.init());
-                Config.threadExpansion && ThreadExpansion.init();
-                Config.filter && Filter.init();
-                Config.threadWatcher && ThreadWatcher.init();
-                (Main.hasMobileLayout || Config.embedSoundCloud || Config.embedYouTube || Config.embedVocaroo) && Media.init();
-                ReplyHiding.init();
-                Config.quotePreview && QuotePreview.init();
-                Parser.init();
-                Main.tid ? (Main.threadClosed = !document.forms.post, Main.threadSticky = !!$.cls("stickyIcon", $.id("pi" + Main.tid))[0], Config.threadStats && ThreadStats.init(), Parser.parseThread(Main.tid), Config.threadUpdater && ThreadUpdater.init()) : (Main.page || Depager.init(), Config.topPageNav && Main.setPageNav(), Config.threadHiding && ThreadHiding.init(), Parser.parseBoard());
-                "f" === Main.board && SWFEmbed.init();
-                Config.quickReply && QR.init();
-                ReplyHiding.purge();
-                Config.alwaysDepage && !Main.hasMobileLayout && $.docEl.scrollHeight <= $.docEl.clientHeight && Depager.depage()
-            }
-        },
-        isThreadClosed: function(a) {
-            return window.thread_archived || (el = $.id("pi" + a)) && $.cls("closedIcon", el)[0]
-        },
-        setThreadState: function(a, b) {
-            var c, d, e, f;
-            f = a.charAt(0).toUpperCase() + a.slice(1);
-            if (b) c = $.cls("postNum", $.id("pi" + Main.tid))[0], d = document.createElement("img"), d.className = a + "Icon retina", d.title = f, d.src = Main.icons2[a], "sticky" == a && (e = $.cls("closedIcon", c)[0]) ? (c.insertBefore(d, e), c.insertBefore(document.createTextNode(" "), e)) : (c.appendChild(document.createTextNode(" ")), c.appendChild(d));
-            else if (d = $.cls(a + "Icon", $.id("pi" + Main.tid))[0]) d.parentNode.removeChild(d.previousSibling), d.parentNode.removeChild(d);
-            Main["thread" + f] = b
-        },
-        icons: {
-            up: "arrow_up.png",
-            down: "arrow_down.png",
-            right: "arrow_right.png",
-            download: "arrow_down2.png",
-            refresh: "refresh.png",
-            cross: "cross.png",
-            gis: "gis.png",
-            iqdb: "iqdb.png",
-            minus: "post_expand_minus.png",
-            plus: "post_expand_plus.png",
-            rotate: "post_expand_rotate.gif",
-            quote: "quote.png",
-            report: "report.png",
-            notwatched: "watch_thread_off.png",
-            watched: "watch_thread_on.png",
-            help: "question.png"
-        },
-        icons2: {
-            archived: "archived.gif",
-            closed: "closed.gif",
-            sticky: "sticky.gif",
-            trash: "trash.gif"
-        },
-        initIcons: function() {
-            var a, b;
-            b = "//s.4cdn.org/image/";
-            if (2 <= window.devicePixelRatio) {
-                for (a in Main.icons) Main.icons[a] = Main.icons[a].replace(".", "@2x.");
-                for (a in Main.icons2) Main.icons2[a] = Main.icons2[a].replace(".", "@2x.")
-            }
-            for (a in Main.icons2) Main.icons2[a] = b + Main.icons2[a];
-            b += "buttons/" + {
-                yotsuba_new: "futaba/",
-                futaba_new: "futaba/",
-                yotsuba_b_new: "burichan/",
-                burichan_new: "burichan/",
-                tomorrow: "tomorrow/",
-                photon: "photon/"
-            }[Main.stylesheet];
-            for (a in Main.icons) Main.icons[a] = b + Main.icons[a]
-        },
-        setPageNav: function() {
-            var a, b;
-            b = document.createElement("div");
-            b.setAttribute("data-shiftkey", "1");
-            b.setAttribute("data-trackpos", "TN-position");
-            b.className = "topPageNav";
-            Config["TN-position"] ? b.style.cssText = Config["TN-position"] : (b.style.left = "10px", b.style.top = "50px");
-            if (a = $.cls("pagelist")[0]) a = a.cloneNode(!0), b.appendChild(a), Draggable.set(a), document.body.appendChild(b)
-        },
-        initGlobalMessage: function() {
-            var a, b, c, d;
-            (a = $.id("globalMessage")) && a.textContent && (a.nextElementSibling.style.clear = "both", b = document.createElement("img"), b.id = "toggleMsgBtn", b.className = "extButton", b.setAttribute("data-cmd", "toggleMsg"), b.alt = "Toggle", b.title = "Toggle announcement", d = localStorage.getItem("4chan-global-msg"), c = a.getAttribute("data-utc"), d && c <= d ? (a.style.display = "none", b.style.opacity = "0.5", b.src = Main.icons.plus) : b.src = Main.icons.minus, a.parentNode.insertBefore(b, a))
-        },
-        toggleGlobalMessage: function() {
-            var a, b;
-            a = $.id("globalMessage");
-            b = $.id("toggleMsgBtn");
-            "none" == a.style.display ? (a.style.display = "", b.src = Main.icons.minus, b.style.opacity = "1", localStorage.removeItem("4chan-global-msg")) : (a.style.display = "none", b.src = Main.icons.plus, b.style.opacity = "0.5", localStorage.setItem("4chan-global-msg", a.getAttribute("data-utc")))
-        },
-        setStickyNav: function() {
-            var a, b;
-            a = document.createElement("div");
-            a.id = "stickyNav";
-            a.className = "extPanel reply";
-            a.setAttribute("data-shiftkey", "1");
-            a.setAttribute("data-trackpos", "SN-position");
-            Config["SN-position"] ? a.style.cssText = Config["SN-position"] : (a.style.right = "10px", a.style.top = "50px");
-            b = document.createElement("div");
-            b.innerHTML = '<img class="pointer" src="' + Main.icons.up + '" data-cmd="totop" alt="\u25b2" title="Top"><img class="pointer" src="' + Main.icons.down + '" data-cmd="tobottom" alt="\u25bc" title="Bottom">';
-            Draggable.set(b);
-            a.appendChild(b);
-            document.body.appendChild(a)
-        },
-        getCookie: function(a) {
-            var b, c, d;
-            d = a + "=";
-            c = document.cookie.split(";");
-            for (a = 0; b = c[a]; ++a) {
-                for (;
-                    " " == b.charAt(0);) b = b.substring(1, b.length);
-                if (0 == b.indexOf(d)) return decodeURIComponent(b.substring(d.length, b.length))
-            }
-            return null
-        },
-        setCookie: function(a, b, c) {
-            var d = new Date;
-            d.setTime(d.getTime() + 31536E6);
-            c || (c = "boards.4chan.org");
-            document.cookie = a + "=" + b + "; expires=" + d.toGMTString() + "; path=/; domain=" + c
-        },
-        removeCookie: function(a, b) {
-            b || (b = "boards.4chan.org");
-            document.cookie = a + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;; path=/; domain=" + b
-        },
-        onclick: function(a) {
-            var b, c;
-            if ((b = a.target) != document)
-                if (c = b.getAttribute("data-cmd")) switch (id = b.getAttribute("data-id"), c) {
-                    case "update":
-                        a.preventDefault();
-                        ThreadUpdater.forceUpdate();
-                        break;
-                    case "post-menu":
-                        a.preventDefault();
-                        PostMenu.open(b);
-                        break;
-                    case "auto":
-                        ThreadUpdater.toggleAuto();
-                        break;
-                    case "totop":
-                    case "tobottom":
-                        a.shiftKey || (location.href = "#" + c.slice(2));
-                        break;
-                    case "hide":
-                        ThreadHiding.toggle(id);
-                        break;
-                    case "watch":
-                        ThreadWatcher.toggle(id);
-                        break;
-                    case "hide-r":
-                        b.hasAttribute("data-recurse") ? ReplyHiding.toggleR(id) : ReplyHiding.toggle(id);
-                        break;
-                    case "expand":
-                        ThreadExpansion.toggle(id);
-                        break;
-                    case "open-qr":
-                        a.preventDefault();
-                        QR.show(Main.tid);
-                        $.tag("textarea", document.forms.qrPost)[0].focus();
-                        break;
-                    case "unfilter":
-                        Filter.unfilter(b);
-                        break;
-                    case "depage":
-                        a.preventDefault();
-                        Depager.toggle();
-                        break;
-                    case "report":
-                        Report.open(id, b.getAttribute("data-board"));
-                        break;
-                    case "filter-sel":
-                        a.preventDefault();
-                        Filter.addSelection();
-                        break;
-                    case "embed":
-                        Media.toggleEmbed(b);
-                        break;
-                    case "sound":
-                        ThreadUpdater.toggleSound();
-                        break;
-                    case "toggleMsg":
-                        Main.toggleGlobalMessage();
-                        break;
-                    case "settings-toggle":
-                        SettingsMenu.toggle();
-                        break;
-                    case "settings-save":
-                        SettingsMenu.save();
-                        break;
-                    case "keybinds-open":
-                        Keybinds.open();
-                        break;
-                    case "filters-open":
-                        Filter.open();
-                        break;
-                    case "thread-hiding-clear":
-                        ThreadHiding.clear();
-                        break;
-                    case "css-open":
-                        CustomCSS.open();
-                        break;
-                    case "settings-export":
-                        SettingsMenu.showExport();
-                        break;
-                    case "export-close":
-                        SettingsMenu.closeExport();
-                        break;
-                    case "custom-menu-edit":
-                        CustomMenu.showEditor()
-                } else Config.disableAll || (QR.enabled && "Reply to this post" == b.title ? (a.preventDefault(), c = Main.tid || b.previousElementSibling.getAttribute("href").split("#")[0].split("/")[1], QR.quotePost(c, !a.ctrlKey && b.textContent)) : Config.imageExpansion && 1 == a.which && b.parentNode && $.hasClass(b.parentNode, "fileThumb") && "A" == b.parentNode.nodeName && !$.hasClass(b.parentNode, "deleted") && !$.hasClass(b, "mFileInfo") ? ImageExpansion.toggle(b) && a.preventDefault() : Config.inlineQuotes && 1 == a.which && $.hasClass(b, "quotelink") ? a.shiftKey ? (a.preventDefault(), window.location = b.href) : QuoteInline.toggle(b, a) : Config.threadExpansion && b.parentNode && $.hasClass(b.parentNode, "abbr") ? (a.preventDefault(), ThreadExpansion.expandComment(b)) : Main.isMobileDevice && Config.quotePreview && $.hasClass(b, "quotelink") && b.getAttribute("href").match(QuotePreview.regex) ? a.preventDefault() : $.hasClass(b, "mFileInfo") && (a.preventDefault(), a.stopPropagation()))
-        },
-        onThreadMouseOver: function(a) {
-            var b = a.target;
-            Config.quotePreview && $.hasClass(b, "quotelink") && !$.hasClass(b, "deadlink") && !$.hasClass(b, "linkfade") ? QuotePreview.resolve(a.target) : Config.imageHover && b.hasAttribute("data-md5") && !$.hasClass(b.parentNode, "deleted") ? ImageHover.show(b) : Config.embedYouTube && "yt" === b.getAttribute("data-type") && !Main.hasMobileLayout ? Media.showYTPreview(b) : Config.filter && b.hasAttribute("data-filtered") && QuotePreview.show(b, b.href ? b.parentNode.parentNode.parentNode : b.parentNode.parentNode)
-        },
-        onThreadMouseOut: function(a) {
-            a = a.target;
-            Config.quotePreview && $.hasClass(a, "quotelink") ? QuotePreview.remove(a) : Config.imageHover && a.hasAttribute("data-md5") ? ImageHover.hide() : Config.embedYouTube && "yt" === a.getAttribute("data-type") && !Main.hasMobileLayout ? Media.removeYTPreview() : Config.filter && a.hasAttribute("data-filtered") && QuotePreview.remove(a)
-        },
-        linkToThread: function(a, b, c) {
-            return "//" + location.host + "/" + (b || Main.board) + "/thread/" + a + (0 < c ? "#p" + c : "")
-        },
-        addCSS: function() {
-            var a;
-            a = document.createElement("style");
-            a.setAttribute("type", "text/css");
-            a.textContent = 'body.hasDropDownNav {  margin-top: 45px;}.extButton.threadHideButton {  float: left;  margin-right: 5px;  margin-top: -1px;}.extButton.replyHideButton {  margin-top: 1px;}div.op > span .postHideButtonCollapsed {  margin-right: 1px;}.dropDownNav #boardNavMobile, {  display: block !important;}.extPanel {  border: 1px solid rgba(0, 0, 0, 0.20);}.tomorrow .extPanel {  border: 1px solid #111;}.extButton,img.pointer {  width: 18px;  height: 18px;}.extControls {  display: inline;  margin-left: 5px;}.extButton {  cursor: pointer;  margin-bottom: -4px;}.trashIcon {  width: 16px;  height: 16px;  margin-bottom: -2px;  margin-left: 5px;}.threadUpdateStatus {  margin-left: 0.5ex;}.futaba_new .stub,.burichan_new .stub {  line-height: 1;  padding-bottom: 1px;}.stub .extControls,.stub .wbtn,.stub input {  display: none;}.stub .threadHideButton {  float: none;  margin-right: 2px;}div.post div.postInfo {  width: auto;  display: inline;}.right {  float: right;}.center {  display: block;  margin: auto;}.pointer {  cursor: pointer;}.drag {  cursor: move !important;  user-select: none !important;  -moz-user-select: none !important;  -webkit-user-select: none !important;}#quickReport,#quickReply {  display: block;  position: fixed;  padding: 2px;  font-size: 10pt;}#qrepHeader,#qrHeader {  text-align: center;  margin-bottom: 1px;  padding: 0;  height: 18px;  line-height: 18px;}#qrepClose,#qrClose {  float: right;}#quickReport iframe {  overflow: hidden;}#quickReport {  height: 190px;}#qrForm > div {  clear: both;}#quickReply input[type="text"],#quickReply textarea,#quickReply #recaptcha_response_field {  border: 1px solid #aaa;  font-family: arial,helvetica,sans-serif;  font-size: 10pt;  outline: medium none;  width: 296px;  padding: 2px;  margin: 0 0 1px 0;}#quickReply textarea {  min-width: 296px;  float: left;}#quickReply input::-moz-placeholder,#quickReply textarea::-moz-placeholder {  color: #aaa !important;  opacity: 1 !important;}#quickReply input[type="submit"] {  width: 83px;  margin: 0;  font-size: 10pt;  float: left;}#quickReply #qrCapField {  display: block;  margin-top: 1px;}#qrCaptcha {  width: 300px;  height: 53px;  cursor: pointer;  border: 1px solid #aaa;  display: block;}#quickReply input.presubmit {  margin-right: 1px;  width: 212px;  float: left;}#qrFile {  width: 215px;  margin-right: 5px;}.qrRealFile {  position: absolute;  left: 0;  visibility: hidden;}.yotsuba_new #qrFile {  color:black;}#qrSpoiler {  display: inline;}#qrError {  width: 292px;  display: none;  font-family: monospace;  background-color: #E62020;  font-size: 12px;  color: white;  padding: 3px 5px;  text-shadow: 0 1px rgba(0, 0, 0, 0.20);  clear: both;}#qrError a:hover,#qrError a {  color: white !important;  text-decoration: underline;}#twHeader {  font-weight: bold;  text-align: center;  height: 17px;}.futaba_new #twHeader,.burichan_new #twHeader {  line-height: 1;}#twPrune {  margin-left: 3px;  margin-top: -1px;}#twClose {  float: left;  margin-top: -1px;}#threadWatcher {  max-width: 265px;  display: block;  position: absolute;  padding: 3px;}#watchList {  margin: 0;  padding: 0;  user-select: none;  -moz-user-select: none;  -webkit-user-select: none;}#watchList li:first-child {  margin-top: 3px;  padding-top: 2px;  border-top: 1px solid rgba(0, 0, 0, 0.20);}.photon #watchList li:first-child {  border-top: 1px solid #ccc;}.yotsuba_new #watchList li:first-child {  border-top: 1px solid #d9bfb7;}.yotsuba_b_new #watchList li:first-child {  border-top: 1px solid #b7c5d9;}.tomorrow #watchList li:first-child {  border-top: 1px solid #111;}#watchList a {  text-decoration: none;}#watchList li {  overflow: hidden;  white-space: nowrap;  text-overflow: ellipsis;}div.post div.image-expanded {  display: table;}div.op div.file .image-expanded-anti {  margin-left: -3px;}#quote-preview {  display: block;  position: absolute;  top: 0;  padding: 3px 6px 6px 3px;  margin: 0;}#quote-preview .dateTime {  white-space: nowrap;}#quote-preview.reveal-spoilers s {  background-color: #aaa !important;  color: inherit !important;  text-decoration: none !important;}#quote-preview.reveal-spoilers s a {  background: transparent !important;  text-decoration: underline;}.yotsuba_b_new #quote-preview.reveal-spoilers s a,.burichan_new #quote-preview.reveal-spoilers s a {  color: #D00 !important;}.yotsuba_new #quote-preview.reveal-spoilers s a,.futaba_new #quote-preview.reveal-spoilers s a {  color: #000080 !important;}.tomorrow #quote-preview.reveal-spoilers s { color: #000 !important; }.tomorrow #quote-preview.reveal-spoilers s a { color: #5F89AC !important; }.photon #quote-preview.reveal-spoilers s a {  color: #FF6600 !important;}.yotsuba_new #quote-preview.highlight,.yotsuba_b_new #quote-preview.highlight {  border-width: 1px 2px 2px 1px !important;  border-style: solid !important;}.yotsuba_new #quote-preview.highlight {  border-color: #D99F91 !important;}.yotsuba_b_new #quote-preview.highlight {  border-color: #BA9DBF !important;}.yotsuba_b_new .highlight-anti,.burichan_new .highlight-anti {  border-width: 1px !important;  background-color: #bfa6ba !important;}.yotsuba_new .highlight-anti,.futaba_new .highlight-anti {  background-color: #e8a690 !important;}.tomorrow .highlight-anti {  background-color: #111 !important;  border-color: #111;}.photon .highlight-anti {  background-color: #bbb !important;}.op.inlined {  display: block;}#quote-preview .inlined,#quote-preview .postMenuBtn,#quote-preview .extButton,#quote-preview .extControls {  display: none;}.hasNewReplies {  font-weight: bold;}.archivelink {  opacity: 0.5;}.deadlink {  text-decoration: line-through !important;}div.backlink {  font-size: 0.8em !important;  display: inline;  padding: 0;  padding-left: 5px;}.backlink.mobile {  padding: 3px 5px;  display: block;  clear: both !important;  line-height: 2;}.op .backlink.mobile,#quote-preview .backlink.mobile {  display: none !important;}.backlink.mobile .quoteLink {  padding-right: 2px;}.backlink span {  padding: 0;}.burichan_new .backlink a,.yotsuba_b_new .backlink a {  color: #34345C !important;}.burichan_new .backlink a:hover,.yotsuba_b_new .backlink a:hover {  color: #dd0000 !important;}.expbtn {  margin-right: 3px;  margin-left: 2px;}.tCollapsed .rExpanded {  display: none;}#stickyNav {  position: fixed;  font-size: 0;}#stickyNav img {  vertical-align: middle;}.tu-error {  color: red;}.topPageNav {  position: absolute;}.yotsuba_b_new .topPageNav {  border-top: 1px solid rgba(255, 255, 255, 0.25);  border-left: 1px solid rgba(255, 255, 255, 0.25);}.newPostsMarker:not(#quote-preview) {  box-shadow: 0 3px red;}#toggleMsgBtn {  float: left;  margin-bottom: 6px;}.panelHeader {  font-weight: bold;  font-size: 16px;  text-align: center;  margin-bottom: 5px;  margin-top: 5px;  padding-bottom: 5px;  border-bottom: 1px solid rgba(0, 0, 0, 0.20);}.yotsuba_new .panelHeader {  border-bottom: 1px solid #d9bfb7;}.yotsuba_b_new .panelHeader {  border-bottom: 1px solid #b7c5d9;}.tomorrow .panelHeader {  border-bottom: 1px solid #111;}.panelHeader span {  position: absolute;  right: 5px;  top: 5px;}.UIMenu,.UIPanel {  position: fixed;  width: 100%;  height: 100%;  z-index: 9002;  top: 0;  left: 0;}.UIPanel {  line-height: 14px;  font-size: 14px;  background-color: rgba(0, 0, 0, 0.25);}.UIPanel:after {  display: inline-block;  height: 100%;  vertical-align: middle;  content: "";}.UIPanel > div {  -moz-box-sizing: border-box;  box-sizing: border-box;  display: inline-block;  height: auto;  max-height: 100%;  position: relative;  width: 400px;  left: 50%;  margin-left: -200px;  overflow: auto;  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);  vertical-align: middle;}#settingsMenu > div {  top: 25px;;  vertical-align: top;  max-height: 85%;}.extPanel input[type="text"],.extPanel textarea {  border: 1px solid #AAA;  outline: none;}.UIPanel .center {  margin-bottom: 5px;}.UIPanel button {  display: inline-block;  margin-right: 5px;}.UIPanel code {  background-color: #eee;  color: #000000;  padding: 1px 4px;  font-size: 12px;}.UIPanel ul {  list-style: none;  padding: 0;  margin: 0 0 10px;}.UIPanel .export-field {  width: 385px;}#settingsMenu label input {  margin-right: 5px;}.tomorrow #settingsMenu ul {  border-bottom: 1px solid #282a2e;}.settings-off {  padding-left: 3px;}.settings-cat-lbl {  font-weight: bold;  margin: 10px 0 5px;  padding-left: 5px;}.settings-cat-lbl img {  vertical-align: text-bottom;  margin-right: 5px;  cursor: pointer;  width: 18px;  height: 18px;}.settings-tip {  font-size: 0.85em;  margin: 2px 0 5px 0;  padding-left: 23px;}#settings-exp-all {  padding-left: 7px;  text-align: center;}#settingsMenu .settings-cat {  display: none;  margin-left: 3px;}#customCSSMenu textarea {  display: block;  max-width: 100%;  min-width: 100%;  -moz-box-sizing: border-box;  box-sizing: border-box;  height: 200px;  margin: 0 0 5px;  font-family: monospace;}#customCSSMenu .right,#settingsMenu .right {  margin-top: 2px;}#settingsMenu label {  display: inline-block;  user-select: none;  -moz-user-select: none;  -webkit-user-select: none;}#filtersHelp > div {  width: 600px;  left: 50%;  margin-left: -300px;}#filtersHelp h4 {  font-size: 15px;  margin: 20px 0 0 10px;}#filtersHelp h4:before {  content: "\u00bb";  margin-right: 3px;}#filtersHelp ul {  padding: 0;  margin: 10px;}#filtersHelp li {  padding: 3px 0;  list-style: none;}#filtersMenu table {  width: 100%;}#filtersMenu th {  font-size: 12px;}#filtersMenu tbody {  text-align: center;}#filtersMenu select,#filtersMenu .fPattern,#filtersMenu .fBoards,#palette-custom-input {  padding: 1px;  font-size: 11px;}#filtersMenu select {  width: 75px;}#filtersMenu tfoot td {  padding-top: 10px;}#keybindsHelp li {  padding: 3px 5px;}.fPattern {  width: 110px;}.fBoards {  width: 25px;}.fColor {  width: 60px;}.fDel {  font-size: 16px;}.filter-preview {  cursor: pointer;  margin-left: 3px;}#quote-preview iframe,#quote-preview .filter-preview {  display: none;}.post-hidden .extButton,.post-hidden:not(#quote-preview) .postInfo {  opacity: 0.5;}.post-hidden:not(.thread) .postInfo {  padding-left: 5px;}.post-hidden:not(#quote-preview) input,.post-hidden:not(#quote-preview) .replyContainer,.post-hidden:not(#quote-preview) .summary,.post-hidden:not(#quote-preview) .op .file,.post-hidden:not(#quote-preview) .file,.post-hidden .wbtn,.post-hidden .postNum span,.post-hidden:not(#quote-preview) .backlink,div.post-hidden:not(#quote-preview) div.file,div.post-hidden:not(#quote-preview) blockquote.postMessage {  display: none;}.click-me {  border-radius: 5px;  margin-top: 5px;  padding: 2px 5px;  position: absolute;  font-weight: bold;  z-index: 2;  white-space: nowrap;}.yotsuba_new .click-me,.futaba_new .click-me {  color: #800000;  background-color: #F0E0D6;  border: 2px solid #D9BFB7;}.yotsuba_b_new .click-me,.burichan_new .click-me {  color: #000;  background-color: #D6DAF0;  border: 2px solid #B7C5D9;}.tomorrow .click-me {  color: #C5C8C6;  background-color: #282A2E;  border: 2px solid #111;}.photon .click-me {  color: #333;  background-color: #ddd;  border: 2px solid #ccc;}.click-me:before {  content: "";  border-width: 0 6px 6px;  border-style: solid;  left: 50%;  margin-left: -6px;  position: absolute;  width: 0;  height: 0;  top: -6px;}.yotsuba_new .click-me:before,.futaba_new .click-me:before {  border-color: #D9BFB7 transparent;}.yotsuba_b_new .click-me:before,.burichan_new .click-me:before {  border-color: #B7C5D9 transparent;}.tomorrow .click-me:before {  border-color: #111 transparent;}.photon .click-me:before {  border-color: #ccc transparent;}.click-me:after {  content: "";  border-width: 0 4px 4px;  top: -4px;  display: block;  left: 50%;  margin-left: -4px;  position: absolute;  width: 0;  height: 0;}.yotsuba_new .click-me:after,.futaba_new .click-me:after {  border-color: #F0E0D6 transparent;  border-style: solid;}.yotsuba_b_new .click-me:after,.burichan_new .click-me:after {  border-color: #D6DAF0 transparent;  border-style: solid;}.tomorrow .click-me:after {  border-color: #282A2E transparent;  border-style: solid;}.photon .click-me:after {  border-color: #DDD transparent;  border-style: solid;}#image-hover {  position: fixed;  max-width: 100%;  max-height: 100%;  top: 0px;  right: 0px;  z-index: 9002;}.thread-stats {  float: right;  margin-right: 5px;  cursor: default;}.compact .thread {  max-width: 75%;}.dotted {  text-decoration: none;  border-bottom: 1px dashed;}.linkfade {  opacity: 0.5;}#quote-preview .linkfade {  opacity: 1.0;}kbd {  background-color: #f7f7f7;  color: black;  border: 1px solid #ccc;  border-radius: 3px 3px 3px 3px;  box-shadow: 0 1px 0 #ccc, 0 0 0 2px #fff inset;  font-family: monospace;  font-size: 11px;  line-height: 1.4;  padding: 0 5px;}.deleted {  opacity: 0.66;}.noPictures a.fileThumb img:not(.expanded-thumb) {  opacity: 0;}.noPictures.futaba_new a.fileThumb,.noPictures.yotsuba_new a.fileThumb {  border: 1px solid #800;}.noPictures.burichan_new a.fileThumb,.noPictures.yotsuba_b_new a.fileThumb {  border: 1px solid #34345C;}.noPictures.tomorrow a.fileThumb:not(.expanded-thumb) {  border: 1px solid #C5C8C6;}.noPictures.photon a.fileThumb:not(.expanded-thumb) {  border: 1px solid #004A99;}.spinner {  margin-top: 2px;  padding: 3px;  display: table;}#settings-presets {  position: relative;  top: -1px;}#colorpicker {   position: fixed;  text-align: center;}.colorbox {  font-size: 10px;  width: 16px;  height: 16px;  line-height: 17px;  display: inline-block;  text-align: center;  background-color: #fff;  border: 1px solid #aaa;  text-decoration: none;  color: #000;  cursor: pointer;  vertical-align: top;}#palette-custom-input {  vertical-align: top;  width: 45px;  margin-right: 2px;}#qrDummyFile {  float: left;  margin-right: 5px;  width: 220px;  cursor: default;  -moz-user-select: none;  -webkit-user-select: none;  -ms-user-select: none;  user-select: none;  white-space: nowrap;  text-overflow: ellipsis;  overflow: hidden;}#qrDummyFileLabel {  margin-left: 3px;}.depageNumber {  position: absolute;  right: 5px;}.depagerEnabled .depagelink {  font-weight: bold;}.depagerEnabled strong {  font-weight: normal;}.depagelink {  display: inline-block;  padding: 4px 0;  cursor: pointer;  text-decoration: none;}.burichan_new .depagelink,.futaba_new .depagelink {  text-decoration: underline;}#customMenuBox {  margin: 0 auto 5px auto;  width: 385px;  display: block;}.preview-summary {  display: block;}#swf-embed-header {  padding: 0 0 0 3px;  font-weight: normal;  height: 20px;  line-height: 20px;}.yotsuba_new #swf-embed-header,.yotsuba_b_new #swf-embed-header {  height: 18px;  line-height: 18px;}#swf-embed-close {  position: absolute;  right: 0;  top: 1px;}.open-qr-wrap {  text-align: center;  width: 200px;  position: absolute;  margin-left: 50%;  left: -100px;}.postMenuBtn {  margin-left: 5px;  text-decoration: none;  line-height: 1em;  display: inline-block;  -webkit-transition: -webkit-transform 0.1s;  -moz-transition: -moz-transform 0.1s;  transition: transform 0.1s;  width: 1em;  height: 1em;  text-align: center;  outline: none;  opacity: 0.8;}.postMenuBtn:hover{  opacity: 1;}.yotsuba_new .postMenuBtn,.futaba_new .postMenuBtn {  color: #000080;}.tomorrow .postMenuBtn {  color: #5F89AC !important;}.tomorrow .postMenuBtn:hover {  color: #81a2be !important;}.photon .postMenuBtn {  color: #FF6600 !important;}.photon .postMenuBtn:hover {  color: #FF3300 !important;}.menuOpen {  -webkit-transform: rotate(90deg);  -moz-transform: rotate(90deg);  -ms-transform: rotate(90deg);  transform: rotate(90deg);}.settings-sub label:before {  border-bottom: 1px solid;  border-left: 1px solid;  content: " ";  display: inline-block;  height: 8px;  margin-bottom: 5px;  width: 8px;}.settings-sub {  margin-left: 25px;}.settings-tip.settings-sub {  padding-left: 32px;}.centeredThreads .opContainer {  display: block;}.centeredThreads .postContainer {  margin: auto;  width: 75%;}.centeredThreads .sideArrows {  display: none;}.centre-exp {  width: auto !important;  clear: both;}.centeredThreads .expandedWebm {  float: none;}.centeredThreads .summary {  margin-left: 12.5%;  display: block;}.centre-exp div.op{  display: table;}#yt-preview { position: absolute; }#yt-preview img { display: block; }.autohide-nav { transition: top 0.2s ease-in-out }@media only screen and (max-width: 480px) {.thread-stats { float: none; text-align: center; }.ts-replies:before { content: "Replies: "; }.ts-images:before { content: "Images: "; }.ts-ips:before { content: "Posters: "; }.ts-page:before { content: "Page: "; }#threadWatcher {  max-width: none;  padding: 3px 0;  left: 0;  width: 100%;  border-left: none;  border-right: none;}#watchList {  padding: 0 10px;}.btn-row {  margin-top: 5px;}.image-expanded .mFileName {  display: block;  margin-bottom: 2px;}.mFileName { display: none }.mobile-report {  float: right;  font-size: 11px;  margin-bottom: 3px;  margin-left: 10px;}.mobile-report:after {  content: "]";}.mobile-report:before {  content: "[";}.nws .mobile-report:after {  color: #800000;}.nws .mobile-report:before {  color: #800000;}.ws .mobile-report {  color: #34345C;}.nws .mobile-report {  color:#0000EE;}.reply .mobile-report {  margin-right:5px;}.postLink .mobileHideButton {  margin-right: 3px;}.board .mobile-hr-hidden {  margin-top: 10px !important;}.board > .mobileHideButton {  margin-top: -20px !important;}.board > .mobileHideButton:first-child {  margin-top: 10px !important;}.extButton.threadHideButton {  float: none;  margin: 0;  margin-bottom: 5px;}.mobile-post-hidden {  display: none;}#toggleMsgBtn {  display: none;}.mobile-tu-status {  height: 20px;  line-height: 20px;}.mobile-tu-show {  width: 150px;  margin: auto;  display: block;  text-align: center;}.button input {  margin: 0 3px 0 0;  position: relative;  top: -2px;  border-radius: 0;  height: 10px;  width: 10px;}.UIPanel > div {  width: 320px;  margin-left: -160px;}.UIPanel .export-field {  width: 300px;}.yotsuba_new #quote-preview.highlight,#quote-preview {  border-width: 1px !important;}.yotsuba_new #quote-preview.highlight {  border-color: #D9BFB7 !important;}#quickReply input[type="text"],#quickReply textarea,.extPanel input[type="text"],.extPanel textarea {  font-size: 16px;}#quickReply {  position: absolute;  left: 50%;  margin-left: -154px;}.m-dark .button {  background-color: rgb(27,28,30);  background-image: url("//s.4cdn.org/image/buttonfade-dark.png");  background-repeat: repeat-x;  border: 1px solid #282A2E;}.depaged-ad { margin-top: -25px; margin-bottom: -25px; }.depageNumber { font-size: 10px; margin-top: -21px; }.m-dark a, .m-dark div#absbot a { color: #81A2BE !important; }.m-dark a:hover { color: #5F89AC !important; }.m-dark .button a, .m-dark .button:hover, .m-dark .button { color: #707070 !important; }.m-dark #boardNavMobile {  background-color: #1D1F21;  border-bottom: 2px solid #282A2E; }body.m-dark { background: #1D1F21 none; color: #C5C8C6; }.m-dark #globalToggle {  background-color: #FFADAD;  background-image: url("//s.4cdn.org/image/buttonfade-red.png");  border: 1px solid #C45858;  color: #880000 !important;}.m-dark .boardTitle { color: #C5C8C6; }.m-dark .mobile-report { color: #81a2be !important; }.m-dark .mobile-report:after,.m-dark .mobile-report:before { color: #1d1f21 !important; }.m-dark hr, .m-dark div.board > hr { border-top: 1px solid #282A2E; }.m-dark div.opContainer,.m-dark div.reply { background-color: #282A2E; border: 1px solid #2D2F33 !important; }.m-dark .preview { background-color: #282A2E; border: 1px solid #333 !important; }.m-dark div.post div.postInfoM { background-color: #212326; border-bottom: 1px solid #2D2F33; }.m-dark div.postLink,.m-dark .backlink.mobile { background-color: #212326; border-top: 1px solid #2D2F33; }.m-dark div.post div.postInfoM span.dateTime,.m-dark div.postLink span.info,.m-dark div.post div.postInfoM span.dateTime a { color: #707070 !important; }.m-dark span.subject { color: #B294BB !important; }.m-dark .highlightPost:not(.op) { background: #3A171C !important; }.m-dark .reply:target, .m-dark .reply.highlight { background: #1D1D21 !important; padding: 2px; }.m-dark .reply:target, .m-dark .reply.highlight { background: #1D1D21 !important; padding: 2px; }}';
-            document.head.appendChild(a)
+    save: function() {
+        var a, b, c, d, e;
+        e = {};
+        $.extend(e, Config);
+        b = $.id("settingsMenu").getElementsByClassName("menuOption");
+        for (a = 0; c = b[a]; ++a) d = c.getAttribute("data-option"), Config[d] = "checkbox" == c.type ? c.checked : c.value;
+        Config.save(e);
+        SettingsMenu.close();
+        location.href = location.href.replace(/#.+$/, "")
+    },
+    toggle: function() {
+        $.id("settingsMenu") ? SettingsMenu.close() : SettingsMenu.open()
+    },
+    open: function() {
+        var a, b, c, d, e, f, h, g, k;
+        Main.firstRun && ((k = $.id("settingsTip")) && k.parentNode.removeChild(k), (k = $.id("settingsTipBottom")) && k.parentNode.removeChild(k), Config.save());
+        f = document.createElement("div");
+        f.id = "settingsMenu";
+        f.className = "UIPanel";
+        e = '<div class="extPanel reply"><div class="panelHeader">Settings<span><img alt="Close" title="Close" class="pointer" data-cmd="settings-toggle" src="' + Main.icons.cross + '"></a></span></div><ul>';
+        e += '<ul><li id="settings-exp-all">[<a href="#" data-cmd="settings-exp-all">Expand All Settings</a>]</li></ul>';
+        if (Main.hasMobileLayout)
+            for (b in c = {}, SettingsMenu.options) {
+                g = {};
+                h = SettingsMenu.options[b];
+                for (d in h) h[d][2] && (g[d] = h[d]);
+                for (a in g) {
+                    c[b] = g;
+                    break
+                }
+            } else c = SettingsMenu.options;
+        for (b in c) {
+            h = c[b];
+            e += '<ul><li class="settings-cat-lbl"><img alt="" class="settings-expand" src="' + Main.icons.plus + '"><span class="settings-expand pointer">' + b + '</span></li><ul class="settings-cat">';
+            for (d in h)
+                if (!h[d][4] || Main.hasMobileLayout) e += "<li" + (h[d][3] ? ' class="settings-sub">' : ">") + '<label><input type="checkbox" class="menuOption" data-option="' + d + '"' + (Config[d] ? ' checked="checked">' : ">") + h[d][0] + "</label>" + (!1 !== h[d][1] ? '</li><li class="settings-tip' + (h[d][3] ? ' settings-sub">' : '">') + h[d][1] : "") + "</li>";
+            e += "</ul></ul>"
         }
-    };
+        e += '</ul><ul><li class="settings-off"><label title="Completely disable the native extension (overrides any checked boxes)"><input type="checkbox" class="menuOption" data-option="disableAll"' + (Config.disableAll ? ' checked="checked">' : ">") + 'Disable the native extension</label></li></ul><div class="center"><button data-cmd="settings-export">Export Settings</button><button data-cmd="settings-save">Save Settings</button></div>';
+        f.innerHTML = e;
+        f.addEventListener("click", SettingsMenu.onClick, !1);
+        document.body.appendChild(f);
+        Main.firstRun && SettingsMenu.expandAll();
+        (k = $.cls("menuOption", f)[0]) && k.focus()
+    },
+    showExport: function() {
+        var a, b;
+        $.id("exportSettings") || (b = location.href.replace(location.hash, "") + "#cfg=" + Config.toURL(), a = document.createElement("div"), a.id = "exportSettings", a.className = "UIPanel", a.setAttribute("data-cmd", "export-close"), a.innerHTML = '<div class="extPanel reply"><div class="panelHeader">Export Settings<span><img data-cmd="export-close" class="pointer" alt="Close" title="Close" src="' + Main.icons.cross + '"></span></div><p class="center">Copy and save the URL below, and visit it from another browser or computer to restore your extension and catalog settings.</p><p class="center"><input class="export-field" type="text" readonly="readonly" value="' + b + '"></p><p style="margin-top:15px" class="center">Alternatively, you can drag the link below into your bookmarks bar and click it to restore.</p><p class="center">[<a target="_blank" href="' + b + '">Restore 4chan Settings</a>]</p>', document.body.appendChild(a), a.addEventListener("click", this.onExportClick, !1), a = $.cls("export-field", a)[0], a.focus(), a.select())
+    },
+    closeExport: function() {
+        var a;
+        if (a = $.id("exportSettings")) a.removeEventListener("click", this.onExportClick, !1), document.body.removeChild(a)
+    },
+    onExportClick: function(a) {
+        "exportSettings" == a.target.id && (a.preventDefault(), a.stopPropagation(), SettingsMenu.closeExport())
+    },
+    expandAll: function() {
+        var a, b, c = $.cls("settings-expand");
+        for (a = 0; b = c[a]; ++a) b.src = Main.icons.minus, b.parentNode.nextElementSibling.style.display = "block"
+    },
+    toggleCat: function(a) {
+        var b, c, d = a.parentNode.nextElementSibling;
+        d.style.display ? (c = "", b = "plus") : (c = "block", b = "minus");
+        d.style.display = c;
+        a.parentNode.firstElementChild.src = Main.icons[b]
+    },
+    onClick: function(a) {
+        var b, c;
+        c = a.target;
+        $.hasClass(c, "settings-expand") ? SettingsMenu.toggleCat(c) : "settings-exp-all" == c.getAttribute("data-cmd") ? (a.preventDefault(), SettingsMenu.expandAll()) : "settingsMenu" == c.id && (b = $.id("settingsMenu")) && (a.preventDefault(), SettingsMenu.close(b))
+    },
+    close: function(a) {
+        if (a = a || $.id("settingsMenu")) a.removeEventListener("click", SettingsMenu.onClick, !1), document.body.removeChild(a)
+    }
+};
+Feedback = {
+    messageTimeout: null,
+    showMessage: function(a, b, c, d) {
+        var e;
+        Feedback.hideMessage();
+        e = document.createElement("div");
+        e.id = "feedback";
+        e.title = "Dismiss";
+        e.innerHTML = '<span class="feedback-' + b + '">' + a + "</span>";
+        $.on(e, "click", d || Feedback.hideMessage);
+        document.body.appendChild(e);
+        c && (Feedback.messageTimeout = setTimeout(Feedback.hideMessage, c))
+    },
+    hideMessage: function() {
+        var a = $.id("feedback");
+        a && (Feedback.messageTimeout && (clearTimeout(Feedback.messageTimeout), Feedback.messageTimeout = null), $.off(a, "click", Feedback.hideMessage), document.body.removeChild(a))
+    },
+    error: function(a, b) {
+        Feedback.showMessage(a || "Something went wrong", "error", b || 5E3)
+    },
+    notify: function(a, b) {
+        Feedback.showMessage(a, "notify", b || 3E3)
+    }
+};
+var Main = {
+    addTooltip: function(a, b, c) {
+        var d;
+        d = document.createElement("div");
+        d.className = "click-me";
+        c && (d.id = c);
+        d.innerHTML = b || "Change your settings";
+        a.parentNode.appendChild(d);
+        d.style.marginLeft = (a.offsetWidth - d.offsetWidth + a.offsetLeft - d.offsetLeft) / 2 + "px";
+        return d
+    },
+    init: function() {
+        var a;
+        document.addEventListener("DOMContentLoaded", Main.run, !1);
+        Main.now = Date.now();
+        UA.init();
+        Config.load();
+        Config.forceHTTPS && "https:" != location.protocol ? location.href = location.href.replace(/^http:/, "https:") : (Main.firstRun && Config.loadFromURL() && (Main.firstRun = !1), (Main.stylesheet = Main.getCookie(style_group)) ? Main.stylesheet = Main.stylesheet.toLowerCase().replace(/ /g, "_") : Main.stylesheet = "nws_style" == style_group ? "yotsuba_new" : "yotsuba_b_new", Main.passEnabled = Main.getCookie("pass_enabled"), QR.noCaptcha = QR.noCaptcha || Main.passEnabled, Main.initIcons(), Main.addCSS(), Main.type = style_group.split("_")[0], a = location.pathname.split(/\//), Main.board = a[1], Main.page = a[2], Main.tid = a[3], Report.init(), Config.IDColor && IDColor.init(), Config.customCSS && CustomCSS.init(), Config.keyBinds && Keybinds.init(), UA.dispatchEvent("4chanMainInit"))
+    },
+    initPersistentNav: function() {
+        var a, b, c;
+        b = $.id("boardNavDesktop");
+        c = $.id("boardNavDesktopFoot");
+        Config.classicNav ? (a = document.createElement("div"), a.className = "pageJump", a.innerHTML = '<a href="#bottom">&#9660;</a><a href="javascript:void(0);" id="settingsWindowLinkClassic">Settings</a><a href="//www.4chan.org" target="_top">Home</a></div>', b.appendChild(a), $.id("settingsWindowLinkClassic").addEventListener("click", SettingsMenu.toggle, !1), $.addClass(b, "persistentNav")) : (b.style.display = "none", $.removeClass($.id("boardNavMobile"), "mobile"));
+        c.style.display = "none";
+        $.addClass(document.body, "hasDropDownNav")
+    },
+    checkMobileLayout: function() {
+        var a, b;
+        if (window.matchMedia) return (window.matchMedia("(max-width: 480px)").matches || window.matchMedia("(max-device-width: 480px)").matches) && "true" != localStorage.getItem("4chan_never_show_mobile");
+        a = $.id("boardNavMobile");
+        b = $.id("boardNavDesktop");
+        return a && b && 0 < a.offsetWidth && 0 == b.offsetWidth
+    },
+    disableDarkTheme: function() {
+        Config.darkTheme = !1;
+        localStorage.setItem("4chan-settings", JSON.stringify(Config))
+    },
+    run: function() {
+        var a;
+        document.removeEventListener("DOMContentLoaded", Main.run, !1);
+        document.addEventListener("click", Main.onclick, !1);
+        $.id("settingsWindowLink").addEventListener("click", SettingsMenu.toggle, !1);
+        $.id("settingsWindowLinkBot").addEventListener("click", SettingsMenu.toggle, !1);
+        $.id("settingsWindowLinkMobile").addEventListener("click", SettingsMenu.toggle, !1);
+        if (!Config.disableAll) {
+            Main.hasMobileLayout = Main.checkMobileLayout();
+            Main.isMobileDevice = /Mobile|Android|Dolfin|Opera Mobi|PlayStation Vita|Nintendo DS/.test(navigator.userAgent);
+            Main.hasMobileLayout ? $.extend(Config, ConfigMobile) : ($.id("bottomReportBtn").style.display = "none", Main.isMobileDevice && $.addClass(document.body, "isMobileDevice"));
+            Main.firstRun && Main.isMobileDevice && (Config.topPageNav = !1, Config.dropDownNav = !0);
+            Config.dropDownNav && !Main.hasMobileLayout && Main.initPersistentNav();
+            $.addClass(document.body, Main.stylesheet);
+            $.addClass(document.body, Main.type);
+            Config.darkTheme && ($.addClass(document.body, "m-dark"), Main.hasMobileLayout || $.cls("stylechanger")[0].addEventListener("change", Main.disableDarkTheme, !1));
+            Config.compactThreads ? $.addClass(document.body, "compact") : Config.centeredThreads && $.addClass(document.body, "centeredThreads");
+            Config.noPictures && $.addClass(document.body, "noPictures");
+            Config.customMenu && CustomMenu.apply(Config.customMenuList);
+            if (Config.quotePreview || Config.imageHover || Config.filter) a = $.id("delform"), a.addEventListener("mouseover", Main.onThreadMouseOver, !1), a.addEventListener("mouseout", Main.onThreadMouseOut, !1);
+            Config.stickyNav && Main.setStickyNav();
+            Main.hasMobileLayout ? StickyNav.init() : (Main.initGlobalMessage(), Config.autoHideNav && StickyNav.init());
+            Config.threadExpansion && ThreadExpansion.init();
+            Config.filter && Filter.init();
+            Config.threadWatcher && ThreadWatcher.init();
+            (Main.hasMobileLayout || Config.embedSoundCloud || Config.embedYouTube || Config.embedVocaroo) && Media.init();
+            ReplyHiding.init();
+            Config.quotePreview && QuotePreview.init();
+            Parser.init();
+            Main.tid ? (Main.threadClosed = !document.forms.post, Main.threadSticky = !!$.cls("stickyIcon", $.id("pi" + Main.tid))[0], Config.threadStats && ThreadStats.init(), Parser.parseThread(Main.tid), Config.threadUpdater && ThreadUpdater.init()) : (Main.page || Depager.init(), Config.topPageNav && Main.setPageNav(), Config.threadHiding && ThreadHiding.init(), Parser.parseBoard());
+            "f" === Main.board && SWFEmbed.init();
+            Config.quickReply && QR.init();
+            ReplyHiding.purge();
+            Config.alwaysDepage && !Main.hasMobileLayout && $.docEl.scrollHeight <= $.docEl.clientHeight && Depager.depage()
+        }
+    },
+    isThreadClosed: function(a) {
+        return window.thread_archived || (el = $.id("pi" + a)) && $.cls("closedIcon", el)[0]
+    },
+    setThreadState: function(a, b) {
+        var c, d, e, f;
+        f = a.charAt(0).toUpperCase() + a.slice(1);
+        if (b) c = $.cls("postNum", $.id("pi" + Main.tid))[0], d = document.createElement("img"), d.className = a + "Icon retina", d.title = f, d.src = Main.icons2[a], "sticky" == a && (e = $.cls("closedIcon", c)[0]) ? (c.insertBefore(d, e), c.insertBefore(document.createTextNode(" "), e)) : (c.appendChild(document.createTextNode(" ")), c.appendChild(d));
+        else if (d = $.cls(a + "Icon", $.id("pi" + Main.tid))[0]) d.parentNode.removeChild(d.previousSibling), d.parentNode.removeChild(d);
+        Main["thread" + f] = b
+    },
+    icons: {
+        up: "arrow_up.png",
+        down: "arrow_down.png",
+        right: "arrow_right.png",
+        download: "arrow_down2.png",
+        refresh: "refresh.png",
+        cross: "cross.png",
+        gis: "gis.png",
+        iqdb: "iqdb.png",
+        minus: "post_expand_minus.png",
+        plus: "post_expand_plus.png",
+        rotate: "post_expand_rotate.gif",
+        quote: "quote.png",
+        report: "report.png",
+        notwatched: "watch_thread_off.png",
+        watched: "watch_thread_on.png",
+        help: "question.png"
+    },
+    icons2: {
+        archived: "archived.gif",
+        closed: "closed.gif",
+        sticky: "sticky.gif",
+        trash: "trash.gif"
+    },
+    initIcons: function() {
+        var a, b;
+        b = "//s.4cdn.org/image/";
+        if (2 <= window.devicePixelRatio) {
+            for (a in Main.icons) Main.icons[a] = Main.icons[a].replace(".", "@2x.");
+            for (a in Main.icons2) Main.icons2[a] = Main.icons2[a].replace(".", "@2x.")
+        }
+        for (a in Main.icons2) Main.icons2[a] = b + Main.icons2[a];
+        b += "buttons/" + {
+            yotsuba_new: "futaba/",
+            futaba_new: "futaba/",
+            yotsuba_b_new: "burichan/",
+            burichan_new: "burichan/",
+            tomorrow: "tomorrow/",
+            photon: "photon/"
+        }[Main.stylesheet];
+        for (a in Main.icons) Main.icons[a] = b + Main.icons[a]
+    },
+    setPageNav: function() {
+        var a, b;
+        b = document.createElement("div");
+        b.setAttribute("data-shiftkey", "1");
+        b.setAttribute("data-trackpos", "TN-position");
+        b.className = "topPageNav";
+        Config["TN-position"] ? b.style.cssText = Config["TN-position"] : (b.style.left = "10px", b.style.top = "50px");
+        if (a = $.cls("pagelist")[0]) a = a.cloneNode(!0), b.appendChild(a), Draggable.set(a), document.body.appendChild(b)
+    },
+    initGlobalMessage: function() {
+        var a, b, c, d;
+        (a = $.id("globalMessage")) && a.textContent && (a.nextElementSibling.style.clear = "both", b = document.createElement("img"), b.id = "toggleMsgBtn", b.className = "extButton", b.setAttribute("data-cmd", "toggleMsg"), b.alt = "Toggle", b.title = "Toggle announcement", d = localStorage.getItem("4chan-global-msg"), c = a.getAttribute("data-utc"), d && c <= d ? (a.style.display = "none", b.style.opacity = "0.5", b.src = Main.icons.plus) : b.src = Main.icons.minus, a.parentNode.insertBefore(b, a))
+    },
+    toggleGlobalMessage: function() {
+        var a, b;
+        a = $.id("globalMessage");
+        b = $.id("toggleMsgBtn");
+        "none" == a.style.display ? (a.style.display = "", b.src = Main.icons.minus, b.style.opacity = "1", localStorage.removeItem("4chan-global-msg")) : (a.style.display = "none", b.src = Main.icons.plus, b.style.opacity = "0.5", localStorage.setItem("4chan-global-msg", a.getAttribute("data-utc")))
+    },
+    setStickyNav: function() {
+        var a, b;
+        a = document.createElement("div");
+        a.id = "stickyNav";
+        a.className = "extPanel reply";
+        a.setAttribute("data-shiftkey", "1");
+        a.setAttribute("data-trackpos", "SN-position");
+        Config["SN-position"] ? a.style.cssText = Config["SN-position"] : (a.style.right = "10px", a.style.top = "50px");
+        b = document.createElement("div");
+        b.innerHTML = '<img class="pointer" src="' + Main.icons.up + '" data-cmd="totop" alt="\u25b2" title="Top"><img class="pointer" src="' + Main.icons.down + '" data-cmd="tobottom" alt="\u25bc" title="Bottom">';
+        Draggable.set(b);
+        a.appendChild(b);
+        document.body.appendChild(a)
+    },
+    getCookie: function(a) {
+        var b, c, d;
+        d = a + "=";
+        c = document.cookie.split(";");
+        for (a = 0; b = c[a]; ++a) {
+            for (;
+                " " == b.charAt(0);) b = b.substring(1, b.length);
+            if (0 == b.indexOf(d)) return decodeURIComponent(b.substring(d.length, b.length))
+        }
+        return null
+    },
+    setCookie: function(a, b, c) {
+        var d = new Date;
+        d.setTime(d.getTime() + 31536E6);
+        c || (c = "boards.4chan.org");
+        document.cookie = a + "=" + b + "; expires=" + d.toGMTString() + "; path=/; domain=" + c
+    },
+    removeCookie: function(a, b) {
+        b || (b = "boards.4chan.org");
+        document.cookie = a + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;; path=/; domain=" + b
+    },
+    onclick: function(a) {
+        var b, c;
+        if ((b = a.target) != document)
+            if (c = b.getAttribute("data-cmd")) switch (id = b.getAttribute("data-id"), c) {
+                case "update":
+                    a.preventDefault();
+                    ThreadUpdater.forceUpdate();
+                    break;
+                case "post-menu":
+                    a.preventDefault();
+                    PostMenu.open(b);
+                    break;
+                case "auto":
+                    ThreadUpdater.toggleAuto();
+                    break;
+                case "totop":
+                case "tobottom":
+                    a.shiftKey || (location.href = "#" + c.slice(2));
+                    break;
+                case "hide":
+                    ThreadHiding.toggle(id);
+                    break;
+                case "watch":
+                    ThreadWatcher.toggle(id);
+                    break;
+                case "hide-r":
+                    b.hasAttribute("data-recurse") ? ReplyHiding.toggleR(id) : ReplyHiding.toggle(id);
+                    break;
+                case "expand":
+                    ThreadExpansion.toggle(id);
+                    break;
+                case "open-qr":
+                    a.preventDefault();
+                    QR.show(Main.tid);
+                    $.tag("textarea", document.forms.qrPost)[0].focus();
+                    break;
+                case "unfilter":
+                    Filter.unfilter(b);
+                    break;
+                case "depage":
+                    a.preventDefault();
+                    Depager.toggle();
+                    break;
+                case "report":
+                    Report.open(id, b.getAttribute("data-board"));
+                    break;
+                case "filter-sel":
+                    a.preventDefault();
+                    Filter.addSelection();
+                    break;
+                case "embed":
+                    Media.toggleEmbed(b);
+                    break;
+                case "sound":
+                    ThreadUpdater.toggleSound();
+                    break;
+                case "toggleMsg":
+                    Main.toggleGlobalMessage();
+                    break;
+                case "settings-toggle":
+                    SettingsMenu.toggle();
+                    break;
+                case "settings-save":
+                    SettingsMenu.save();
+                    break;
+                case "keybinds-open":
+                    Keybinds.open();
+                    break;
+                case "filters-open":
+                    Filter.open();
+                    break;
+                case "thread-hiding-clear":
+                    ThreadHiding.clear();
+                    break;
+                case "css-open":
+                    CustomCSS.open();
+                    break;
+                case "settings-export":
+                    SettingsMenu.showExport();
+                    break;
+                case "export-close":
+                    SettingsMenu.closeExport();
+                    break;
+                case "custom-menu-edit":
+                    CustomMenu.showEditor()
+            } else Config.disableAll || (QR.enabled && "Reply to this post" == b.title ? (a.preventDefault(), c = Main.tid || b.previousElementSibling.getAttribute("href").split("#")[0].split("/")[1], QR.quotePost(c, !a.ctrlKey && b.textContent)) : Config.imageExpansion && 1 == a.which && b.parentNode && $.hasClass(b.parentNode, "fileThumb") && "A" == b.parentNode.nodeName && !$.hasClass(b.parentNode, "deleted") && !$.hasClass(b, "mFileInfo") ? ImageExpansion.toggle(b) && a.preventDefault() : Config.inlineQuotes && 1 == a.which && $.hasClass(b, "quotelink") ? a.shiftKey ? (a.preventDefault(), window.location = b.href) : QuoteInline.toggle(b, a) : Config.threadExpansion && b.parentNode && $.hasClass(b.parentNode, "abbr") ? (a.preventDefault(), ThreadExpansion.expandComment(b)) : Main.isMobileDevice && Config.quotePreview && $.hasClass(b, "quotelink") && b.getAttribute("href").match(QuotePreview.regex) ? a.preventDefault() : $.hasClass(b, "mFileInfo") && (a.preventDefault(), a.stopPropagation()))
+    },
+    onThreadMouseOver: function(a) {
+        var b = a.target;
+        Config.quotePreview && $.hasClass(b, "quotelink") && !$.hasClass(b, "deadlink") && !$.hasClass(b, "linkfade") ? QuotePreview.resolve(a.target) : Config.imageHover && b.hasAttribute("data-md5") && !$.hasClass(b.parentNode, "deleted") ? ImageHover.show(b) : Config.embedYouTube && "yt" === b.getAttribute("data-type") && !Main.hasMobileLayout ? Media.showYTPreview(b) : Config.filter && b.hasAttribute("data-filtered") && QuotePreview.show(b, b.href ? b.parentNode.parentNode.parentNode : b.parentNode.parentNode)
+    },
+    onThreadMouseOut: function(a) {
+        a = a.target;
+        Config.quotePreview && $.hasClass(a, "quotelink") ? QuotePreview.remove(a) : Config.imageHover && a.hasAttribute("data-md5") ? ImageHover.hide() : Config.embedYouTube && "yt" === a.getAttribute("data-type") && !Main.hasMobileLayout ? Media.removeYTPreview() : Config.filter && a.hasAttribute("data-filtered") && QuotePreview.remove(a)
+    },
+    linkToThread: function(a, b, c) {
+        return "//" + location.host + "/" + (b || Main.board) + "/thread/" + a + (0 < c ? "#p" + c : "")
+    },
+    addCSS: function() {
+        var a;
+        a = document.createElement("style");
+        a.setAttribute("type", "text/css");
+        a.textContent = 'body.hasDropDownNav {  margin-top: 45px;}.extButton.threadHideButton {  float: left;  margin-right: 5px;  margin-top: -1px;}.extButton.replyHideButton {  margin-top: 1px;}div.op > span .postHideButtonCollapsed {  margin-right: 1px;}.dropDownNav #boardNavMobile, {  display: block !important;}.extPanel {  border: 1px solid rgba(0, 0, 0, 0.20);}.tomorrow .extPanel {  border: 1px solid #111;}.extButton,img.pointer {  width: 18px;  height: 18px;}.extControls {  display: inline;  margin-left: 5px;}.extButton {  cursor: pointer;  margin-bottom: -4px;}.trashIcon {  width: 16px;  height: 16px;  margin-bottom: -2px;  margin-left: 5px;}.threadUpdateStatus {  margin-left: 0.5ex;}.futaba_new .stub,.burichan_new .stub {  line-height: 1;  padding-bottom: 1px;}.stub .extControls,.stub .wbtn,.stub input {  display: none;}.stub .threadHideButton {  float: none;  margin-right: 2px;}div.post div.postInfo {  width: auto;  display: inline;}.right {  float: right;}.center {  display: block;  margin: auto;}.pointer {  cursor: pointer;}.drag {  cursor: move !important;  user-select: none !important;  -moz-user-select: none !important;  -webkit-user-select: none !important;}#quickReport,#quickReply {  display: block;  position: fixed;  padding: 2px;  font-size: 10pt;}#qrepHeader,#qrHeader {  text-align: center;  margin-bottom: 1px;  padding: 0;  height: 18px;  line-height: 18px;}#qrepClose,#qrClose {  float: right;}#quickReport iframe {  overflow: hidden;}#quickReport {  height: 190px;}#qrForm > div {  clear: both;}#quickReply input[type="text"],#quickReply textarea,#quickReply #recaptcha_response_field {  border: 1px solid #aaa;  font-family: arial,helvetica,sans-serif;  font-size: 10pt;  outline: medium none;  width: 296px;  padding: 2px;  margin: 0 0 1px 0;}#quickReply textarea {  min-width: 296px;  float: left;}#quickReply input::-moz-placeholder,#quickReply textarea::-moz-placeholder {  color: #aaa !important;  opacity: 1 !important;}#quickReply input[type="submit"] {  width: 83px;  margin: 0;  font-size: 10pt;  float: left;}#quickReply #qrCapField {  display: block;  margin-top: 1px;}#qrCaptcha {  width: 300px;  height: 53px;  cursor: pointer;  border: 1px solid #aaa;  display: block;}#quickReply input.presubmit {  margin-right: 1px;  width: 212px;  float: left;}#qrFile {  width: 215px;  margin-right: 5px;}.qrRealFile {  position: absolute;  left: 0;  visibility: hidden;}.yotsuba_new #qrFile {  color:black;}#qrSpoiler {  display: inline;}#qrError {  width: 292px;  display: none;  font-family: monospace;  background-color: #E62020;  font-size: 12px;  color: white;  padding: 3px 5px;  text-shadow: 0 1px rgba(0, 0, 0, 0.20);  clear: both;}#qrError a:hover,#qrError a {  color: white !important;  text-decoration: underline;}#twHeader {  font-weight: bold;  text-align: center;  height: 17px;}.futaba_new #twHeader,.burichan_new #twHeader {  line-height: 1;}#twPrune {  margin-left: 3px;  margin-top: -1px;}#twClose {  float: left;  margin-top: -1px;}#threadWatcher {  max-width: 265px;  display: block;  position: absolute;  padding: 3px;}#watchList {  margin: 0;  padding: 0;  user-select: none;  -moz-user-select: none;  -webkit-user-select: none;}#watchList li:first-child {  margin-top: 3px;  padding-top: 2px;  border-top: 1px solid rgba(0, 0, 0, 0.20);}.photon #watchList li:first-child {  border-top: 1px solid #ccc;}.yotsuba_new #watchList li:first-child {  border-top: 1px solid #d9bfb7;}.yotsuba_b_new #watchList li:first-child {  border-top: 1px solid #b7c5d9;}.tomorrow #watchList li:first-child {  border-top: 1px solid #111;}#watchList a {  text-decoration: none;}#watchList li {  overflow: hidden;  white-space: nowrap;  text-overflow: ellipsis;}div.post div.image-expanded {  display: table;}div.op div.file .image-expanded-anti {  margin-left: -3px;}#quote-preview {  display: block;  position: absolute;  top: 0;  padding: 3px 6px 6px 3px;  margin: 0;}#quote-preview .dateTime {  white-space: nowrap;}#quote-preview.reveal-spoilers s {  background-color: #aaa !important;  color: inherit !important;  text-decoration: none !important;}#quote-preview.reveal-spoilers s a {  background: transparent !important;  text-decoration: underline;}.yotsuba_b_new #quote-preview.reveal-spoilers s a,.burichan_new #quote-preview.reveal-spoilers s a {  color: #D00 !important;}.yotsuba_new #quote-preview.reveal-spoilers s a,.futaba_new #quote-preview.reveal-spoilers s a {  color: #000080 !important;}.tomorrow #quote-preview.reveal-spoilers s { color: #000 !important; }.tomorrow #quote-preview.reveal-spoilers s a { color: #5F89AC !important; }.photon #quote-preview.reveal-spoilers s a {  color: #FF6600 !important;}.yotsuba_new #quote-preview.highlight,.yotsuba_b_new #quote-preview.highlight {  border-width: 1px 2px 2px 1px !important;  border-style: solid !important;}.yotsuba_new #quote-preview.highlight {  border-color: #D99F91 !important;}.yotsuba_b_new #quote-preview.highlight {  border-color: #BA9DBF !important;}.yotsuba_b_new .highlight-anti,.burichan_new .highlight-anti {  border-width: 1px !important;  background-color: #bfa6ba !important;}.yotsuba_new .highlight-anti,.futaba_new .highlight-anti {  background-color: #e8a690 !important;}.tomorrow .highlight-anti {  background-color: #111 !important;  border-color: #111;}.photon .highlight-anti {  background-color: #bbb !important;}.op.inlined {  display: block;}#quote-preview .inlined,#quote-preview .postMenuBtn,#quote-preview .extButton,#quote-preview .extControls {  display: none;}.hasNewReplies {  font-weight: bold;}.archivelink {  opacity: 0.5;}.deadlink {  text-decoration: line-through !important;}div.backlink {  font-size: 0.8em !important;  display: inline;  padding: 0;  padding-left: 5px;}.backlink.mobile {  padding: 3px 5px;  display: block;  clear: both !important;  line-height: 2;}.op .backlink.mobile,#quote-preview .backlink.mobile {  display: none !important;}.backlink.mobile .quoteLink {  padding-right: 2px;}.backlink span {  padding: 0;}.burichan_new .backlink a,.yotsuba_b_new .backlink a {  color: #34345C !important;}.burichan_new .backlink a:hover,.yotsuba_b_new .backlink a:hover {  color: #dd0000 !important;}.expbtn {  margin-right: 3px;  margin-left: 2px;}.tCollapsed .rExpanded {  display: none;}#stickyNav {  position: fixed;  font-size: 0;}#stickyNav img {  vertical-align: middle;}.tu-error {  color: red;}.topPageNav {  position: absolute;}.yotsuba_b_new .topPageNav {  border-top: 1px solid rgba(255, 255, 255, 0.25);  border-left: 1px solid rgba(255, 255, 255, 0.25);}.newPostsMarker:not(#quote-preview) {  box-shadow: 0 3px red;}#toggleMsgBtn {  float: left;  margin-bottom: 6px;}.panelHeader {  font-weight: bold;  font-size: 16px;  text-align: center;  margin-bottom: 5px;  margin-top: 5px;  padding-bottom: 5px;  border-bottom: 1px solid rgba(0, 0, 0, 0.20);}.yotsuba_new .panelHeader {  border-bottom: 1px solid #d9bfb7;}.yotsuba_b_new .panelHeader {  border-bottom: 1px solid #b7c5d9;}.tomorrow .panelHeader {  border-bottom: 1px solid #111;}.panelHeader span {  position: absolute;  right: 5px;  top: 5px;}.UIMenu,.UIPanel {  position: fixed;  width: 100%;  height: 100%;  z-index: 9002;  top: 0;  left: 0;}.UIPanel {  line-height: 14px;  font-size: 14px;  background-color: rgba(0, 0, 0, 0.25);}.UIPanel:after {  display: inline-block;  height: 100%;  vertical-align: middle;  content: "";}.UIPanel > div {  -moz-box-sizing: border-box;  box-sizing: border-box;  display: inline-block;  height: auto;  max-height: 100%;  position: relative;  width: 400px;  left: 50%;  margin-left: -200px;  overflow: auto;  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);  vertical-align: middle;}#settingsMenu > div {  top: 25px;;  vertical-align: top;  max-height: 85%;}.extPanel input[type="text"],.extPanel textarea {  border: 1px solid #AAA;  outline: none;}.UIPanel .center {  margin-bottom: 5px;}.UIPanel button {  display: inline-block;  margin-right: 5px;}.UIPanel code {  background-color: #eee;  color: #000000;  padding: 1px 4px;  font-size: 12px;}.UIPanel ul {  list-style: none;  padding: 0;  margin: 0 0 10px;}.UIPanel .export-field {  width: 385px;}#settingsMenu label input {  margin-right: 5px;}.tomorrow #settingsMenu ul {  border-bottom: 1px solid #282a2e;}.settings-off {  padding-left: 3px;}.settings-cat-lbl {  font-weight: bold;  margin: 10px 0 5px;  padding-left: 5px;}.settings-cat-lbl img {  vertical-align: text-bottom;  margin-right: 5px;  cursor: pointer;  width: 18px;  height: 18px;}.settings-tip {  font-size: 0.85em;  margin: 2px 0 5px 0;  padding-left: 23px;}#settings-exp-all {  padding-left: 7px;  text-align: center;}#settingsMenu .settings-cat {  display: none;  margin-left: 3px;}#customCSSMenu textarea {  display: block;  max-width: 100%;  min-width: 100%;  -moz-box-sizing: border-box;  box-sizing: border-box;  height: 200px;  margin: 0 0 5px;  font-family: monospace;}#customCSSMenu .right,#settingsMenu .right {  margin-top: 2px;}#settingsMenu label {  display: inline-block;  user-select: none;  -moz-user-select: none;  -webkit-user-select: none;}#filtersHelp > div {  width: 600px;  left: 50%;  margin-left: -300px;}#filtersHelp h4 {  font-size: 15px;  margin: 20px 0 0 10px;}#filtersHelp h4:before {  content: "\u00bb";  margin-right: 3px;}#filtersHelp ul {  padding: 0;  margin: 10px;}#filtersHelp li {  padding: 3px 0;  list-style: none;}#filtersMenu table {  width: 100%;}#filtersMenu th {  font-size: 12px;}#filtersMenu tbody {  text-align: center;}#filtersMenu select,#filtersMenu .fPattern,#filtersMenu .fBoards,#palette-custom-input {  padding: 1px;  font-size: 11px;}#filtersMenu select {  width: 75px;}#filtersMenu tfoot td {  padding-top: 10px;}#keybindsHelp li {  padding: 3px 5px;}.fPattern {  width: 110px;}.fBoards {  width: 25px;}.fColor {  width: 60px;}.fDel {  font-size: 16px;}.filter-preview {  cursor: pointer;  margin-left: 3px;}#quote-preview iframe,#quote-preview .filter-preview {  display: none;}.post-hidden .extButton,.post-hidden:not(#quote-preview) .postInfo {  opacity: 0.5;}.post-hidden:not(.thread) .postInfo {  padding-left: 5px;}.post-hidden:not(#quote-preview) input,.post-hidden:not(#quote-preview) .replyContainer,.post-hidden:not(#quote-preview) .summary,.post-hidden:not(#quote-preview) .op .file,.post-hidden:not(#quote-preview) .file,.post-hidden .wbtn,.post-hidden .postNum span,.post-hidden:not(#quote-preview) .backlink,div.post-hidden:not(#quote-preview) div.file,div.post-hidden:not(#quote-preview) blockquote.postMessage {  display: none;}.click-me {  border-radius: 5px;  margin-top: 5px;  padding: 2px 5px;  position: absolute;  font-weight: bold;  z-index: 2;  white-space: nowrap;}.yotsuba_new .click-me,.futaba_new .click-me {  color: #800000;  background-color: #F0E0D6;  border: 2px solid #D9BFB7;}.yotsuba_b_new .click-me,.burichan_new .click-me {  color: #000;  background-color: #D6DAF0;  border: 2px solid #B7C5D9;}.tomorrow .click-me {  color: #C5C8C6;  background-color: #282A2E;  border: 2px solid #111;}.photon .click-me {  color: #333;  background-color: #ddd;  border: 2px solid #ccc;}.click-me:before {  content: "";  border-width: 0 6px 6px;  border-style: solid;  left: 50%;  margin-left: -6px;  position: absolute;  width: 0;  height: 0;  top: -6px;}.yotsuba_new .click-me:before,.futaba_new .click-me:before {  border-color: #D9BFB7 transparent;}.yotsuba_b_new .click-me:before,.burichan_new .click-me:before {  border-color: #B7C5D9 transparent;}.tomorrow .click-me:before {  border-color: #111 transparent;}.photon .click-me:before {  border-color: #ccc transparent;}.click-me:after {  content: "";  border-width: 0 4px 4px;  top: -4px;  display: block;  left: 50%;  margin-left: -4px;  position: absolute;  width: 0;  height: 0;}.yotsuba_new .click-me:after,.futaba_new .click-me:after {  border-color: #F0E0D6 transparent;  border-style: solid;}.yotsuba_b_new .click-me:after,.burichan_new .click-me:after {  border-color: #D6DAF0 transparent;  border-style: solid;}.tomorrow .click-me:after {  border-color: #282A2E transparent;  border-style: solid;}.photon .click-me:after {  border-color: #DDD transparent;  border-style: solid;}#image-hover {  position: fixed;  max-width: 100%;  max-height: 100%;  top: 0px;  right: 0px;  z-index: 9002;}.thread-stats {  float: right;  margin-right: 5px;  cursor: default;}.compact .thread {  max-width: 75%;}.dotted {  text-decoration: none;  border-bottom: 1px dashed;}.linkfade {  opacity: 0.5;}#quote-preview .linkfade {  opacity: 1.0;}kbd {  background-color: #f7f7f7;  color: black;  border: 1px solid #ccc;  border-radius: 3px 3px 3px 3px;  box-shadow: 0 1px 0 #ccc, 0 0 0 2px #fff inset;  font-family: monospace;  font-size: 11px;  line-height: 1.4;  padding: 0 5px;}.deleted {  opacity: 0.66;}.noPictures a.fileThumb img:not(.expanded-thumb) {  opacity: 0;}.noPictures.futaba_new a.fileThumb,.noPictures.yotsuba_new a.fileThumb {  border: 1px solid #800;}.noPictures.burichan_new a.fileThumb,.noPictures.yotsuba_b_new a.fileThumb {  border: 1px solid #34345C;}.noPictures.tomorrow a.fileThumb:not(.expanded-thumb) {  border: 1px solid #C5C8C6;}.noPictures.photon a.fileThumb:not(.expanded-thumb) {  border: 1px solid #004A99;}.spinner {  margin-top: 2px;  padding: 3px;  display: table;}#settings-presets {  position: relative;  top: -1px;}#colorpicker {   position: fixed;  text-align: center;}.colorbox {  font-size: 10px;  width: 16px;  height: 16px;  line-height: 17px;  display: inline-block;  text-align: center;  background-color: #fff;  border: 1px solid #aaa;  text-decoration: none;  color: #000;  cursor: pointer;  vertical-align: top;}#palette-custom-input {  vertical-align: top;  width: 45px;  margin-right: 2px;}#qrDummyFile {  float: left;  margin-right: 5px;  width: 220px;  cursor: default;  -moz-user-select: none;  -webkit-user-select: none;  -ms-user-select: none;  user-select: none;  white-space: nowrap;  text-overflow: ellipsis;  overflow: hidden;}#qrDummyFileLabel {  margin-left: 3px;}.depageNumber {  position: absolute;  right: 5px;}.depagerEnabled .depagelink {  font-weight: bold;}.depagerEnabled strong {  font-weight: normal;}.depagelink {  display: inline-block;  padding: 4px 0;  cursor: pointer;  text-decoration: none;}.burichan_new .depagelink,.futaba_new .depagelink {  text-decoration: underline;}#customMenuBox {  margin: 0 auto 5px auto;  width: 385px;  display: block;}.preview-summary {  display: block;}#swf-embed-header {  padding: 0 0 0 3px;  font-weight: normal;  height: 20px;  line-height: 20px;}.yotsuba_new #swf-embed-header,.yotsuba_b_new #swf-embed-header {  height: 18px;  line-height: 18px;}#swf-embed-close {  position: absolute;  right: 0;  top: 1px;}.open-qr-wrap {  text-align: center;  width: 200px;  position: absolute;  margin-left: 50%;  left: -100px;}.postMenuBtn {  margin-left: 5px;  text-decoration: none;  line-height: 1em;  display: inline-block;  -webkit-transition: -webkit-transform 0.1s;  -moz-transition: -moz-transform 0.1s;  transition: transform 0.1s;  width: 1em;  height: 1em;  text-align: center;  outline: none;  opacity: 0.8;}.postMenuBtn:hover{  opacity: 1;}.yotsuba_new .postMenuBtn,.futaba_new .postMenuBtn {  color: #000080;}.tomorrow .postMenuBtn {  color: #5F89AC !important;}.tomorrow .postMenuBtn:hover {  color: #81a2be !important;}.photon .postMenuBtn {  color: #FF6600 !important;}.photon .postMenuBtn:hover {  color: #FF3300 !important;}.menuOpen {  -webkit-transform: rotate(90deg);  -moz-transform: rotate(90deg);  -ms-transform: rotate(90deg);  transform: rotate(90deg);}.settings-sub label:before {  border-bottom: 1px solid;  border-left: 1px solid;  content: " ";  display: inline-block;  height: 8px;  margin-bottom: 5px;  width: 8px;}.settings-sub {  margin-left: 25px;}.settings-tip.settings-sub {  padding-left: 32px;}.centeredThreads .opContainer {  display: block;}.centeredThreads .postContainer {  margin: auto;  width: 75%;}.centeredThreads .sideArrows {  display: none;}.centre-exp {  width: auto !important;  clear: both;}.centeredThreads .expandedWebm {  float: none;}.centeredThreads .summary {  margin-left: 12.5%;  display: block;}.centre-exp div.op{  display: table;}#yt-preview { position: absolute; }#yt-preview img { display: block; }.autohide-nav { transition: top 0.2s ease-in-out }#feedback {  position: fixed;  top: 10px;  text-align: center;  width: 100%;  z-index: 9999;}.feedback-notify,.feedback-error {  border-radius: 5px;  cursor: pointer;  color: #fff;  padding: 3px 6px;  font-size: 16px;  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);  text-shadow: 0 1px rgba(0, 0, 0, 0.2);}.feedback-error { background-color: #C41E3A; }.feedback-notify { background-color: #00A550; }@media only screen and (max-width: 480px) {.thread-stats { float: none; text-align: center; }.ts-replies:before { content: "Replies: "; }.ts-images:before { content: "Images: "; }.ts-ips:before { content: "Posters: "; }.ts-page:before { content: "Page: "; }#threadWatcher {  max-width: none;  padding: 3px 0;  left: 0;  width: 100%;  border-left: none;  border-right: none;}#watchList {  padding: 0 10px;}.btn-row {  margin-top: 5px;}.image-expanded .mFileName {  display: block;  margin-bottom: 2px;}.mFileName { display: none }.mobile-report {  float: right;  font-size: 11px;  margin-bottom: 3px;  margin-left: 10px;}.mobile-report:after {  content: "]";}.mobile-report:before {  content: "[";}.nws .mobile-report:after {  color: #800000;}.nws .mobile-report:before {  color: #800000;}.ws .mobile-report {  color: #34345C;}.nws .mobile-report {  color:#0000EE;}.reply .mobile-report {  margin-right:5px;}.postLink .mobileHideButton {  margin-right: 3px;}.board .mobile-hr-hidden {  margin-top: 10px !important;}.board > .mobileHideButton {  margin-top: -20px !important;}.board > .mobileHideButton:first-child {  margin-top: 10px !important;}.extButton.threadHideButton {  float: none;  margin: 0;  margin-bottom: 5px;}.mobile-post-hidden {  display: none;}#toggleMsgBtn {  display: none;}.mobile-tu-status {  height: 20px;  line-height: 20px;}.mobile-tu-show {  width: 150px;  margin: auto;  display: block;  text-align: center;}.button input {  margin: 0 3px 0 0;  position: relative;  top: -2px;  border-radius: 0;  height: 10px;  width: 10px;}.UIPanel > div {  width: 320px;  margin-left: -160px;}.UIPanel .export-field {  width: 300px;}.yotsuba_new #quote-preview.highlight,#quote-preview {  border-width: 1px !important;}.yotsuba_new #quote-preview.highlight {  border-color: #D9BFB7 !important;}#quickReply input[type="text"],#quickReply textarea,.extPanel input[type="text"],.extPanel textarea {  font-size: 16px;}#quickReply {  position: absolute;  left: 50%;  margin-left: -154px;}.m-dark .button {  background-color: rgb(27,28,30);  background-image: url("//s.4cdn.org/image/buttonfade-dark.png");  background-repeat: repeat-x;  border: 1px solid #282A2E;}.depaged-ad { margin-top: -25px; margin-bottom: -25px; }.depageNumber { font-size: 10px; margin-top: -21px; }.m-dark a, .m-dark div#absbot a { color: #81A2BE !important; }.m-dark a:hover { color: #5F89AC !important; }.m-dark .button a, .m-dark .button:hover, .m-dark .button { color: #707070 !important; }.m-dark #boardNavMobile {  background-color: #1D1F21;  border-bottom: 2px solid #282A2E; }body.m-dark { background: #1D1F21 none; color: #C5C8C6; }.m-dark #globalToggle {  background-color: #FFADAD;  background-image: url("//s.4cdn.org/image/buttonfade-red.png");  border: 1px solid #C45858;  color: #880000 !important;}.m-dark .boardTitle { color: #C5C8C6; }.m-dark .mobile-report { color: #81a2be !important; }.m-dark .mobile-report:after,.m-dark .mobile-report:before { color: #1d1f21 !important; }.m-dark hr, .m-dark div.board > hr { border-top: 1px solid #282A2E; }.m-dark div.opContainer,.m-dark div.reply { background-color: #282A2E; border: 1px solid #2D2F33 !important; }.m-dark .preview { background-color: #282A2E; border: 1px solid #333 !important; }.m-dark div.post div.postInfoM { background-color: #212326; border-bottom: 1px solid #2D2F33; }.m-dark div.postLink,.m-dark .backlink.mobile { background-color: #212326; border-top: 1px solid #2D2F33; }.m-dark div.post div.postInfoM span.dateTime,.m-dark div.postLink span.info,.m-dark div.post div.postInfoM span.dateTime a { color: #707070 !important; }.m-dark span.subject { color: #B294BB !important; }.m-dark .highlightPost:not(.op) { background: #3A171C !important; }.m-dark .reply:target, .m-dark .reply.highlight { background: #1D1D21 !important; padding: 2px; }.m-dark .reply:target, .m-dark .reply.highlight { background: #1D1D21 !important; padding: 2px; }}';
+        document.head.appendChild(a)
+    }
+};
 Main.init();
