@@ -48,6 +48,19 @@ $.get = function(a, b, c) {
     e.send(null);
     return e
 };
+$.ago = function(a) {
+    var b, c;
+    b = Date.now() / 1E3 - a;
+    if (1 > b) return "moments ago";
+    if (60 > b) return (0 | b) + " seconds ago";
+    if (3600 > b) return c = 0 | b / 60, 1 < c ? c + " minutes ago" : "one minute ago";
+    if (86400 > b) return c = 0 | b / 3600, a = 1 < c ? c + " hours" : "one hour", b = 0 | b / 60 - 60 * c, 1 < b && (a += " and " + b + " minutes"), a + " ago";
+    c = 0 | b / 86400;
+    a = 1 < c ? c + " days" : "one day";
+    b = 0 | b / 3600 - 24 * c;
+    1 < b && (a += " and " + b + " hours");
+    return a + " ago"
+};
 $.hash = function(a) {
     var b, c, d = 0;
     b = 0;
@@ -63,6 +76,7 @@ $.prettySeconds = function(a) {
 $.docEl = document.documentElement;
 $.cache = {};
 var Parser = {
+        dateTimeout: null,
         init: function() {
             var a, b, c, d;
             if (Config.filter || Config.embedSoundCloud || Config.embedYouTube || Config.embedVocaroo || Main.hasMobileLayout) this.needMsg = !0;
@@ -119,6 +133,13 @@ var Parser = {
         },
         encodeSpecialChars: function(a) {
             return a.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#039;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        },
+        onDateMouseOver: function(a) {
+            Parser.dateTimeout && (clearTimeout(Parser.dateTimeout), Parser.dateTimeout = null);
+            Parser.dateTimeout = setTimeout(Tip.show, 500, a, $.ago(+a.getAttribute("data-utc")))
+        },
+        onDateMouseOut: function(a) {
+            Parser.dateTimeout && (clearTimeout(Parser.dateTimeout), Parser.dateTimeout = null)
         },
         buildHTMLFromJSON: function(a, b, c, d) {
             var e = document.createElement("div"),
@@ -267,7 +288,7 @@ var Parser = {
             (Config.embedYouTube || Main.hasMobileLayout) && Media.parseYouTube(h);
             Config.embedVocaroo && Media.parseVocaroo(h);
             Config.revealSpoilers && (f = document.getElementById("f" + a)) && (f = f.children[1]) && $.hasClass(f, "imgspoiler") && (d = f.firstChild, f.removeChild(d), d.removeAttribute("style"), k = $.hasClass(e.parentNode, "op"), d.style.maxWidth = d.style.maxHeight = k ? "250px" : "125px", d.src = "//0.t.4cdn.org" + f.pathname.replace(/([0-9]+).+$/, "/$1s.jpg"), h = f.previousElementSibling, g = h.title.split("."), g[0].length > (k ? 40 : 30) ? g = g[0].slice(0, k ? 35 : 25) + "(...)" + g[1] : (g = h.title, h.removeAttribute("title")), h.firstElementChild.innerHTML = g, f.insertBefore(d, f.firstElementChild));
-            Config.localTime && (c ? (d = e.parentNode.getElementsByClassName("dateTime")[0], d.firstChild.nodeValue = Parser.getLocaleDate(new Date(1E3 * d.getAttribute("data-utc"))) + " ") : (d = e.getElementsByClassName("dateTime")[0], d.title = this.utcOffset, d.textContent = Parser.getLocaleDate(new Date(1E3 * d.getAttribute("data-utc")))))
+            Config.localTime && (c ? (d = e.parentNode.getElementsByClassName("dateTime")[0], d.firstChild.nodeValue = Parser.getLocaleDate(new Date(1E3 * d.getAttribute("data-utc"))) + " ") : (d = e.getElementsByClassName("dateTime")[0], d.textContent = Parser.getLocaleDate(new Date(1E3 * d.getAttribute("data-utc")))))
         },
         getLocaleDate: function(a) {
             return ("0" + (1 + a.getMonth())).slice(-2) + "/" + ("0" + a.getDate()).slice(-2) + "/" + ("0" + a.getFullYear()).slice(-2) + "(" + this.weekdays[a.getDay()] + ")" + ("0" + a.getHours()).slice(-2) + ":" + ("0" + a.getMinutes()).slice(-2) + ":" + ("0" + a.getSeconds()).slice(-2)
@@ -3014,11 +3035,17 @@ var Main = {
     },
     onThreadMouseOver: function(a) {
         var b = a.target;
-        Config.quotePreview && $.hasClass(b, "quotelink") && !$.hasClass(b, "deadlink") && !$.hasClass(b, "linkfade") ? QuotePreview.resolve(a.target) : Config.imageHover && b.hasAttribute("data-md5") && !$.hasClass(b.parentNode, "deleted") ? ImageHover.show(b) : Config.embedYouTube && "yt" === b.getAttribute("data-type") && !Main.hasMobileLayout ? Media.showYTPreview(b) : Config.filter && b.hasAttribute("data-filtered") && QuotePreview.show(b, b.href ? b.parentNode.parentNode.parentNode : b.parentNode.parentNode)
+        if (Config.quotePreview && $.hasClass(b, "quotelink") && !$.hasClass(b, "deadlink") && !$.hasClass(b, "linkfade")) QuotePreview.resolve(a.target);
+        else if (Config.imageHover && b.hasAttribute("data-md5") && !$.hasClass(b.parentNode, "deleted")) ImageHover.show(b);
+        else if ($.hasClass(b, "dateTime")) Parser.onDateMouseOver(b);
+        else Config.embedYouTube && "yt" === b.getAttribute("data-type") && !Main.hasMobileLayout ? Media.showYTPreview(b) : Config.filter && b.hasAttribute("data-filtered") && QuotePreview.show(b, b.href ? b.parentNode.parentNode.parentNode : b.parentNode.parentNode)
     },
     onThreadMouseOut: function(a) {
         a = a.target;
-        Config.quotePreview && $.hasClass(a, "quotelink") ? QuotePreview.remove(a) : Config.imageHover && a.hasAttribute("data-md5") ? ImageHover.hide() : Config.embedYouTube && "yt" === a.getAttribute("data-type") && !Main.hasMobileLayout ? Media.removeYTPreview() : Config.filter && a.hasAttribute("data-filtered") && QuotePreview.remove(a)
+        if (Config.quotePreview && $.hasClass(a, "quotelink")) QuotePreview.remove(a);
+        else if (Config.imageHover && a.hasAttribute("data-md5")) ImageHover.hide();
+        else if ($.hasClass(a, "dateTime")) Parser.onDateMouseOut(a);
+        else Config.embedYouTube && "yt" === a.getAttribute("data-type") && !Main.hasMobileLayout ? Media.removeYTPreview() : Config.filter && a.hasAttribute("data-filtered") && QuotePreview.remove(a)
     },
     linkToThread: function(a, b, c) {
         return "//" + location.host + "/" + (b || Main.board) + "/thread/" + a + (0 < c ? "#p" + c : "")
