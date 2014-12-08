@@ -115,9 +115,8 @@ body {
 	background-color: transparent !important;
 }
 
-#recaptcha_div {
-	height: 107px;
-	width: 442px;
+#g-recaptcha {
+	height: 78px;
 }
 
 #recaptcha_challenge_field {

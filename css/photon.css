@@ -114,6 +114,10 @@ body {
 	background-color: transparent !important;
 }
 
+#g-recaptcha {
+	height: 78px;
+}
+
 #recaptcha_div {
 	height: 107px;
 	width: 442px;
