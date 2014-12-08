@@ -37,18 +37,26 @@
         <tr id="captchaFormPart">
             <td class="desktop">Verification</td>
             <td colspan="2">
-                <div id="captchaContainer"><span class="placeholder">Start typing to load the verification image.</span>
-                </div>
+                <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoaded&amp;render=explicit"
+                async defer></script>
                 <script>
-                    window.recaptchaKey = "6Ldp2bsSAAAAAAJ5uyx_lx34lJeEpTLVkP5k04qc";window.recaptchaId = "";document.addEventListener('DOMContentLoaded', initRecaptcha, false);
+                    window.recaptchaKey = "6Ldp2bsSAAAAAAJ5uyx_lx34lJeEpTLVkP5k04qc;"
                 </script>
+                <div id="g-recaptcha"></div>
                 <noscript>
-                    <iframe src="//www.google.com/recaptcha/api/noscript?k=6Ldp2bsSAAAAAAJ5uyx_lx34lJeEpTLVkP5k04qc"
-                    height="300" width="400" style="border: none"></iframe>
-                    <br>
-                    <textarea id="recaptcha_challenge_field" name="recaptcha_challenge_field"
-                    rows="3" cols="40"></textarea>
-                    <input type="hidden" name="recaptcha_response_field" value="manual_challenge">
+                    <div style="width: 302px; height: 352px;">
+                        <div style="width: 302px; height: 352px; position: relative;">
+                            <div style="width: 302px; height: 352px; position: absolute;">
+                                <iframe src="https://www.google.com/recaptcha/api/fallback?k=6Ldp2bsSAAAAAAJ5uyx_lx34lJeEpTLVkP5k04qc"
+                                frameborder="0" scrolling="no" style="width: 302px; height:352px; border-style: none;"></iframe>
+                            </div>
+                            <div style="width: 250px; height: 80px; position: absolute; border-style: none;                  bottom: 21px; left: 25px; margin: 0px; padding: 0px; right: 25px;">
+                                <textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response"
+                                style="width: 250px; height: 80px; border: 1px solid #c1c1c1;                         margin: 0px; padding: 0px; resize: none;"
+                                value=""></textarea>
+                            </div>
+                        </div>
+                    </div>
                 </noscript>
                 <div class="passNotice">4chan Pass users can bypass this verification. [<a href="https://www.4chan.org/pass"
                     target="_blank">Learn More</a>] [<a href="https://sys.4chan.org/auth">Login</a>]</div>

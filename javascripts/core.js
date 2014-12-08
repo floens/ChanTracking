@@ -84,18 +84,16 @@ function toggleBlotter(a) {
     if (a = document.getElementById("blotter-msgs")) b = document.getElementById("toggleBlotter"), "none" == a.style.display ? (a.style.display = "", localStorage.removeItem("4chan-blotter"), b.textContent = "Hide", a = b.nextElementSibling, a.style.display && (a.style.display = "")) : (a.style.display = "none", localStorage.setItem("4chan-blotter", b.getAttribute("data-utc")), b.textContent = "Show Blotter", b.nextElementSibling.style.display = "none")
 }
 
-function initRecaptcha() {
-    var a;
-    window.passEnabled || (a = document.forms.post, a.com.addEventListener("focus", loadRecaptcha, !1), a.upfile && a.upfile.addEventListener("change", loadRecaptcha, !1))
+function onRecaptchaLoaded() {
+    "table" == document.getElementById("postForm").style.display && initRecaptcha()
 }
 
-function loadRecaptcha() {
+function initRecaptcha() {
     var a;
-    window.Recaptcha && !document.getElementById("recaptcha_area") && ((a = document.getElementById("captchaContainer")) && a.textContent && a.setAttribute("data-placeholder", a.textContent), Recaptcha.create(window.recaptchaKey, "captchaContainer" + window.recaptchaId, {
-        theme: "clean",
-        tabindex: 5,
-        callback: onCaptchaReady
-    }))
+    (a = document.getElementById("g-recaptcha")) && !a.firstElementChild && !window.passEnabled && window.grecaptcha && grecaptcha.render(a, {
+        sitekey: window.recaptchaKey,
+        theme: "Tomorrow" === activeStyleSheet ? "dark" : "light"
+    })
 }
 
 function initAnalytics() {
@@ -231,9 +229,9 @@ function loadExtraScripts() {
 }
 
 function toggleMobilePostForm(a, b) {
-    elem = document.getElementById("mpostform").firstElementChild;
-    postForm = document.getElementById("postForm");
-    elem.className.match("hidden") ? (elem.className = elem.className.replace("hidden", "shown"), postForm.className = postForm.className.replace(" hideMobile", ""), elem.innerHTML = "Close Post Form") : (elem.className = elem.className.replace("shown", "hidden"), postForm.className += " hideMobile", elem.innerHTML = a ? "Start New Thread" : "Post Reply");
+    var c = document.getElementById("mpostform").firstElementChild,
+        d = document.getElementById("postForm");
+    c.className.match("hidden") ? (c.className = c.className.replace("hidden", "shown"), d.className = d.className.replace(" hideMobile", ""), c.innerHTML = "Close Post Form", initRecaptcha()) : (c.className = c.className.replace("shown", "hidden"), d.className += " hideMobile", c.innerHTML = a ? "Start New Thread" : "Post Reply");
     b && window.scroll(0, 0)
 }
 
@@ -300,10 +298,6 @@ function init() {
     "undefined" != typeof extra && extra && !a && extra.init();
     window.check_for_block && checkForBlock()
 }
-
-function onCaptchaClick(a) {
-    document.getElementById("qrCaptcha") ? QR.reloadCaptcha() : Recaptcha.reload("t")
-}
 var coreLenCheckTimeout = null;
 
 function onComKeyDown() {
@@ -314,11 +308,6 @@ function onComKeyDown() {
 function coreCheckComLength() {
     var a, b, c;
     comlen && (b = document.getElementsByName("com")[0], a = encodeURIComponent(b.value).split(/%..|./).length - 1, a > comlen ? ((c = document.getElementById("comlenError")) || (c = document.createElement("div"), c.id = "comlenError", c.style.cssText = "font-weight:bold;padding:5px;color:red;", b.parentNode.appendChild(c)), c.textContent = "Error: Comment too long (" + a + "/" + comlen + ").") : (c = document.getElementById("comlenError")) && c.parentNode.removeChild(c))
-}
-
-function onCaptchaReady() {
-    var a;
-    if (a = document.getElementById("recaptcha_image")) a.title = "Reload", a.addEventListener("click", onCaptchaClick, !1), a = document.getElementsByClassName("recaptcha_image_cell")[0], a.style.cssText = "padding: 0 0 3px !important", a = document.getElementById("recaptcha_image"), a.style.cssText = "border: 1px solid #aaa !important", a = document.getElementById("recaptcha_response_field"), a.setAttribute("placeholder", "Type the text (Required)"), a.setAttribute("spellcheck", "false"), a.setAttribute("autocorrect", "off"), a.setAttribute("autocapitalize", "off"), a.removeAttribute("style"), window.captchaReady = !0, window.QR && QR.onCaptchaReady()
 }
 
 function disableMobile() {
@@ -430,45 +419,9 @@ function onCoreClick(a) {
     /flag flag-/.test(a.target.className) && 1 == a.which && window.open("//s.4cdn.org/image/country/" + a.target.className.match(/flag-([a-z]+)/)[1] + ".gif", "")
 }
 
-function onPostSubmit(a) {
-    var b, c;
-    b = (b = document.forms.post.upfile) && b.value && b.files ? b.files[0].size || 0 : 0;
-    c = window.Main && Main.hasMobileLayout ? 0 : 204800;
-    if (!a.shiftKey && b > c) try {
-        submitPreupload(), a.preventDefault()
-    } catch (d) {}
-}
-
-function submitDirect() {
-    var a = document.forms.post;
-    a.removeEventListener("submit", onPostSubmit, !1);
-    a.submit()
-}
-
-function submitPreupload() {
-    var a, b, c, d, e;
-    (b = document.getElementById("captchaToken")) && b.parentNode.removeChild(b);
-    a = document.getElementById("recaptcha_challenge_field");
-    c = document.getElementById("recaptcha_response_field");
-    e = document.getElementById("fileError");
-    c && "" != c.value ? (d = new FormData, d.append("mode", "checkcaptcha"), d.append("challenge", a.value), d.append("response", c.value), a = new XMLHttpRequest, a.open("POST", document.forms.post.action, !0), a.onerror = function() {
-        submitDirect()
-    }, a.onload = function() {
-        var a;
-        try {
-            a = JSON.parse(this.responseText)
-        } catch (c) {
-            console.log("Couldn't verify captcha.");
-            submitDirect();
-            return
-        }
-        a.token ? (b = document.createElement("input"), b.name = "captcha_token", b.id = "captchaToken", b.type = "hidden", b.value = a.token, document.forms.post.appendChild(b), submitDirect()) : a.error ? (onCaptchaClick(), e.innerHTML = a.error) : (a.fail && console.log(a.fail), submitDirect())
-    }, a.send(d)) : (e.textContent = "You forgot to type in the CAPTCHA.", c && c.focus())
-}
-
 function showPostForm(a) {
     a && a.preventDefault();
-    if (a = document.getElementById("postForm")) $.id("togglePostFormLink").style.display = "none", a.style.display = "table"
+    if (a = document.getElementById("postForm")) $.id("togglePostFormLink").style.display = "none", a.style.display = "table", initRecaptcha()
 }
 
 function contentLoaded() {
@@ -482,7 +435,6 @@ function contentLoaded() {
     (b = document.getElementById("styleSelector")) && b.addEventListener("change", onStyleSheetChange, !1);
     if (b = document.getElementById("togglePostFormLink"))(b = b.firstElementChild) && b.addEventListener("click", showPostForm, !1), "#reply" === location.hash && showPostForm();
     if ("int" == d || "sp" == d) b = document.getElementById("delform"), b.addEventListener("click", onCoreClick, !1);
-    !window.passEnabled && window.preupload_captcha && "FormData" in window && (b = document.forms.post) && b.addEventListener("submit", onPostSubmit, !1);
     (b = document.forms.post) && b.flag && (e = readCookie("4chan_flag")) && (a = b.querySelector('option[value="' + e + '"]')) && a.setAttribute("selected", "selected");
     if (!c[3]) {
         c = document.getElementsByClassName("pageSwitcherForm");
