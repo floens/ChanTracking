@@ -2386,7 +2386,7 @@ var CustomCSS = {
             "https://sys.4chan.org" === a.origin && /^done-report/.test(a.data) && (a = a.data.split("-")[2], Config.threadHiding && $.id("t" + a) ? ThreadHiding.isHidden(a) || (ThreadHiding.hide(a), ThreadHiding.save()) : $.id("p" + a) && !ReplyHiding.isHidden(a) && (ReplyHiding.hide(a), ReplyHiding.save()))
         },
         open: function(a, b) {
-            window.open("https://sys.4chan.org/" + (b || Main.board) + "/imgboard.php?mode=report&no=" + a, Date.now(), "toolbar=0,scrollbars=0,location=0,status=1,menubar=0,resizable=1,width=600,height=170")
+            window.open("https://sys.4chan.org/" + (b || Main.board) + "/imgboard.php?mode=report&no=" + a, Date.now(), "toolbar=0,scrollbars=0,location=0,status=1,menubar=0,resizable=1,width=600,height=270")
         }
     },
     CustomMenu = {
