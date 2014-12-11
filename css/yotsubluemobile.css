@@ -185,6 +185,7 @@
 	}
 	
 	div.post div.file .fileThumb img {
+		max-width: 100px;
 		max-height: 100px;
 	}
 	
@@ -739,6 +740,7 @@
 	
 	.fileThumb img {
 		width: auto !important;
+		height: auto !important;
 	}
 	
 	div.mPagelist a {
