@@ -884,7 +884,7 @@ var Parser = {
                     } else "flag" == l.name && ((n = l.querySelector("option[selected]")) && n.removeAttribute("selected"), (q = Main.getCookie("4chan_flag")) && (n = l.querySelector('option[value="' + q + '"]')) && n.setAttribute("selected", "selected"));
                     a.appendChild(g)
                 }
-                this.btn || (this.btn = e.querySelector('input[type="submit"]').cloneNode(!1), this.btn.tabIndex = "", k.parentNode.appendChild(this.btn));
+                this.btn || (this.btn = e.querySelector('input[type="submit"]').cloneNode(!1), this.btn.tabIndex = "", k ? k.parentNode.appendChild(this.btn) : (a.appendChild(document.createElement("div")), a.lastElementChild.appendChild(this.btn)));
                 e.querySelector('.desktop > label > input[name="spoiler"]') && (e = document.createElement("span"), e.id = "qrSpoiler", e.innerHTML = '<label>[<input type="checkbox" value="on" name="spoiler">Spoiler?]</label>', k.parentNode.insertBefore(e, k.nextSibling));
                 f.appendChild(a);
                 d.appendChild(f);
