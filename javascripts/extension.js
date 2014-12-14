@@ -2744,7 +2744,7 @@ var Main = {
         Main.now = Date.now();
         UA.init();
         Config.load();
-        Config.forceHTTPS && "https:" != location.protocol ? location.href = location.href.replace(/^http:/, "https:") : (Main.firstRun && Config.loadFromURL() && (Main.firstRun = !1), (Main.stylesheet = Main.getCookie(style_group)) ? Main.stylesheet = Main.stylesheet.toLowerCase().replace(/ /g, "_") : Main.stylesheet = "nws_style" == style_group ? "yotsuba_new" : "yotsuba_b_new", Main.passEnabled = Main.getCookie("pass_enabled"), QR.noCaptcha = QR.noCaptcha || Main.passEnabled, Main.initIcons(), Main.addCSS(), Main.type = style_group.split("_")[0], a = location.pathname.split(/\//), Main.board = a[1], Main.page = a[2], Main.tid = a[3], Report.init(), Config.IDColor && IDColor.init(), Config.customCSS && CustomCSS.init(), Config.keyBinds && Keybinds.init(), UA.dispatchEvent("4chanMainInit"))
+        Config.forceHTTPS && "https:" != location.protocol ? location.href = location.href.replace(/^http:/, "https:") : (Main.firstRun && Config.loadFromURL() && (Main.firstRun = !1), (Main.stylesheet = Main.getCookie(style_group)) ? Main.stylesheet = Main.stylesheet.toLowerCase().replace(/ /g, "_") : Main.stylesheet = "nws_style" == style_group ? "yotsuba_new" : "yotsuba_b_new", Main.passEnabled = Main.getCookie("pass_enabled"), QR.noCaptcha = QR.noCaptcha || Main.passEnabled, Main.initIcons(), Main.addCSS(), Main.type = style_group.split("_")[0], a = location.pathname.split(/\//), Main.board = a[1], Main.page = a[2], Main.tid = a[3], UA.dispatchEvent("4chanMainInit"))
     },
     initPersistentNav: function() {
         var a, b, c;
@@ -2775,6 +2775,10 @@ var Main = {
         if (!Config.disableAll) {
             Main.hasMobileLayout = Main.checkMobileLayout();
             Main.isMobileDevice = /Mobile|Android|Dolfin|Opera Mobi|PlayStation Vita|Nintendo DS/.test(navigator.userAgent);
+            Report.init();
+            Config.IDColor && IDColor.init();
+            Config.customCSS && CustomCSS.init();
+            Config.keyBinds && Keybinds.init();
             Main.hasMobileLayout ? $.extend(Config, ConfigMobile) : ($.id("bottomReportBtn").style.display = "none", Main.isMobileDevice && $.addClass(document.body, "isMobileDevice"));
             Main.firstRun && Main.isMobileDevice && (Config.topPageNav = !1, Config.dropDownNav = !0);
             Config.dropDownNav && !Main.hasMobileLayout && Main.initPersistentNav();
