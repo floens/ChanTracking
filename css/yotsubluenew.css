@@ -429,31 +429,6 @@ blockquote > span.quote {
 	text-decoration: underline;
 }
 
-.is_arclist .belowLeaderboard {
-	display: none;
-}
-
-#arc-list {
-	width: 80%;
-	margin: auto;
-}
-
-#arc-list td {
-	text-align: center;
-}
-
-#arc-list .teaser-col {
-	text-align: left;
-}
-
-#arc-list .quotelink {
-	color: #34345c !important;
-}
-
-#arc-list .quotelink:hover {
-	color: #d00 !important;
-}
-
 div.post div.file {
 	display: block;
 }
