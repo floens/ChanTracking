@@ -149,59 +149,59 @@ var Parser = {
                 g = g = "",
                 l, n, m, q = '"',
                 p = "",
-                x = "",
-                y = m = "",
-                s = "",
-                r = "",
+                y = "",
+                z = m = "",
                 t = "",
+                r = "",
                 u = "",
-                z, D = "",
-                E = "",
-                F = "",
-                A, B, G = "",
-                H = "",
-                C = "reply",
                 v = "",
+                A, E = "",
+                F = "",
+                G = "",
+                B, C, H = "",
                 I = "",
+                D = "reply",
                 w = "",
-                J = !1;
+                J = "",
+                x = "",
+                K = !1;
             n = "//i.4cdn.org/" + b;
-            0 == a.resto ? (f = !0, c && (0 < a.replies ? (c = a.replies + " Repl" + (1 < a.replies ? "ies" : "y"), 0 < a.images && (c += " / " + a.images + " Image" + (1 < a.images ? "s" : ""))) : c = "", H = '<div class="postLink mobile"><span class="info">' + c + '</span><a href="thread/' + a.no + '" class="button">View Thread</a></div>', C = "op", G = '&nbsp; <span>[<a href="thread/' + a.no + (a.semantic_url ? "/" + a.semantic_url : "") + '" class="replylink" rel="canonical">Reply</a>]</span>'), c = a.no) : c = a.resto;
-            Main.tid && b == Main.board ? (A = "#p" + a.no, B = "javascript:quote('" + a.no + "')") : (A = "thread/" + c + "#p" + a.no, B = "thread/" + c + "#q" + a.no);
+            0 == a.resto ? (f = !0, c && (0 < a.replies ? (c = a.replies + " Repl" + (1 < a.replies ? "ies" : "y"), 0 < a.images && (c += " / " + a.images + " Image" + (1 < a.images ? "s" : ""))) : c = "", I = '<div class="postLink mobile"><span class="info">' + c + '</span><a href="thread/' + a.no + '" class="button">View Thread</a></div>', D = "op", H = '&nbsp; <span>[<a href="thread/' + a.no + (a.semantic_url ? "/" + a.semantic_url : "") + '" class="replylink" rel="canonical">Reply</a>]</span>'), c = a.no) : c = a.resto;
+            Main.tid && b == Main.board ? (B = "#p" + a.no, C = "javascript:quote('" + a.no + "')") : (B = "thread/" + c + "#p" + a.no, C = "thread/" + c + "#q" + a.no);
             h = !a.capcode && a.id ? ' <span class="posteruid id_' + a.id + '">(ID: <span class="hand" title="Highlight posts by this ID">' + a.id + "</span>)</span> " : "";
             switch (a.capcode) {
                 case "admin_highlight":
-                    D = " highlightPost";
+                    E = " highlightPost";
                 case "admin":
                     r = ' <strong class="capcode hand id_admin"title="Highlight posts by the Administrator">## Admin</strong>';
-                    t = " capcodeAdmin";
-                    u = ' <img src="' + Parser.icons.admin + '" alt="This user is the 4chan Administrator." title="This user is the 4chan Administrator." class="identityIcon">';
+                    u = " capcodeAdmin";
+                    v = ' <img src="' + Parser.icons.admin + '" alt="This user is the 4chan Administrator." title="This user is the 4chan Administrator." class="identityIcon">';
                     break;
                 case "mod":
                     r = ' <strong class="capcode hand id_mod" title="Highlight posts by Moderators">## Mod</strong>';
-                    t = " capcodeMod";
-                    u = ' <img src="' + Parser.icons.mod + '" alt="This user is a 4chan Moderator." title="This user is a 4chan Moderator." class="identityIcon">';
+                    u = " capcodeMod";
+                    v = ' <img src="' + Parser.icons.mod + '" alt="This user is a 4chan Moderator." title="This user is a 4chan Moderator." class="identityIcon">';
                     break;
                 case "developer":
                     r = ' <strong class="capcode hand id_developer" title="Highlight posts by Developers">## Developer</strong>';
-                    t = " capcodeDeveloper";
-                    u = ' <img src="' + Parser.icons.dev + '" alt="This user is a 4chan Developer." title="This user is a 4chan Developer." class="identityIcon">';
+                    u = " capcodeDeveloper";
+                    v = ' <img src="' + Parser.icons.dev + '" alt="This user is a 4chan Developer." title="This user is a 4chan Developer." class="identityIcon">';
                     break;
                 case "manager":
-                    r = ' <strong class="capcode hand id_manager" title="Highlight posts by Managers">## Manager</strong>', t = " capcodeManager", u = ' <img src="' + Parser.icons.manager + '" alt="This user is a 4chan Manager." title="This user is a 4chan Manager." class="identityIcon">'
+                    r = ' <strong class="capcode hand id_manager" title="Highlight posts by Managers">## Manager</strong>', u = " capcodeManager", v = ' <img src="' + Parser.icons.manager + '" alt="This user is a 4chan Manager." title="This user is a 4chan Manager." class="identityIcon">'
             }
-            a.email && (E = '<a href="mailto:' + a.email.replace(/ /g, "%20") + '" class="useremail">', F = "</a>");
-            z = a.country ? window.trollFlags ? ' <img src="//s.4cdn.org/image/country/troll/' + a.country.toLowerCase() + '.gif" alt="' + a.country + '" title="' + a.country_name + '" class="countryFlag">' : ' <span title="' + a.country_name + '" class="flag flag-' + a.country.toLowerCase() + '"></span>' : "";
-            a.filedeleted ? g = '<div id="f' + a.no + '" class="file"><span class="fileThumb"><img src="' + Parser.icons.del + '" class="fileDeletedRes" alt="File deleted."></span></div>' : a.ext && (g = Parser.decodeSpecialChars(a.filename), m = y = a.filename + a.ext, g.length > (f ? 40 : 30) && (m = Parser.encodeSpecialChars(g.slice(0, f ? 35 : 25)) + "(...)" + a.ext, J = !0), a.tn_w || a.tn_h || ".gif" != a.ext || (a.tn_w = a.w, a.tn_h = a.h), p = 1048576 <= a.fsize ? (0 | a.fsize / 1048576 * 100 + .5) / 100 + " M" : 1024 < a.fsize ? (0 | a.fsize / 1024 + .5) + " K" : a.fsize + " ", a.spoiler && !Config.revealSpoilers && (m = "Spoiler Image", q = '" title="' + y + '"', x = " imgspoiler", l = "//s.4cdn.org/image/spoiler" + (Parser.customSpoiler[b] || "") + ".png", a.tn_w = 100, a.tn_h = 100), l || (l = "//0.t.4cdn.org/" + b + "/" + a.tim + "s.jpg"), g = ".pdf" == a.ext ? "PDF" : a.w + "x" + a.h, "f" != b ? (n = n + "/" + a.tim + a.ext, k = '<a class="fileThumb' + x + '" href="' + n + '" target="_blank"><img src="' + l + '" alt="' + p + 'B" data-md5="' + a.md5 + '" style="height: ' + a.tn_h + "px; width: " + a.tn_w + 'px;"><div data-tip data-tip-cb="mShowFull" class="mFileInfo mobile">' + p + "B " + a.ext.slice(1).toUpperCase() + "</div></a>", g = '<div class="fileText" id="fT' + a.no + q + ">File: <a" + (J ? ' title="' + y + '"' : "") + ' href="' + n + '" target="_blank">' + m + "</a> (" + p + "B, " + g + ")</div>") : (n = n + "/" + a.filename + a.ext, g += ", " + a.tag, g = '<div class="fileText" id="fT' + a.no + '">File: <a href="' + n + '" target="_blank">' + a.filename + ".swf</a> (" + p + "B, " + g + ")</div>"), g = '<div id="f' + a.no + '" class="file">' + g + k + "</div>");
-            a.trip && (s = ' <span class="postertrip">' + a.trip + "</span>");
+            a.email && (F = '<a href="mailto:' + a.email.replace(/ /g, "%20") + '" class="useremail">', G = "</a>");
+            A = a.country ? window.trollFlags ? ' <img src="//s.4cdn.org/image/country/troll/' + a.country.toLowerCase() + '.gif" alt="' + a.country + '" title="' + a.country_name + '" class="countryFlag">' : ' <span title="' + a.country_name + '" class="flag flag-' + a.country.toLowerCase() + '"></span>' : "";
+            a.filedeleted ? g = '<div id="f' + a.no + '" class="file"><span class="fileThumb"><img src="' + Parser.icons.del + '" class="fileDeletedRes" alt="File deleted."></span></div>' : a.ext && (g = Parser.decodeSpecialChars(a.filename), m = z = a.filename + a.ext, g.length > (f ? 40 : 30) && (m = Parser.encodeSpecialChars(g.slice(0, f ? 35 : 25)) + "(...)" + a.ext, K = !0), a.tn_w || a.tn_h || ".gif" != a.ext || (a.tn_w = a.w, a.tn_h = a.h), p = 1048576 <= a.fsize ? (0 | a.fsize / 1048576 * 100 + .5) / 100 + " M" : 1024 < a.fsize ? (0 | a.fsize / 1024 + .5) + " K" : a.fsize + " ", a.spoiler && !Config.revealSpoilers && (m = "Spoiler Image", q = '" title="' + z + '"', y = " imgspoiler", l = "//s.4cdn.org/image/spoiler" + (Parser.customSpoiler[b] || "") + ".png", a.tn_w = 100, a.tn_h = 100), l || (l = "//0.t.4cdn.org/" + b + "/" + a.tim + "s.jpg"), g = ".pdf" == a.ext ? "PDF" : a.w + "x" + a.h, "f" != b ? (n = n + "/" + a.tim + a.ext, k = '<a class="fileThumb' + y + '" href="' + n + '" target="_blank"><img src="' + l + '" alt="' + p + 'B" data-md5="' + a.md5 + '" style="height: ' + a.tn_h + "px; width: " + a.tn_w + 'px;"><div data-tip data-tip-cb="mShowFull" class="mFileInfo mobile">' + p + "B " + a.ext.slice(1).toUpperCase() + "</div></a>", g = '<div class="fileText" id="fT' + a.no + q + ">File: <a" + (K ? ' title="' + z + '"' : "") + ' href="' + n + '" target="_blank">' + m + "</a> (" + p + "B, " + g + ")</div>") : (n = n + "/" + a.filename + a.ext, g += ", " + a.tag, g = '<div class="fileText" id="fT' + a.no + '">File: <a href="' + n + '" target="_blank">' + a.filename + ".swf</a> (" + p + "B, " + g + ")</div>"), g = '<div id="f' + a.no + '" class="file">' + g + k + "</div>");
+            a.trip && (t = ' <span class="postertrip">' + a.trip + "</span>");
             k = a.name || "";
             l = 30 < k.length ? '<span class="name" data-tip data-tip-cb="mShowFull">' + Parser.truncate(k, 30) + "(...)</span> " : '<span class="name">' + k + "</span> ";
-            f ? (a.capcode_replies && (I = Parser.buildCapcodeReplies(a.capcode_replies, b, a.no)), d && a.replies && (v = a.replies + " post" + (1 < a.replies ? "s" : ""), a.images && (v += " and " + a.images + " image repl" + (1 < a.images ? "ies" : "y")), v = '<span class="summary preview-summary">' + v + ".</span>"), a.sticky && (w += '<img class="stickyIcon retina" title="Sticky" alt="Sticky" src="' + Main.icons2.sticky + '"> '), a.closed && (w = a.archived ? w + ('<img class="archivedIcon retina" title="Archived" alt="Archived" src="' + Main.icons2.archived + '"> ') : w + ('<img class="closedIcon retina" title="Closed" alt="Closed" src="' + Main.icons2.closed + '"> ')), d = void 0 === a.sub ? '<span class="subject"></span> ' : 30 < a.sub.length ? '<span class="subject" data-tip data-tip-cb="mShowFull">' + Parser.truncate(a.sub, 30) + "(...)</span> " : '<span class="subject">' + a.sub + "</span> ") : d = "";
-            e.className = "postContainer " + C + "Container";
+            f ? (a.capcode_replies && (J = Parser.buildCapcodeReplies(a.capcode_replies, b, a.no)), d && a.replies && (w = a.replies + " post" + (1 < a.replies ? "s" : ""), a.images && (w += " and " + a.images + " image repl" + (1 < a.images ? "ies" : "y")), w = '<span class="summary preview-summary">' + w + ".</span>"), a.sticky && (x += '<img class="stickyIcon retina" title="Sticky" alt="Sticky" src="' + Main.icons2.sticky + '"> '), a.closed && (x = a.archived ? x + ('<img class="archivedIcon retina" title="Archived" alt="Archived" src="' + Main.icons2.archived + '"> ') : x + ('<img class="closedIcon retina" title="Closed" alt="Closed" src="' + Main.icons2.closed + '"> ')), d = void 0 === a.sub ? '<span class="subject"></span> ' : 30 < a.sub.length ? '<span class="subject" data-tip data-tip-cb="mShowFull">' + Parser.truncate(a.sub, 30) + "(...)</span> " : '<span class="subject">' + a.sub + "</span> ") : d = "";
+            e.className = "postContainer " + D + "Container";
             e.id = "pc" + a.no;
-            e.innerHTML = (f ? "" : '<div class="sideArrows" id="sa' + a.no + '">&gt;&gt;</div>') + '<div id="p' + a.no + '" class="post ' + C + D + '"><div class="postInfoM mobile" id="pim' + a.no + '"><span class="nameBlock' + t + '">' + l + s + r + u + h + z + "<br>" + d + '</span><span class="dateTime postNum" data-utc="' + a.time + '">' + a.now + ' <a href="' + a.no + "#p" + a.no + '" title="Link to this post">No.</a><a href="javascript:quote(\'' + a.no + '\');" title="Reply to this post">' + a.no + "</a></span></div>" + (f ? g : "") + '<div class="postInfo desktop" id="pi' + a.no + '"' + (b != Main.board ? ' data-board="' + b + '"' : "") + '><input type="checkbox" name="' + a.no + '" value="delete"> ' + d + '<span class="nameBlock' + t + '">' + E + '<span class="name">' + k + "</span>" + s + r + F + u + h + z + ' </span> <span class="dateTime" data-utc="' + a.time + '">' + a.now + '</span> <span class="postNum desktop"><a href="' + A + '" title="Link to this post">No.</a><a href="' + B + '" title="Reply to this post">' + a.no + "</a> " + w + G + "</span></div>" + (f ? "" : g) + '<blockquote class="postMessage" id="m' + a.no + '">' + (a.com || "") + I + v + "</blockquote> </div>" + H;
+            e.innerHTML = (f ? "" : '<div class="sideArrows" id="sa' + a.no + '">&gt;&gt;</div>') + '<div id="p' + a.no + '" class="post ' + D + E + '"><div class="postInfoM mobile" id="pim' + a.no + '"><span class="nameBlock' + u + '">' + l + t + r + v + h + A + "<br>" + d + '</span><span class="dateTime postNum" data-utc="' + a.time + '">' + a.now + ' <a href="' + a.no + "#p" + a.no + '" title="Link to this post">No.</a><a href="javascript:quote(\'' + a.no + '\');" title="Reply to this post">' + a.no + "</a></span></div>" + (f ? g : "") + '<div class="postInfo desktop" id="pi' + a.no + '"' + (b != Main.board ? ' data-board="' + b + '"' : "") + '><input type="checkbox" name="' + a.no + '" value="delete"> ' + d + '<span class="nameBlock' + u + '">' + F + '<span class="name">' + k + "</span>" + t + r + G + v + h + A + ' </span> <span class="dateTime" data-utc="' + a.time + '">' + a.now + '</span> <span class="postNum desktop"><a href="' + B + '" title="Link to this post">No.</a><a href="' + C + '" title="Reply to this post">' + a.no + "</a> " + x + H + "</span></div>" + (f ? "" : g) + '<blockquote class="postMessage" id="m' + a.no + '">' + (a.com || "") + J + w + "</blockquote> </div>" + I;
             if (!Main.tid || b != Main.board)
-                for (r = e.getElementsByClassName("quotelink"), a = 0; f = r[a]; ++a) s = f.getAttribute("href"), "/" != s.charAt(0) && (f.href = "/" + b + "/thread/" + c + s);
+                for (r = e.getElementsByClassName("quotelink"), a = 0; f = r[a]; ++a) t = f.getAttribute("href"), "/" != t.charAt(0) && (f.href = "/" + b + "/thread/" + c + t);
             return e
         },
         truncate: function(a, b) {
@@ -911,6 +911,10 @@ var Parser = {
         resetCaptcha: function() {
             window.grecaptcha && null !== QR.captchaWidgetId && grecaptcha.reset(QR.captchaWidgetId)
         },
+        onPassError: function() {
+            var a, b;
+            QR.captchaWidgetCnt || (window.passEnabled = QR.noCaptcha = !1, a = document.createElement("div"), a.id = "qrCaptchaContainer", b = $.id("qrForm"), b.insertBefore(a, b.lastElementChild), QR.captchaWidgetCnt = a, QR.renderCaptcha())
+        },
         onFileChange: function(a) {
             var b;
             this.value ? (b = window.maxFilesize, this.files ? (a = this.files[0].size, "video/webm" == this.files[0].type && window.maxWebmFilesize && (b = window.maxWebmFilesize)) : a = 0, QR.fileDisabled ? QR.showPostError("Image limit reached.", "imagelimit", !0) : a > b ? QR.showPostError("Error: Maximum file size allowed is " + Math.floor(b / 1048576) + " MB", "filesize", !0) : QR.hidePostError()) : QR.hidePostError();
@@ -1003,8 +1007,11 @@ var Parser = {
                 QR.xhr = null;
                 QR.btn.value = "Post";
                 if (200 == this.status)
-                    if (a = this.responseText.match(/"errmsg"[^>]*>(.*?)<\/span/)) QR.resetCaptcha(), QR.showPostError(a[1]);
-                    else {
+                    if (a = this.responseText.match(/"errmsg"[^>]*>(.*?)<\/span/)) {
+                        if (/4chan Pass/.test(a)) QR.onPassError();
+                        else QR.resetCaptcha();
+                        QR.showPostError(a[1])
+                    } else {
                         if (e = this.responseText.match(/\x3c!-- thread:([0-9]+),no:([0-9]+) --\x3e/)) {
                             a = e[1];
                             e = e[2];
@@ -1862,13 +1869,13 @@ var Parser = {
             return h
         },
         exec: function(a, b, c, d) {
-            var e, f, h, g, k, l, n, m, q, p, x;
+            var e, f, h, g, k, l, n, m, q, p, y;
             if (Parser.trackedReplies && Parser.trackedReplies[">>" + b.id.slice(2)]) return !1;
-            x = Main.board;
+            y = Main.board;
             q = Filter.activeFilters;
             p = !1;
             for (e = 0; m = q[e]; ++e)
-                if (!m.boards || m.boards[x])
+                if (!m.boards || m.boards[y])
                     if (0 == m.type) {
                         if ((void 0 !== f || (f = b.getElementsByClassName("postertrip")[0])) && m.pattern == f.textContent) {
                             p = !0;
