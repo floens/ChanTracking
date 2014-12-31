@@ -2786,7 +2786,11 @@ var Main = {
             Config.IDColor && IDColor.init();
             Config.customCSS && CustomCSS.init();
             Config.keyBinds && Keybinds.init();
-            Main.hasMobileLayout ? $.extend(Config, ConfigMobile) : ($.id("bottomReportBtn").style.display = "none", Main.isMobileDevice && $.addClass(document.body, "isMobileDevice"));
+            if (Main.hasMobileLayout) $.extend(Config, ConfigMobile);
+            else {
+                if (a = $.id("bottomReportBtn")) a.style.display = "none";
+                Main.isMobileDevice && $.addClass(document.body, "isMobileDevice")
+            }
             Main.firstRun && Main.isMobileDevice && (Config.topPageNav = !1, Config.dropDownNav = !0);
             Config.dropDownNav && !Main.hasMobileLayout && Main.initPersistentNav();
             $.addClass(document.body, Main.stylesheet);
@@ -2795,7 +2799,7 @@ var Main = {
             Config.compactThreads ? $.addClass(document.body, "compact") : Config.centeredThreads && $.addClass(document.body, "centeredThreads");
             Config.noPictures && $.addClass(document.body, "noPictures");
             Config.customMenu && CustomMenu.apply(Config.customMenuList);
-            if (Config.quotePreview || Config.imageHover || Config.filter) a = $.id("delform"), a.addEventListener("mouseover", Main.onThreadMouseOver, !1), a.addEventListener("mouseout", Main.onThreadMouseOut, !1);
+            if (Config.quotePreview || Config.imageHover || Config.filter) document.addEventListener("mouseover", Main.onThreadMouseOver, !1), document.addEventListener("mouseout", Main.onThreadMouseOut, !1);
             Config.stickyNav && Main.setStickyNav();
             Main.hasMobileLayout ? StickyNav.init() : (Main.initGlobalMessage(), Config.autoHideNav && StickyNav.init());
             Config.threadExpansion && ThreadExpansion.init();

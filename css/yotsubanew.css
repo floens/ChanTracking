@@ -422,6 +422,31 @@ blockquote > span.quote {
 	color: #ff0000 !important;
 }
 
+.is_arclist .belowLeaderboard {
+	display: none;
+}
+
+#arc-list {
+	max-width: 80%;
+	margin: 10px auto 0 auto;
+}
+
+#arc-list td {
+	text-align: center;
+}
+
+#arc-list .teaser-col {
+	text-align: left;
+}
+
+#arc-list .quotelink {
+	color: #34345c !important;
+}
+
+#arc-list .quotelink:hover {
+	color: #d00 !important;
+}
+
 div.post div.file {
 	display: block;
 }
