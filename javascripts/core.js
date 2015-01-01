@@ -293,8 +293,7 @@ function init() {
         };
     if (document.getElementById("styleSelector"))
         for (styleSelect = document.getElementById("styleSelector"), len = styleSelect.options.length, c = 0; c < len; c++) styleSelect.options[c].value == activeStyleSheet && (styleSelect.selectedIndex = c);
-    a || (document.getElementById("delPassword").value = get_pass("4chan_pass"));
-    "i" == b || "ic" == b || "f" == b || a || window.File && window.FileReader && window.FileList && window.Blob && document.getElementById("postFile").addEventListener("change", handleFileSelect, !1);
+    !a && document.forms.post && (document.getElementById("delPassword").value = get_pass("4chan_pass"), "i" != b && "ic" != b && "f" != b && window.File && window.FileReader && window.FileList && window.Blob && document.getElementById("postFile").addEventListener("change", handleFileSelect, !1));
     "undefined" != typeof extra && extra && !a && extra.init();
     window.check_for_block && checkForBlock()
 }
