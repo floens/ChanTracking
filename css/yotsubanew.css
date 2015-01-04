@@ -447,6 +447,11 @@ blockquote > span.quote {
 	color: #d00 !important;
 }
 
+#arc-sort {
+	border-bottom: 1px dotted;
+	cursor: pointer;
+}
+
 div.post div.file {
 	display: block;
 }
