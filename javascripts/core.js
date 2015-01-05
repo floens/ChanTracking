@@ -335,9 +335,9 @@ function enableMobile() {
 }
 
 function checkForBlock() {
-    var a, b, c, d;
+    var a, b, c, d, e;
     if (!/Mobile|Android|Dolfin|Opera Mobi|PlayStation Vita|Nintendo DS/.test(navigator.userAgent) && 1 != readCookie("pass_enabled"))
-        for (d = document.getElementsByClassName("ad-cnt"), a = 0; b = d[a]; ++a) 0 == b.offsetHeight && (c = document.createElement("div"), c.className = "center", c.innerHTML = blockPlea, b.parentNode.insertBefore(c, b))
+        for (d = document.getElementsByClassName("ad-cnt"), a = 0; b = d[a]; ++a) 0 == b.offsetHeight && (c = document.createElement("div"), c.className = "center", c.innerHTML = '<div style="display:table-cell;vertical-align:middle">' + blockPlea + "</div>", e = c.style, /middlead/.test(b.className) ? (e.width = "468px", e.height = "60px") : (e.width = "728px", e.height = "90px"), e.display = "table", e.border = "1px solid #000", b.parentNode.insertBefore(c, b))
 }
 var currentHighlighted = null;
 
