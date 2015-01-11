@@ -79,7 +79,7 @@ var Parser = {
         dateTimeout: null,
         init: function() {
             var a, b, c, d;
-            if (Config.filter || Config.embedSoundCloud || Config.embedYouTube || Config.embedVocaroo || Main.hasMobileLayout) this.needMsg = !0;
+            if (Config.filter || Config.linkify || Config.embedSoundCloud || Config.embedYouTube || Main.hasMobileLayout) this.needMsg = !0;
             a = 2 <= window.devicePixelRatio ? "@2x.gif" : ".gif";
             this.icons = {
                 admin: "//s.4cdn.org/image/adminicon" + a,
@@ -284,9 +284,9 @@ var Parser = {
             c ? Config.reportButton && (d = document.createElement("span"), d.className = "mobile mobile-report", d.setAttribute("data-cmd", "report"), d.setAttribute("data-id", a), d.textContent = "Report", e.parentNode.appendChild(d)) : (d = document.createElement("a"), d.href = "#", d.className = "postMenuBtn", d.title = "Post menu", d.setAttribute("data-cmd", "post-menu"), d.textContent = "\u25b6", e.appendChild(d));
             b && (a != b && (Config.filter && (g = Filter.exec(e.parentNode, e, h)), !g && ReplyHiding.hidden[a] && (ReplyHiding.hidden[a] = Main.now, ReplyHiding.hide(a))), Config.backlinks && Parser.parseBacklinks(a, b));
             IDColor.enabled && (k = $.cls("posteruid", e.parentNode)[c ? 0 : 1]) && IDColor.apply(k.firstElementChild);
+            Config.linkify && Linkify.exec(h);
             Config.embedSoundCloud && Media.parseSoundCloud(h);
             (Config.embedYouTube || Main.hasMobileLayout) && Media.parseYouTube(h);
-            Config.embedVocaroo && Media.parseVocaroo(h);
             Config.revealSpoilers && (f = document.getElementById("f" + a)) && (f = f.children[1]) && $.hasClass(f, "imgspoiler") && (d = f.firstChild, f.removeChild(d), d.removeAttribute("style"), k = $.hasClass(e.parentNode, "op"), d.style.maxWidth = d.style.maxHeight = k ? "250px" : "125px", d.src = "//0.t.4cdn.org" + f.pathname.replace(/([0-9]+).+$/, "/$1s.jpg"), h = f.previousElementSibling, g = h.title.split("."), g[0].length > (k ? 40 : 30) ? g = g[0].slice(0, k ? 35 : 25) + "(...)" + g[1] : (g = h.title, h.removeAttribute("title")), h.firstElementChild.innerHTML = g, f.insertBefore(d, f.firstElementChild));
             Config.localTime && (c ? (d = e.parentNode.getElementsByClassName("dateTime")[0], d.firstChild.nodeValue = Parser.getLocaleDate(new Date(1E3 * d.getAttribute("data-utc"))) + " ") : (d = e.getElementsByClassName("dateTime")[0], d.textContent = Parser.getLocaleDate(new Date(1E3 * d.getAttribute("data-utc")))))
         },
@@ -2202,28 +2202,51 @@ var Parser = {
             if (a.target === b || "swf-embed-close" == a.target.id) b.removeEventListener("click", SWFEmbed.onBackdropClick, !1), b.parentNode.removeChild(b)
         }
     },
+    Linkify = {
+        init: function() {
+            this.probeRe = /(?:^|[^\B"])https?:\/\/[-.a-z0-9]+\.[a-z]{2,4}/;
+            this.linkRe = /(^|[^\B"])(https?:\/\/[-.a-z0-9\u200b]+\.[a-z\u200b]{2,4}(?:\/[^\s<>]*)?)/ig;
+            this.punct = /[:!?,.'"]+$/g;
+            this.derefer = "//sys.4chan.org/derefer?url="
+        },
+        exec: function(a) {
+            this.probeRe.test(a.innerHTML) && (a.innerHTML = a.innerHTML.replace(/<wbr>/g, "\u200b").replace(this.linkRe, this.funk).replace(/\u200b/g, "<wbr>"))
+        },
+        funk: function(a, b, c, d, e) {
+            var f;
+            d += a.length;
+            if ("</a>" === e.slice(d, d + 4)) return a;
+            a = f = c.length;
+            if (d = c.match(Linkify.punct)) a -= d[0].length;
+            if (d = c.match(/\)+$/g)) e = d[0].length, (d = c.match(/\(/g)) ? (e -= d.length, 0 < e && (a -= e)) : a -= e;
+            a < f ? (d = c.slice(a), c = c.slice(0, a)) : d = "";
+            return b + '<a href="' + Linkify.derefer + encodeURIComponent(c.replace(/\u200b/g, "")) + '" target="_blank" rel="nofollow">' + c + "</a>" + d
+        }
+    },
     Media = {
         init: function() {
             this.matchSC = /(?:soundcloud\.com|snd\.sc)\/[^\s<]+(?:<wbr>)?[^\s<]*/g;
             this.matchYT = /(?:youtube\.com\/watch\?[^\s]*?v=|youtu\.be\/)[^\s<]+(?:<wbr>)?[^\s<]*(?:<wbr>)?[^\s<]*/g;
             this.toggleYT = /(?:v=|\.be\/)([a-zA-Z0-9_-]{11})/;
             this.timeYT = /#t=([ms0-9]+)/;
-            this.matchVocaroo = /vocaroo\.com\/i\/([a-z0-9]{12})/gi;
             this.map = {
                 yt: this.toggleYouTube,
-                sc: this.toggleSoundCloud,
-                vocaroo: this.toggleVocaroo
+                sc: this.toggleSoundCloud
             }
         },
         parseSoundCloud: function(a) {
             a.innerHTML = a.innerHTML.replace(this.matchSC, this.replaceSoundCloud)
         },
-        replaceSoundCloud: function(a) {
-            return "<span>" + a + '</span> [<a href="javascript:;" data-cmd="embed" data-type="sc">Embed</a>]'
+        replaceSoundCloud: function(a, b, c) {
+            if (Config.linkify) {
+                if ('"' === c[b + a.length - 1]) return a;
+                pfx = a + "</a>"
+            } else pfx = "<span>" + a + "</span>";
+            return pfx + ' [<a href="javascript:;" data-cmd="embed" data-type="sc">Embed</a>]'
         },
         toggleSoundCloud: function(a) {
             var b, c;
-            "Remove" == a.textContent ? (a.parentNode.removeChild(a.nextElementSibling), a.textContent = "Embed") : "Embed" == a.textContent && (c = a.previousElementSibling.textContent, b = new XMLHttpRequest, b.open("GET", "//soundcloud.com/oembed?show_artwork=false&maxwidth=500px&show_comments=false&format=json&url=http://" + c), b.onload = function() {
+            "Remove" == a.textContent ? (a.parentNode.removeChild(a.nextElementSibling), a.textContent = "Embed") : "Embed" == a.textContent && (c = a.previousElementSibling.textContent, b = new XMLHttpRequest, b.open("GET", "//soundcloud.com/oembed?show_artwork=false&maxwidth=500px&show_comments=false&format=json&url=http://" + c.replace(/^https?:\/\//i, "")), b.onload = function() {
                 var b;
                 200 == this.status || 304 == this.status ? (b = document.createElement("div"), b.className = "media-embed", b.innerHTML = JSON.parse(this.responseText).html, a.parentNode.insertBefore(b, a.nextElementSibling), a.textContent = "Remove") : (a.textContent = "Error", console.log("SoundCloud Error (HTTP " + this.status + ")"))
             }, a.textContent = "Loading...", b.send(null))
@@ -2231,8 +2254,12 @@ var Parser = {
         parseYouTube: function(a) {
             a.innerHTML = a.innerHTML.replace(this.matchYT, this.replaceYouTube)
         },
-        replaceYouTube: function(a) {
-            return "<span>" + a + '</span> [<a href="javascript:;" data-cmd="embed" data-type="yt">' + (Main.hasMobileLayout ? "Open" : "Embed") + "</a>]"
+        replaceYouTube: function(a, b, c) {
+            if (Config.linkify) {
+                if ('"' === c[b + a.length - 1]) return a;
+                a += "</a>"
+            } else a = "<span>" + a + "</span>";
+            return a + ' [<a href="javascript:;" data-cmd="embed" data-type="yt">' + (Main.hasMobileLayout ? "Open" : "Embed") + "</a>]"
         },
         showYTPreview: function(a) {
             var b, c, d;
@@ -2260,16 +2287,6 @@ var Parser = {
         toggleYouTube: function(a) {
             var b, c;
             "Remove" == a.textContent ? (a.parentNode.removeChild(a.nextElementSibling), a.textContent = "Embed") : (c = a.previousElementSibling.textContent, b = c.match(this.toggleYT), c = c.match(this.timeYT), b && (b = b[1]) ? (b = encodeURIComponent(b), c && (c = c[1]) && (b += "#t=" + encodeURIComponent(c)), Main.hasMobileLayout ? window.open("//www.youtube.com/watch?v=" + b) : (c = document.createElement("div"), c.className = "media-embed", c.innerHTML = '<iframe src="//www.youtube.com/embed/' + b + '" width="640" height="360" frameborder="0"></iframe>', a.parentNode.insertBefore(c, a.nextElementSibling), a.textContent = "Remove")) : a.textContent = "Error")
-        },
-        parseVocaroo: function(a) {
-            a.innerHTML = a.innerHTML.replace(this.matchVocaroo, this.replaceVocaroo)
-        },
-        replaceVocaroo: function(a) {
-            return "<span>" + a + '</span> [<a href="javascript:;" data-cmd="embed" data-type="vocaroo">Embed</a>]'
-        },
-        toggleVocaroo: function(a) {
-            var b, c;
-            "Remove" == a.textContent ? (a.parentNode.removeChild(a.nextElementSibling), a.textContent = "Embed") : (b = a.previousElementSibling.textContent, (b = b.match(Media.matchVocaroo)) && (b = b[0].split("/").pop()) ? (b = encodeURIComponent(b), c = document.createElement("div"), c.className = "media-embed", c.innerHTML = '<embed width="220" height="140" class="media-embed" src="//vocaroo.com/mediafoo.swf?playMediaID=' + b + '&autoplay=0">', a.parentNode.insertBefore(c, a.nextElementSibling), a.textContent = "Remove") : a.textContent = "Error")
         },
         toggleEmbed: function(a) {
             var b, c = a.getAttribute("data-type");
@@ -2548,11 +2565,13 @@ var CustomCSS = {
         forceHTTPS: !1,
         reportButton: !1,
         darkTheme: !1,
+        linkify: !1,
         disableAll: !1
     },
     ConfigMobile = {
         embedYouTube: !1,
-        compactThreads: !1
+        compactThreads: !1,
+        linkify: !0
     };
 Config.load = function() {
     (storage = localStorage.getItem("4chan-settings")) ? (storage = JSON.parse(storage), $.extend(Config, storage), "1" === Main.getCookie("https") ? Config.forceHTTPS = !0 : Config.forceHTTPS = !1) : Main.firstRun = !0
@@ -2621,10 +2640,10 @@ var SettingsMenu = {
             revealSpoilers: ["Don't spoiler images", "Show image thumbnail and original filename instead of spoiler placeholders", !0],
             noPictures: ["Hide thumbnails", "Don't display thumbnails while browsing", !0],
             embedYouTube: ["Embed YouTube links", "Embed YouTube player into replies"],
-            embedSoundCloud: ["Embed SoundCloud links", "Embed SoundCloud player into replies"],
-            embedVocaroo: ["Embed Vocaroo links", "Embed Vocaroo player into replies"]
+            embedSoundCloud: ["Embed SoundCloud links", "Embed SoundCloud player into replies"]
         },
         Miscellaneous: {
+            linkify: ["Linkify URLs", "Make user-posted links clickable", !0],
             darkTheme: ["Use a dark theme", "Use the Tomorrow theme for nighttime browsing", !0, !1, !0],
             customCSS: ['Custom CSS [<a href="javascript:;" data-cmd="css-open">Edit</a>]', "Include your own CSS rules", !0],
             IDColor: ["Color user IDs", "Assign unique colors to user IDs on boards that use them", !0],
@@ -2783,6 +2802,7 @@ var Main = {
             Main.hasMobileLayout = Main.checkMobileLayout();
             Main.isMobileDevice = /Mobile|Android|Dolfin|Opera Mobi|PlayStation Vita|Nintendo DS/.test(navigator.userAgent);
             Report.init();
+            Config.linkify && Linkify.init();
             Config.IDColor && IDColor.init();
             Config.customCSS && CustomCSS.init();
             Config.keyBinds && Keybinds.init();
@@ -2805,7 +2825,7 @@ var Main = {
             Config.threadExpansion && ThreadExpansion.init();
             Config.filter && Filter.init();
             Config.threadWatcher && ThreadWatcher.init();
-            (Main.hasMobileLayout || Config.embedSoundCloud || Config.embedYouTube || Config.embedVocaroo) && Media.init();
+            (Main.hasMobileLayout || Config.embedSoundCloud || Config.embedYouTube) && Media.init();
             ReplyHiding.init();
             Config.quotePreview && QuotePreview.init();
             Parser.init();
