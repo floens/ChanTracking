@@ -26,6 +26,10 @@ body {
 	left: 12%;
 }
 
+.linkified {
+	text-decoration: underline;
+}
+
 #disclaimer {
 	font-size: 14px;
 	position: absolute;

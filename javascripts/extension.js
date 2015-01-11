@@ -2220,7 +2220,7 @@ var Parser = {
             if (d = c.match(Linkify.punct)) a -= d[0].length;
             if (d = c.match(/\)+$/g)) e = d[0].length, (d = c.match(/\(/g)) ? (e -= d.length, 0 < e && (a -= e)) : a -= e;
             a < f ? (d = c.slice(a), c = c.slice(0, a)) : d = "";
-            return b + '<a href="' + Linkify.derefer + encodeURIComponent(c.replace(/\u200b/g, "")) + '" target="_blank" rel="nofollow">' + c + "</a>" + d
+            return b + '<a href="' + Linkify.derefer + encodeURIComponent(c.replace(/\u200b/g, "")) + '" target="_blank" class="linkified" rel="nofollow">' + c + "</a>" + d
         }
     },
     Media = {
