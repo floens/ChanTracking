@@ -83,6 +83,18 @@ function buildMobileNav(a) {
     }
 }
 
+function cloneTopNav() {
+    var a, b, c;
+    if (a = document.getElementById("boardNavDesktop")) {
+        b = document.getElementById("absbot");
+        a = a.cloneNode(!0);
+        a.id += "Foot";
+        if (c = a.querySelector("#navtopright")) c.id = "navbotright";
+        if (c = a.querySelector("#settingsWindowLink")) c.id += "Bot";
+        document.body.insertBefore(a, b)
+    }
+}
+
 function initPass() {
     "1" == get_cookie("pass_enabled") || get_cookie("extra_path") ? window.passEnabled = !0 : window.passEnabled = !1
 }
@@ -441,6 +453,7 @@ function showPostForm(a) {
 function contentLoaded() {
     var a, b, c, d, e;
     document.removeEventListener("DOMContentLoaded", contentLoaded, !0);
+    cloneTopNav();
     initAnalytics();
     c = location.pathname.split(/\//);
     d = c[1];
