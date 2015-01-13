@@ -2802,15 +2802,15 @@ var Main = {
             Main.hasMobileLayout = Main.checkMobileLayout();
             Main.isMobileDevice = /Mobile|Android|Dolfin|Opera Mobi|PlayStation Vita|Nintendo DS/.test(navigator.userAgent);
             Report.init();
-            Config.linkify && Linkify.init();
-            Config.IDColor && IDColor.init();
-            Config.customCSS && CustomCSS.init();
-            Config.keyBinds && Keybinds.init();
             if (Main.hasMobileLayout) $.extend(Config, ConfigMobile);
             else {
                 if (a = $.id("bottomReportBtn")) a.style.display = "none";
                 Main.isMobileDevice && $.addClass(document.body, "isMobileDevice")
             }
+            Config.linkify && Linkify.init();
+            Config.IDColor && IDColor.init();
+            Config.customCSS && CustomCSS.init();
+            Config.keyBinds && Keybinds.init();
             Main.firstRun && Main.isMobileDevice && (Config.topPageNav = !1, Config.dropDownNav = !0);
             Config.dropDownNav && !Main.hasMobileLayout && Main.initPersistentNav();
             $.addClass(document.body, Main.stylesheet);
