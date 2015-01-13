@@ -2205,7 +2205,7 @@ var Parser = {
     Linkify = {
         init: function() {
             this.probeRe = /(?:^|[^\B"])https?:\/\/[-.a-z0-9]+\.[a-z]{2,4}/;
-            this.linkRe = /(^|[^\B"])(https?:\/\/[-.a-z0-9\u200b]+\.[a-z\u200b]{2,4}(?:\/[^\s<>]*)?)/ig;
+            this.linkRe = /(^|[^\B"])(https?:\/\/[-.a-z0-9\u200b]+\.[a-z\u200b]{2,15}(?:\/[^\s<>]*)?)/ig;
             this.punct = /[:!?,.'"]+$/g;
             this.derefer = "//sys.4chan.org/derefer?url="
         },
