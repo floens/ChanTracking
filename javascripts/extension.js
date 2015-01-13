@@ -196,7 +196,7 @@ var Parser = {
             a.trip && (t = ' <span class="postertrip">' + a.trip + "</span>");
             k = a.name || "";
             l = 30 < k.length ? '<span class="name" data-tip data-tip-cb="mShowFull">' + Parser.truncate(k, 30) + "(...)</span> " : '<span class="name">' + k + "</span> ";
-            f ? (a.capcode_replies && (J = Parser.buildCapcodeReplies(a.capcode_replies, b, a.no)), d && a.replies && (w = a.replies + " post" + (1 < a.replies ? "s" : ""), a.images && (w += " and " + a.images + " image repl" + (1 < a.images ? "ies" : "y")), w = '<span class="summary preview-summary">' + w + ".</span>"), a.sticky && (x += '<img class="stickyIcon retina" title="Sticky" alt="Sticky" src="' + Main.icons2.sticky + '"> '), a.closed && (x = a.archived ? x + ('<img class="archivedIcon retina" title="Archived" alt="Archived" src="' + Main.icons2.archived + '"> ') : x + ('<img class="closedIcon retina" title="Closed" alt="Closed" src="' + Main.icons2.closed + '"> ')), d = void 0 === a.sub ? '<span class="subject"></span> ' : 30 < a.sub.length ? '<span class="subject" data-tip data-tip-cb="mShowFull">' + Parser.truncate(a.sub, 30) + "(...)</span> " : '<span class="subject">' + a.sub + "</span> ") : d = "";
+            f ? (a.capcode_replies && (J = Parser.buildCapcodeReplies(a.capcode_replies, b, a.no)), d && a.replies && (w = a.replies + " repl" + (1 < a.replies ? "ies" : "y"), a.images && (w += " and " + a.images + " image" + (1 < a.images ? "s" : "")), w = '<span class="summary preview-summary">' + w + ".</span>"), a.sticky && (x += '<img class="stickyIcon retina" title="Sticky" alt="Sticky" src="' + Main.icons2.sticky + '"> '), a.closed && (x = a.archived ? x + ('<img class="archivedIcon retina" title="Archived" alt="Archived" src="' + Main.icons2.archived + '"> ') : x + ('<img class="closedIcon retina" title="Closed" alt="Closed" src="' + Main.icons2.closed + '"> ')), d = void 0 === a.sub ? '<span class="subject"></span> ' : 30 < a.sub.length ? '<span class="subject" data-tip data-tip-cb="mShowFull">' + Parser.truncate(a.sub, 30) + "(...)</span> " : '<span class="subject">' + a.sub + "</span> ") : d = "";
             e.className = "postContainer " + D + "Container";
             e.id = "pc" + a.no;
             e.innerHTML = (f ? "" : '<div class="sideArrows" id="sa' + a.no + '">&gt;&gt;</div>') + '<div id="p' + a.no + '" class="post ' + D + E + '"><div class="postInfoM mobile" id="pim' + a.no + '"><span class="nameBlock' + u + '">' + l + t + r + v + h + A + "<br>" + d + '</span><span class="dateTime postNum" data-utc="' + a.time + '">' + a.now + ' <a href="' + a.no + "#p" + a.no + '" title="Link to this post">No.</a><a href="javascript:quote(\'' + a.no + '\');" title="Reply to this post">' + a.no + "</a></span></div>" + (f ? g : "") + '<div class="postInfo desktop" id="pi' + a.no + '"' + (b != Main.board ? ' data-board="' + b + '"' : "") + '><input type="checkbox" name="' + a.no + '" value="delete"> ' + d + '<span class="nameBlock' + u + '">' + F + '<span class="name">' + k + "</span>" + t + r + G + v + h + A + ' </span> <span class="dateTime" data-utc="' + a.time + '">' + a.now + '</span> <span class="postNum desktop"><a href="' + B + '" title="Link to this post">No.</a><a href="' + C + '" title="Reply to this post">' + a.no + "</a> " + x + H + "</span></div>" + (f ? "" : g) + '<blockquote class="postMessage" id="m' + a.no + '">' + (a.com || "") + J + w + "</blockquote> </div>" + I;
@@ -300,9 +300,9 @@ var Parser = {
                     if (h = d.getAttribute("href").split("#p"), h[1])(h[1] == b && (d.textContent += " (OP)"), g = document.getElementById("pi" + h[1])) ? f[h[1]] || (f[h[1]] = !0, d = document.createElement("span"), k = Main.tid ? "#p" + a : "thread/" + b + "#p" + a, d.innerHTML = Main.hasMobileLayout ? '<a href="' + k + '" class="quotelink">&gt;&gt;' + a + '</a><a href="' + k + '" class="quoteLink"> #</a> ' : '<a href="' + k + '" class="quotelink">&gt;&gt;' + a + "</a> ", (k = document.getElementById("bl_" + h[1])) || (k = document.createElement("div"), k.id = "bl_" + h[1], k.className = "backlink", Main.hasMobileLayout && (k.className = "backlink mobile", g = document.getElementById("p" + h[1])), g.appendChild(k)), k.appendChild(d)) : Main.tid && ">" != d.textContent.charAt(2) && (d.textContent += " \u2192")
         },
         buildSummary: function(a, b, c) {
-            if (b) b = b + " post" + (1 < b ? "s" : "");
+            if (b) b = b + " repl" + (1 < b ? "ies" : "y");
             else return null;
-            c = c ? " and " + c + " image repl" + (1 < c ? "ies" : "y") : "";
+            c = c ? " and " + c + " image" + (1 < c ? "s" : "") : "";
             el = document.createElement("span");
             el.className = "summary desktop";
             el.innerHTML = b + c + ' omitted. <a href="thread/' + a + '" class="replylink">Click here</a> to view.';
@@ -2808,7 +2808,7 @@ var Main = {
             Config.keyBinds && Keybinds.init();
             if (Main.hasMobileLayout) $.extend(Config, ConfigMobile);
             else {
-                if (el = $.id("bottomReportBtn")) el.style.display = "none";
+                if (a = $.id("bottomReportBtn")) a.style.display = "none";
                 Main.isMobileDevice && $.addClass(document.body, "isMobileDevice")
             }
             Main.firstRun && Main.isMobileDevice && (Config.topPageNav = !1, Config.dropDownNav = !0);
