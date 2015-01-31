@@ -639,7 +639,7 @@ var Parser = {
             d = c.getAttribute("href");
             c.getBoundingClientRect();
             b = document.createElement("video");
-            b.muted = !0;
+            b.muted = !Config.unmuteWebm;
             b.controls = !0;
             b.loop = !0;
             b.autoplay = !0;
@@ -649,6 +649,7 @@ var Parser = {
             b.src = d;
             c.style.display = "none";
             c.parentNode.appendChild(b);
+            Config.unmuteWebm && (b.volume = .5);
             a = a.parentNode.previousElementSibling;
             b = document.createElement("span");
             b.className = "collapseWebm";
@@ -750,7 +751,7 @@ var Parser = {
         hide: function() {
             var a;
             clearTimeout(this.timeout);
-            if (a = $.id("image-hover")) a.play && Tip.hide(), document.body.removeChild(a)
+            if (a = $.id("image-hover")) a.play && (a.pause(), Tip.hide()), document.body.removeChild(a)
         },
         showWebm: function(a) {
             var b, c, d;
@@ -759,7 +760,7 @@ var Parser = {
             b.id = "image-hover";
             b.src = a.parentNode.getAttribute("href");
             b.loop = !0;
-            b.muted = !0;
+            b.muted = !Config.unmuteWebm;
             b.autoplay = !0;
             b.onerror = ImageHover.onLoadError;
             b.onloadedmetadata = function() {
@@ -769,7 +770,8 @@ var Parser = {
             c = window.innerWidth - c.right - 20;
             d > c && (b.style.maxWidth = c + "px");
             b.style.top = window.pageYOffset + "px";
-            document.body.appendChild(b)
+            document.body.appendChild(b);
+            Config.unmuteWebm && (b.volume = .5)
         },
         showWebMDuration: function(a, b) {
             if (a.parentNode) {
@@ -2568,6 +2570,7 @@ var CustomCSS = {
         reportButton: !1,
         darkTheme: !1,
         linkify: !1,
+        unmuteWebm: !1,
         disableAll: !1
     },
     ConfigMobile = {
@@ -2640,6 +2643,7 @@ var SettingsMenu = {
             fitToScreenExpansion: ["Fit expanded images to screen", "Limit expanded images to both browser width and height"],
             imageHover: ["Image hover", "Mouse over images to view full size, limited to browser size"],
             revealSpoilers: ["Don't spoiler images", "Show image thumbnail and original filename instead of spoiler placeholders", !0],
+            unmuteWebm: ["Un-mute WebM audio", "Un-mute sound automatically for WebM playback", !0],
             noPictures: ["Hide thumbnails", "Don't display thumbnails while browsing", !0],
             embedYouTube: ["Embed YouTube links", "Embed YouTube player into replies"],
             embedSoundCloud: ["Embed SoundCloud links", "Embed SoundCloud player into replies"]
@@ -2663,6 +2667,7 @@ var SettingsMenu = {
         b = $.id("settingsMenu").getElementsByClassName("menuOption");
         for (a = 0; c = b[a]; ++a) d = c.getAttribute("data-option"), Config[d] = "checkbox" == c.type ? c.checked : c.value;
         Config.save(e);
+        UA.dispatchEvent("4chanSettingsSaved");
         SettingsMenu.close();
         location.href = location.href.replace(/#.+$/, "")
     },
