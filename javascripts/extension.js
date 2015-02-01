@@ -758,8 +758,8 @@ var Parser = {
     ImageHover = {
         show: function(a) {
             var b, c;
-            c = a.parentNode.getAttribute("href");
-            (b = c.match(/\.(?:webm|pdf)$/)) ? ".webm" == b[0] && ImageHover.showWebm(a) : (b = document.createElement("img"), b.id = "image-hover", b.alt = "Image", b.onerror = ImageHover.onLoadError, b.setAttribute("src", c), document.body.appendChild(b), UA.hasCORS ? (b.style.display = "none", this.timeout = ImageHover.checkLoadStart(b, a)) : b.style.left = a.getBoundingClientRect().right + 10 + "px")
+            c = a.href ? a.getAttribute("href") : a.parentNode.getAttribute("href");
+            (b = c.match(/\.(?:webm|pdf)$/)) ? ".webm" == b[0] && ImageHover.showWebm(a) : (b = document.createElement("img"), b.id = "image-hover", b.alt = "Image", b.onerror = ImageHover.onLoadError, b.src = c, document.body.appendChild(b), UA.hasCORS ? (b.style.display = "none", this.timeout = ImageHover.checkLoadStart(b, a)) : b.style.left = a.getBoundingClientRect().right + 10 + "px")
         },
         hide: function() {
             var a;
@@ -767,11 +767,10 @@ var Parser = {
             if (a = $.id("image-hover")) a.play && (a.pause(), Tip.hide()), document.body.removeChild(a)
         },
         showWebm: function(a) {
-            var b, c, d;
-            d = +a.parentNode.previousElementSibling.textContent.match(/, ([0-9]+)x[0-9]+/)[1];
+            var b, c;
             b = document.createElement("video");
             b.id = "image-hover";
-            b.src = a.parentNode.getAttribute("href");
+            b.src = a.href ? a.getAttribute("href") : a.parentNode.getAttribute("href");
             b.loop = !0;
             b.muted = !Config.unmuteWebm;
             b.autoplay = !0;
@@ -780,8 +779,7 @@ var Parser = {
                 ImageHover.showWebMDuration(this, a)
             };
             c = a.getBoundingClientRect();
-            c = window.innerWidth - c.right - 20;
-            d > c && (b.style.maxWidth = c + "px");
+            b.style.maxWidth = window.innerWidth - c.right - 20 + "px";
             b.style.top = window.pageYOffset + "px";
             document.body.appendChild(b);
             Config.unmuteWebm && (b.volume = .5)
@@ -3052,14 +3050,14 @@ var Main = {
     onThreadMouseOver: function(a) {
         var b = a.target;
         if (Config.quotePreview && $.hasClass(b, "quotelink") && !$.hasClass(b, "deadlink") && !$.hasClass(b, "linkfade")) QuotePreview.resolve(a.target);
-        else if (Config.imageHover && b.hasAttribute("data-md5") && !$.hasClass(b.parentNode, "deleted")) ImageHover.show(b);
+        else if (Config.imageHover && (b.hasAttribute("data-md5") && !$.hasClass(b.parentNode, "deleted") || b.href && /i\.4cdn\.org\/[a-z0-9]+\/[0-9]+\.(gif|jpg|png|webm)$/.test(b.href))) ImageHover.show(b);
         else if ($.hasClass(b, "dateTime")) Parser.onDateMouseOver(b);
         else Config.embedYouTube && "yt" === b.getAttribute("data-type") && !Main.hasMobileLayout ? Media.showYTPreview(b) : Config.filter && b.hasAttribute("data-filtered") && QuotePreview.show(b, b.href ? b.parentNode.parentNode.parentNode : b.parentNode.parentNode)
     },
     onThreadMouseOut: function(a) {
         a = a.target;
         if (Config.quotePreview && $.hasClass(a, "quotelink")) QuotePreview.remove(a);
-        else if (Config.imageHover && a.hasAttribute("data-md5")) ImageHover.hide();
+        else if (Config.imageHover && (a.hasAttribute("data-md5") || a.href && /i\.4cdn\.org\/[a-z0-9]+\/[0-9]+\.(gif|jpg|png|webm)$/.test(a.href))) ImageHover.hide();
         else if ($.hasClass(a, "dateTime")) Parser.onDateMouseOut(a);
         else Config.embedYouTube && "yt" === a.getAttribute("data-type") && !Main.hasMobileLayout ? Media.removeYTPreview() : Config.filter && a.hasAttribute("data-filtered") && QuotePreview.remove(a)
     },
