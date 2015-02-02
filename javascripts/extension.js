@@ -3050,14 +3050,14 @@ var Main = {
     onThreadMouseOver: function(a) {
         var b = a.target;
         if (Config.quotePreview && $.hasClass(b, "quotelink") && !$.hasClass(b, "deadlink") && !$.hasClass(b, "linkfade")) QuotePreview.resolve(a.target);
-        else if (Config.imageHover && (b.hasAttribute("data-md5") && !$.hasClass(b.parentNode, "deleted") || b.href && /i\.4cdn\.org\/[a-z0-9]+\/[0-9]+\.(gif|jpg|png|webm)$/.test(b.href))) ImageHover.show(b);
+        else if (Config.imageHover && (b.hasAttribute("data-md5") && !$.hasClass(b.parentNode, "deleted") || b.href && !$.hasClass(b.parentNode, "fileText") && /i\.4cdn\.org\/[a-z0-9]+\/[0-9]+\.(gif|jpg|png|webm)$/.test(b.href))) ImageHover.show(b);
         else if ($.hasClass(b, "dateTime")) Parser.onDateMouseOver(b);
         else Config.embedYouTube && "yt" === b.getAttribute("data-type") && !Main.hasMobileLayout ? Media.showYTPreview(b) : Config.filter && b.hasAttribute("data-filtered") && QuotePreview.show(b, b.href ? b.parentNode.parentNode.parentNode : b.parentNode.parentNode)
     },
     onThreadMouseOut: function(a) {
         a = a.target;
         if (Config.quotePreview && $.hasClass(a, "quotelink")) QuotePreview.remove(a);
-        else if (Config.imageHover && (a.hasAttribute("data-md5") || a.href && /i\.4cdn\.org\/[a-z0-9]+\/[0-9]+\.(gif|jpg|png|webm)$/.test(a.href))) ImageHover.hide();
+        else if (Config.imageHover && (a.hasAttribute("data-md5") || a.href && !$.hasClass(a.parentNode, "fileText") && /i\.4cdn\.org\/[a-z0-9]+\/[0-9]+\.(gif|jpg|png|webm)$/.test(a.href))) ImageHover.hide();
         else if ($.hasClass(a, "dateTime")) Parser.onDateMouseOut(a);
         else Config.embedYouTube && "yt" === a.getAttribute("data-type") && !Main.hasMobileLayout ? Media.removeYTPreview() : Config.filter && a.hasAttribute("data-filtered") && QuotePreview.remove(a)
     },
