@@ -758,7 +758,7 @@ var Parser = {
     ImageHover = {
         show: function(a) {
             var b, c;
-            c = "A" === a.nodeName ? a.getAttribute("href") : a.parentNode.getAttribute("href");
+            c = "A" !== a.nodeName ? a.parentNode.getAttribute("href") : a.getAttribute("href");
             (b = c.match(/\.(?:webm|pdf)$/)) ? ".webm" == b[0] && ImageHover.showWebm(a) : (b = document.createElement("img"), b.id = "image-hover", b.alt = "Image", b.onerror = ImageHover.onLoadError, b.src = c, document.body.appendChild(b), UA.hasCORS ? (b.style.display = "none", this.timeout = ImageHover.checkLoadStart(b, a)) : b.style.left = a.getBoundingClientRect().right + 10 + "px")
         },
         hide: function() {
@@ -770,7 +770,7 @@ var Parser = {
             var b, c;
             b = document.createElement("video");
             b.id = "image-hover";
-            b.src = a.href ? a.getAttribute("href") : a.parentNode.getAttribute("href");
+            b.src = "A" !== a.nodeName ? a.parentNode.getAttribute("href") : a.getAttribute("href");
             b.loop = !0;
             b.muted = !Config.unmuteWebm;
             b.autoplay = !0;
