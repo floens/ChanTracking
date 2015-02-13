@@ -249,9 +249,10 @@ function onParsingDone(a) {
 }
 
 function loadExtraScripts() {
-    var a = readCookie("extra_path");
-    if (!a || !/^[a-z0-9]+$/.test(a)) return !1;
-    document.write('<script type="text/javascript" src="https://s.4cdn.org/js/' + a + "." + jsVersion + '.js">\x3c/script>');
+    var a, b;
+    b = readCookie("extra_path");
+    if (!b || !/^[a-z0-9]+$/.test(b)) return !1;
+    window.FC ? (a = document.createElement("script"), a.type = "text/javascript", a.src = "https://s.4cdn.org/js/" + b + "." + jsVersion + ".js", document.head.appendChild(a)) : document.write('<script type="text/javascript" src="https://s.4cdn.org/js/' + b + "." + jsVersion + '.js">\x3c/script>');
     return !0
 }
 
