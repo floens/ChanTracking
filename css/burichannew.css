@@ -252,9 +252,25 @@ div.container {
 	line-height: 0;
 }
 
-#fileError {
+#postFormError {
+	background-color: #e62020;
+	color: #fff;
+	font-family: monospace;
+	font-size: 13px;
 	font-weight: bold;
-	color: red;
+	padding: 3px 5px;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+	display: none;
+	margin-top: 3px;
+}
+
+#postFormError a {
+	color: #fff;
+}
+
+.painter-ctrl input, #qr-painter-ctrl input {
+	width: 30px !important;
+	text-align: center;
 }
 
 .mobile {

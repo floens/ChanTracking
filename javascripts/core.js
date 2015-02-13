@@ -286,42 +286,44 @@ var activeStyleSheet;
 
 function initStyleSheet() {
     var a, b, c, d;
-    "undefined" != typeof style_group && style_group && (activeStyleSheet = (a = readCookie(style_group)) ? a : getPreferredStyleSheet());
-    switch (activeStyleSheet) {
-        case "Yotsuba B":
-            setActiveStyleSheet("Yotsuba B New", !0);
-            break;
-        case "Yotsuba":
-            setActiveStyleSheet("Yotsuba New", !0);
-            break;
-        case "Burichan":
-            setActiveStyleSheet("Burichan New", !0);
-            break;
-        case "Futaba":
-            setActiveStyleSheet("Futaba New", !0);
-            break;
-        default:
-            setActiveStyleSheet(activeStyleSheet, !0)
+    if (!window.FC) {
+        "undefined" != typeof style_group && style_group && (activeStyleSheet = (a = readCookie(style_group)) ? a : getPreferredStyleSheet());
+        switch (activeStyleSheet) {
+            case "Yotsuba B":
+                setActiveStyleSheet("Yotsuba B New", !0);
+                break;
+            case "Yotsuba":
+                setActiveStyleSheet("Yotsuba New", !0);
+                break;
+            case "Burichan":
+                setActiveStyleSheet("Burichan New", !0);
+                break;
+            case "Futaba":
+                setActiveStyleSheet("Futaba New", !0);
+                break;
+            default:
+                setActiveStyleSheet(activeStyleSheet, !0)
+        }
+        if ("true" == localStorage.getItem("4chan_never_show_mobile"))
+            for (c = document.querySelectorAll("link"), d = c.length, a = 0; a < d; a++) c[a].getAttribute("href").match("mobile") && (b = c[a]).parentNode.removeChild(b)
     }
-    if ("true" == localStorage.getItem("4chan_never_show_mobile"))
-        for (c = document.querySelectorAll("link"), d = c.length, a = 0; a < d; a++) c[a].getAttribute("href").match("mobile") && (b = c[a]).parentNode.removeChild(b)
 }
 captchainterval = null;
 
 function init() {
-    var a = "undefined" != typeof is_error,
-        b = location.href.match(/4chan\.org\/(\w+)/)[1],
-        c = location.href.split(/#/);
-    c[1] && c[1].match(/q[0-9]+$/) && repquote(c[1].match(/q([0-9]+)$/)[1]);
+    var a, b = "undefined" != typeof is_error,
+        c = location.href.match(/4chan\.org\/(\w+)/)[1];
+    a = location.href.split(/#/);
+    a[1] && a[1].match(/q[0-9]+$/) && repquote(a[1].match(/q([0-9]+)$/)[1]);
     if ("undefined" != typeof jsMath && "undefined" != typeof jsMath.Easy.onload && !jsMath.Easy.loaded) jsMath.Easy.onload();
     if (navigator.userAgent && navigator.userAgent.match(/iP(hone|ad|od)/i))
-        for (links = document.querySelectorAll("s"), len = links.length, c = 0; c < len; c++) links[c].onclick = function() {
+        for (links = document.querySelectorAll("s"), len = links.length, a = 0; a < len; a++) links[a].onclick = function() {
             this.hasAttribute("style") ? this.removeAttribute("style") : this.setAttribute("style", "color: #fff!important;")
         };
     if (document.getElementById("styleSelector"))
-        for (styleSelect = document.getElementById("styleSelector"), len = styleSelect.options.length, c = 0; c < len; c++) styleSelect.options[c].value == activeStyleSheet && (styleSelect.selectedIndex = c);
-    !a && document.forms.post && (document.getElementById("delPassword").value = get_pass("4chan_pass"), "i" != b && "ic" != b && "f" != b && window.File && window.FileReader && window.FileList && window.Blob && document.getElementById("postFile").addEventListener("change", handleFileSelect, !1));
-    "undefined" != typeof extra && extra && !a && extra.init();
+        for (styleSelect = document.getElementById("styleSelector"), len = styleSelect.options.length, a = 0; a < len; a++) styleSelect.options[a].value == activeStyleSheet && (styleSelect.selectedIndex = a);
+    !b && document.forms.post && ((a = document.getElementById("delPassword")) && (a.value = get_pass("4chan_pass")), "i" != c && "ic" != c && "f" != c && window.File && window.FileReader && window.FileList && window.Blob && document.getElementById("postFile").addEventListener("change", handleFileSelect, !1));
+    "undefined" != typeof extra && extra && !b && extra.init();
     window.check_for_block && checkForBlock()
 }
 var coreLenCheckTimeout = null;
@@ -374,9 +376,14 @@ function idClick(a) {
         for (currentHighlighted = a, d = document.getElementsByClassName("id_" + a), c = d.length, b = 0; b < c; b++) a = d[b].parentNode.parentNode.parentNode, a.className.match(/highlight /) || (a.className = "highlight " + a.className)
 }
 
+function showPostFormError(a) {
+    var b = document.getElementById("postFormError");
+    a ? (b.innerHTML = a, b.style.display = "block") : (b.textContent = "", b.style.display = "")
+}
+
 function handleFileSelect() {
-    var a, b, c;
-    this.files && (c = window.maxFilesize, a = document.getElementById("fileError"), b = this.files[0].size, "video/webm" == this.files[0].type && window.maxWebmFilesize && (c = window.maxWebmFilesize), a.textContent = b > c ? "Error: Maximum file size allowed is " + Math.floor(c / 1048576) + " MB" : "")
+    var a, b;
+    this.files && (b = window.maxFilesize, a = this.files[0].size, "video/webm" == this.files[0].type && window.maxWebmFilesize && (b = window.maxWebmFilesize), a > b ? showPostFormError("Error: Maximum file size allowed is " + Math.floor(b / 1048576) + " MB") : showPostFormError())
 }
 
 function locationHashChanged(a) {
@@ -395,8 +402,11 @@ function locationHashChanged(a) {
 }
 
 function setActiveStyleSheet(a, b) {
+    var c, d, e, f, g;
     if (1 != document.querySelectorAll("link[title]").length) {
-        for (var c, d, e = "", f = 0; c = document.getElementsByTagName("link")[f]; f++) "switch" == c.getAttribute("title") && (d = c), -1 != c.getAttribute("rel").indexOf("style") && c.getAttribute("title") && c.getAttribute("title") == a && (e = c.href);
+        e = "";
+        g = document.getElementsByTagName("link");
+        for (f = 0; c = g[f]; f++) "switch" == c.getAttribute("title") && (d = c), -1 != c.getAttribute("rel").indexOf("style") && c.getAttribute("title") && c.getAttribute("title") == a && (e = c.href);
         d.setAttribute("href", e);
         b || createCookie(style_group, a, 365, "4chan.org")
     }
@@ -449,50 +459,114 @@ function showPostForm(a) {
     a && a.preventDefault();
     if (a = document.getElementById("postForm")) $.id("togglePostFormLink").style.display = "none", a.style.display = "table", initRecaptcha()
 }
+var PainterCore = {
+    init: function() {
+        var a;
+        document.forms.post && (a = document.forms.post.getElementsByClassName("painter-ctrl")[0]) && (a = a.getElementsByTagName("button"), a[1] && (this.data = null, this.btnDraw = a[0], this.btnClear = a[1], this.btnFile = document.getElementById("postFile"), this.btnSubmit = document.forms.post.querySelector('input[type="submit"]'), a[0].addEventListener("click", this.onDrawClick, !1), a[1].addEventListener("click", this.onCancel, !1)))
+    },
+    onDrawClick: function() {
+        var a, b;
+        b = this.parentNode.getElementsByTagName("input");
+        a = +b[0].value;
+        b = +b[1].value;
+        1 > a || 1 > b || Tegaki.open({
+            onDone: PainterCore.onDone,
+            onCancel: PainterCore.onCancel,
+            width: a,
+            height: b
+        })
+    },
+    b64toBlob: function(a) {
+        var b, c, d;
+        b = atob(a);
+        d = b.length;
+        c = Array(d);
+        for (a = 0; a < d; ++a) c[a] = b.charCodeAt(a);
+        a = new Uint8Array(c);
+        return new Blob([a])
+    },
+    onDone: function() {
+        PainterCore.btnFile.disabled = !0;
+        PainterCore.btnClear.disabled = !1;
+        PainterCore.data = Tegaki.flatten().toDataURL("image/png");
+        document.forms.post.addEventListener("submit", PainterCore.onSubmit, !1)
+    },
+    onCancel: function() {
+        PainterCore.data = null;
+        PainterCore.btnFile.disabled = !1;
+        PainterCore.btnClear.disabled = !0;
+        document.forms.post.removeEventListener("submit", PainterCore.onSubmit, !1)
+    },
+    onSubmit: function(a) {
+        var b;
+        a.preventDefault();
+        a = new FormData(this);
+        (b = PainterCore.b64toBlob(PainterCore.data.slice(PainterCore.data.indexOf(",") + 1))) && a.append("upfile", b, "tegaki.png");
+        b = new XMLHttpRequest;
+        b.open("POST", this.action, !0);
+        b.withCredentials = !0;
+        b.onerror = PainterCore.onSubmitError;
+        b.onload = PainterCore.onSubmitDone;
+        b.send(a);
+        PainterCore.btnSubmit.disabled = !0
+    },
+    onSubmitError: function() {
+        PainterCore.btnSubmit.disabled = !1;
+        showPostFormError("Connection Error.")
+    },
+    onSubmitDone: function() {
+        var a, b, c;
+        PainterCore.btnSubmit.disabled = !1;
+        (b = this.responseText.match(/\x3c!-- thread:([0-9]+),no:([0-9]+) --\x3e/)) ? (a = +b[1], b = +b[2], a || (a = b), c = location.pathname.split(/\//)[1], window.location.href = "/" + c + "/thread/" + a + "#p" + b, PainterCore.onCancel(), a != b && (PainterCore.btnClear.disabled = !0, window.location.reload())) : (a = this.responseText.match(/"errmsg"[^>]*>(.*?)<\/span/)) && showPostFormError(a[1])
+    }
+};
 
 function contentLoaded() {
     var a, b, c, d, e;
     document.removeEventListener("DOMContentLoaded", contentLoaded, !0);
     cloneTopNav();
     initAnalytics();
-    c = location.pathname.split(/\//);
-    d = c[1];
-    "archive" == c[2] && document.getElementById("arc-sort").addEventListener("click", toggleArcSort, !1);
+    d = location.pathname.split(/\//);
+    e = d[1];
+    "archive" == d[2] && document.getElementById("arc-sort").addEventListener("click", toggleArcSort, !1);
     window.passEnabled && setPassMsg();
+    window.Tegaki && PainterCore.init();
     (b = document.getElementById("bottomReportBtn")) && b.addEventListener("click", onReportClick, !1);
     (b = document.getElementById("styleSelector")) && b.addEventListener("change", onStyleSheetChange, !1);
     if (b = document.getElementById("togglePostFormLink"))(b = b.firstElementChild) && b.addEventListener("click", showPostForm, !1), "#reply" === location.hash && showPostForm();
-    if ("int" == d || "sp" == d) b = document.getElementById("delform"), b.addEventListener("click", onCoreClick, !1);
-    (b = document.forms.post) && b.flag && (e = readCookie("4chan_flag")) && (a = b.querySelector('option[value="' + e + '"]')) && a.setAttribute("selected", "selected");
-    if (!c[3]) {
-        c = document.getElementsByClassName("pageSwitcherForm");
-        for (a = 0; b = c[a]; ++a) b.addEventListener("submit", onPageSwitch, !1);
-        (b = document.getElementById("search-box")) && b.addEventListener("keydown", onKeyDownSearch, !1)
-    }
-    buildMobileNav(d);
-    c = document.getElementsByClassName("mobilePostFormToggle");
-    for (a = 0; b = c[a]; ++a) b.addEventListener("click", onMobileFormClick, !1);
-    if (b = document.getElementsByName("com")[0]) b.addEventListener("keydown", onComKeyDown, !1), b.addEventListener("paste", onComKeyDown, !1), b.addEventListener("cut", onComKeyDown, !1);
-    (b = document.getElementById("refresh_top")) && b.addEventListener("mouseup", onMobileRefreshClick, !1);
-    (b = document.getElementById("refresh_bottom")) && b.addEventListener("mouseup", onMobileRefreshClick, !1);
+    (b = document.forms.post) && b.flag && (c = readCookie("4chan_flag")) && (a = b.querySelector('option[value="' + c + '"]')) && a.setAttribute("selected", "selected");
+    buildMobileNav(e);
     (b = document.getElementById("globalToggle")) && b.addEventListener("click", toggleGlobalMessage, !1);
     "true" == localStorage.getItem("4chan_never_show_mobile") && (b = document.getElementById("disable-mobile")) && (b.style.display = "none", b = document.getElementById("enable-mobile"), b.parentNode.style.cssText = "display: inline !important;");
     if (c = document.getElementById("boardSelectMobile")) {
         b = c.options.length;
-        for (a = 0; a < b; a++) c.options[a].value == d && (c.selectedIndex = a);
+        for (a = 0; a < b; a++) c.options[a].value == e && (c.selectedIndex = a);
         c.onchange = function() {
             window.location = "//boards.4chan.org/" + this.options[this.selectedIndex].value + "/"
         }
     }
-    clickable_ids && enableClickableIds();
+    if ("catalog" != d[2]) {
+        c = document.getElementsByClassName("mobilePostFormToggle");
+        for (a = 0; b = c[a]; ++a) b.addEventListener("click", onMobileFormClick, !1);
+        if (b = document.getElementsByName("com")[0]) b.addEventListener("keydown", onComKeyDown, !1), b.addEventListener("paste", onComKeyDown, !1), b.addEventListener("cut", onComKeyDown, !1);
+        (b = document.getElementById("refresh_top")) && b.addEventListener("mouseup", onMobileRefreshClick, !1);
+        (b = document.getElementById("refresh_bottom")) && b.addEventListener("mouseup", onMobileRefreshClick, !1);
+        if ("int" == e || "sp" == e || "pol" == e) b = document.getElementById("delform"), b.addEventListener("click", onCoreClick, !1);
+        if (!d[3]) {
+            c = document.getElementsByClassName("pageSwitcherForm");
+            for (a = 0; b = c[a]; ++a) b.addEventListener("submit", onPageSwitch, !1);
+            (b = document.getElementById("search-box")) && b.addEventListener("keydown", onKeyDownSearch, !1)
+        }
+        window.clickable_ids && enableClickableIds();
+        Tip.init()
+    }
     2 <= window.devicePixelRatio && setRetinaIcons();
-    Tip.init();
     initBlotter();
     loadBannerImage()
 }
 initPass();
 window.onload = init;
-clickable_ids && document.addEventListener("4chanParsingDone", onParsingDone, !1);
+window.clickable_ids && document.addEventListener("4chanParsingDone", onParsingDone, !1);
 document.addEventListener("4chanMainInit", loadExtraScripts, !1);
 document.addEventListener("DOMContentLoaded", contentLoaded, !0);
 initStyleSheet();
