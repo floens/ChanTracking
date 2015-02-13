@@ -124,7 +124,8 @@ var Parser = {
             !this.customSpoiler[a] && (b = parseInt(b)) && (a == Main.board && (c = $.cls("imgspoiler")[0]) ? this.customSpoiler[a] = c.firstChild.src.match(/spoiler(-[a-z0-9]+)\.png$/)[1] : this.customSpoiler[a] = "-" + a + (Math.floor(Math.random() * b) + 1))
         },
         buildPost: function(a, b, c) {
-            var d, e, f = null;
+            var d,
+                e, f = null;
             for (d = 0; e = a[d]; ++d) e.no == c && (!Config.revealSpoilers && a[0].custom_spoiler && Parser.setCustomSpoiler(b, a[0].custom_spoiler), f = Parser.buildHTMLFromJSON(e, b, !1, !0).lastElementChild, Config.IDColor && (uid = $.cls("posteruid", f)[Main.hasMobileLayout ? 0 : 1]) && IDColor.applyRemote(uid.firstElementChild));
             return f
         },
@@ -346,7 +347,8 @@ var Parser = {
         },
         close: function() {
             var a;
-            if (a = $.id("post-menu")) a.parentNode.removeChild(a), document.removeEventListener("click", PostMenu.close, !1), $.removeClass(PostMenu.activeBtn, "menuOpen"), PostMenu.activeBtn = null
+            if (a = $.id("post-menu")) a.parentNode.removeChild(a),
+                document.removeEventListener("click", PostMenu.close, !1), $.removeClass(PostMenu.activeBtn, "menuOpen"), PostMenu.activeBtn = null
         }
     },
     Depager = {
@@ -706,7 +708,8 @@ var Parser = {
             ImageExpansion.timeout = setTimeout(ImageExpansion.pauseVideos, 500)
         },
         pauseVideos: function() {
-            var a, b, c, d, e, f, h;
+            var a,
+                b, c, d, e, f, h;
             a = ImageExpansion;
             h = [];
             e = window.pageYOffset;
@@ -2831,7 +2834,8 @@ var Main = {
         Config.forceHTTPS && "https:" != location.protocol ? location.href = location.href.replace(/^http:/, "https:") : (Main.firstRun && Config.loadFromURL() && (Main.firstRun = !1), (Main.stylesheet = Main.getCookie(style_group)) ? Main.stylesheet = Main.stylesheet.toLowerCase().replace(/ /g, "_") : Main.stylesheet = "nws_style" == style_group ? "yotsuba_new" : "yotsuba_b_new", Main.passEnabled = Main.getCookie("pass_enabled"), QR.noCaptcha = QR.noCaptcha || Main.passEnabled, Main.initIcons(), Main.addCSS(), Main.type = style_group.split("_")[0], a = location.pathname.split(/\//), Main.board = a[1], Main.page = a[2], Main.tid = a[3], UA.dispatchEvent("4chanMainInit"))
     },
     initPersistentNav: function() {
-        var a, b, c;
+        var a,
+            b, c;
         b = $.id("boardNavDesktop");
         c = $.id("boardNavDesktopFoot");
         Config.classicNav ? (a = document.createElement("div"), a.className = "pageJump", a.innerHTML = '<a href="#bottom">&#9660;</a><a href="javascript:void(0);" id="settingsWindowLinkClassic">Settings</a><a href="//www.4chan.org" target="_top">Home</a></div>', b.appendChild(a), $.id("settingsWindowLinkClassic").addEventListener("click", SettingsMenu.toggle, !1), $.addClass(b, "persistentNav")) : (b.style.display = "none", $.removeClass($.id("boardNavMobile"), "mobile"));
@@ -2956,7 +2960,8 @@ var Main = {
         if (a = $.cls("pagelist")[0]) a = a.cloneNode(!0), b.appendChild(a), Draggable.set(a), document.body.appendChild(b)
     },
     initGlobalMessage: function() {
-        var a, b, c, d;
+        var a, b,
+            c, d;
         (a = $.id("globalMessage")) && a.textContent && (a.nextElementSibling.style.clear = "both", b = document.createElement("img"), b.id = "toggleMsgBtn", b.className = "extButton", b.setAttribute("data-cmd", "toggleMsg"), b.alt = "Toggle", b.title = "Toggle announcement", d = localStorage.getItem("4chan-global-msg"), c = a.getAttribute("data-utc"), d && c <= d ? (a.style.display = "none", b.style.opacity = "0.5", b.src = Main.icons.plus) : b.src = Main.icons.minus, a.parentNode.insertBefore(b, a))
     },
     toggleGlobalMessage: function() {
