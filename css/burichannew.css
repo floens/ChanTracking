@@ -871,6 +871,10 @@ div#boardNavMobile select, div#boardNavMobile option {
 	font-size: 11px;
 }
 
+.autohide-nav {
+	transition: top 0.2s ease-in-out;
+}
+
 div.boardSelect {
 	float: left;
 }
