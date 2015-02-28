@@ -119,13 +119,6 @@ function loadBannerImage() {
     cnt.innerHTML = '<img alt="4chan" src="//s.4cdn.org/image/title/' + cnt.getAttribute('data-src') + '">';
 }
 
-function onMobileSelectChange() {
-    var board, page;
-    board = this.options[this.selectedIndex].value;
-    page = /\/catalog$/.test(location.pathname) ? 'catalog' : '';
-    window.location = '//boards.4chan.org/' + board + '/' + page;
-}
-
 function buildMobileNav(currentBoard) {
     var el, cnt, boards, i, b, html, order;
     if (el = document.getElementById('boardSelectMobile')) {
@@ -825,34 +818,6 @@ function showPostForm(e) {
         initRecaptcha();
     }
 }
-
-function oeCanvasPreview(e) {
-    var t, el, sel;
-    if (el = document.getElementById('oe-canvas-preview')) {
-        el.parentNode.removeChild(el);
-    }
-    if (e.target.nodeName == 'OPTION' && e.target.value != '0') {
-        t = document.getElementById('f' + e.target.value);
-        if (!t) {
-            return;
-        }
-        t = t.getElementsByTagName('img')[0];
-        if (!t || !t.hasAttribute('data-md5')) {
-            return;
-        }
-        el = t.cloneNode();
-        el.id = 'oe-canvas-preview';
-        sel = e.target.parentNode;
-        sel.parentNode.insertBefore(el, sel.nextSibling);
-    }
-}
-
-function oeClearPreview(e) {
-    var el;
-    if (el = document.getElementById('oe-canvas-preview')) {
-        el.parentNode.removeChild(el);
-    }
-}
 var PainterCore = {
     init: function() {
         var btns;
@@ -1016,11 +981,10 @@ function contentLoaded() {
                 continue;
             }
         }
-        mobileSelect.addEventListener('change', onMobileSelectChange, false);
-    }
-    if (document.forms.oeform && (el = document.forms.oeform.oe_src)) {
-        el.addEventListener('mouseover', oeCanvasPreview, false);
-        el.addEventListener('mouseout', oeClearPreview, false);
+        mobileSelect.onchange = function() {
+            var boardNew = this.options[this.selectedIndex].value;
+            window.location = '//boards.4chan.org/' + boardNew + '/';
+        }
     }
     if (params[2] != 'catalog') {
         // Mobile post form toggle
