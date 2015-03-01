@@ -40,7 +40,7 @@ var loadJavaScriptAndBeautify = function(url, name) {
 }
 
 var loadNewJavaScripts = function(version) {
-    loadJavaScriptAndBeautify('https://s.4cdn.org/js/core.' + version + '.js', 'javascripts/core.js');
+    // loadJavaScriptAndBeautify('https://s.4cdn.org/js/core.' + version + '.js', 'javascripts/core.js');
     loadJavaScriptAndBeautify('https://s.4cdn.org/js/extension.' + version + '.js', 'javascripts/extension.js');
 }
 
