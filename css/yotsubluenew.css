@@ -26,7 +26,7 @@ body {
 	left: 12%;
 }
 
-.linkified {
+.aplnk, .linkified {
 	text-decoration: underline;
 }
 
