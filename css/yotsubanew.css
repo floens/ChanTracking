@@ -1182,6 +1182,12 @@ iframe[src="about:blank"] {
 	color: red;
 }
 
+#blotter-msgs s {
+	background-color: inherit !important;
+	color: inherit !important;
+	text-decoration: line-through;
+}
+
 #postForm textarea {
 	width: 292px;
 }
