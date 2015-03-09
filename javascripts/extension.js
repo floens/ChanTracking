@@ -827,11 +827,11 @@ PostMenu.open = function(btn) {
     } else if (el = $.id('pc' + pid)) {
         html += '<li data-cmd="hide-r" data-id="' + pid + '">' + ($.hasClass(el, 'post-hidden') ? 'Unhide' : 'Hide') + ' post</li>';
         /*
-    if (Main.tid) {
-      html += '<li data-cmd="hide-r" data-recurse="1" data-id="' + pid + '">'
-        + ($.hasClass(el, 'post-hidden') ? 'Unhide' : 'Hide')
-        + ' recursively</li>';
-    }*/
+        if (Main.tid) {
+          html += '<li data-cmd="hide-r" data-recurse="1" data-id="' + pid + '">'
+            + ($.hasClass(el, 'post-hidden') ? 'Unhide' : 'Hide')
+            + ' recursively</li>';
+        }*/
     }
     if (file = $.id('fT' + pid)) {
         el = $.cls('fileThumb', file.parentNode)[0];
@@ -5977,38 +5977,38 @@ Main.icons = {
     help: 'question.png'
 };
 Main.icons2 = {
-    archived: 'archived.gif',
-    closed: 'closed.gif',
-    sticky: 'sticky.gif',
-    trash: 'trash.gif'
-},
-Main.initIcons = function() {
-    var key, paths, url;
-    paths = {
-        yotsuba_new: 'futaba/',
-        futaba_new: 'futaba/',
-        yotsuba_b_new: 'burichan/',
-        burichan_new: 'burichan/',
-        tomorrow: 'tomorrow/',
-        photon: 'photon/'
-    };
-    url = '//s.4cdn.org/image/'
-    if (window.devicePixelRatio >= 2) {
-        for (key in Main.icons) {
-            Main.icons[key] = Main.icons[key].replace('.', '@2x.');
+        archived: 'archived.gif',
+        closed: 'closed.gif',
+        sticky: 'sticky.gif',
+        trash: 'trash.gif'
+    },
+    Main.initIcons = function() {
+        var key, paths, url;
+        paths = {
+            yotsuba_new: 'futaba/',
+            futaba_new: 'futaba/',
+            yotsuba_b_new: 'burichan/',
+            burichan_new: 'burichan/',
+            tomorrow: 'tomorrow/',
+            photon: 'photon/'
+        };
+        url = '//s.4cdn.org/image/'
+        if (window.devicePixelRatio >= 2) {
+            for (key in Main.icons) {
+                Main.icons[key] = Main.icons[key].replace('.', '@2x.');
+            }
+            for (key in Main.icons2) {
+                Main.icons2[key] = Main.icons2[key].replace('.', '@2x.');
+            }
         }
         for (key in Main.icons2) {
-            Main.icons2[key] = Main.icons2[key].replace('.', '@2x.');
+            Main.icons2[key] = url + Main.icons2[key];
         }
-    }
-    for (key in Main.icons2) {
-        Main.icons2[key] = url + Main.icons2[key];
-    }
-    url += 'buttons/' + paths[Main.stylesheet];
-    for (key in Main.icons) {
-        Main.icons[key] = url + Main.icons[key];
-    }
-};
+        url += 'buttons/' + paths[Main.stylesheet];
+        for (key in Main.icons) {
+            Main.icons[key] = url + Main.icons[key];
+        }
+    };
 Main.setPageNav = function() {
     var el, cnt;
     cnt = document.createElement('div');
@@ -6250,7 +6250,7 @@ Main.onThreadMouseOver = function(e) {
     if (Config.quotePreview && $.hasClass(t, 'quotelink') && !$.hasClass(t, 'deadlink') && !$.hasClass(t, 'linkfade')) {
         QuotePreview.resolve(e.target);
     } else if (Config.imageHover && (
-        (t.hasAttribute('data-md5') && !$.hasClass(t.parentNode, 'deleted')) || (t.href && !$.hasClass(t.parentNode, 'fileText') && /i\.4cdn\.org\/[a-z0-9]+\/[0-9]+\.(gif|jpg|png|webm)$/.test(t.href)))) {
+            (t.hasAttribute('data-md5') && !$.hasClass(t.parentNode, 'deleted')) || (t.href && !$.hasClass(t.parentNode, 'fileText') && /i\.4cdn\.org\/[a-z0-9]+\/[0-9]+\.(gif|jpg|png|webm)$/.test(t.href)))) {
         ImageHover.show(t);
     } else if ($.hasClass(t, 'dateTime')) {
         Parser.onDateMouseOver(t);
