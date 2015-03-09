@@ -39,9 +39,19 @@ var loadJavaScriptAndBeautify = function(url, name) {
     });
 }
 
+var loadJavaScript = function(url, name) {
+    request(url, function(error, response, body) {
+        if (!error && response.statusCode == 200) {
+            fs.writeFileSync(name, body);
+        } else {
+            log('Error loading ' + name);
+        }
+    });
+}
+
 var loadNewJavaScripts = function(version) {
-    // loadJavaScriptAndBeautify('https://s.4cdn.org/js/core.' + version + '.js', 'javascripts/core.js');
-    loadJavaScriptAndBeautify('https://s.4cdn.org/js/extension.' + version + '.js', 'javascripts/extension.js');
+    loadJavaScript('https://s.4cdn.org/js/core.' + version + '.js', 'javascripts/core.js');
+    loadJavaScript('https://s.4cdn.org/js/extension.' + version + '.js', 'javascripts/extension.js');
 }
 
 
