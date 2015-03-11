@@ -159,15 +159,6 @@ function loadBannerImage() {
     + cnt.getAttribute('data-src') + '">';
 }
 
-function onMobileSelectChange() {
-  var board, page;
-  
-  board = this.options[this.selectedIndex].value;
-  page = (board !== 'f' && /\/catalog$/.test(location.pathname)) ? 'catalog' : '';
-  
-  window.location = '//boards.4chan.org/' + board + '/' + page;
-}
-
 function buildMobileNav(currentBoard) {
   var el, cnt, boards, i, b, html, order;
   
@@ -324,16 +315,17 @@ function initAnalytics() {
 }
 
 function initAds(category, board) {
-  var p = "http", d = "s";
+  var p = "http", d = "static";
   
   if (document.location.protocol == "https:") {
     p += "s";
+    d = "engine";
   }
   
   var z = document.createElement("script");
   z.type = "text/javascript";
   z.async = true;
-  z.src = p + "://" + d + ".zkcdn.net/ados.js";
+  z.src = p + "://" + d + ".4chan-ads.org/ados.js";
   z.onload = function() {
     ados = ados || {};
     ados.run = ados.run || [];
@@ -1005,41 +997,6 @@ function showPostForm(e) {
   }
 }
 
-function oeCanvasPreview(e) {
-  var t, el, sel;
-  
-  if (el = document.getElementById('oe-canvas-preview')) {
-    el.parentNode.removeChild(el);
-  }
-  
-  if (e.target.nodeName == 'OPTION' && e.target.value != '0') {
-    t = document.getElementById('f' + e.target.value);
-    
-    if (!t) {
-      return;
-    }
-    
-    t = t.getElementsByTagName('img')[0];
-    
-    if (!t || !t.hasAttribute('data-md5')) {
-      return;
-    }
-    
-    el = t.cloneNode();
-    el.id = 'oe-canvas-preview';
-    sel = e.target.parentNode;
-    sel.parentNode.insertBefore(el, sel.nextSibling);
-  }
-}
-
-function oeClearPreview(e) {
-  var el;
-  
-  if (el = document.getElementById('oe-canvas-preview')) {
-    el.parentNode.removeChild(el);
-  }
-}
-
 var PainterCore = {
   init: function() {
     var btns;
@@ -1264,13 +1221,11 @@ function contentLoaded() {
 			}
 		}
 		
-		mobileSelect.addEventListener('change', onMobileSelectChange, false);
+		mobileSelect.onchange = function() {
+			var boardNew = this.options[this.selectedIndex].value;
+			window.location = '//boards.4chan.org/' + boardNew + '/';
+		}
 	}
-	
-  if (document.forms.oeform && (el = document.forms.oeform.oe_src)) {
-    el.addEventListener('mouseover', oeCanvasPreview, false);
-    el.addEventListener('mouseout', oeClearPreview, false);
-  }
 	
 	if (params[2] != 'catalog') {
     // Mobile post form toggle
