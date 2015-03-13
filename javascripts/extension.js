@@ -433,13 +433,13 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
     case 'admin_highlight':
       highlight = ' highlightPost';
     case 'admin':
-      capcodeStart = ' <strong class="capcode hand id_admin"'
-        + 'title="Highlight posts by the Administrator">## Admin</strong>';
+      capcodeStart = ' <strong class="capcode hand id_admin" '
+        + 'title="Highlight posts by Administrators">## Admin</strong>';
       capcodeClass = ' capcodeAdmin';
       
       capcode = ' <img src="' + Parser.icons.admin + '" '
-        + 'alt="This user is the 4chan Administrator." '
-        + 'title="This user is the 4chan Administrator." class="identityIcon">';
+        + 'alt="This user is a 4chan Administrator." '
+        + 'title="This user is a 4chan Administrator." class="identityIcon">';
       break;
     case 'mod':
       capcodeStart = ' <strong class="capcode hand id_mod" '
@@ -467,6 +467,15 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
       capcode = ' <img src="' + Parser.icons.manager + '" '
         + 'alt="This user is a 4chan Manager." '
         + 'title="This user is a 4chan Manager." class="identityIcon">';
+      break;
+    case 'admin_emeritus':
+      capcodeStart = ' <strong class="capcode hand id_admin" '
+        + 'title="Highlight posts by the Administrator Emeritus">## Admin Emeritus</strong>';
+      capcodeClass = ' capcodeAdmin';
+      
+      capcode = ' <img src="' + Parser.icons.admin + '" '
+        + 'alt="This user is 4chan\'s founding Administrator." '
+        + 'title="This user is 4chan\'s founding Administrator." class="identityIcon">';
       break;
   }
   
@@ -4147,7 +4156,8 @@ ThreadWatcher.canAutoRefresh = function() {
   if (time = localStorage.getItem('4chan-tw-timestamp')) {
     return Date.now() - (+time) >= 60000;
   }
-  return false;
+  
+  return true;
 };
 
 ThreadWatcher.setRefreshTimestamp = function() {
@@ -8298,7 +8308,7 @@ Main.onclick = function(e) {
         e.preventDefault();
       }
     }
-    else if (Config.inlineQuotes && e.which == 1 && $.hasClass(t, 'quotelink')) {
+    else if (Config.inlineQuotes && e.which == 1 && $.hasClass(t, 'quotelink') && Main.page !== 'archive') {
       if (!e.shiftKey) {
         QuoteInline.toggle(t, e);
       }
