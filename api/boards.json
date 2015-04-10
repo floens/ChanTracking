@@ -252,7 +252,7 @@
         "is_archived": 1
     }, {
         "board": "diy",
-        "title": "Do-It-Yourself",
+        "title": "Do It Yourself",
         "ws_board": 1,
         "per_page": 15,
         "pages": 10,
@@ -378,7 +378,7 @@
         "per_page": 15,
         "pages": 10,
         "max_filesize": 4194304,
-        "max_webm_filesize": 3145728,
+        "max_webm_filesize": 4194304,
         "max_comment_chars": 2000,
         "bump_limit": 300,
         "image_limit": 250,
@@ -782,6 +782,25 @@
         "is_archived": 1,
         "country_flags": 1
     }, {
+        "board": "qa",
+        "title": "Question \u0026 Answer",
+        "ws_board": 1,
+        "per_page": 15,
+        "pages": 10,
+        "max_filesize": 4194304,
+        "max_webm_filesize": 3145728,
+        "max_comment_chars": 2000,
+        "bump_limit": 300,
+        "image_limit": 150,
+        "cooldowns": {
+            "threads": 600,
+            "replies": 30,
+            "images": 60,
+            "replies_intra": 60,
+            "images_intra": 60
+        },
+        "is_archived": 1
+    }, {
         "board": "r",
         "title": "Request",
         "ws_board": 0,
@@ -1168,7 +1187,7 @@
         "per_page": 15,
         "pages": 10,
         "max_filesize": 4194304,
-        "max_webm_filesize": 3145728,
+        "max_webm_filesize": 4194304,
         "max_comment_chars": 2000,
         "bump_limit": 300,
         "image_limit": 150,
