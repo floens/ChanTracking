@@ -1192,7 +1192,7 @@ PostMenu.open = function(btn) {
     + '">Report post</li>';
   
   if (isOP) {
-    if (!Main.tid) {
+    if (Config.threadHiding && !Main.tid) {
       html += '<li data-cmd="hide" data-id="' + pid + '">'
         + ($.hasClass($.id('t' + pid), 'post-hidden') ? 'Unhide' : 'Hide')
         + ' thread</li>';
