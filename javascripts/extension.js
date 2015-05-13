@@ -218,14 +218,23 @@ Parser.init = function() {
   }
   
   if (Main.tid) {
-    this.trackedReplies = this.getTrackedReplies(Main.tid) || {};
+    this.trackedReplies = this.getTrackedReplies(Main.tid);
+    
+    if (this.trackedReplies) {
+      this.touchTrackedReplies(Main.tid);
+    }
+    else {
+      this.trackedReplies = {};
+    }
+    
+    this.pruneTrackedReplies();
   }
 };
 
 Parser.getTrackedReplies = function(tid) {
   var tracked = null;
   
-  if (tracked = sessionStorage.getItem('4chan-track-' + Main.board + '-' + tid)) {
+  if (tracked = localStorage.getItem('4chan-track-' + Main.board + '-' + tid)) {
     tracked = JSON.parse(tracked);
   }
   
@@ -233,10 +242,64 @@ Parser.getTrackedReplies = function(tid) {
 };
 
 Parser.saveTrackedReplies = function(tid, replies) {
-  sessionStorage.setItem(
+  localStorage.setItem(
     '4chan-track-' + Main.board + '-' + tid,
     JSON.stringify(replies)
   );
+};
+
+Parser.touchTrackedReplies = function(tid) {
+  var tracked, key;
+  
+  key = '4chan-track-' + Main.board + '-ts';
+  
+  if (tracked = localStorage.getItem(key)) {
+    tracked = JSON.parse(tracked);
+  }
+  else {
+    tracked = {};
+  }
+  
+  tracked[tid] = 0 | (Date.now() / 1000);
+  localStorage.setItem(key, JSON.stringify(tracked));
+};
+
+Parser.pruneTrackedReplies = function() {
+  var tid, ts, tracked, now, thres, ttl, pfx, flag;
+  
+  pfx = '4chan-track-' + Main.board + '-';
+  
+  if (tracked = localStorage.getItem(pfx + 'ts')) {
+    ttl = 259200;
+    now = 0 | (Date.now() / 1000);
+    thres = now - ttl;
+    
+    flag = false;
+    
+    tracked = JSON.parse(tracked);
+    
+    if (Main.tid && tracked[Main.tid]) {
+      tracked[Main.tid] = now;
+      flag = true;
+    }
+    
+    for (tid in tracked) {
+      if (tracked[tid] <= thres) {
+        flag = true;
+        delete tracked[tid];
+        localStorage.removeItem(pfx + tid);
+      }
+    }
+    
+    if (flag) {
+      localStorage.removeItem(pfx + 'ts');
+      
+      for (tid in tracked) {
+        localStorage.setItem(pfx + 'ts', JSON.stringify(tracked));
+        break;
+      }
+    }
+  }
 };
 
 Parser.parseThreadJSON = function(data) {
@@ -1192,7 +1255,7 @@ PostMenu.open = function(btn) {
     + '">Report post</li>';
   
   if (isOP) {
-    if (!Main.tid) {
+    if (Config.threadHiding && !Main.tid) {
       html += '<li data-cmd="hide" data-id="' + pid + '">'
         + ($.hasClass($.id('t' + pid), 'post-hidden') ? 'Unhide' : 'Hide')
         + ' thread</li>';
@@ -1219,13 +1282,8 @@ PostMenu.open = function(btn) {
     el = $.cls('fileThumb', file.parentNode)[0];
     
     if (el) {
-      if (/\.(png|jpg)$/.test(el.href)) {
-        href = el.href;
-      }
-      else {
-        href = 'http://i.4cdn.org/' + Main.board + '/'
-          + el.href.match(/\/([0-9]+)\..+$/)[1] + 's.jpg';
-      }
+      href = 'http://i.4cdn.org/' + Main.board + '/'
+        + el.href.match(/\/([0-9]+)\..+$/)[1] + 's.jpg';
       
       html += '<li><ul>'
         + '<li><a href="//www.google.com/searchbyimage?image_url=' + href
@@ -1888,14 +1946,14 @@ QuotePreview.init = function() {
   this.regex = /^(?:\/([^\/]+)\/)?(?:thread\/)?([0-9]+)?#p([0-9]+)$/;
   this.highlight = null;
   this.highlightAnti = null;
-  this.out = true;
+  this.cur = null;
 };
 
 QuotePreview.resolve = function(link) {
   var self, t, post, ids, offset, pfx;
   
   self = QuotePreview;
-  self.out = false;
+  self.cur = null;
   
   t = link.getAttribute('href').match(self.regex);
   
@@ -1939,6 +1997,8 @@ QuotePreview.showRemote = function(link, board, tid, pid) {
   
   key = board + '-' + tid;
   
+  QuotePreview.cur = key;
+  
   if ((cached = $.cache[key]) && (el = Parser.buildPost(cached, board, pid))) {
     QuotePreview.show(link, el);
     return;
@@ -1956,7 +2016,7 @@ QuotePreview.showRemote = function(link, board, tid, pid) {
       
       $.cache[key] = thread;
       
-      if ($.id('quote-preview') || QuotePreview.out) {
+      if ($.id('quote-preview') || QuotePreview.cur != key) {
         return;
       }
       
@@ -2084,7 +2144,7 @@ QuotePreview.remove = function(el) {
   var self, cnt;
   
   self = QuotePreview;
-  self.out = true;
+  self.cur = null;
   
   if (self.highlight) {
     $.removeClass(self.highlight, 'highlight');
@@ -3433,7 +3493,7 @@ QR.startCooldown = function() {
   
   if (QR.cooldown <= 0 || QR.cdElapsed < 0) {
     QR.cooldown = false;
-    QR.removePostTime(type);
+    QR.btn.value = 'Post';
     return;
   }
   
@@ -4666,8 +4726,7 @@ ThreadUpdater.buildMobileControl = function(el, bottom) {
   oldBtn = el.parentNode;
   
   btn = oldBtn.cloneNode(true);
-  btn.textContent = 'Update';
-  btn.setAttribute('data-cmd', 'update');
+  btn.innerHTML = '<label data-cmd="update">Update</label>';
   
   wrap.appendChild(btn);
   cnt = el.parentNode.parentNode;
@@ -6579,7 +6638,7 @@ Media.toggleYouTube = function(node) {
       el.className = 'media-embed';
       el.innerHTML = '<iframe src="//www.youtube.com/embed/'
         + vid
-        + '" width="640" height="360" frameborder="0"></iframe>'
+        + '" width="640" height="360" frameborder="0" allowfullscreen></iframe>'
       
       node.parentNode.insertBefore(el, node.nextElementSibling);
       
@@ -6887,7 +6946,7 @@ Report.open = function(pid, board) {
   window.open('https://sys.4chan.org/'
     + (board || Main.board) + '/imgboard.php?mode=report&no=' + pid
     , Date.now(),
-    "toolbar=0,scrollbars=0,location=0,status=1,menubar=0,resizable=1,width=600,height=270");
+    "toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=600,height=270");
 };
 
 /**
