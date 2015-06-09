@@ -379,8 +379,7 @@ function onReportClick(e) {
   
   for (i = 0; input = nodes[i]; ++i) {
     if (input.type == 'checkbox' && input.checked && input.value == 'delete') {
-      return reppop('https://sys.4chan.org/' + board
-        + '/' + (board != 'f' ? 'imgboard' : 'up') + '.php?mode=report&no='
+      return reppop('https://sys.4chan.org/imgboard.php?mode=report&no='
         + input.name.replace(/[a-z]+/, '')
       );
     }
