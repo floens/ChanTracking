@@ -4,6 +4,18 @@
 		-ms-text-size-adjust: 100%;
 	}
 	
+	.postMenuBtn {
+		margin: -4px 5px -5px 0 !important;
+		float: left;
+		font-size: 24px;
+		width: auto !important;
+	}
+	
+	.dd-menu {
+		font-size: 16px;
+		line-height: 2em;
+	}
+	
 	.party-hat {
 		left: -15px;
 		margin-top: -30px;
