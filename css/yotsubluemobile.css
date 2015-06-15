@@ -5,9 +5,10 @@
 	}
 	
 	.postMenuBtn {
-		margin: -4px 5px -5px 0 !important;
+		margin: 0 5px 0 0 !important;
 		float: left;
-		font-size: 24px;
+		font-size: 16px;
+		opacity: 0.5 !important;
 		width: auto !important;
 	}
 	
