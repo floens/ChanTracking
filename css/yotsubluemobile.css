@@ -5,11 +5,16 @@
 	}
 	
 	.postMenuBtn {
-		margin: 0 5px 0 0 !important;
+		-webkit-transform: rotate(90deg);
+		-moz-transform: rotate(90deg);
+		-ms-transform: rotate(90deg);
+		transform: rotate(90deg);
+		margin: 4px -5px 0 4px !important;
 		float: left;
+		font-weight: bold;
+		opacity: 1 !important;
+		height: .5em !important;
 		font-size: 16px;
-		opacity: 0.5 !important;
-		width: auto !important;
 	}
 	
 	.dd-menu {
