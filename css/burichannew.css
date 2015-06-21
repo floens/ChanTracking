@@ -106,6 +106,31 @@ body {
 	max-width: 100%;
 }
 
+#qrCaptchaContainerAlt #recaptcha_response_field {
+	width: 296px !important;
+}
+
+#qrCaptchaContainerAlt #recaptcha_image {
+	border: 0 !important;
+}
+
+#qrCaptchaContainerAlt .recaptcha_image_cell {
+	padding: 0 !important;
+}
+
+#qrCaptchaContainerAlt #recaptcha_table {
+	border: 0 !important;
+}
+
+#qrCaptchaContainerAlt td:nth-child(2), #qrCaptchaContainerAlt td:nth-child(3) {
+	display: none !important;
+}
+
+#qrCaptchaContainerAlt {
+	height: 80px;
+	width: 300px;
+}
+
 .recaptchatable {
 	background-color: transparent !important;
 	border: none !important;
