@@ -93,8 +93,8 @@ var load = function() {
     loadFile('https://www.4chan.org/blotter', 'pages/blotter.html');
     loadFile('https://www.4chan.org/legal', 'pages/legal.html');
 
-    loadFile('https://s.4cdn.org/js/core.js', 'javascripts/core.js');
-    loadFile('https://s.4cdn.org/js/extension.js', 'javascripts/extension.js');
+    loadFile('https://s.4cdn.org/js/core.1.js', 'javascripts/core.js');
+    loadFile('https://s.4cdn.org/js/extension.1.js', 'javascripts/extension.js');
 
     loadCssAndBeautify('https://s.4cdn.org/css/yotsubluenew.css', 'yotsubluenew');
     loadCssAndBeautify('https://s.4cdn.org/css/yotsubanew.css', 'yotsubanew');
