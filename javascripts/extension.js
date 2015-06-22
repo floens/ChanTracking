@@ -2693,6 +2693,7 @@ QR.init = function() {
   
   this.captchaWidgetCnt = null;
   this.captchaWidgetId = null;
+  this.hasCaptchaAltJs = false;
   this.pulse = null;
   this.xhr = null;
   
@@ -2911,7 +2912,12 @@ QR.show = function(tid) {
       if (QR.noCaptcha) {
         continue;
       }
-      row.id = 'qrCaptchaContainer';
+      if (Config.altCaptcha) {
+        row.id = 'qrCaptchaContainerAlt';
+      }
+      else {
+        row.id = 'qrCaptchaContainer';
+      }
       QR.captchaWidgetCnt = row;
     }
     else {
@@ -3029,7 +3035,12 @@ QR.show = function(tid) {
   }
   
   if (!window.passEnabled) {
-    QR.renderCaptcha();
+    if (Config.altCaptcha) {
+      QR.renderCaptchaAlt();
+    }
+    else {
+      QR.renderCaptcha();
+    }
   }
   
   if (!Main.hasMobileLayout) {
@@ -3048,7 +3059,64 @@ QR.renderCaptcha = function() {
   });
 };
 
-QR.resetCaptcha = function() {
+QR.renderCaptchaAlt = function() {
+  if (!window.grecaptcha) {
+    return;
+  }
+  
+  if (!window.Recaptcha) {
+    QR.initCaptchaAlt();
+    return;
+  }
+  
+  Recaptcha.create(window.recaptchaKey,
+    'qrCaptchaContainerAlt',
+    {
+      theme: "clean",
+      tabindex: 5
+    }
+  );
+};
+
+QR.initCaptchaAlt = function(loadOnly) {
+  if (QR.hasCaptchaAltJs) {
+    return;
+  }
+  
+  var el = document.createElement('script');
+  el.type = 'text/javascript';
+  el.src = '//www.google.com/recaptcha/api/js/recaptcha_ajax.js';
+  
+  if (!loadOnly) {
+    el.onload = QR.renderCaptchaAlt;
+  }
+  
+  QR.hasCaptchaAltJs = true;
+  
+  document.head.appendChild(el);
+};
+
+QR.resetCaptchaAlt = function(focus) {
+  var pulse, poll;
+  
+  if (!window.grecaptcha || !$.id('recaptcha_image') || !window.RecaptchaState) {
+    return;
+  }
+  
+  if (focus) {
+    Recaptcha.reload('t');
+  }
+  else {
+    Recaptcha.reload();
+  }
+};
+
+QR.resetCaptcha = function(focus) {
+  if (Config.altCaptcha) {
+    QR.resetCaptchaAlt(focus);
+    return;
+  }
+  
   if (!window.grecaptcha || QR.captchaWidgetId === null) {
     return;
   }
@@ -3165,7 +3233,6 @@ QR.close = function() {
   QR.comField = null;
   QR.currentTid = null;
   
-  clearInterval(QR.captchaInterval);
   clearInterval(QR.pulse);
   
   if (QR.xhr) {
@@ -3183,11 +3250,6 @@ QR.close = function() {
   
   if (window.RecaptchaState) {
     Recaptcha.destroy();
-    window.captchaReady = false;
-    if (el = $.id('captchaContainer')) {
-      el.innerHTML = '<div class="placeholder">'
-        + el.getAttribute('data-placeholder') + '</div>';
-    }
   }
   
   document.body.removeChild(cnt);
@@ -3218,6 +3280,9 @@ QR.onClick = function(e) {
         else {
           $.id('qrFile').click();
         }
+        break;
+      case 'recaptcha_challenge_image':
+        QR.resetCaptcha(true);
         break;
       case 'qrClose':
         QR.close();
@@ -3328,11 +3393,11 @@ QR.submit = function(force) {
     
     if (this.status == 200) {
       if (resp = this.responseText.match(/"errmsg"[^>]*>(.*?)<\/span/)) {
-        if (/4chan Pass/.test(resp)) {
-          QR.onPassError();
+        if (Config.altCaptcha && /mistyped/.test(resp)) {
+          QR.resetCaptcha(true);
         }
-        else {
-          QR.resetCaptcha();
+        else if (/4chan Pass/.test(resp)) {
+          QR.onPassError();
         }
         QR.showPostError(resp[1]);
         return;
@@ -7344,6 +7409,7 @@ var Config = {
   quickReply: true,
   threadUpdater: true,
   threadHiding: true,
+  altCaptcha: false,
   
   alwaysAutoUpdate: false,
   topPageNav: false,
@@ -7511,7 +7577,8 @@ SettingsMenu.options = {
     backlinks: [ 'Backlinks', 'Show who has replied to a post', true ],
     inlineQuotes: [ 'Inline quote links', 'Clicking quote links will inline expand the quoted post, Shift-click to bypass inlining' ],
     quickReply: [ 'Quick Reply', 'Quickly respond to a post by clicking its post number', true ],
-    persistentQR: [ 'Persistent Quick Reply', 'Keep Quick Reply window open after posting' ]
+    persistentQR: [ 'Persistent Quick Reply', 'Keep Quick Reply window open after posting' ],
+    altCaptcha: [ 'Legacy CAPTCHA', 'Use reCAPTCHA v1 in the Quick Reply window' ]
   },
   'Monitoring': {
     threadUpdater: [ 'Thread updater', 'Append new posts to bottom of thread without refreshing the page', true ],
@@ -7877,8 +7944,7 @@ Main.init = function() {
       style_group == 'nws_style' ? 'yotsuba_new' : 'yotsuba_b_new';
   }
   
-  Main.passEnabled = Main.getCookie('pass_enabled');
-  QR.noCaptcha = QR.noCaptcha || Main.passEnabled;
+  QR.noCaptcha = QR.noCaptcha || window.passEnabled;
   
   Main.initIcons();
   
