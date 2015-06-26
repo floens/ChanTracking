@@ -3072,8 +3072,8 @@ QR.renderCaptchaAlt = function() {
   Recaptcha.create(window.recaptchaKey,
     'qrCaptchaContainerAlt',
     {
-      theme: 'clean',
-      tabindex: 0
+      theme: "clean",
+      tabindex: 5
     }
   );
 };
@@ -7125,7 +7125,7 @@ Report.open = function(pid, board) {
   window.open('https://sys.4chan.org/'
     + (board || Main.board) + '/imgboard.php?mode=report&no=' + pid
     , Date.now(),
-    "toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=600,height=170");
+    "toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=600,height=270");
 };
 
 /**
