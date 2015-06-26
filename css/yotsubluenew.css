@@ -110,11 +110,32 @@ body {
 	max-width: 100%;
 }
 
+#captchaContainerAlt {
+	height: 80px;
+}
+
+#captchaContainerAlt .recaptcha_image_cell {
+	padding: 0 0 5px 0 !important;
+}
+
+#captchaContainerAlt #recaptcha_area {
+	margin-left: 10px;
+}
+
+#captchaContainerAlt #recaptcha_table {
+	border: 0 !important;
+}
+
+#captchaContainerAlt #recaptcha_response_field {
+	width: 300px !important;
+	padding: 0 !important;
+}
+
 #qrCaptchaContainerAlt #recaptcha_response_field {
 	width: 296px !important;
 }
 
-#qrCaptchaContainerAlt #recaptcha_image {
+#captchaContainerAlt #recaptcha_image, #qrCaptchaContainerAlt #recaptcha_image {
 	border: 0 !important;
 }
 
@@ -126,7 +147,7 @@ body {
 	border: 0 !important;
 }
 
-#qrCaptchaContainerAlt td:nth-child(2), #qrCaptchaContainerAlt td:nth-child(3) {
+#captchaContainerAlt td:nth-child(2), #captchaContainerAlt td:nth-child(3), #qrCaptchaContainerAlt td:nth-child(2), #qrCaptchaContainerAlt td:nth-child(3) {
 	display: none !important;
 }
 
