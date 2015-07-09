@@ -92,6 +92,8 @@ var load = function() {
     loadFile('https://www.4chan.org/news', 'pages/news.html');
     loadFile('https://www.4chan.org/blotter', 'pages/blotter.html');
     loadFile('https://www.4chan.org/legal', 'pages/legal.html');
+    loadFile('https://www.4chan.org/security', 'pages/security.html');
+    loadFile('https://www.4chan.org/feedback', 'pages/feedback');
 
     loadFile('https://s.4cdn.org/js/core.1.js', 'javascripts/core.js');
     loadFile('https://s.4cdn.org/js/extension.1.js', 'javascripts/extension.js');
