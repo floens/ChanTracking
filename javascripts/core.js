@@ -534,7 +534,7 @@ function toggleMobilePostForm(index, scrolltotop) {
   }
   
   if (scrolltotop) {
-    window.scroll(0, 0);
+    elem.scrollIntoView();
   }
 }
 

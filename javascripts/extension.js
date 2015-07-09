@@ -878,7 +878,7 @@ Parser.parseThread = function(tid, offset, limit) {
       }
     }
     
-    if (Main.tid && Config.threadWatcher && (cnt = $.cls('navLinksBot')[0])) {
+    if (Main.tid && Config.threadWatcher) {
       el = document.createElement('img');
       
       if (ThreadWatcher.watched[key = tid + '-' + Main.board]) {
@@ -895,11 +895,15 @@ Parser.parseThread = function(tid, offset, limit) {
       el.alt = 'W';
       el.title = 'Add to watch list';
       
-      frag = document.createDocumentFragment();
-      frag.appendChild(document.createTextNode('['));
-      frag.appendChild(el.cloneNode(true));
-      frag.appendChild(document.createTextNode('] '));
-      cnt.insertBefore(frag, cnt.firstChild);
+      cnt = $.cls('navLinks');
+      
+      for (i = 1; i < 3 && (j = cnt[i]); ++i) {
+        frag = document.createDocumentFragment();
+        frag.appendChild(document.createTextNode('['));
+        frag.appendChild(el.cloneNode(true));
+        frag.appendChild(document.createTextNode('] '));
+        j.insertBefore(frag, j.firstChild);
+      }
     }
   }
   
@@ -3072,8 +3076,8 @@ QR.renderCaptchaAlt = function() {
   Recaptcha.create(window.recaptchaKey,
     'qrCaptchaContainerAlt',
     {
-      theme: "clean",
-      tabindex: 5
+      theme: 'clean',
+      tabindex: 0
     }
   );
 };
@@ -7125,7 +7129,7 @@ Report.open = function(pid, board) {
   window.open('https://sys.4chan.org/'
     + (board || Main.board) + '/imgboard.php?mode=report&no=' + pid
     , Date.now(),
-    "toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=600,height=270");
+    "toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=600,height=170");
 };
 
 /**
@@ -7578,7 +7582,7 @@ SettingsMenu.options = {
     inlineQuotes: [ 'Inline quote links', 'Clicking quote links will inline expand the quoted post, Shift-click to bypass inlining' ],
     quickReply: [ 'Quick Reply', 'Quickly respond to a post by clicking its post number', true ],
     persistentQR: [ 'Persistent Quick Reply', 'Keep Quick Reply window open after posting' ],
-    altCaptcha: [ 'Legacy CAPTCHA', 'Use reCAPTCHA v1 in the Quick Reply window' ]
+    altCaptcha: [ 'Legacy CAPTCHA', 'Use reCAPTCHA v1 in the Quick Reply window', true ]
   },
   'Monitoring': {
     threadUpdater: [ 'Thread updater', 'Append new posts to bottom of thread without refreshing the page', true ],
