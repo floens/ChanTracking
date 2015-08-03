@@ -3397,11 +3397,11 @@ QR.submit = function(force) {
     
     if (this.status == 200) {
       if (resp = this.responseText.match(/"errmsg"[^>]*>(.*?)<\/span/)) {
-        if (Config.altCaptcha && /mistyped/.test(resp)) {
-          QR.resetCaptcha(true);
-        }
-        else if (/4chan Pass/.test(resp)) {
+        if (window.passEnabled && /4chan Pass/.test(resp)) {
           QR.onPassError();
+        }
+        else {
+          QR.resetCaptcha(true);
         }
         QR.showPostError(resp[1]);
         return;
