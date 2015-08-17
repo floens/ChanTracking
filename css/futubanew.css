@@ -469,6 +469,7 @@ div.post div.postInfo span.subject {
 
 div.post blockquote.postMessage {
 	display: block;
+	word-wrap: break-word;
 }
 
 blockquote > span.quote {
