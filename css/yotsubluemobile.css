@@ -227,7 +227,6 @@
 	}
 	
 	div.reply {
-		display: table;
 		padding: 2px;
 		background-color: #d6daf0;
 		margin: 0;
@@ -237,6 +236,7 @@
 	div.replyContainer {
 		background-color: #d6daf0;
 		margin: 5px 5px 0 5px;
+		padding-left: 0;
 	}
 	
 	.is_index div.thread {
