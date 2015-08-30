@@ -21,7 +21,8 @@
 <button type="submit" class="submit-btn" name="action" value="search">Search</button>
 <button type="submit" class="submit-btn" name="action" value="show">Go to No.</button>
 </form>
-</div><div id="links-cnt">[<a id="form-link" href="#form">Submit Feedback</a>]</div>
+</div>
+<div id="links-cnt">[<a id="form-link" href="#form">Submit Feedback</a>]</div>
 <div id="form" class="hidden">
 <h2>Submit Feedback</h2>
 <form method="post" enctype="multipart/form-data">
