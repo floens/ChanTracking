@@ -5,9 +5,9 @@
 <title>Feedback - 4chan</title>
 <link rel="stylesheet" type="text/css" href="//s.4cdn.org/css/feedback.css?3">
 <link rel="shortcut icon" href="//s.4cdn.org/image/favicon.ico" type="image/x-icon">
-<script type="text/javascript" src="//s.4cdn.org/js/feedback.js?4"></script>
+<script type="text/javascript" src="//s.4cdn.org/js/feedback.js?5"></script>
 <noscript>
-<style type="text/css">#form{display:block;}</style>
+<style type="text/css">#form{display:block;}#captcha-cnt{height:auto;}</style>
 </noscript>
 </head>
 <body>
