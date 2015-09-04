@@ -416,9 +416,12 @@ div.thread {
 	clear: both;
 }
 
+.replyContainer {
+	padding-left: 20px;
+}
+
 div.post {
-	margin: 4px 0;
-	overflow: hidden;
+	margin: 2px 0;
 }
 
 
@@ -428,7 +431,7 @@ div.reply {
 	border: 1px solid #d9bfb7;
 	border-left: none;
 	border-top: none;
-	display: table;
+	display: inline-block;
 	padding: 2px;
 }
 
@@ -480,6 +483,7 @@ div.post div.postInfo span.subject {
 
 div.post blockquote.postMessage {
 	display: block;
+	word-wrap: break-word;
 }
 
 blockquote > span.quote {
@@ -864,10 +868,6 @@ div.closed {
 
 .nameBlock.capcodeAdmin span.name, span.capcodeAdmin a span.name, span.capcodeAdmin span.postertrip, span.capcodeAdmin strong.capcode {
 	color: #f00 !important;
-}
-
-span.capcodeFounder span.name, span.capcodeFounder span.name a, span.capcodeFounder span.postertrip, span.capcodeFounder strong.capcode {
-	color: #117743 !important;
 }
 
 .nameBlock.capcodeMod span.name, span.capcodeMod a span.name, span.capcodeMod span.postertrip, span.capcodeMod strong.capcode {
