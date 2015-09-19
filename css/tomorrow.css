@@ -416,12 +416,9 @@ div.thread {
 	clear: both;
 }
 
-.replyContainer {
-	padding-left: 20px;
-}
-
 div.post {
-	margin: 2px 0;
+	margin: 4px 0;
+	overflow: hidden;
 }
 
 
@@ -429,7 +426,7 @@ div.post {
 div.reply {
 	background-color: #282a2e;
 	border: 1px solid #282a2e;
-	display: inline-block;
+	display: table;
 	padding: 2px;
 }
 
@@ -481,7 +478,6 @@ div.post div.postInfo span.subject {
 
 div.post blockquote.postMessage {
 	display: block;
-	word-wrap: break-word;
 }
 
 blockquote > span.quote {
@@ -859,6 +855,10 @@ div.closed {
 
 span.capcodeAdmin span.name, span.capcodeAdmin span.name a, span.capcodeAdmin span.postertrip, span.capcodeAdmin strong.capcode {
 	color: #f00 !important;
+}
+
+span.capcodeFounder span.name, span.capcodeFounder span.name a, span.capcodeFounder span.postertrip, span.capcodeFounder strong.capcode {
+	color: #117743 !important;
 }
 
 span.capcodeMod span.name, span.capcodeMod span.name a, span.capcodeMod span.postertrip, span.capcodeMod strong.capcode {

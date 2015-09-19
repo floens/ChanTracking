@@ -140,12 +140,9 @@ div.thread {
 	clear: both;
 }
 
-.replyContainer {
-	padding-left: 20px;
-}
-
 div.post {
-	margin: 2px 0;
+	margin: 4px 0;
+	overflow: hidden;
 }
 
 
@@ -155,7 +152,7 @@ div.reply {
 	border: 1px solid #d9b9b7;
 	border-left: none;
 	border-top: none;
-	display: inline-block;
+	display: table;
 	padding: 2px;
 }
 

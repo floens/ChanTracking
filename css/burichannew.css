@@ -414,21 +414,17 @@ div.thread {
 	clear: both;
 }
 
-.replyContainer {
-	padding-left: 20px;
-}
-
 div.post {
-	margin: 2px 0;
+	margin: 4px 0;
+	overflow: hidden;
 }
 
 
 
 div.reply {
 	background-color: #d6daf0;
-	display: inline-block;
+	display: table;
 	padding: 2px;
-	max-width: 100%;
 }
 
 div.reply input {
@@ -479,7 +475,6 @@ div.post div.postInfo span.subject {
 
 div.post blockquote.postMessage {
 	display: block;
-	word-wrap: break-word;
 }
 
 blockquote > span.quote {
@@ -835,6 +830,10 @@ span.capcodeAdmin span.name, span.capcodeAdmin span.name a, span.capcodeAdmin sp
 	color: #f00 !important;
 }
 
+span.capcodeFounder span.name, span.capcodeFounder span.name a, span.capcodeFounder span.postertrip, span.capcodeFounder strong.capcode {
+	color: #117743 !important;
+}
+
 span.capcodeMod span.name, span.capcodeMod span.name a, span.capcodeMod span.postertrip, span.capcodeMod strong.capcode {
 	color: #800080 !important;
 }
@@ -1045,9 +1044,9 @@ img.expandedImg {
 	background-color: #fff;
 	padding: 5px !important;
 	display: inline-block;
+	max-height: 400px;
 	overflow-x: auto;
-	max-width: 100%;
-	resize: both;
+	max-width: 600px;
 	margin: 0;
 	font-size: 14px;
 }
