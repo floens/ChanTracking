@@ -2,10 +2,12 @@
     "name": "ChanTracking",
     "description": "Tracing some website",
     "dependencies": {
-        "request": "2.40.x",
+        "request": "2.62.x",
         "js-beautify": "1.5.x",
         "PrettyCSS": "0.3.x",
         "html": "0.0.7",
-        "cheerio": "0.17.0"
+        "cheerio": "0.17.0",
+        "tough-cookie": "2.0.0",
+        "tough-cookie-filestore": "0.0.1"
     }
 }

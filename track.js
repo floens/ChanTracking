@@ -7,6 +7,15 @@ var prettyCss = require('PrettyCSS');
 var fs = require('fs');
 var htmlBeautify = require('html');
 var cheerio = require('cheerio');
+var FileCookieStore = require('tough-cookie-filestore');
+
+try {
+    fs.statSync('cookies.json');
+} catch(e) {
+    fs.writeFileSync('cookies.json', '');
+}
+
+var cookieJar = request.jar(new FileCookieStore('cookies.json'));
 
 var state = {};
 
@@ -36,7 +45,10 @@ var saveState = function() {
 
 var get = function(url, callback) {
     log('Getting ' + url);
-    request(url, function(error, response, body) {
+    request({
+        url: url,
+        jar: cookieJar
+    }, function(error, response, body) {
         if (!error && response.statusCode == 200) {
             log('Got ' + url);
             callback(body);
