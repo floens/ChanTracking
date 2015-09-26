@@ -431,9 +431,12 @@ div.thread {
 	clear: both;
 }
 
+.replyContainer {
+	padding-left: 20px;
+}
+
 div.post {
-	margin: 4px 0;
-	overflow: hidden;
+	margin: 2px 0;
 }
 
 
@@ -443,7 +446,7 @@ div.reply {
 	border: 1px solid #b7c5d9;
 	border-left: none;
 	border-top: none;
-	display: table;
+	display: inline-block;
 	padding: 2px;
 }
 
@@ -495,6 +498,7 @@ div.post div.postInfo span.subject {
 
 div.post blockquote.postMessage {
 	display: block;
+	word-wrap: break-word;
 }
 
 blockquote > span.quote {
