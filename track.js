@@ -110,7 +110,7 @@ var load = function() {
     loadFile('https://s.4cdn.org/js/core.1.js', 'javascripts/core.js');
     loadFile('https://s.4cdn.org/js/extension.1.js', 'javascripts/extension.js');
 
-    loadCssAndBeautify('https://s.4cdn.org/css/yotsubluenew.css', 'yotsubluenew');
+    // loadCssAndBeautify('https://s.4cdn.org/css/yotsubluenew.css', 'yotsubluenew');
     loadCssAndBeautify('https://s.4cdn.org/css/yotsubanew.css', 'yotsubanew');
     loadCssAndBeautify('https://s.4cdn.org/css/futabanew.css', 'futubanew');
     loadCssAndBeautify('https://s.4cdn.org/css/burichannew.css', 'burichannew');
