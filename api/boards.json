@@ -8,7 +8,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -42,6 +42,26 @@
         "custom_spoilers": 1,
         "is_archived": 1
     }, {
+        "board": "aco",
+        "title": "Adult Cartoons",
+        "ws_board": 0,
+        "per_page": 15,
+        "pages": 10,
+        "max_filesize": 4194304,
+        "max_webm_filesize": 3145728,
+        "max_comment_chars": 2000,
+        "bump_limit": 300,
+        "image_limit": 250,
+        "cooldowns": {
+            "threads": 600,
+            "replies": 60,
+            "images": 60,
+            "replies_intra": 60,
+            "images_intra": 30
+        },
+        "meta_description": "\u0026quot;\/aco\/ - Adult Cartoons\u0026quot; is 4chan's imageboard for posting western-styled adult cartoon artwork.",
+        "is_archived": 1
+    }, {
         "board": "adv",
         "title": "Advice",
         "ws_board": 1,
@@ -50,7 +70,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -70,7 +90,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -90,7 +110,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -129,7 +149,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -150,7 +170,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -170,7 +190,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -190,7 +210,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -210,7 +230,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -272,7 +292,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -331,7 +351,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -351,7 +371,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -371,7 +391,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -392,7 +412,7 @@
         "max_filesize": 8388608,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -552,7 +572,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -573,7 +593,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 300,
         "cooldowns": {
             "threads": 3600,
@@ -595,7 +615,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -615,7 +635,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -635,7 +655,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 3000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -657,7 +677,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -701,7 +721,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -721,7 +741,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -741,7 +761,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -761,7 +781,7 @@
         "max_filesize": 5242880,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -781,7 +801,7 @@
         "max_filesize": 5242880,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -801,7 +821,7 @@
         "max_filesize": 8388608,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -843,7 +863,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -946,7 +966,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -1029,7 +1049,7 @@
         "max_filesize": 8388608,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -1051,7 +1071,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -1071,7 +1091,7 @@
         "max_filesize": 8388608,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -1091,7 +1111,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -1178,7 +1198,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -1222,7 +1242,7 @@
         "max_filesize": 6291456,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -1262,7 +1282,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 4194304,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
@@ -1282,7 +1302,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
-        "bump_limit": 300,
+        "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
