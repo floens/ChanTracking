@@ -29,9 +29,12 @@
 <div class="form-col">
 <label for="form-cat">Category:</label>
 <select name="category" id="form-cat">
-<option value="0">Submit Feedback</option>
-<option value="1">Report an Issue</option>
-<option value="2">Suggest a Feature</option>
+<option value="0">Moderation Feedback</option>
+<option value="1">Bug Report</option>
+<option value="2">Feature Suggestion</option>
+<option value="3">Spam Filter Issue</option>
+<option value="4">IP Range Ban Issue</option>
+<option value="5">Board Suggestion</option>
 </select>
 </div>
 <label for="form-subject">Subject:</label>
