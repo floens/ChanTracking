@@ -592,7 +592,7 @@
         "pages": 10,
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
-        "max_comment_chars": 2000,
+        "max_comment_chars": 5000,
         "bump_limit": 310,
         "image_limit": 300,
         "cooldowns": {
@@ -605,7 +605,8 @@
         "meta_description": "\u0026quot;\/jp\/ - Otaku Culture\u0026quot; is 4chan's board for discussing Japanese otaku culture.",
         "spoilers": 1,
         "custom_spoilers": 1,
-        "is_archived": 1
+        "is_archived": 1,
+        "sjis_tags": 1
     }, {
         "board": "k",
         "title": "Weapons",
