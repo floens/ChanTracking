@@ -20,26 +20,6 @@ body {
 	left: 0;
 	margin-top: -80px;
 	position: absolute;
-	pointer-events: none;
-}
-
-.sjis, #quickReply .sjis {
-	font-size: 16px;
-	line-height: 17px;
-	white-space: pre;
-	font-family: 'IPAMonaPGothic', 'Mona', 'MS PGothic', monospace;
-	overflow: auto;
-	display: block;
-	clear: left;
-}
-
-.tex-logo {
-	font-size: .8em;
-}
-
-.tex-logo sub {
-	font-size: .8em;
-	text-transform: uppercase;
 }
 
 .centeredThreads .party-hat {
