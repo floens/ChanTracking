@@ -192,6 +192,7 @@ Parser.init = function() {
   
   this.icons = {
     admin: staticPath + 'adminicon' + tail,
+    founder: staticPath + 'foundericon' + tail,
     mod: staticPath + 'modicon' + tail,
     dev: staticPath + 'developericon' + tail,
     manager: staticPath + 'managericon' + tail,
@@ -533,14 +534,14 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
         + 'alt="This user is a 4chan Manager." '
         + 'title="This user is a 4chan Manager." class="identityIcon">';
       break;
-    case 'admin_emeritus':
+    case 'founder':
       capcodeStart = ' <strong class="capcode hand id_admin" '
-        + 'title="Highlight posts by the Administrator Emeritus">## Admin Emeritus</strong>';
+        + 'title="Highlight posts by the Founder">## Founder</strong>';
       capcodeClass = ' capcodeAdmin';
       
-      capcode = ' <img src="' + Parser.icons.admin + '" '
-        + 'alt="This user is 4chan\'s founding Administrator." '
-        + 'title="This user is 4chan\'s founding Administrator." class="identityIcon">';
+      capcode = ' <img src="' + Parser.icons.founder + '" '
+        + 'alt="This user is 4chan\'s Founder." '
+        + 'title="This user is 4chan\'s Founder." class="identityIcon">';
       break;
   }
   
@@ -932,14 +933,18 @@ Parser.parseThread = function(tid, offset, limit) {
         Parser.parseMarkup(posts[i]);
       }
     }
-    if (window.jsMath) {
-      if (window.jsMath.loaded) {
+    if (window.math_tags) {
+      if (window.MathJax) {
         for (i = j; i < limit; ++i) {
-          window.jsMath.ProcessBeforeShowing(posts[i]);
+          MathJax.Hub.Queue(['Typeset', MathJax.Hub, posts[i]]);
         }
       }
       else {
-        Parser.loadJSMath();
+        for (i = j; i < limit; ++i) {
+          if (Parser.postHasMath(posts[i])) {
+            window.loadMathJax();
+          }
+        }
       }
     }
   }
@@ -947,19 +952,16 @@ Parser.parseThread = function(tid, offset, limit) {
   UA.dispatchEvent('4chanParsingDone', { threadId: tid, offset: j, limit: limit });
 };
 
-Parser.loadJSMath = function(root) {
-  if ($.cls('math', root)[0]) {
-    window.jsMath.Autoload.Script.Push('ProcessBeforeShowing', [ null ]);
-    window.jsMath.Autoload.LoadJsMath();
-  }
+Parser.postHasMath = function(el) {
+  return /\[(?:eqn|math)\]/.test(el.innerHTML);
 };
 
 Parser.parseMathOne = function(node) {
-  if (window.jsMath.loaded) {
-    window.jsMath.ProcessBeforeShowing(node);
+  if (window.MathJax) {
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, node]);
   }
-  else {
-    Parser.loadJSMath(node);
+  else if (Parser.postHasMath(node)) {
+    window.loadMathJax();
   }
 };
 
@@ -1007,8 +1009,34 @@ Parser.parseMarkup = function(post) {
   }
 };
 
+Parser.revealImageSpoiler = function(fileThumb) {
+  var img, isOP, filename, finfo, txt;
+  
+  img = fileThumb.firstElementChild;
+  fileThumb.removeChild(img);
+  img.removeAttribute('style');
+  isOP = $.hasClass(fileThumb.parentNode.parentNode, 'op');
+  img.style.maxWidth = img.style.maxHeight = isOP ? '250px' : '125px';
+  img.src = '//i.4cdn.org'
+    + (fileThumb.pathname.replace(/\/([0-9]+).+$/, '/$1s.jpg'));
+  
+  filename = fileThumb.previousElementSibling;
+  finfo = filename.title.split('.');
+  
+  if (finfo[0].length > (isOP ? 40 : 30)) {
+    txt = finfo[0].slice(0, isOP ? 35 : 25) + '(...)' + finfo[1];
+  }
+  else {
+    txt = filename.title;
+    filename.removeAttribute('title');
+  }
+  
+  filename.firstElementChild.innerHTML = txt;
+  fileThumb.insertBefore(img, fileThumb.firstElementChild);
+};
+
 Parser.parsePost = function(pid, tid) {
-  var hasMobileLayout, cnt, el, pi, href, img, file, msg, filtered, html, filename, txt, finfo, isOP, uid, ppid;
+  var hasMobileLayout, cnt, el, pi, href, file, msg, filtered, html, uid, ppid;
   
   hasMobileLayout = Main.hasMobileLayout;
   
@@ -1087,27 +1115,7 @@ Parser.parsePost = function(pid, tid) {
       && (file = file.children[1])
     ) {
     if ($.hasClass(file, 'imgspoiler')) {
-      img = file.firstChild;
-      file.removeChild(img);
-      img.removeAttribute('style');
-      isOP = $.hasClass(pi.parentNode, 'op');
-      img.style.maxWidth = img.style.maxHeight = isOP ? '250px' : '125px';
-      img.src = '//i.4cdn.org'
-        + (file.pathname.replace(/([0-9]+).+$/, '/$1s.jpg'));
-      
-      filename = file.previousElementSibling;
-      finfo = filename.title.split('.');
-      
-      if (finfo[0].length > (isOP ? 40 : 30)) {
-        txt = finfo[0].slice(0, isOP ? 35 : 25) + '(...)' + finfo[1];
-      }
-      else {
-        txt = filename.title;
-        filename.removeAttribute('title');
-      }
-      
-      filename.firstElementChild.innerHTML = txt;
-      file.insertBefore(img, file.firstElementChild);
+      Parser.revealImageSpoiler(file);
     }
   }
   
@@ -2682,7 +2690,7 @@ QR.init = function() {
   this.btn = null;
   this.comField = null;
   this.comLength = window.comlen;
-  this.lenCheckTimeout = null;
+  this.comCheckTimeout = null;
   
   this.cdElapsed = 0;
   this.activeDelay = 0;
@@ -2712,6 +2720,67 @@ QR.init = function() {
   }
   
   window.addEventListener('storage', this.syncStorage, false);
+};
+
+QR.openTeXPreview = function() {
+  var el;
+  
+  QR.closeTeXPreview();
+  
+  if (!window.MathJax) {
+    window.loadMathJax();
+  }
+  
+  el = document.createElement('div');
+  el.id = 'tex-preview-cnt';
+  el.className = 'UIPanel';
+  el.setAttribute('data-cmd', 'close-tex-preview');
+  el.innerHTML = '\
+<div class="extPanel reply"><div class="panelHeader"><span class="tex-logo">T<sub>e</sub>X</span> Preview\
+<span class="panelCtrl"><img alt="Close" title="Close" class="pointer" data-cmd="close-tex-preview" src="'
++ Main.icons.cross + '"></span></div><div id="tex-protip">Use [math][/math] tags for inline, and [eqn][/eqn] tags for block equations.</div><textarea id="input-tex-preview"></textarea>\
+<div id="output-tex-preview"></div></div>';
+  
+  document.body.appendChild(el);
+  
+  el = $.id('input-tex-preview');
+  $.on(el, 'keyup', QR.onTeXChanged);
+};
+
+QR.closeTeXPreview = function() {
+  var el;
+  
+  if (el = $.id('input-tex-preview')) {
+    $.off(el, 'keyup', QR.onTeXChanged);
+    
+    el = $.id('tex-preview-cnt');
+    el.parentNode.removeChild(el);
+  }
+};
+
+QR.onTeXChanged = function(e) {
+  clearTimeout(QR.timeoutTeX);
+  QR.timeoutTeX = setTimeout(QR.processTeX, 50);
+};
+
+QR.processTeX = function() {
+  var src, dest, el;
+
+  if (QR.processingTeX || !window.MathJax || !(src = $.id('input-tex-preview'))) {
+    return;
+  }
+  
+  dest = $.id('output-tex-preview');
+  
+  dest.textContent = src.value;
+  
+  QR.processingTeX = true;
+  
+  MathJax.Hub.Queue(['Typeset', MathJax.Hub, dest], ['onTeXReady', QR]);
+};
+
+QR.onTeXReady = function() {
+  QR.processingTeX = false;
 };
 
 QR.addReplyLink = function() {
@@ -2892,7 +2961,10 @@ QR.show = function(tid) {
   }
   
   cnt.innerHTML =
-    '<div id="qrHeader" class="drag postblock">Reply to Thread No.<span id="qrTid">'
+    '<div id="qrHeader" class="drag postblock">'
+    + (window.math_tags ? '<a data-cmd="open-tex-preview" class="desktop pointer left tex-logo" '
+      + 'data-tip="Preview TeX equations">T<sub>e</sub>X</a>' : '')
+    + 'Reply to Thread No.<span id="qrTid">'
     + tid + '</span><img alt="X" src="' + Main.icons.cross + '" id="qrClose" '
     + 'class="extButton" title="Close Window"></div>';
   
@@ -3195,7 +3267,7 @@ QR.onKeyDown = function(e) {
     ta = e.target;
     start = ta.selectionStart;
     end = ta.selectionEnd;
-  
+    
     if (ta.value) {
       spoiler = '[spoiler]' + ta.value.slice(start, end) + '[/spoiler]';
       ta.value = ta.value.slice(0, start) + spoiler + ta.value.slice(end);
@@ -3211,11 +3283,11 @@ QR.onKeyDown = function(e) {
     return;
   }
   
-  clearTimeout(QR.lenCheckTimeout);
-  QR.lenCheckTimeout = setTimeout(QR.checkComLength, 500);
+  clearTimeout(QR.comCheckTimeout);
+  QR.comCheckTimeout = setTimeout(QR.checkCommentField, 500);
 };
 
-QR.checkComLength = function() {
+QR.checkCommentField = function() {
   var byteLength, qrError;
   
   if (QR.comLength) {
@@ -3227,6 +3299,19 @@ QR.checkComLength = function() {
     }
     else {
       QR.hidePostError('length');
+    }
+  }
+  
+  if (window.sjis_tags) {
+    if (/\[sjis\]/.test(QR.comField.value)) {
+      if (!$.hasClass(QR.comField, 'sjis')) {
+        $.addClass(QR.comField, 'sjis');
+      }
+    }
+    else {
+      if ($.hasClass(QR.comField, 'sjis')) {
+        $.removeClass(QR.comField, 'sjis');
+      }
     }
   }
 };
@@ -4668,7 +4753,7 @@ ThreadExpansion.expandComment = function(link) {
             if (Parser.prettify) {
               Parser.parseMarkup(msg);
             }
-            if (window.jsMath) {
+            if (window.math_tags) {
               Parser.parseMathOne(msg);
             }
           }
@@ -4791,7 +4876,7 @@ ThreadExpansion.fetch = function(tid) {
             if (Parser.prettify) {
               Parser.parseMarkup(msg);
             }
-            if (window.jsMath) {
+            if (window.math_tags) {
               Parser.parseMathOne(msg);
             }
           }
@@ -5987,7 +6072,7 @@ Filter.openHelp = function() {
   cnt.setAttribute('data-cmd', 'filters-help-close');
   cnt.innerHTML = '\
 <div class="extPanel reply"><div class="panelHeader">Filters &amp; Highlights Help\
-<span><img alt="Close" title="Close" class="pointer" data-cmd="filters-help-close" src="'
+<span class="panelCtrl"><img alt="Close" title="Close" class="pointer" data-cmd="filters-help-close" src="'
 + Main.icons.cross + '"></span></div>\
 <h4>Tripcode, Name and ID filters:</h4>\
 <ul><li>Those use simple string comparison.</li>\
@@ -6045,7 +6130,7 @@ Filter.open = function() {
   cnt.setAttribute('data-cmd', 'filters-close');
   cnt.innerHTML = '\
 <div class="extPanel reply"><div class="panelHeader">Filters &amp; Highlights\
-<span><img alt="Help" class="pointer" title="Help" data-cmd="filters-help-open" src="'
+<span class="panelCtrl"><img alt="Help" class="pointer" title="Help" data-cmd="filters-help-open" src="'
 + Main.icons.help
 + '"><img alt="Close" title="Close" class="pointer" data-cmd="filters-close" src="'
 + Main.icons.cross + '"></span></div>\
@@ -6910,7 +6995,7 @@ CustomCSS.open = function() {
   cnt.setAttribute('data-cmd', 'css-close');
   cnt.innerHTML = '\
 <div class="extPanel reply"><div class="panelHeader">Custom CSS\
-<span><img alt="Close" title="Close" class="pointer" data-cmd="css-close" src="'
+<span class="panelCtrl"><img alt="Close" title="Close" class="pointer" data-cmd="css-close" src="'
 + Main.icons.cross + '"></span></div>\
 <textarea id="customCSSBox"></textarea>\
 <div class="center"><button data-cmd="css-save">Save CSS</button></div>\
@@ -7049,7 +7134,7 @@ Keybinds.open = function() {
   cnt.setAttribute('data-cmd', 'keybinds-close');
   cnt.innerHTML = '\
 <div class="extPanel reply"><div class="panelHeader">Keyboard Shortcuts\
-<span><img data-cmd="keybinds-close" class="pointer" alt="Close" title="Close" src="'
+<span class="panelCtrl"><img data-cmd="keybinds-close" class="pointer" alt="Close" title="Close" src="'
 + Main.icons.cross + '"></span></div>\
 <ul>\
 <li><strong>Global</strong></li>\
@@ -7229,7 +7314,7 @@ CustomMenu.showEditor = function() {
   cnt.setAttribute('data-close', '1');
   cnt.innerHTML = '\
 <div class="extPanel reply"><div class="panelHeader">Custom Board List\
-<span><img alt="Close" title="Close" class="pointer" data-close="1" src="'
+<span class="panelCtrl"><img alt="Close" title="Close" class="pointer" data-close="1" src="'
 + Main.icons.cross + '"></a></span></div>\
 <input placeholder="Example: jp tg mu" id="customMenuBox" type="text" value="">\
 <div class="center"><button data-save="1">Save</button></div></div>';
@@ -7680,7 +7765,7 @@ SettingsMenu.open = function() {
   cnt.className = 'UIPanel';
   
   html = '<div class="extPanel reply"><div class="panelHeader">Settings'
-    + '<span><img alt="Close" title="Close" class="pointer" data-cmd="settings-toggle" src="'
+    + '<span class="panelCtrl"><img alt="Close" title="Close" class="pointer" data-cmd="settings-toggle" src="'
     + Main.icons.cross + '"></a>'
     + '</span></div><ul>';
   
@@ -7762,7 +7847,7 @@ SettingsMenu.showExport = function() {
   cnt.setAttribute('data-cmd', 'export-close');
   cnt.innerHTML = '\
 <div class="extPanel reply"><div class="panelHeader">Export Settings\
-<span><img data-cmd="export-close" class="pointer" alt="Close" title="Close" src="'
+<span class="panelCtrl"><img data-cmd="export-close" class="pointer" alt="Close" title="Close" src="'
 + Main.icons.cross + '"></span></div>\
 <p class="center">Copy and save the URL below, and visit it from another \
 browser or computer to restore your extension and catalog settings.</p>\
@@ -7890,11 +7975,19 @@ Feedback = {
   },
   
   error: function(msg, timeout) {
-    Feedback.showMessage(msg || 'Something went wrong', 'error', timeout || 5000);
+    if (timeout === undefined) {
+      timeout = 5000;
+    }
+    
+    Feedback.showMessage(msg || 'Something went wrong', 'error', timeout);
   },
   
   notify: function(msg, timeout) {
-    Feedback.showMessage(msg, 'notify', timeout || 3000);
+    if (timeout === undefined) {
+      timeout = 3000;
+    }
+    
+    Feedback.showMessage(msg, 'notify', timeout);
   }
 };
 
@@ -8142,7 +8235,7 @@ Main.run = function() {
   Parser.init();
   
   if (Main.tid) {
-    Main.threadClosed = !document.forms.post;
+    Main.threadClosed = !document.forms.post || !!$.cls('closedIcon')[0];
     Main.threadSticky = !!$.cls('stickyIcon', $.id('pi' + Main.tid))[0];
     
     if (Config.threadStats) {
@@ -8532,6 +8625,12 @@ Main.onclick = function(e) {
       case 'custom-menu-edit':
         CustomMenu.showEditor();
         break;
+      case 'open-tex-preview':
+        QR.openTeXPreview();
+        break;
+      case 'close-tex-preview':
+        QR.closeTeXPreview();
+        break;
     }
   }
   else if (!Config.disableAll) {
@@ -8731,6 +8830,7 @@ div.post div.postInfo {\
   height: 18px;\
   line-height: 18px;\
 }\
+#qrHeader .left { float: left; margin-left: 3px; }\
 #qrepClose,\
 #qrClose {\
   float: right;\
@@ -9029,7 +9129,7 @@ div.backlink {\
 .tomorrow .panelHeader {\
   border-bottom: 1px solid #111;\
 }\
-.panelHeader span {\
+.panelHeader .panelCtrl {\
   position: absolute;\
   right: 5px;\
   top: 5px;\
@@ -9039,7 +9139,6 @@ div.backlink {\
   position: fixed;\
   width: 100%;\
   height: 100%;\
-  z-index: 9002;\
   top: 0;\
   left: 0;\
 }\
@@ -9133,6 +9232,8 @@ div.backlink {\
   display: none;\
   margin-left: 3px;\
 }\
+#tex-preview-cnt .extPanel { width: 600px; margin-left: -300px; }\
+#tex-preview-cnt textarea,\
 #customCSSMenu textarea {\
   display: block;\
   max-width: 100%;\
@@ -9143,6 +9244,15 @@ div.backlink {\
   margin: 0 0 5px;\
   font-family: monospace;\
 }\
+#tex-preview-cnt textarea { height: 75px; }\
+#output-tex-preview {\
+  min-height: 75px;\
+  white-space: pre;\
+  padding: 0 3px;\
+  -moz-box-sizing: border-box; box-sizing: border-box;\
+}\
+#tex-protip { font-size: 11px; margin: 5px 0; text-align: center; }\
+a.tex-logo sub { pointer-events: none; }\
 #customCSSMenu .right,\
 #settingsMenu .right {\
   margin-top: 2px;\

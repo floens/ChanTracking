@@ -643,6 +643,47 @@ function initStyleSheet() {
 	}
 }
 
+function pageHasMath() {
+  var i, el, nodes;
+  
+  nodes = document.getElementsByClassName('postMessage');
+  
+  for (i = 0; el = nodes[i]; ++i) {
+    if (/\[(?:eqn|math)\]|"math">/.test(el.innerHTML)) {
+      return true;
+    }
+  }
+  
+  return false;
+}
+
+function parseMath() {
+  var nodes = document.getElementsByClassName('postMessage');
+  MathJax.Hub.Queue(['Typeset', MathJax.Hub, nodes]);
+}
+
+function loadMathJax() {
+  var head, script;
+  
+  head = document.getElementsByTagName('head')[0];
+  
+  script = document.createElement('script');
+  script.type = 'text/x-mathjax-config';
+  script.text = "MathJax.Hub.Config({\
+extensions: ['Safe.js', 'jsMath2jax.js'],\
+tex2jax: { processRefs: false, processEnvironments: false, preview: 'none', inlineMath: [['[math]','[/math]']], displayMath: [['[eqn]','[/eqn]']] },\
+jsMath2jax: { preview: 'none' },\
+Safe: { allow: { URLs: 'none', classes: 'none', cssIDs: 'none', styles: 'none', fontsize: 'none', require: 'none' } },\
+displayAlign: 'left', messageStyle: 'none', skipStartupTypeset: true,\
+'CHTML-preview': { disabled: true }, MathMenu: { showRenderer: false, showLocale: false }, });";
+  head.appendChild(script);  
+  
+  script = document.createElement('script');
+  script.src = '//cdn.mathjax.org/mathjax/2.5-latest/MathJax.js?config=TeX-AMS_HTML-full';
+  script.onload = parseMath;
+  head.appendChild(script);
+}
+
 captchainterval = null;
 function init() {
   var el;
@@ -654,7 +695,9 @@ function init() {
 	}
 
 
-	if (typeof jsMath != "undefined" && typeof jsMath.Easy.onload != "undefined" && !jsMath.Easy.loaded) jsMath.Easy.onload();
+	if (window.math_tags && pageHasMath()) {
+	  loadMathJax();
+  }
 
 	if(navigator.userAgent) {
 		if( navigator.userAgent.match( /iP(hone|ad|od)/i ) ) {
