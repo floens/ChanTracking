@@ -107,18 +107,18 @@ var load = function() {
     loadFile('https://www.4chan.org/security', 'pages/security.html');
     loadFile('https://www.4chan.org/feedback', 'pages/feedback');
 
-    loadFile('https://s.4cdn.org/js/core.1.js', 'javascripts/core.js');
-    loadFile('https://s.4cdn.org/js/extension.1.js', 'javascripts/extension.js');
+    loadFile('https://s.4cdn.org/js/core.'+Date.now()+'.js', 'javascripts/core.js');
+    loadFile('https://s.4cdn.org/js/extension.'+Date.now()+'.js', 'javascripts/extension.js');
 
-    // loadCssAndBeautify('https://s.4cdn.org/css/yotsubluenew.css', 'yotsubluenew');
-    loadCssAndBeautify('https://s.4cdn.org/css/yotsubanew.css', 'yotsubanew');
-    loadCssAndBeautify('https://s.4cdn.org/css/futabanew.css', 'futubanew');
-    loadCssAndBeautify('https://s.4cdn.org/css/burichannew.css', 'burichannew');
-    loadCssAndBeautify('https://s.4cdn.org/css/photon.css', 'photon');
-    loadCssAndBeautify('https://s.4cdn.org/css/tomorrow.css', 'tomorrow');
-    loadCssAndBeautify('https://s.4cdn.org/css/yotsubluemobile.css', 'yotsubluemobile');
-    loadCssAndBeautify('https://s.4cdn.org/css/yui.css', 'yui');
-    loadCssAndBeautify('https://s.4cdn.org/css/janichan.css', 'janichan');
+    loadCssAndBeautify('https://s.4cdn.org/css/yotsubluenew.'+Date.now()+'.css', 'yotsubluenew');
+    loadCssAndBeautify('https://s.4cdn.org/css/yotsubanew.'+Date.now()+'.css', 'yotsubanew');
+    loadCssAndBeautify('https://s.4cdn.org/css/futabanew.'+Date.now()+'.css', 'futubanew');
+    loadCssAndBeautify('https://s.4cdn.org/css/burichannew.'+Date.now()+'.css', 'burichannew');
+    loadCssAndBeautify('https://s.4cdn.org/css/photon.'+Date.now()+'.css', 'photon');
+    loadCssAndBeautify('https://s.4cdn.org/css/tomorrow.'+Date.now()+'.css', 'tomorrow');
+    loadCssAndBeautify('https://s.4cdn.org/css/yotsubluemobile.'+Date.now()+'.css', 'yotsubluemobile');
+    loadCssAndBeautify('https://s.4cdn.org/css/yui.'+Date.now()+'.css', 'yui');
+    loadCssAndBeautify('https://s.4cdn.org/css/janichan.'+Date.now()+'.css', 'janichan');
 }
 
 load();

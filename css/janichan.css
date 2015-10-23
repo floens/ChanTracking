@@ -10,6 +10,13 @@ body {
 	padding-right: 5px;
 }
 
+.party-hat {
+	left: 0;
+	margin-top: -80px;
+	position: absolute;
+	pointer-events: none;
+}
+
 .mobile, .mobileinline {
 	display: none !important;
 }

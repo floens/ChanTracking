@@ -20,6 +20,26 @@ body {
 	left: 0;
 	margin-top: -80px;
 	position: absolute;
+	pointer-events: none;
+}
+
+.sjis, #quickReply .sjis {
+	font-size: 16px;
+	line-height: 17px;
+	white-space: pre;
+	font-family: 'IPAMonaPGothic', 'Mona', 'MS PGothic', monospace;
+	overflow: auto;
+	display: block;
+	clear: left;
+}
+
+.tex-logo {
+	font-size: .8em;
+}
+
+.tex-logo sub {
+	font-size: .8em;
+	text-transform: uppercase;
 }
 
 .centeredThreads .party-hat {
@@ -431,12 +451,9 @@ div.thread {
 	clear: both;
 }
 
-.replyContainer {
-	padding-left: 20px;
-}
-
 div.post {
-	margin: 2px 0;
+	margin: 4px 0;
+	overflow: hidden;
 }
 
 
@@ -446,7 +463,7 @@ div.reply {
 	border: 1px solid #b7c5d9;
 	border-left: none;
 	border-top: none;
-	display: inline-block;
+	display: table;
 	padding: 2px;
 }
 
@@ -498,7 +515,6 @@ div.post div.postInfo span.subject {
 
 div.post blockquote.postMessage {
 	display: block;
-	word-wrap: break-word;
 }
 
 blockquote > span.quote {
