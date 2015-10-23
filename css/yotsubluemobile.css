@@ -27,6 +27,7 @@
 		margin-top: -30px;
 		position: absolute;
 		width: 100px;
+		pointer-events: none;
 	}
 	
 	body {
