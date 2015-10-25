@@ -85,6 +85,8 @@ var loadFile = function(url, name) {
 var load = function() {
     loadState();
 
+    var now = Date.now();
+
     get('https://boards.4chan.org/g/', function(body) {
         var dom = cheerio.load(body);
         var sticky = dom('#t39894014');
@@ -107,18 +109,19 @@ var load = function() {
     loadFile('https://www.4chan.org/security', 'pages/security.html');
     loadFile('https://www.4chan.org/feedback', 'pages/feedback');
 
-    loadFile('https://s.4cdn.org/js/core.'+Date.now()+'.js', 'javascripts/core.js');
-    loadFile('https://s.4cdn.org/js/extension.'+Date.now()+'.js', 'javascripts/extension.js');
+    loadFile('https://s.4cdn.org/js/core.' + now + '.js', 'javascripts/core.js');
+    loadFile('https://s.4cdn.org/js/extension.' + now + '.js', 'javascripts/extension.js');
 
-    loadCssAndBeautify('https://s.4cdn.org/css/yotsubluenew.'+Date.now()+'.css', 'yotsubluenew');
-    loadCssAndBeautify('https://s.4cdn.org/css/yotsubanew.'+Date.now()+'.css', 'yotsubanew');
-    loadCssAndBeautify('https://s.4cdn.org/css/futabanew.'+Date.now()+'.css', 'futubanew');
-    loadCssAndBeautify('https://s.4cdn.org/css/burichannew.'+Date.now()+'.css', 'burichannew');
-    loadCssAndBeautify('https://s.4cdn.org/css/photon.'+Date.now()+'.css', 'photon');
-    loadCssAndBeautify('https://s.4cdn.org/css/tomorrow.'+Date.now()+'.css', 'tomorrow');
-    loadCssAndBeautify('https://s.4cdn.org/css/yotsubluemobile.'+Date.now()+'.css', 'yotsubluemobile');
-    loadCssAndBeautify('https://s.4cdn.org/css/yui.'+Date.now()+'.css', 'yui');
-    loadCssAndBeautify('https://s.4cdn.org/css/janichan.'+Date.now()+'.css', 'janichan');
+    loadCssAndBeautify('https://s.4cdn.org/css/yotsubluenew.' + now + '.css', 'yotsubluenew');
+    loadCssAndBeautify('https://s.4cdn.org/css/yotsubanew.' + now + '.css', 'yotsubanew');
+    loadCssAndBeautify('https://s.4cdn.org/css/futabanew.' + now + '.css', 'futubanew');
+    loadCssAndBeautify('https://s.4cdn.org/css/burichannew.' + now + '.css', 'burichannew');
+    loadCssAndBeautify('https://s.4cdn.org/css/photon.' + now + '.css', 'photon');
+    loadCssAndBeautify('https://s.4cdn.org/css/tomorrow.' + now + '.css', 'tomorrow');
+    loadCssAndBeautify('https://s.4cdn.org/css/yotsubluemobile.' + now + '.css', 'yotsubluemobile');
+    loadCssAndBeautify('https://s.4cdn.org/css/yui.' + now + '.css', 'yui');
+    loadCssAndBeautify('https://s.4cdn.org/css/janichan.' + now + '.css', 'janichan');
+    loadCssAndBeautify('https://s.4cdn.org/css/global.' + now + '.css', 'global')
 }
 
 load();
