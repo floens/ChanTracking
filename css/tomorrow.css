@@ -528,6 +528,7 @@ a.quoteLink:hover, a.quotelink:hover {
 
 #arc-list .teaser-col {
 	text-align: left;
+	word-break: break-all;
 }
 
 #arc-list .quotelink {

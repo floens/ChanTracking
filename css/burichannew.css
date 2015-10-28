@@ -520,6 +520,7 @@ blockquote > span.quote {
 
 #arc-list .teaser-col {
 	text-align: left;
+	word-break: break-all;
 }
 
 #arc-list .quotelink {
