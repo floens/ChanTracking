@@ -963,7 +963,7 @@ function setActiveStyleSheet(title, init) {
     }
   }
 
-  link.setAttribute("href", href);
+  link && link.setAttribute("href", href);
 
   if (!init) {
     createCookie(style_group, title, 365, "4chan.org");
