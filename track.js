@@ -121,7 +121,8 @@ var load = function() {
     loadCssAndBeautify('https://s.4cdn.org/css/yotsubluemobile.' + now + '.css', 'yotsubluemobile');
     loadCssAndBeautify('https://s.4cdn.org/css/yui.' + now + '.css', 'yui');
     loadCssAndBeautify('https://s.4cdn.org/css/janichan.' + now + '.css', 'janichan');
-    loadCssAndBeautify('https://s.4cdn.org/css/global.' + now + '.css', 'global')
+    loadCssAndBeautify('https://s.4cdn.org/css/global.' + now + '.css', 'global');
+    loadCssAndBeautify('https://s.4cdn.org/css/spooky.' + now + '.css', 'spooky');
 }
 
 load();
