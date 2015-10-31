@@ -97,6 +97,9 @@ var load = function() {
 
         var newThread = dom('form[name=post]');
         fs.writeFileSync('html/form_thread.html', htmlBeautify.prettyPrint(newThread.html()));
+
+        var globalMessage = dom('div.globalMessage').html();
+        fs.writeFileSync('html/global_message.html', globalMessage === null ? 'No global message' : htmlBeautify.prettyPrint(globalMessage));
     });
 
     loadJsonAndBeautify('https://a.4cdn.org/boards.json', 'api/boards.json');
