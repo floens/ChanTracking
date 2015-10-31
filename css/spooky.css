@@ -107,11 +107,11 @@ hr {
 	background-color: transparent;
 }
 
-a.replylink:not(:hover), div#absbot a:not(:hover), .quoteLink, .quotelink, .deadlink, a, a.visited, .button, .dd-menu li:hover {
+a.replylink:not(:hover), div#absbot a:not(:hover), .quoteLink, .quotelink, .deadlink, a, a.visited, .button, .dd-menu li:hover, #arc-list .quotelink {
 	color: #fe9600 !important;
 }
 
-div.post div.postInfo span.postNum a:hover, .posteruid .hand:hover, a:hover, .button:hover {
+div.post div.postInfo span.postNum a:hover, .posteruid .hand:hover, a:hover, .button:hover, #arc-list .quotelink:hover {
 	color: #ffee4a !important;
 }
 
