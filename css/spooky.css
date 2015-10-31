@@ -83,19 +83,9 @@ hr {
 	border: none !important;
 }
 
-.fileThumb img {
-	opacity: 0.5;
-	transition-duration: 1s;
-	transition-property: opacity;
-}
-
-.button, a {
+.button, s .sjis, a {
 	transition-duration: 1s !important;
 	transition-property: color !important;
-}
-
-.fileThumb img:hover {
-	opacity: 1;
 }
 
 .preview, #quote-preview {
@@ -107,11 +97,11 @@ hr {
 	background-color: transparent;
 }
 
-a.replylink:not(:hover), div#absbot a:not(:hover), .quoteLink, .quotelink, .deadlink, a, a.visited, .button, .dd-menu li:hover, #arc-list .quotelink {
+a.replylink:not(:hover), div#absbot a:not(:hover), .quoteLink, .quotelink, .deadlink, a, a.visited, .button, .dd-menu li:hover, #arc-list .quotelink, s .sjis {
 	color: #fe9600 !important;
 }
 
-div.post div.postInfo span.postNum a:hover, .posteruid .hand:hover, a:hover, .button:hover, #arc-list .quotelink:hover {
+div.post div.postInfo span.postNum a:hover, .posteruid .hand:hover, a:hover, .button:hover, #arc-list .quotelink:hover, s .sjis:hover {
 	color: #ffee4a !important;
 }
 
