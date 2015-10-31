@@ -484,6 +484,28 @@
         "meta_description": "\u0026quot;\/hc\/ - Hardcore\u0026quot; is 4chan's imageboard for the posting of adult hardcore pornography.",
         "is_archived": 1
     }, {
+        "board": "his",
+        "title": "History",
+        "ws_board": 1,
+        "per_page": 15,
+        "pages": 10,
+        "max_filesize": 4194304,
+        "max_webm_filesize": 3145728,
+        "max_comment_chars": 2000,
+        "bump_limit": 310,
+        "image_limit": 150,
+        "cooldowns": {
+            "threads": 60,
+            "replies": 15,
+            "images": 15,
+            "replies_intra": 15,
+            "images_intra": 15
+        },
+        "meta_description": "\u0026quot;\/his\/ - History \u0026amp; Humanities\u0026quot; is 4chan's board for discussing and debating history.",
+        "user_ids": 1,
+        "is_archived": 1,
+        "country_flags": 1
+    }, {
         "board": "hm",
         "title": "Handsome Men",
         "ws_board": 0,
