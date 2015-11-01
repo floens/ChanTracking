@@ -7,7 +7,7 @@
 /**
  * Helpers
  */
-$ = {};
+var $ = {};
 
 $.id = function(id) {
   return document.getElementById(id);
@@ -49,7 +49,7 @@ if (!document.documentElement.classList) {
   };
   
   $.addClass = function(el, klass) {
-    el.className = (el.className == '') ? klass : el.className + ' ' + klass;
+    el.className = (el.className === '') ? klass : el.className + ' ' + klass;
   };
   
   $.removeClass = function(el, klass) {
@@ -90,7 +90,7 @@ $.get = function(url, callbacks, headers) {
 };
 
 $.ago = function(timestamp) {
-  var delta, count, head, tail, ago;
+  var delta, count, head, tail;
   
   delta = Date.now() / 1000 - timestamp;
   
@@ -179,7 +179,7 @@ var Parser = {
 };
 
 Parser.init = function() {
-  var o, a, h, m, tail, staticPath, tracked, el;
+  var o, a, h, m, tail, staticPath;
   
   if (Config.filter || Config.linkify || Config.embedSoundCloud
     || Config.embedYouTube || Main.hasMobileLayout) {
@@ -204,7 +204,7 @@ Parser.init = function() {
   this.customSpoiler = {};
   
   if (Config.localTime) {
-    if (o = (new Date).getTimezoneOffset()) {
+    if (o = (new Date()).getTimezoneOffset()) {
       a = Math.abs(o);
       h = (0 | (a / 60));
       
@@ -268,7 +268,7 @@ Parser.touchTrackedReplies = function(tid) {
 };
 
 Parser.pruneTrackedReplies = function() {
-  var tid, ts, tracked, now, thres, ttl, pfx, flag;
+  var tid, tracked, now, thres, ttl, pfx, flag;
   
   pfx = '4chan-track-' + Main.board + '-';
   
@@ -348,7 +348,7 @@ Parser.setCustomSpoiler = function(board, val) {
 };
 
 Parser.buildPost = function(thread, board, pid) {
-  var i, j, el = null;
+  var i, j, uid, el = null;
   
   for (i = 0; j = thread[i]; ++i) {
     if (j.no != pid) {
@@ -394,7 +394,7 @@ Parser.onDateMouseOver = function(el) {
   Parser.dateTimeout = setTimeout(Tip.show, 500, el, $.ago(+el.getAttribute('data-utc')));
 };
 
-Parser.onDateMouseOut = function(el) {
+Parser.onDateMouseOut = function() {
   if (Parser.dateTimeout) {
     clearTimeout(Parser.dateTimeout);
     Parser.dateTimeout = null;
@@ -447,7 +447,7 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
     
     imgDir = '//i.4cdn.org/' + board;
   
-  if (data.resto == 0) {
+  if (data.resto === 0) {
     isOP = true;
     
     if (standalone) {
@@ -467,7 +467,7 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
       postType = 'op';
       replySpan = '&nbsp; <span>[<a href="'
         + 'thread/' + data.no + (data.semantic_url ? ('/' + data.semantic_url) : '')
-        + '" class="replylink" rel="canonical">Reply</a>]</span>'
+        + '" class="replylink" rel="canonical">Reply</a>]</span>';
     }
     
     resto = data.no;
@@ -498,6 +498,7 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
   switch (data.capcode) {
     case 'admin_highlight':
       highlight = ' highlightPost';
+      /* falls through */
     case 'admin':
       capcodeStart = ' <strong class="capcode hand id_admin" '
         + 'title="Highlight posts by Administrators">## Admin</strong>';
@@ -817,8 +818,7 @@ Parser.parseBoard = function() {
 };
 
 Parser.parseThread = function(tid, offset, limit) {
-  var i, j, thread, posts, pi, el, frag, summary, omitted, key, filtered, cnt,
-    frag;
+  var i, j, thread, posts, pi, el, frag, summary, omitted, key, filtered, cnt;
   
   thread = $.id('t' + tid);
   posts = thread.getElementsByClassName('post');
@@ -872,7 +872,7 @@ Parser.parseThread = function(tid, offset, limit) {
         
         el = document.createElement('span');
         el.style.display = 'none';
-        el.textContent = 'Showing all replies.'
+        el.textContent = 'Showing all replies.';
         frag.appendChild(el);
         
         summary.appendChild(frag);
@@ -934,7 +934,7 @@ Parser.parseThread = function(tid, offset, limit) {
       }
     }
     if (window.math_tags) {
-      if (window.MathJax) {
+      if (MathJax) {
         for (i = j; i < limit; ++i) {
           MathJax.Hub.Queue(['Typeset', MathJax.Hub, posts[i]]);
         }
@@ -1004,7 +1004,7 @@ Parser.parseMarkup = function(post) {
   
   if ((pre = post.getElementsByClassName('prettyprint'))[0]) {
     for (i = 0; el = pre[i]; ++i) {
-      el.innerHTML = prettyPrintOne(el.innerHTML);
+      el.innerHTML = window.prettyPrintOne(el.innerHTML);
     }
   }
 };
@@ -1036,7 +1036,7 @@ Parser.revealImageSpoiler = function(fileThumb) {
 };
 
 Parser.parsePost = function(pid, tid) {
-  var hasMobileLayout, cnt, el, pi, href, file, msg, filtered, html, uid, ppid;
+  var hasMobileLayout, cnt, el, pi, file, msg, filtered, uid;
   
   hasMobileLayout = Main.hasMobileLayout;
   
@@ -1060,7 +1060,7 @@ Parser.parsePost = function(pid, tid) {
   el.textContent = Parser.postMenuIcon;
   
   if (hasMobileLayout) {
-    cnt = document.getElementById('pim' + pid)
+    cnt = document.getElementById('pim' + pid);
     cnt.insertBefore(el, cnt.firstElementChild);
   }
   else {
@@ -1146,7 +1146,7 @@ Parser.getLocaleDate = function(date) {
 };
 
 Parser.parseBacklinks = function(pid, tid) {
-  var i, j, msg, backlinks, linklist, ids, target, bid, html, bl, el, href;
+  var i, j, msg, backlinks, linklist, ids, target, bl, el, href;
   
   msg = document.getElementById('m' + pid);
   
@@ -1219,6 +1219,8 @@ Parser.parseBacklinks = function(pid, tid) {
 };
 
 Parser.buildSummary = function(tid, oRep, oImg) {
+  var el;
+  
   if (oRep) {
     oRep = oRep + ' repl' + (oRep > 1 ? 'ies' : 'y');
   }
@@ -1250,7 +1252,7 @@ var PostMenu = {
 };
 
 PostMenu.open = function(btn) {
-  var div, html, pid, board, btnPos, txt, el, href, left, limit, isOP;
+  var div, html, pid, board, btnPos, el, href, left, limit, isOP, file;
   
   if (PostMenu.activeBtn == btn) {
     PostMenu.close();
@@ -1514,7 +1516,7 @@ Depager.loadAds = function() {
 
 Depager.renderNext = function() {
   var el, frag, i, j, k, threads, op, summary, cnt, reply, parseList, scroll,
-    lastReplies, pageId, data, isLastPage, html;
+    last_replies, boardDiv, pageId, data, isLastPage;
   
   parseList = [];
   
@@ -1742,8 +1744,6 @@ Depager.onError = function() {
 var QuoteInline = {};
 
 QuoteInline.isSelfQuote = function(node, pid, board) {
-  var cnt;
-  
   if (board && board != Main.board) {
     return false;
   }
@@ -1786,7 +1786,7 @@ QuoteInline.toggle = function(link, e) {
     if (link.parentNode.parentNode.className == 'backlink') {
       el = $.id('pc' + t[3]);
       count = +el.getAttribute('data-inline-count') - 1;
-      if (count == 0) {
+      if (count === 0) {
         el.style.display = '';
         el.removeAttribute('data-inline-count');
       }
@@ -1807,7 +1807,7 @@ QuoteInline.toggle = function(link, e) {
 };
 
 QuoteInline.inlineRemote = function(link, board, tid, pid) {
-  var xhr, onload, onerror, cached, key, el, dummy;
+  var onload, onerror, cached, key, el, dummy;
   
   if (link.hasAttribute('data-loading')) {
     return;
@@ -1838,7 +1838,7 @@ QuoteInline.inlineRemote = function(link, board, tid, pid) {
     
     link.removeAttribute('data-loading');
     
-    if (this.status == 200 || this.status == 304 || this.status == 0) {
+    if (this.status === 200 || this.status === 304 || this.status === 0) {
       thread = Parser.parseThreadJSON(this.responseText);
       
       $.cache[key] = thread;
@@ -1853,7 +1853,7 @@ QuoteInline.inlineRemote = function(link, board, tid, pid) {
         dummy.textContent = 'This post doesn\'t exist anymore';
       }
     }
-    else if (this.status == 404) {
+    else if (this.status === 404) {
       $.addClass(link, 'deadlink');
       dummy.textContent = 'This thread doesn\'t exist anymore';
     }
@@ -1965,8 +1965,6 @@ QuoteInline.inline = function(link, src, id) {
 var QuotePreview = {};
 
 QuotePreview.init = function() {
-  var thread;
-  
   this.regex = /^(?:\/([^\/]+)\/)?(?:thread\/)?([0-9]+)?#p([0-9]+)$/;
   this.highlight = null;
   this.highlightAnti = null;
@@ -1974,7 +1972,7 @@ QuotePreview.init = function() {
 };
 
 QuotePreview.resolve = function(link) {
-  var self, t, post, ids, offset, pfx;
+  var self, t, post, offset, pfx;
   
   self = QuotePreview;
   self.cur = null;
@@ -2017,7 +2015,7 @@ QuotePreview.resolve = function(link) {
 };
 
 QuotePreview.showRemote = function(link, board, tid, pid) {
-  var xhr, onload, onerror, el, cached, key;
+  var onload, onerror, el, cached, key;
   
   key = board + '-' + tid;
   
@@ -2035,7 +2033,7 @@ QuotePreview.showRemote = function(link, board, tid, pid) {
     
     link.style.cursor = '';
     
-    if (this.status == 200 || this.status == 304 || this.status == 0) {
+    if (this.status === 200 || this.status === 304 || this.status === 0) {
       thread = Parser.parseThreadJSON(this.responseText);
       
       $.cache[key] = thread;
@@ -2055,7 +2053,7 @@ QuotePreview.showRemote = function(link, board, tid, pid) {
         $.addClass(link, 'deadlink');
       }
     }
-    else if (this.status == 404) {
+    else if (this.status === 404) {
       $.addClass(link, 'deadlink');
     }
   };
@@ -2073,8 +2071,8 @@ QuotePreview.showRemote = function(link, board, tid, pid) {
 };
 
 QuotePreview.show = function(link, post, remote) {
-  var rect, postHeight, postWidth, doc, docWidth, style, pos, quotes, i, j, qid,
-    top, scrollTop, margin, img, media;
+  var rect, postHeight, doc, docWidth, style, pos, quotes, i, j, qid,
+    top, scrollTop, img, media;
   
   if (remote) {
     Parser.parsePost(post);
@@ -2176,7 +2174,7 @@ QuotePreview.remove = function(el) {
   }
   else if (self.highlightAnti) {
     $.removeClass(self.highlightAnti, 'highlight-anti');
-    self.highlightAnti = null
+    self.highlightAnti = null;
   }
   
   if (el) {
@@ -2197,7 +2195,7 @@ var ImageExpansion = {
 };
 
 ImageExpansion.expand = function(thumb) {
-  var img, el, href, ext;
+  var img, href, ext;
   
   if (Config.imageHover) {
     ImageHover.hide();
@@ -2276,7 +2274,7 @@ ImageExpansion.toggle = function(t) {
 };
 
 ImageExpansion.expandWebm = function(thumb) {
-  var el, link, fileText, left, width, href, maxWidth, self;
+  var el, link, fileText, left, href, maxWidth, self;
   
   self = ImageExpansion;
   
@@ -2327,7 +2325,7 @@ ImageExpansion.fitWebm = function() {
   if (Config.centeredThreads) {
     centerWidth = $.cls('opContainer')[0].offsetWidth;
     cntEl = this.parentNode.parentNode.parentNode;
-    $.addClass(cntEl, 'centre-exp')
+    $.addClass(cntEl, 'centre-exp');
   }
   
   left = this.getBoundingClientRect().left;
@@ -2364,12 +2362,12 @@ ImageExpansion.fitWebm = function() {
       }
     }
     else {
-      $.removeClass(cntEl, 'centre-exp')
+      $.removeClass(cntEl, 'centre-exp');
     }
   }
 };
 
-ImageExpansion.onWebmPlay = function(e) {
+ImageExpansion.onWebmPlay = function() {
   var self = ImageExpansion;
   
   if (!self.activeVideos.length) {
@@ -2393,7 +2391,7 @@ ImageExpansion.collapseWebm = function(e) {
   
   if (Config.centeredThreads) {
     el2 = el.parentNode.parentNode.parentNode;
-    $.removeClass(el2, 'centre-exp')
+    $.removeClass(el2, 'centre-exp');
     el2.style.marginLeft = '';
   }
   
@@ -2402,7 +2400,7 @@ ImageExpansion.collapseWebm = function(e) {
   cnt.parentNode.removeChild(cnt);
 };
 
-ImageExpansion.onScroll = function(e) {
+ImageExpansion.onScroll = function() {
   clearTimeout(ImageExpansion.timeout);
   ImageExpansion.timeout = setTimeout(ImageExpansion.pauseVideos, 500);
 };
@@ -2758,13 +2756,13 @@ QR.closeTeXPreview = function() {
   }
 };
 
-QR.onTeXChanged = function(e) {
+QR.onTeXChanged = function() {
   clearTimeout(QR.timeoutTeX);
   QR.timeoutTeX = setTimeout(QR.processTeX, 50);
 };
 
 QR.processTeX = function() {
-  var src, dest, el;
+  var src, dest;
 
   if (QR.processingTeX || !window.MathJax || !(src = $.id('input-tex-preview'))) {
     return;
@@ -2838,7 +2836,7 @@ QR.openPainter = function() {
     return;
   }
   
-  Tegaki.open({
+  window.Tegaki.open({
     onDone: QR.onPainterDone,
     onCancel: QR.onPainterCancel,
     width: w,
@@ -2861,6 +2859,8 @@ QR.onPainterDone = function() {
 };
 
 QR.onPainterCancel = function() {
+  var el;
+  
   QR.painterData = null;
   
   if (el = $.id('qrFile')) {
@@ -2923,7 +2923,7 @@ QR.addQuote = function(pid) {
 
 QR.show = function(tid) {
   var i, j, cnt, postForm, form, qrForm, fields, row, spoiler, file,
-    el, el2, placeholder, cd, qrError, cookie;
+    el, el2, placeholder, qrError, cookie;
   
   if (QR.currentTid) {
     if (!Main.tid && QR.currentTid != tid) {
@@ -3173,8 +3173,6 @@ QR.initCaptchaAlt = function(loadOnly) {
 };
 
 QR.resetCaptchaAlt = function(focus) {
-  var pulse, poll;
-  
   if (!window.grecaptcha || !$.id('recaptcha_image') || !window.RecaptchaState) {
     return;
   }
@@ -3221,7 +3219,7 @@ QR.onPassError = function() {
   QR.renderCaptcha();
 };
 
-QR.onFileChange = function(e) {
+QR.onFileChange = function() {
   var fsize, maxFilesize;
   
   if (this.value) {
@@ -3288,7 +3286,7 @@ QR.onKeyDown = function(e) {
 };
 
 QR.checkCommentField = function() {
-  var byteLength, qrError;
+  var byteLength;
   
   if (QR.comLength) {
     byteLength = encodeURIComponent(QR.comField.value).split(/%..|./).length - 1;
@@ -3443,7 +3441,7 @@ QR.resetFile = function() {
 };
 
 QR.submit = function(force) {
-  var field, formdata, file;
+  var formdata;
   
   QR.hidePostError();
   
@@ -3862,7 +3860,9 @@ ThreadHiding.purge = function() {
 };
 
 ThreadHiding.save = function() {
-  for (var i in this.hidden) {
+  var i;
+  
+  for (i in this.hidden) {
     localStorage.setItem('4chan-hide-t-' + Main.board,
       JSON.stringify(this.hidden)
     );
@@ -3904,7 +3904,7 @@ ReplyHiding.toggle = function(pid) {
 };
 
 ReplyHiding.toggleR = function(pid) {
-  var i, j, ql, el, post, nodes, quotes, rid, hit, func, parentPid;
+  var i, el, post, nodes, rid, parentPid;
 
   this.load();
   
@@ -3937,14 +3937,14 @@ ReplyHiding.toggleR = function(pid) {
   
   for (i in this.hiddenRMap) {
     this.hasR = true;
-    break
+    break;
   }
   
   this.save();
 };
 
 ReplyHiding.shouldToggleR = function(el) {
-  var hit;
+  var j, ql, hit, quotes;
   
   if (el.parentNode.hasAttribute('data-pfx')) {
     return false;
@@ -4045,11 +4045,11 @@ ReplyHiding.purge = function() {
 };
 
 ReplyHiding.save = function() {
-  var clr;
+  var i, clr;
   
   clr = true;
   
-  for (var i in this.hidden) {
+  for (i in this.hidden) {
     localStorage.setItem('4chan-hide-r-' + Main.board,
       JSON.stringify(this.hidden)
     );
@@ -4061,7 +4061,7 @@ ReplyHiding.save = function() {
   
   clr = true;
   
-  for (var i in this.hiddenR) {
+  for (i in this.hiddenR) {
     localStorage.setItem('4chan-hide-rr-' + Main.board,
       JSON.stringify(this.hiddenR)
     );
@@ -4210,6 +4210,8 @@ ThreadWatcher.syncStorage = function(e) {
 };
 
 ThreadWatcher.load = function() {
+  var storage;
+  
   if (storage = localStorage.getItem('4chan-watch')) {
     this.watched = JSON.parse(storage);
   }
@@ -4219,7 +4221,7 @@ ThreadWatcher.load = function() {
 };
 
 ThreadWatcher.build = function(rebuildButtons) {
-  var i, html, tuid, key, nodes, cls;
+  var html, tuid, key, cls;
   
   html = '';
   
@@ -4265,7 +4267,7 @@ ThreadWatcher.build = function(rebuildButtons) {
 };
 
 ThreadWatcher.rebuildButtons = function() {
-  var i, buttons, key;
+  var i, buttons, key, btn;
   
   buttons = $.cls('wbtn');
   
@@ -4357,7 +4359,7 @@ ThreadWatcher.generateLabel = function(sub, com, tid) {
 };
 
 ThreadWatcher.toggle = function(tid, board) {
-  var key, label, sub, com, lastReply;
+  var key, label, sub, com, lastReply, thread;
   
   key = tid + '-' + (board || Main.board);
   
@@ -4531,7 +4533,7 @@ ThreadWatcher.fetchCatalog = function(board, catalogs, meta) {
 };
 
 ThreadWatcher.onCatalogsLoaded = function(catalogs) {
-  var i, j, board, page, pages, threads, thread, key, blacklisted, img;
+  var i, j, board, page, pages, threads, thread, key, blacklisted;
   
   $.id('twPrune').src = Main.icons.refresh;
   this.isRefreshing = false;
@@ -4623,7 +4625,7 @@ ThreadWatcher.onRefreshEnd = function(img) {
 };
 
 ThreadWatcher.fetch = function(key, img) {
-  var tuid, xhr, li, method;
+  var tuid, xhr, li;
   
   li = $.id('watch-' + key);
   
@@ -4726,7 +4728,7 @@ ThreadExpansion.expandComment = function(link) {
   $.get('//a.4cdn.org/' + Main.board + '/thread/' + tid + '.json',
     {
       onload: function() {
-        var i, msg, com, post, posts;
+        var i, msg, post, posts;
         
         if (this.status == 200) {
           msg = $.id('m' + pid);
@@ -4819,7 +4821,7 @@ ThreadExpansion.fetch = function(tid) {
   $.get('//a.4cdn.org/' + Main.board + '/thread/' + tid + '.json',
     {
       onload: function() {
-        var i, p, n, frag, thread, tail, posts, count, msg, metacap,
+        var i, p, n, frag, thread, tail, posts, msg, metacap,
           expmsg, summary, abbr;
         
         thread = $.id('t' + tid);
@@ -5088,8 +5090,6 @@ ThreadUpdater.buildDesktopControl = function(bottom) {
 };
 
 ThreadUpdater.initControls = function() {
-  var i, j, frag, el, label, navlinks;
-  
   // Mobile
   if (Main.hasMobileLayout) {
     this.buildMobileControl($.id('refresh_top'));
@@ -5135,7 +5135,7 @@ ThreadUpdater.stop = function(manual) {
 ThreadUpdater.pulse = function() {
   var self = ThreadUpdater;
   
-  if (self.timeLeft == 0) {
+  if (self.timeLeft === 0) {
     self.update();
   }
   else {
@@ -5146,7 +5146,7 @@ ThreadUpdater.pulse = function() {
 
 ThreadUpdater.adjustDelay = function(postCount)
 {
-  if (postCount == 0) {
+  if (postCount === 0) {
     if (!this.force) {
       if (this.delayId < this.delayRange.length - 1) {
         ++this.delayId;
@@ -5162,7 +5162,7 @@ ThreadUpdater.adjustDelay = function(postCount)
   }
 };
 
-ThreadUpdater.onVisibilityChange = function(e) {
+ThreadUpdater.onVisibilityChange = function() {
   var self = ThreadUpdater;
   
   if (document[self.hidden] && self.delayId < self.delayIdHidden) {
@@ -5179,7 +5179,7 @@ ThreadUpdater.onVisibilityChange = function(e) {
   self.pulse();
 };
 
-ThreadUpdater.onScroll = function(e) {
+ThreadUpdater.onScroll = function() {
   if (ThreadUpdater.hadAuto &&
       (document.documentElement.scrollHeight
       <= (window.innerHeight + window.pageYOffset)
@@ -5220,7 +5220,7 @@ ThreadUpdater.toggleSound = function() {
 };
 
 ThreadUpdater.update = function() {
-  var self, now = Date.now();
+  var self;
   
   self = ThreadUpdater;
   
@@ -5258,10 +5258,10 @@ ThreadUpdater.initAds = function() {
 };
 
 ThreadUpdater.invalidateAds = function() {
-  var id, self = ThreadUpdater;
+  var id, meta;
   
-  for (id in self.ads) {
-    meta = self.ads[id];
+  for (id in ThreadUpdater.ads) {
+    meta = ThreadUpdater.ads[id];
     if (meta.seenOnce) {
       meta.isStale = true;
     }
@@ -5350,8 +5350,8 @@ ThreadUpdater.markDeletedReplies = function(newposts) {
 };
 
 ThreadUpdater.onload = function() {
-  var i, el, state, self, nodes, thread, newposts, frag, lastrep, lastid,
-    spoiler, op, doc, autoscroll, count, fromQR, lastRepPos;
+  var i, state, self, nodes, thread, newposts, frag, lastrep, lastid,
+    op, doc, autoscroll, count, fromQR, lastRepPos;
   
   self = ThreadUpdater;
   nodes = [];
@@ -5461,7 +5461,7 @@ ThreadUpdater.onload = function() {
           else if (Parser.hasHighlightedPosts && self.currentIcon !== 'rep') {
             self.setIcon('hl');
           }
-          else if (self.unreadCount == 0) {
+          else if (self.unreadCount === 0) {
             self.setIcon('new');
           }
           self.unreadCount += count;
@@ -5504,10 +5504,10 @@ ThreadUpdater.onload = function() {
       }
     }
   }
-  else if (this.status == 304 || this.status == 0) {
+  else if (this.status === 304 || this.status === 0) {
     self.setStatus('No new posts');
   }
-  else if (this.status == 404) {
+  else if (this.status === 404) {
     self.setIcon('dead');
     self.setError('This thread has been pruned or deleted');
     self.dead = true;
@@ -5523,7 +5523,7 @@ ThreadUpdater.onload = function() {
 ThreadUpdater.onerror = function() {
   var self = ThreadUpdater;
   
-  if (UA.isOpera && !this.statusText && this.status == 0) {
+  if (UA.isOpera && !this.statusText && this.status === 0) {
     self.setStatus('No new posts');
   }
   else {
@@ -5577,7 +5577,7 @@ ThreadUpdater.icons = {
 var ThreadStats = {};
 
 ThreadStats.init = function() {
-  var i, cnt;
+  var cnt;
   
   this.nodeTop = document.createElement('div');
   this.nodeTop.className = 'thread-stats';
@@ -5609,7 +5609,7 @@ ThreadStats.init = function() {
 };
 
 ThreadStats.update = function(replies, images, ips, isBumpFull, isImageFull) {
-  var stats, repStr, imgStr, pageStr, stateStr;
+  var stats;
   
   if (replies === null) {
     replies = $.cls('replyContainer').length;
@@ -5677,7 +5677,7 @@ ThreadStats.onCatalogLoad = function() {
         if (post.no == tid) {
           nodes = $.cls('ts-page');
           for (k = 0; n = nodes[k]; ++k) {
-            n.textContent = page.page
+            n.textContent = page.page;
           }
           self.pageNumber = page.page;
           return;
@@ -5764,7 +5764,7 @@ Filter.onPaletteClick = function(e) {
 };
 
 Filter.match = function(post, board) {
-  var i, trip, name, com, uid, sub, fname, f, filters, hit;
+  var i, com, f, filters, hit;
   
   hit = false;
   filters = Filter.activeFilters;
@@ -5775,21 +5775,21 @@ Filter.match = function(post, board) {
       continue;
     }
     // tripcode
-    if (f.type == 0) {
+    if (f.type === 0) {
       if (f.pattern === post.trip) {
         hit = true;
         break;
       }
     }
     // name
-    else if (f.type == 1) {
+    else if (f.type === 1) {
       if (f.pattern === post.name) {
         hit = true;
         break;
       }
     }
     // comment
-    else if (f.type == 2 && post.com) {
+    else if (f.type === 2 && post.com) {
       if (com === undefined) {
         this.entities.innerHTML
           = post.com.replace(/<br>/g, '\n').replace(/[<[^>]+>/g, '');
@@ -5801,21 +5801,21 @@ Filter.match = function(post, board) {
       }
     }
     // user id
-    else if (f.type == 4) {
+    else if (f.type === 4) {
       if (f.pattern === post.id) {
         hit = true;
         break;
       }
     }
     // subject
-    else if (f.type == 5) {
+    else if (f.type === 5) {
       if (f.pattern.test(post.sub)) {
         hit = true;
         break;
       }
     }
     // filename
-    else if (f.type == 6) {
+    else if (f.type === 6) {
       if (f.pattern.test(post.filename)) {
         hit = true;
         break;
@@ -5827,7 +5827,7 @@ Filter.match = function(post, board) {
 };
 
 Filter.exec = function(cnt, pi, msg, tid) {
-  var i, trip, name, com, uid, sub, fname, f, filters, hit, currentBoard;
+  var i, el, trip, name, com, uid, sub, fname, f, filters, hit, currentBoard;
   
   if (Parser.trackedReplies && Parser.trackedReplies['>>' + pi.id.slice(2)]) {
     return false;
@@ -5843,7 +5843,7 @@ Filter.exec = function(cnt, pi, msg, tid) {
       continue;
     }
     // tripcode
-    if (f.type == 0) {
+    if (f.type === 0) {
       if ((trip !== undefined || (trip = pi.getElementsByClassName('postertrip')[0])
         ) && f.pattern == trip.textContent) {
         hit = true;
@@ -5851,7 +5851,7 @@ Filter.exec = function(cnt, pi, msg, tid) {
       }
     }
     // name
-    else if (f.type == 1) {
+    else if (f.type === 1) {
       if ((name || (name = pi.getElementsByClassName('name')[0]))
         && f.pattern == name.textContent) {
         hit = true;
@@ -5859,7 +5859,7 @@ Filter.exec = function(cnt, pi, msg, tid) {
       }
     }
     // comment
-    else if (f.type == 2) {
+    else if (f.type === 2) {
       if (com === undefined) {
         this.entities.innerHTML
           = msg.innerHTML.replace(/<br>/g, '\n').replace(/[<[^>]+>/g, '');
@@ -5871,7 +5871,7 @@ Filter.exec = function(cnt, pi, msg, tid) {
       }
     }
     // user id
-    else if (f.type == 4) {
+    else if (f.type === 4) {
       if ((uid ||
           ((uid = pi.getElementsByClassName('posteruid')[0])
             && (uid = uid.firstElementChild.textContent)
@@ -5882,7 +5882,7 @@ Filter.exec = function(cnt, pi, msg, tid) {
       }
     }
     // subject
-    else if (!Main.tid && f.type == 5) {
+    else if (!Main.tid && f.type === 5) {
       if ((sub ||
           ((sub = pi.getElementsByClassName('subject')[0])
             && (sub = sub.textContent)
@@ -5893,7 +5893,7 @@ Filter.exec = function(cnt, pi, msg, tid) {
       }
     }
     // filename
-    else if (f.type == 6) {
+    else if (f.type === 6) {
       if (fname === undefined) {
         if ((fname = pi.parentNode.getElementsByClassName('fileText')[0])) {
           fname = fname.firstElementChild.textContent;
@@ -5944,8 +5944,9 @@ Filter.unfilter = function(t) {
 };
 
 Filter.load = function() {
-  var i, j, w, f, rawFilters, rawPattern, fid, regexEscape, regexType,
-    wordSepS, wordSepE, words, inner, regexWildcard, replaceWildcard;
+  var i, j, f, rawFilters, rawPattern, fid, regexEscape, regexType,
+    wordSepS, wordSepE, words, inner, regexWildcard, replaceWildcard,
+    tmp, boards, pattern, match;
   
   this.activeFilters = [];
   
@@ -5966,7 +5967,7 @@ Filter.load = function() {
   
   try {
     for (fid = 0; f = rawFilters[fid]; ++fid) {
-      if (f.active && f.pattern != '') {
+      if (f.active && f.pattern !== '') {
         // Boards
         if (f.boards) {
           tmp = f.boards.split(/[^a-z0-9]+/i);
@@ -6117,7 +6118,7 @@ Filter.closeHelp = function() {
 };
 
 Filter.open = function() {
-  var i, f, cnt, menu, html, rawFilters, filterId, filterList;
+  var i, f, cnt, rawFilters, filterList;
   
   if ($.id('filtersMenu')) {
     return false;
@@ -6214,6 +6215,7 @@ Filter.save = function() {
   
   for (i = 0; tr = entries[i]; ++i) {
     type = tr.children[4].firstChild;
+    
     f = {
       active: tr.children[1].firstChild.checked,
       pattern: tr.children[2].firstChild.value,
@@ -6221,7 +6223,7 @@ Filter.save = function() {
       type: +type.options[type.selectedIndex].value,
       auto: tr.children[6].firstChild.checked,
       hide: tr.children[7].firstChild.checked
-    }
+    };
     
     color = tr.children[5].firstChild;
     
@@ -6323,7 +6325,7 @@ Filter.buildEntry = function(filter, id) {
   tr.innerHTML = html;
   
   return tr;
-}
+};
 
 Filter.buildPalette = function(id) {
   var i, j, cnt, html, colors, rowCount, colCount;
@@ -6340,12 +6342,12 @@ Filter.buildPalette = function(id) {
   html = '<div id="colorpicker" class="reply extPanel"><table><tbody>';
   
   for (i = 0; i < rowCount; ++i) {
-    html += '<tr>'
+    html += '<tr>';
     for (j = 0; j < colCount; ++j) {
       html += '<td><div data-cmd="palette-pick" class="colorbox" style="background:'
         + colors[i][j] + '"></div></td>';
     }
-    html += '</tr>'
+    html += '</tr>';
   }
   
   html += '</tbody></table>Custom\
@@ -6546,7 +6548,7 @@ SWFEmbed.processIndex = function() {
     el.innerHTML = '[<a href="' + src.href + '">Embed</a>]';
     el.firstElementChild.addEventListener('click', SWFEmbed.embedIndex, false);
     tr.insertBefore(el, tr.children[srcIndex].nextElementSibling);
-  };
+  }
 };
 
 SWFEmbed.toggleThread = function(e) {
@@ -6593,7 +6595,8 @@ SWFEmbed.toggleThread = function(e) {
 
 SWFEmbed.embedIndex = function(e) {
   var el, cnt, header, icon, backdrop, width, height, cntWidth, cntHeight,
-    maxWidth, maxHeight, docWidth, docHeight, margins, headerHeight, fileName;
+    maxWidth, maxHeight, docWidth, docHeight, margins, headerHeight, fileName,
+    ratio;
   
   e.preventDefault();
   
@@ -6701,7 +6704,7 @@ var Linkify = {
   funk: function(match, pfx, url, o, str) {
     var m, mm, end, len, sfx;
     
-    m = o + match.length
+    m = o + match.length;
     
     if (str.slice(m, m + 4) === '</a>') {
       return match;
@@ -6763,6 +6766,8 @@ Media.parseSoundCloud = function(msg) {
 };
 
 Media.replaceSoundCloud = function(link, o, str) {
+  var pfx;
+  
   if (Config.linkify) {
     if (str[o + link.length - 1] === '"') {
       return link;
@@ -6906,7 +6911,7 @@ Media.toggleYouTube = function(node) {
       el.className = 'media-embed';
       el.innerHTML = '<iframe src="//www.youtube.com/embed/'
         + vid
-        + '" width="640" height="360" frameborder="0" allowfullscreen></iframe>'
+        + '" width="640" height="360" frameborder="0" allowfullscreen></iframe>';
       
       node.parentNode.insertBefore(el, node.nextElementSibling);
       
@@ -6929,7 +6934,7 @@ Media.toggleEmbed = function(node) {
 /**
  * Sticky nav auto-hide
  */
-StickyNav = {
+var StickyNav = {
   thres: 5,
   pos: 0,
   timeout: null,
@@ -6941,7 +6946,7 @@ StickyNav = {
     window.addEventListener('scroll', this.onScroll, false);
   },
   
-  onScroll: function(e) {
+  onScroll: function() {
     clearTimeout(StickyNav.timeout);
     StickyNav.timeout = setTimeout(StickyNav.checkScroll, 50);
   },
@@ -7212,8 +7217,7 @@ Report.onMessage = function(e) {
 
 Report.open = function(pid, board) {
   window.open('https://sys.4chan.org/'
-    + (board || Main.board) + '/imgboard.php?mode=report&no=' + pid
-    , Date.now(),
+    + (board || Main.board) + '/imgboard.php?mode=report&no=' + pid, Date.now(),
     "toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=600,height=170");
 };
 
@@ -7240,7 +7244,7 @@ CustomMenu.reset = function() {
 };
 
 CustomMenu.apply = function(str) {
-  var i, j, el, cntBottom, board, navs, boardList, more;
+  var i, el, cntBottom, board, navs, boardList, cnt;
   
   if (!str) {
     return;
@@ -7407,7 +7411,7 @@ var Draggable = {
     document.addEventListener('mousemove', self.onDrag, false);
   },
   
-  endDrag: function(e) {
+  endDrag: function() {
     document.removeEventListener('mouseup', Draggable.endDrag, false);
     document.removeEventListener('mousemove', Draggable.onDrag, false);
     if (Draggable.key) {
@@ -7460,7 +7464,7 @@ UA.init = function() {
   
   this.isOpera = Object.prototype.toString.call(window.opera) == '[object Opera]';
   
-  this.hasCORS = 'withCredentials' in new XMLHttpRequest;
+  this.hasCORS = 'withCredentials' in new XMLHttpRequest();
   
   this.hasFormData = 'FormData' in window;
 };
@@ -7547,6 +7551,8 @@ var ConfigMobile = {
 };
 
 Config.load = function() {
+  var storage;
+  
   if (storage = localStorage.getItem('4chan-settings')) {
     storage = JSON.parse(storage);
     $.extend(Config, storage);
@@ -7875,8 +7881,6 @@ SettingsMenu.closeExport = function() {
 };
 
 SettingsMenu.onExportClick = function(e) {
-  var el;
-  
   if (e.target.id == 'exportSettings') {
     e.preventDefault();
     e.stopPropagation();
@@ -7910,7 +7914,7 @@ SettingsMenu.toggleCat = function(t) {
 };
 
 SettingsMenu.onClick = function(e) {
-  var el, t, i, j;
+  var el, t;
   
   t = e.target;
   
@@ -7937,7 +7941,7 @@ SettingsMenu.close = function(el) {
 /**
  * Feedback
  */
-Feedback = {
+var Feedback = {
   messageTimeout: null,
   
   showMessage: function(msg, type, timeout, onClick) {
@@ -8099,7 +8103,7 @@ Main.checkMobileLayout = function() {
   mobile = $.id('boardNavMobile');
   desktop = $.id('boardNavDesktop');
   
-  return mobile && desktop && mobile.offsetWidth > 0 && desktop.offsetWidth == 0;
+  return mobile && desktop && mobile.offsetWidth > 0 && desktop.offsetWidth === 0;
 };
 
 Main.disableDarkTheme = function() {
@@ -8283,7 +8287,8 @@ Main.run = function() {
 };
 
 Main.isThreadClosed = function(tid) {
-  return window.thread_archived || ((el = $.id('pi' + tid)) && $.cls('closedIcon', el)[0])
+  var el;
+  return window.thread_archived || ((el = $.id('pi' + tid)) && $.cls('closedIcon', el)[0]);
 };
 
 Main.setThreadState = function(state, mode) {
@@ -8354,7 +8359,7 @@ Main.initIcons = function() {
     photon: 'photon/'
   };
   
-  url = '//s.4cdn.org/image/'
+  url = '//s.4cdn.org/image/';
   
   if (window.devicePixelRatio >= 2) {
     for (key in Main.icons) {
@@ -8391,7 +8396,7 @@ Main.setPageNav = function() {
     cnt.style.top = '50px';
   }
   
-  el = $.cls('pagelist')[0]
+  el = $.cls('pagelist')[0];
   
   if (!el) {
     return;
@@ -8489,7 +8494,7 @@ Main.getCookie = function(name) {
     while (c.charAt(0) == ' ') {
       c = c.substring(1, c.length);
     }
-    if (c.indexOf(key) == 0) {
+    if (c.indexOf(key) === 0) {
       return decodeURIComponent(c.substring(key.length, c.length));
     }
   }
@@ -8521,7 +8526,7 @@ Main.removeCookie = function(name, domain) {
 };
 
 Main.onclick = function(e) {
-  var t, cmd, tid;
+  var t, cmd, tid, id;
   
   if ((t = e.target) == document) {
     return;
@@ -8591,7 +8596,7 @@ Main.onclick = function(e) {
         break;
       case 'embed':
         Media.toggleEmbed(t);
-        break
+        break;
       case 'sound':
         ThreadUpdater.toggleSound();
         break;
@@ -9847,8 +9852,7 @@ body.m-dark { background: #1D1F21 none; color: #C5C8C6; }\
 .m-dark .highlightPost:not(.op) { background: #3A171C !important; }\
 .m-dark .reply:target, .m-dark .reply.highlight { background: #1D1D21 !important; padding: 2px; }\
 .m-dark .reply:target, .m-dark .reply.highlight { background: #1D1D21 !important; padding: 2px; }\
-}\
-';
+}';
   
   style = document.createElement('style');
   style.setAttribute('type', 'text/css');
