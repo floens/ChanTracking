@@ -128,6 +128,11 @@ var load = function() {
     loadFile('https://www.4chan.org/legal', 'pages/legal.html');
     loadFile('https://www.4chan.org/security', 'pages/security.html');
     loadFile('https://www.4chan.org/feedback', 'pages/feedback.html');
+    loadFile('https://www.4chan.org/pass', 'pages/pass.html');
+    loadFile('https://www.4chan.org/advertise', 'pages/advertise.html');
+    loadFile('https://www.4chan.org/press', 'pages/press.html');
+    loadFile('https://www.4chan.org/contact', 'pages/contact.html');
+    loadFile('https://www.4chan.org/flash', 'pages/flash.html');
 
     loadFile('https://s.4cdn.org/js/core.' + now + '.js', 'javascripts/core.js');
     loadFile('https://s.4cdn.org/js/extension.' + now + '.js', 'javascripts/extension.js');
