@@ -83,6 +83,10 @@ var loadFile = function(url, name) {
 }
 
 var load = function() {
+    try {
+        fs.unlinkSync('error');
+    } catch (e) {};
+
     loadState();
 
     var now = Date.now();
@@ -116,6 +120,7 @@ var load = function() {
         fs.writeFileSync('pages/home.html', body);
     });
 
+
     loadFile('https://www.4chan.org/faq', 'pages/faq.html');
     loadFile('https://www.4chan.org/rules', 'pages/rules.html');
     loadFile('https://www.4chan.org/news', 'pages/news.html');
@@ -139,6 +144,11 @@ var load = function() {
     loadCssAndBeautify('https://s.4cdn.org/css/global.' + now + '.css', 'global');
     loadCssAndBeautify('https://s.4cdn.org/css/spooky.' + now + '.css', 'spooky');
 }
+
+process.on('uncaughtException', function(e) {
+    error(e);
+    fs.writeFileSync('error', 'An error occurred with the script, please check the console.');
+});
 
 load();
 
