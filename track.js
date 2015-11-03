@@ -120,6 +120,13 @@ var load = function() {
         fs.writeFileSync('pages/home.html', body);
     });
 
+    get('https://www.4chan.org/pass', function(body) {
+        body = body.replace(/var temp_id = '[\w]+'/gi, 'var temp_id = \'snip\'');
+        body = body.replace(/'temp_id', '[\w]+'/gi, '\'temp_id\', \'snip\'');
+
+        fs.writeFileSync('pages/pass.html', body);
+    });
+
 
     loadFile('https://www.4chan.org/faq', 'pages/faq.html');
     loadFile('https://www.4chan.org/rules', 'pages/rules.html');
@@ -128,7 +135,6 @@ var load = function() {
     loadFile('https://www.4chan.org/legal', 'pages/legal.html');
     loadFile('https://www.4chan.org/security', 'pages/security.html');
     loadFile('https://www.4chan.org/feedback', 'pages/feedback.html');
-    loadFile('https://www.4chan.org/pass', 'pages/pass.html');
     loadFile('https://www.4chan.org/advertise', 'pages/advertise.html');
     loadFile('https://www.4chan.org/press', 'pages/press.html');
     loadFile('https://www.4chan.org/contact', 'pages/contact.html');
