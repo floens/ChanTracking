@@ -4710,6 +4710,7 @@ var ThreadExpansion = {};
 
 ThreadExpansion.init = function() {
   this.enabled = UA.hasCORS;
+  this.fetchXhr = null;
 };
 
 ThreadExpansion.expandComment = function(link) {
@@ -4813,16 +4814,21 @@ ThreadExpansion.toggle = function(tid) {
   }
   else {
     summary.children[0].src = Main.icons.rotate;
-    ThreadExpansion.fetch(tid);
+    if (!ThreadExpansion.fetchXhr) {
+      ThreadExpansion.fetch(tid);
+    }
   }
 };
 
 ThreadExpansion.fetch = function(tid) {
-  $.get('//a.4cdn.org/' + Main.board + '/thread/' + tid + '.json',
+  ThreadExpansion.fetchXhr = $.get(
+    '//a.4cdn.org/' + Main.board + '/thread/' + tid + '.json',
     {
       onload: function() {
         var i, p, n, frag, thread, tail, posts, msg, metacap,
           expmsg, summary, abbr;
+        
+        ThreadExpansion.fetchXhr = null;
         
         thread = $.id('t' + tid);
         summary = thread.children[1];
@@ -4902,6 +4908,7 @@ ThreadExpansion.fetch = function(tid) {
         }
       },
       onerror: function() {
+        ThreadExpansion.fetchXhr = null;
         $.id('t' + tid).children[1].children[0].src = Main.icons.plus;
         console.log('ThreadExpansion: xhr failed');
       }
@@ -9695,7 +9702,10 @@ kbd {\
 }\
 .feedback-error { background-color: #C41E3A; }\
 .feedback-notify { background-color: #00A550; }\
-\
+@media only screen and (min-width: 480px) {\
+#quickReply + div[style]:not([id]) { margin-left: -250px; }\
+.g-recaptcha-bubble-arrow { display: none; }\
+}\
 @media only screen and (max-width: 480px) {\
 .thread-stats { float: none; text-align: center; }\
 .ts-replies:before { content: "Replies: "; }\
