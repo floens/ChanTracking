@@ -1104,6 +1104,25 @@
         "meta_description": "\u0026quot;\/toy\/ - Toys\u0026quot; is 4chan's imageboard for talking about all kinds of toys!",
         "is_archived": 1
     }, {
+        "board": "trash",
+        "title": "Off-Topic",
+        "ws_board": 0,
+        "per_page": 15,
+        "pages": 10,
+        "max_filesize": 4194304,
+        "max_webm_filesize": 3145728,
+        "max_comment_chars": 2000,
+        "bump_limit": 300,
+        "image_limit": 250,
+        "cooldowns": {
+            "threads": 600,
+            "replies": 60,
+            "images": 60,
+            "replies_intra": 60,
+            "images_intra": 30
+        },
+        "meta_description": "\u0026quot;\/trash\/ - Off-topic\u0026quot; is 4chan's imageboard jail for off-topic threads."
+    }, {
         "board": "trv",
         "title": "Travel",
         "ws_board": 1,
