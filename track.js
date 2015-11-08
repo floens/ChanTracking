@@ -23,9 +23,10 @@ var log = function(e) {
     console.log(e);
 }
 
-var error = function(e) {
+var logError = function(e) {
     console.error(e);
     console.trace();
+    fs.writeFileSync('error', 'An error occurred with the script, please check the console.');
 }
 
 var loadState = function() {
@@ -35,7 +36,7 @@ var loadState = function() {
             state = JSON.parse(fileState);
         }
     } catch(e) {
-        error(e);
+        logError(e);
     }
 }
 
@@ -52,8 +53,11 @@ var get = function(url, callback) {
         if (!error && response.statusCode == 200) {
             log('Got ' + url);
             callback(body);
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+            // Server error / overloaded, ignore
+            log('Got ' + response.statusCode + ' getting ' + url);
         } else {
-            error('Error loading ' + url + ': ' + error);
+            logError('Error loading ' + url + ' (' + response.statusCode + '): ' + error);
         }
     });
 }
@@ -157,8 +161,7 @@ var load = function() {
 }
 
 process.on('uncaughtException', function(e) {
-    error(e);
-    fs.writeFileSync('error', 'An error occurred with the script, please check the console.');
+    logError(e);
 });
 
 load();
