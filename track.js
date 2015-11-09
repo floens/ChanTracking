@@ -8,6 +8,11 @@ var fs = require('fs');
 var htmlBeautify = require('html');
 var cheerio = require('cheerio');
 var FileCookieStore = require('tough-cookie-filestore');
+var winston = require('winston');
+
+winston.add(winston.transports.File, {
+    filename: 'track.log'
+});
 
 try {
     fs.statSync('cookies.json');
@@ -20,11 +25,11 @@ var cookieJar = request.jar(new FileCookieStore('cookies.json'));
 var state = {};
 
 var log = function(e) {
-    console.log(e);
+    winston.log('info', e);
 }
 
 var logError = function(e) {
-    console.error(e);
+    winston.error(e);
     console.trace();
     fs.writeFileSync('error', 'An error occurred with the script, please check the console.');
 }
