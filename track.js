@@ -148,6 +148,7 @@ var load = function() {
     loadFile('https://www.4chan.org/press', 'pages/press.html');
     loadFile('https://www.4chan.org/contact', 'pages/contact.html');
     loadFile('https://www.4chan.org/flash', 'pages/flash.html');
+    loadFile('https://www.4chan.org/4channews.php', 'pages/4channews.php.html');
 
     loadFile('https://s.4cdn.org/js/core.' + now + '.js', 'javascripts/core.js');
     loadFile('https://s.4cdn.org/js/extension.' + now + '.js', 'javascripts/extension.js');
