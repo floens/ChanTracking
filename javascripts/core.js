@@ -734,7 +734,8 @@ function init() {
     
     if (board != 'i' && board != 'ic' && board != 'f') {
       if (window.File && window.FileReader && window.FileList && window.Blob) {
-        document.getElementById('postFile').addEventListener('change', handleFileSelect, false);
+        el = document.getElementById('postFile');
+        el && el.addEventListener('change', handleFileSelect, false);
       }
     }
   }

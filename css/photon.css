@@ -16,6 +16,24 @@ body {
 	padding-right: 5px;
 }
 
+.text_only .replyContainer div.reply {
+	background: transparent;
+	padding: 0;
+	border: 0;
+}
+
+.text_only div.post blockquote.postMessage {
+	margin: 16px 25px;
+}
+
+.text_only .sideArrows {
+	display: none;
+}
+
+.text_only .thread {
+	padding: 10px;
+}
+
 .party-hat {
 	left: 0;
 	margin-top: -80px;
