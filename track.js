@@ -152,6 +152,7 @@ var load = function() {
 
     loadFile('https://s.4cdn.org/js/core.' + now + '.js', 'javascripts/core.js');
     loadFile('https://s.4cdn.org/js/extension.' + now + '.js', 'javascripts/extension.js');
+    loadFile('https://s.4cdn.org/js/catalog.' + now + '.js', 'javascripts/catalog.js');
 
     loadCssAndBeautify('https://s.4cdn.org/css/yotsubluenew.' + now + '.css', 'yotsubluenew');
     loadCssAndBeautify('https://s.4cdn.org/css/yotsubanew.' + now + '.css', 'yotsubanew');
