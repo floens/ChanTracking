@@ -2923,7 +2923,7 @@ QR.addQuote = function(pid) {
 
 QR.show = function(tid) {
   var i, j, cnt, postForm, form, qrForm, fields, row, spoiler, file,
-    el, el2, placeholder, qrError, cookie;
+    el, el2, placeholder, qrError, cookie, mfs;
   
   if (QR.currentTid) {
     if (!Main.tid && QR.currentTid != tid) {
@@ -2970,9 +2970,13 @@ QR.show = function(tid) {
   
   form = postForm.parentNode.cloneNode(false);
   form.setAttribute('name', 'qrPost');
+  
   form.innerHTML =
-    '<input type="hidden" value="'
-    + $.byName('MAX_FILE_SIZE')[0].value + '" name="MAX_FILE_SIZE">'
+    (
+      (mfs = $.byName('MAX_FILE_SIZE')[0])
+      ? ('<input type="hidden" value="' + mfs.value + '" name="MAX_FILE_SIZE">')
+      : ''
+    )
     + '<input type="hidden" value="regist" name="mode">'
     + '<input id="qrResto" type="hidden" value="' + tid + '" name="resto">';
   
