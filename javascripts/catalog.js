@@ -1922,8 +1922,8 @@ var FC = function() {
         + '">';
       
       thread = '<tr id="thread-' + id + '"' + pinhl
-        + '><td class="txt-no">' + aTag + id
-        + '</a></td><td class="txt-sub">' + aTag + entry.sub
+        + '><td class="txt-no">' + aTag
+        + '»</a></td><td class="txt-sub">' + aTag + entry.sub
         + '</a></td><td class="txt-rep">';
       
       if (entry.bumplimit) {
@@ -1966,7 +1966,7 @@ var FC = function() {
       html += '<div class="clear"></div>';
     }
     
-    html = '<table><thead><tr><th class="txt-no">No.</th><th class="txt-sub">Subject</th><th class="txt-rep">Replies</th>'
+    html = '<table><thead><tr><th class="txt-no"></th><th class="txt-sub">Subject</th><th class="txt-rep">Replies</th>'
       + '<th class="txt-date">Date</th><th class="txt-ctrl"></th></tr></thead><tbody>' + html + '</tbody></table>';
     
     return html;
