@@ -774,6 +774,28 @@
         "meta_description": "\u0026quot;\/n\/ - Transportation\u0026quot; is 4chan's imageboard for discussing modes of transportation like trains and bicycles.",
         "is_archived": 1
     }, {
+        "board": "news",
+        "title": "Current News",
+        "ws_board": 1,
+        "per_page": 15,
+        "pages": 10,
+        "max_filesize": 4194304,
+        "max_webm_filesize": 3145728,
+        "max_comment_chars": 2000,
+        "bump_limit": 500,
+        "image_limit": 250,
+        "cooldowns": {
+            "threads": 600,
+            "replies": 30,
+            "images": 60,
+            "replies_intra": 60,
+            "images_intra": 60
+        },
+        "meta_description": "\u0026quot;\/news\/ - Current News; is 4chan's board for current news. ",
+        "spoilers": 1,
+        "custom_spoilers": 1,
+        "is_archived": 1
+    }, {
         "board": "o",
         "title": "Auto",
         "ws_board": 1,
