@@ -9706,10 +9706,6 @@ kbd {\
 }\
 .feedback-error { background-color: #C41E3A; }\
 .feedback-notify { background-color: #00A550; }\
-@media only screen and (min-width: 480px) {\
-#quickReply + div[style]:not([id]) { margin-left: -250px; }\
-.g-recaptcha-bubble-arrow { display: none; }\
-}\
 @media only screen and (max-width: 480px) {\
 .thread-stats { float: none; text-align: center; }\
 .ts-replies:before { content: "Replies: "; }\
