@@ -58,7 +58,7 @@ var get = function(url, callback) {
         if (!error && response.statusCode == 200) {
             log('Got ' + url);
             callback(body);
-        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+        } else if ((response.statusCode >= 500 && response.statusCode < 600) || response.statusCode == 409) {
             // Server error / overloaded, ignore
             log('Got ' + response.statusCode + ' getting ' + url);
         } else {
