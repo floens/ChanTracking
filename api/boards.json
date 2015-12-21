@@ -919,7 +919,7 @@
         "is_archived": 1
     }, {
         "board": "r",
-        "title": "Request",
+        "title": "Adult Requests",
         "ws_board": 0,
         "per_page": 15,
         "pages": 10,
@@ -1354,6 +1354,26 @@
             "images_intra": 60
         },
         "meta_description": "\u0026quot;\/wsg\/ - Worksafe GIF\u0026quot; is 4chan's imageboard dedicated to sharing worksafe animated GIFs and WEBMs.",
+        "is_archived": 1
+    }, {
+        "board": "wsr",
+        "title": "Worksafe Requests",
+        "ws_board": 1,
+        "per_page": 15,
+        "pages": 10,
+        "max_filesize": 8388608,
+        "max_webm_filesize": 3145728,
+        "max_comment_chars": 2000,
+        "bump_limit": 310,
+        "image_limit": 150,
+        "cooldowns": {
+            "threads": 600,
+            "replies": 30,
+            "images": 60,
+            "replies_intra": 60,
+            "images_intra": 60
+        },
+        "meta_description": "\u0026quot;\/wsr\/ - Worksafe Requests\u0026quot; is 4chan's imageboard dedicated to fulfilling non-NSFW requests.",
         "is_archived": 1
     }, {
         "board": "x",
