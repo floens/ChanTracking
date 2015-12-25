@@ -457,16 +457,12 @@ body {
 }
 
 #options-container a:link, #options-container a:visited, #options-container a:hover {
-	color: #006;
+	color: #800;
 	text-decoration: none;
 }
 
 #options-container a:hover {
-	color: #008;
-}
-
-#options-container a#option-button {
-	color: #fff;
+	color: #c63;
 }
 
 #disclaimer-dialog .hd {
@@ -484,6 +480,57 @@ a:visited {
 
 strong {
 	font-weight: bold;
+}
+
+.center {
+	text-align: center;
+}
+
+#c-threads {
+	text-align: center;
+}
+
+.c-thread {
+	vertical-align: top;
+	display: inline-block;
+	word-wrap: break-word;
+	overflow: hidden;
+	margin-top: 5px;
+	padding: 5px 0 3px 0;
+	position: relative;
+	width: 175px;
+	max-height: 320px;
+	margin-bottom: 10px;
+}
+
+.c-board {
+	font-weight: bold;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: block;
+	white-space: nowrap;
+	margin-bottom: 5px;
+}
+
+.c-thread img {
+	border: 1px solid #800;
+	display: inline;
+}
+
+.c-teaser {
+	margin-bottom: 5px;
+	padding: 0 2px;
+	white-space: pre-line;
+}
+
+#site-stats .boxcontent {
+	margin-top: 5px;
+	text-align: center;
+}
+
+.stat-cell {
+	display: inline-block;
+	width: 33%;
 }
 
 @media all and (max-device-width: 640px) {.yui-g .yui-u, .yui-g .yui-u.first {
