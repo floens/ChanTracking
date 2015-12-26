@@ -16,7 +16,7 @@
 	border: none;
 }
 
-@media all and (max-device-width: 640px) {#logo-fp img {
+@media all and (max-device-width: 640px) {.center iframe, #logo-fp img {
 		height: auto;
 		max-width: 100%;
 	}
