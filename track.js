@@ -118,13 +118,12 @@ var load = function() {
     loadJsonAndBeautify('https://a.4cdn.org/boards.json', 'api/boards.json');
 
     get('https://www.4chan.org/', function(body) {
-        body = body.replace(/<script type="text\/javascript">\n.+PostList[\s\S]+?<\/script>/gi, 'PostList script snip');
-        body = body.replace(/<h2>Recent Images[\s\S]+?<\/ul>/gi, 'Recent Images snip');
-        body = body.replace(/<h2>Latest Posts[\s\S]+?<\/ul>/gi, 'Latest Posts snip');
-        body = body.replace(/<h2>Popular Threads[\s\S]+?<\/ul>/gi, 'Popular Threads snip');
-        body = body.replace(/<li>Total Posts:.+?<\/li>/gi, 'Total Posts snip');
-        body = body.replace(/<li>Current Users:.+?<\/li>/gi, 'Current Users snip');
-        body = body.replace(/<li>Active Content:.+?<\/li>/gi, 'Active Content snip');
+        body = body.replace(/<b>Total Posts:.+?<\/div>/gi, 'Total Posts snip');
+        body = body.replace(/<b>Current Users:.+?<\/div>/gi, 'Current Users snip');
+        body = body.replace(/<b>Active Content:.+?<\/div>/gi, 'Active Content snip');
+
+        body = body.replace(/<div id="c-threads">[\s\S]+<div class="box-outer top-box" id="site-stats">/gi,
+            'Popular Threads snip\n<div class="box-outer top-box" id="site-stats">')
 
         fs.writeFileSync('pages/home.html', body);
     });
