@@ -1336,6 +1336,10 @@ iframe[src="about:blank"] {
 	right: 2px;
 }
 
+.boardSelect .customBoardList, .boardSelect .custom-menu-ctrl {
+	color: #89a;
+}
+
 #postFile {
 	margin-right: 10px;
 	width: 200px;
