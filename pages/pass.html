@@ -263,10 +263,10 @@ function checkEmail()
 
 function checkRegularEmail()
 {
-    var email = $('#email').val();
+    var m, email = $('#email').val();
     
-    if (/@sbcglobal\.net/.test(email)) {
-      $('.email-errors').text("We're sorry, but sbcglobal.net email addresses are not permitted. Please try again using another email account.");
+    if (m = email.match(/@(sbcglobal\.net|yahoo\.com|aol\.com)/i)) {
+      $('.email-errors').text("We're sorry, but " + m[1] + " email addresses are not permitted. Please try again using another email account.");
       disableButton();
       return false;
     }
