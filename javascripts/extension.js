@@ -89,6 +89,35 @@ $.get = function(url, callbacks, headers) {
   return xhr;
 };
 
+$.xhr = function(method, url, callbacks, data) {
+  var key, xhr, form;
+  
+  xhr = new XMLHttpRequest();
+  
+  xhr.open(method, url, true);
+  
+  if (callbacks) {
+    for (key in callbacks) {
+      xhr[key] = callbacks[key];
+    }
+  }
+  
+  if (data) {
+    form = new FormData();
+    for (key in data) {
+      form.append(key, data[key]);
+    }
+    data = form;
+  }
+  else {
+    data = null;
+  }
+  
+  xhr.send(data);
+  
+  return xhr;
+};
+
 $.ago = function(timestamp) {
   var delta, count, head, tail;
   
@@ -934,7 +963,7 @@ Parser.parseThread = function(tid, offset, limit) {
       }
     }
     if (window.math_tags) {
-      if (MathJax) {
+      if (window.MathJax) {
         for (i = j; i < limit; ++i) {
           MathJax.Hub.Queue(['Typeset', MathJax.Hub, posts[i]]);
         }
@@ -1296,6 +1325,11 @@ PostMenu.open = function(btn) {
     */
   }
   
+  if (Main.hasMobileLayout) {
+    html += '<li><a href="#" data-id="' + pid
+      + '" data-cmd="del-post">Delete post</a></li>';
+  }
+  
   if (file = $.id('fT' + pid)) {
     el = $.cls('fileThumb', file.parentNode)[0];
     
@@ -1304,7 +1338,9 @@ PostMenu.open = function(btn) {
         + el.href.match(/\/([0-9]+)\..+$/)[1] + 's.jpg';
       
       if (Main.hasMobileLayout) {
-        html += '<li><a href="//www.google.com/searchbyimage?image_url=' + href
+        html += '<li><a href="#" data-id="' + pid
+          + '" data-cmd="del-file">Delete file</a></li>'
+          + '<li><a href="//www.google.com/searchbyimage?image_url=' + href
           + '" target="_blank">Search image on Google</a></li>'
           + '<li><a href="http://iqdb.org/?url='
           + href + '" target="_blank">Search image on iqdb</a></li>';
@@ -7191,6 +7227,69 @@ Keybinds.onClick = function(e) {
   }
 };
 
+var Del = {
+  deletePost: function(pid, file_only) {
+    var pwd, params;
+    
+    if (!confirm('Delete ' + (file_only ? 'file' : 'post') + '?')) {
+      return;
+    }
+    
+    params = {
+      mode: window.thread_archived ? 'arcdel' : 'usrdel',
+      pwd: Main.getCookie('4chan_pass') || ''
+    };
+    
+    params[pid] = 'delete';
+    
+    if (file_only) {
+      params['onlyimgdel'] = 'on';
+    }
+    
+    $.xhr('POST', 'https://sys.4chan.org/' + Main.board + '/imgboard.php',
+      {
+        onload: Del.onPostDeleted,
+        onerror: Del.onError,
+        withCredentials: true,
+        pid: pid,
+        file_only: file_only
+      },
+      params
+    );
+  },
+  
+  onPostDeleted: function() {
+    var el;
+    
+    if (!this.file_only) {
+      el = $.id('pc' + this.pid);
+    }
+    else if (el = $.id('f' + this.pid)) {
+      el = $.tag('img', el)[0];
+      if (!el.hasAttribute('data-md5')) {
+        return;
+      }
+    }
+    
+    if (!el) {
+      return;
+    }
+    
+    if (/Updating index|Can't find the post/.test(this.responseText)) {
+      if (!$.hasClass(el, 'deleted')) {
+        $.addClass(el, 'deleted');
+      }
+    }
+    else {
+      Del.onError();
+    }
+  },
+  
+  onError: function() {
+    Feedback.error('Something went wrong.');
+  }
+};
+
 /**
  * Reporting
  */
@@ -7237,6 +7336,24 @@ Report.open = function(pid, board) {
  */
 var CustomMenu = {};
 
+CustomMenu.initCtrl = function() {
+  var el, cnt;
+  
+  el = document.createElement('span');
+  el.className = 'custom-menu-ctrl';
+  el.innerHTML = '[<a data-cmd="custom-menu-edit" title="Edit Menu" href="#">Edit</a>]';
+  
+  if (Config.dropDownNav && !Config.classicNav && !Main.hasMobileLayout) {
+    cnt = $.id('boardSelectMobile').parentNode;
+    cnt.insertBefore(el, cnt.lastChild);
+  }
+  else {
+    cnt = $.cls('boardList');
+    cnt[0] && cnt[0].appendChild(el);
+    cnt[1] && cnt[1].appendChild(el.cloneNode(true));
+  }
+};
+
 CustomMenu.reset = function() {
   var i, el, full, custom, navs;
   
@@ -7258,6 +7375,11 @@ CustomMenu.apply = function(str) {
   var i, el, cntBottom, board, navs, boardList, cnt;
   
   if (!str) {
+    if (Config.dropDownNav && !Config.classicNav && !Main.hasMobileLayout) {
+      if (el = $.cls('customBoardList')[0]) {
+        el.parentNode.removeChild(el);
+      }
+    }
     return;
   }
   
@@ -7281,27 +7403,36 @@ CustomMenu.apply = function(str) {
   
   cnt.appendChild(document.createTextNode(']'));
   
-  cnt.appendChild(document.createTextNode(' ['));
-  el = document.createElement('a');
-  el.textContent = '…';
-  el.title = 'Show all';
-  el.className = 'show-all-boards pointer';
-  cnt.appendChild(el);
-  cnt.appendChild(document.createTextNode('] '));
-  
-  cntBottom = cnt.cloneNode(true);
-  
-  navs = $.cls('boardList');
-  
-  for (i = 0; el = navs[i]; ++i) {
-    el.style.display = 'none';
-    el.parentNode.insertBefore(i ? cntBottom : cnt, el);
+  if (Config.dropDownNav && !Config.classicNav && !Main.hasMobileLayout) {
+    if (el = $.cls('customBoardList')[0]) {
+      el.parentNode.removeChild(el);
+    }
+    navs = $.id('boardSelectMobile');
+    navs && navs.parentNode.insertBefore(cnt, navs.nextSibling);
   }
-  
-  navs = $.cls('show-all-boards');
-  
-  for (i = 0; el = navs[i]; ++i) {
-    el.addEventListener('click', CustomMenu.reset, false);
+  else {
+    cnt.appendChild(document.createTextNode(' ['));
+    el = document.createElement('a');
+    el.textContent = '…';
+    el.title = 'Show all';
+    el.className = 'show-all-boards pointer';
+    cnt.appendChild(el);
+    cnt.appendChild(document.createTextNode('] '));
+    
+    cntBottom = cnt.cloneNode(true);
+    
+    navs = $.cls('boardList');
+    
+    for (i = 0; el = navs[i]; ++i) {
+      el.style.display = 'none';
+      el.parentNode.insertBefore(i ? cntBottom : cnt, el);
+    }
+    
+    navs = $.cls('show-all-boards');
+    
+    for (i = 0; el = navs[i]; ++i) {
+      el.addEventListener('click', CustomMenu.reset, false);
+    }
   }
 };
 
@@ -7316,21 +7447,26 @@ CustomMenu.onClick = function(e) {
     CustomMenu.closeEditor();
   }
   else if (t.hasAttribute('data-save')) {
-    CustomMenu.save();
+    CustomMenu.save($.id('customMenu').hasAttribute('data-standalone'));
   }
 };
 
-CustomMenu.showEditor = function() {
+CustomMenu.showEditor = function(standalone) {
   var cnt;
   
   cnt = document.createElement('div');
   cnt.id = 'customMenu';
   cnt.className = 'UIPanel';
   cnt.setAttribute('data-close', '1');
+  
+  if (standalone === true) {
+    cnt.setAttribute('data-standalone', '1');
+  }
+  
   cnt.innerHTML = '\
 <div class="extPanel reply"><div class="panelHeader">Custom Board List\
 <span class="panelCtrl"><img alt="Close" title="Close" class="pointer" data-close="1" src="'
-+ Main.icons.cross + '"></a></span></div>\
++ Main.icons.cross + '"></span></div>\
 <input placeholder="Example: jp tg mu" id="customMenuBox" type="text" value="">\
 <div class="center"><button data-save="1">Save</button></div></div>';
 
@@ -7352,11 +7488,17 @@ CustomMenu.closeEditor = function() {
   }
 };
 
-CustomMenu.save = function() {
+CustomMenu.save = function(standalone) {
   var input;
 
   if (input = $.id('customMenuBox')) {
     Config.customMenuList = input.value;
+    
+    if (standalone === true) {
+      CustomMenu.apply(Config.customMenuList);
+      Config.customMenu = true;
+      Config.save();
+    }
   }
   
   CustomMenu.closeEditor();
@@ -8205,6 +8347,8 @@ Main.run = function() {
     CustomMenu.apply(Config.customMenuList);
   }
   
+  CustomMenu.initCtrl();
+  
   if (Config.quotePreview || Config.imageHover|| Config.filter) {
     thread = $.id('delform') || $.id('arc-list');
     thread.addEventListener('mouseover', Main.onThreadMouseOver, false);
@@ -8639,7 +8783,13 @@ Main.onclick = function(e) {
         SettingsMenu.closeExport();
         break;
       case 'custom-menu-edit':
-        CustomMenu.showEditor();
+        e.preventDefault();
+        CustomMenu.showEditor($.hasClass(t.parentNode, 'custom-menu-ctrl'));
+        break;
+      case 'del-post':
+      case 'del-file':
+        e.preventDefault();
+        Del.deletePost(id, cmd === 'del-file');
         break;
       case 'open-tex-preview':
         QR.openTeXPreview();
@@ -9162,6 +9312,7 @@ div.backlink {\
   line-height: 14px;\
   font-size: 14px;\
   background-color: rgba(0, 0, 0, 0.25);\
+  z-index: 9002;\
 }\
 .UIPanel:after {\
   display: inline-block;\
@@ -9706,6 +9857,10 @@ kbd {\
 }\
 .feedback-error { background-color: #C41E3A; }\
 .feedback-notify { background-color: #00A550; }\
+.boardSelect .custom-menu-ctrl, .boardSelect .customBoardList { margin-left: 10px; }\
+.boardSelect .custom-menu-ctrl { display: none; }\
+.boardSelect:hover .custom-menu-ctrl { display: inline; }\
+.persistentNav .boardList a, .persistentNav .customBoardList a, #boardNavMobile .boardSelect a { text-decoration: none; }\
 @media only screen and (max-width: 480px) {\
 .thread-stats { float: none; text-align: center; }\
 .ts-replies:before { content: "Replies: "; }\

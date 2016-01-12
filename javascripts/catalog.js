@@ -249,6 +249,8 @@ var FC = function() {
       if ((extConfig = localStorage.getItem('4chan-settings'))) {
         extConfig = JSON.parse(extConfig);
         if (!extConfig.disableAll) {
+          CustomMenu.initCtrl(extConfig.dropDownNav, extConfig.classicNav);
+          
           if (extConfig.filter) {
             ThreadWatcher.hasFilters = true;
           }
@@ -270,6 +272,9 @@ var FC = function() {
       else if (UA.isMobileDevice && !FC.hasMobileLayout) {
         hasDropDownNav = true;
         showDropDownNav();
+      }
+      else {
+        CustomMenu.initCtrl(false, false);
       }
     }
     
@@ -756,6 +761,10 @@ var FC = function() {
     else if (tid = t.getAttribute('data-post-menu')) {
       e.preventDefault();
       PostMenu.open(t, hasThreadWatcher, hiddenThreads[tid], pinnedThreads[tid]);
+    }
+    else if (t.hasAttribute('data-cm-edit')) {
+      e.preventDefault();
+      CustomMenu.showEditor(true);
     }
     else if (t.id == 'backdrop') {
       if (!panelHidden($.id('filters'))) {
@@ -2980,7 +2989,31 @@ var Draggable = {
 /**
  * Custom Menu
  */
-var CustomMenu = {};
+var CustomMenu = {
+  dropDownNav: false,
+  classicNav: false
+};
+
+CustomMenu.initCtrl = function(dropDownNav, classicNav) {
+  var el, cnt;
+  
+  CustomMenu.dropDownNav = dropDownNav;
+  CustomMenu.classicNav = classicNav;
+  
+  el = document.createElement('span');
+  el.className = 'custom-menu-ctrl';
+  el.innerHTML = '[<a data-cm-edit title="Edit Menu" href="#">Edit</a>]';
+  
+  if (CustomMenu.dropDownNav && !CustomMenu.classicNav && !FC.hasMobileLayout) {
+    cnt = $.id('boardSelectMobile').parentNode;
+    cnt.insertBefore(el, cnt.lastChild);
+  }
+  else {
+    cnt = $.cls('boardList');
+    cnt[0] && cnt[0].appendChild(el);
+    cnt[1] && cnt[1].appendChild(el.cloneNode(true));
+  }
+};
 
 CustomMenu.reset = function() {
   var i, el, full, custom, navs;
@@ -3003,6 +3036,11 @@ CustomMenu.apply = function(str) {
   var i, el, cntBottom, board, navs, boardList, cnt;
   
   if (!str) {
+    if (CustomMenu.dropDownNav && !CustomMenu.classicNav && !FC.hasMobileLayout) {
+      if (el = $.cls('customBoardList')[0]) {
+        el.parentNode.removeChild(el);
+      }
+    }
     return;
   }
   
@@ -3026,27 +3064,125 @@ CustomMenu.apply = function(str) {
   
   cnt.appendChild(document.createTextNode(']'));
   
-  cnt.appendChild(document.createTextNode(' ['));
-  el = document.createElement('a');
-  el.textContent = '…';
-  el.title = 'Show all';
-  el.className = 'show-all-boards pointer';
-  cnt.appendChild(el);
-  cnt.appendChild(document.createTextNode('] '));
+  if (CustomMenu.dropDownNav && !CustomMenu.classicNav && !FC.hasMobileLayout) {
+    if (el = $.cls('customBoardList')[0]) {
+      el.parentNode.removeChild(el);
+    }
+    navs = $.id('boardSelectMobile');
+    navs && navs.parentNode.insertBefore(cnt, navs.nextSibling);
+  }
+  else {
+    cnt.appendChild(document.createTextNode(' ['));
+    el = document.createElement('a');
+    el.textContent = '…';
+    el.title = 'Show all';
+    el.className = 'show-all-boards pointer';
+    cnt.appendChild(el);
+    cnt.appendChild(document.createTextNode('] '));
+    
+    cntBottom = cnt.cloneNode(true);
+    
+    navs = $.cls('boardList');
+    
+    for (i = 0; el = navs[i]; ++i) {
+      el.style.display = 'none';
+      el.parentNode.insertBefore(i ? cntBottom : cnt, el);
+    }
+    
+    navs = $.cls('show-all-boards');
+    
+    for (i = 0; el = navs[i]; ++i) {
+      el.addEventListener('click', CustomMenu.reset, false);
+    }
+  }
+};
+
+CustomMenu.onClick = function(e) {
+  var t;
   
-  cntBottom = cnt.cloneNode(true);
+  if ((t = e.target) == document) {
+    return;
+  }
+
+  if (t.hasAttribute('data-close')) {
+    CustomMenu.closeEditor();
+  }
+  else if (t.hasAttribute('data-save')) {
+    CustomMenu.save($.id('customMenu').hasAttribute('data-standalone'));
+  }
+};
+
+CustomMenu.showEditor = function(standalone) {
+  var cnt, extConfig;
   
-  navs = $.cls('boardList');
+  cnt = document.createElement('div');
+  cnt.id = 'customMenu';
+  cnt.className = 'panel';
+  cnt.setAttribute('data-close', '1');
   
-  for (i = 0; el = navs[i]; ++i) {
-    el.style.display = 'none';
-    el.parentNode.insertBefore(i ? cntBottom : cnt, el);
+  if (standalone === true) {
+    cnt.setAttribute('data-standalone', '1');
   }
   
-  navs = $.cls('show-all-boards');
+  cnt.innerHTML = '\
+<div class="reply"><div class="panelHeader">Custom Board List\
+<span class="panelCtrl"><span data-close="1" class="icon closeIcon"></span></span></div>\
+<input placeholder="Example: jp tg mu" id="customMenuBox" type="text" value="">\
+<div class="center"><button data-save="1">Save</button></div></div>';
+
+  document.body.appendChild(cnt);
   
-  for (i = 0; el = navs[i]; ++i) {
-    el.addEventListener('click', CustomMenu.reset, false);
+  cnt.style.top = window.pageYOffset
+    + (0 | (document.documentElement.clientHeight / 2) - (cnt.offsetHeight / 2)) + 'px';
+  
+  $.removeClass($.id('backdrop'), 'hidden');
+  
+  extConfig = CustomMenu.getConfig();
+  
+  if (extConfig.customMenuList) {
+    $.id('customMenuBox').value = extConfig.customMenuList;
+  }
+  
+  cnt.addEventListener('click', CustomMenu.onClick, false);
+};
+
+CustomMenu.closeEditor = function() {
+  var el;
+  
+  if (el = $.id('customMenu')) {
+    el.removeEventListener('click', CustomMenu.onClick, false);
+    document.body.removeChild(el);
+    $.addClass($.id('backdrop'), 'hidden');
+  }
+};
+
+CustomMenu.save = function(standalone) {
+  var input, extConfig;
+
+  if (input = $.id('customMenuBox')) {
+    if (standalone === true) {
+      CustomMenu.apply(input.value);
+      
+      extConfig = CustomMenu.getConfig();
+      
+      extConfig.customMenu = true;
+      extConfig.customMenuList = input.value;
+      
+      localStorage.setItem('4chan-settings', JSON.stringify(extConfig));
+    }
+  }
+  
+  CustomMenu.closeEditor();
+};
+
+CustomMenu.getConfig = function() {
+  var extConfig;
+  
+  if (extConfig = localStorage.getItem('4chan-settings')) {
+    return JSON.parse(extConfig);
+  }
+  else {
+    return {};
   }
 };
 
