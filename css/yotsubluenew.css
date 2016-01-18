@@ -142,10 +142,6 @@ body {
 	padding: 0 0 5px 0 !important;
 }
 
-#captchaContainerAlt #recaptcha_area {
-	margin-left: 10px;
-}
-
 #captchaContainerAlt #recaptcha_table {
 	border: 0 !important;
 }
@@ -197,61 +193,58 @@ body {
 	width: 400px;
 }
 
-@media only screen and (min-width: 481px) {.recaptcha_input_area {
-		padding: 0 !important;
-	}
-	
-	#recaptcha_table tr:first-child {
-		height: auto !important;
-	}
-	
-	#recaptcha_table tr:first-child > td:not(:first-child) {
-		padding: 0 7px 0 7px !important;
-	}
-	
-	#recaptcha_table tr:last-child td:last-child {
-		padding-bottom: 0 !important;
-	}
-	
-	#recaptcha_table tr:last-child td:first-child {
-		padding-left: 0 !important;
-	}
-	
-	#recaptcha_image {
-		cursor: pointer;
-	}
-	
-	#recaptcha_response_field {
-		width: 292px;
-		margin-right: 0 !important;
-		font-size: 10pt !important;
-	}
-	
-	input:-moz-placeholder {
-		color: gray !important;
-	}
-	
-	#recaptcha_image {
-		border: 1px solid #aaa !important;
-	}
-	
-	#recaptcha_table tr > td:last-child {
-		display: none !important;
-	}
-	
-	#captchaContainer {
-		width: 343px;
-		height: 86px;
-		line-height: 99px;
-		overflow: hidden;
-	}
-	
-	#captchaContainer .placeholder {
-		font-style: italic;
-		padding-left: 5px;
-	}
-	
-	
+.recaptcha_input_area {
+	padding: 0 !important;
+}
+
+#recaptcha_table tr:first-child {
+	height: auto !important;
+}
+
+#recaptcha_table tr:first-child > td:not(:first-child) {
+	padding: 0 7px 0 7px !important;
+}
+
+#recaptcha_table tr:last-child td:last-child {
+	padding-bottom: 0 !important;
+}
+
+#recaptcha_table tr:last-child td:first-child {
+	padding-left: 0 !important;
+}
+
+#recaptcha_image {
+	cursor: pointer;
+}
+
+#recaptcha_response_field {
+	width: 292px;
+	margin-right: 0 !important;
+	font-size: 10pt !important;
+}
+
+input:-moz-placeholder {
+	color: gray !important;
+}
+
+#recaptcha_image {
+	border: 1px solid #aaa !important;
+}
+
+#recaptcha_table tr > td:last-child {
+	display: none !important;
+}
+
+#captchaContainer {
+	width: 343px;
+	height: 86px;
+	line-height: 99px;
+	overflow: hidden;
+}
+
+#captchaContainer .placeholder {
+	font-style: italic;
+	padding-left: 5px;
 }
 
 .mobile, .mobileinline, .mobileib {
