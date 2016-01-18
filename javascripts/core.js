@@ -457,9 +457,19 @@ function repquote(rep) {
 }
 
 function reppop(url) {
-  var day = new Date();
-  var id = day.getTime();
-  window.open(url, id, 'toolbar=0,scrollbars=0,location=0,status=1,menubar=0,resizable=1,width=610,height=170');
+  var height, altc;
+  
+  if (window.passEnabled || !window.grecaptcha) {
+    height = 205;
+  }
+  else {
+    height = 510;
+  }
+  
+  window.open(url, Date.now(), 
+    'toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=380,height=' + height
+  );
+  
   return false;
 }
 

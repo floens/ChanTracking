@@ -181,6 +181,7 @@ var FC = function() {
   hasDropDownNav = false,
   hasClassicNav = false,
   hasAutoHideNav = false,
+  altCaptcha = false,
   
   quickFilterPattern = false,
   
@@ -188,8 +189,11 @@ var FC = function() {
   
   $threads,
   $qfCtrl,
+  $teaserCtrl,
   $sizeCtrl,
   $orderCtrl,
+  $filtersPanel,
+  $themePanel,
   $filterPalette,
   
   ctxCmds;
@@ -254,19 +258,24 @@ var FC = function() {
           if (extConfig.filter) {
             ThreadWatcher.hasFilters = true;
           }
+          
           if (extConfig.threadWatcher) {
             hasThreadWatcher = true;
             ThreadWatcher.init();
           }
+          
           if (extConfig.customMenu) {
             CustomMenu.apply(extConfig.customMenuList);
           }
+          
           if (extConfig.dropDownNav !== false && !FC.hasMobileLayout) {
             hasDropDownNav = true;
             hasClassicNav = extConfig.classicNav;
             hasAutoHideNav = extConfig.autoHideNav;
             showDropDownNav();
           }
+          
+          altCaptcha = extConfig.altCaptcha;
         }
       }
       else if (UA.isMobileDevice && !FC.hasMobileLayout) {
@@ -684,12 +693,25 @@ var FC = function() {
   }
   
   function reportThread(tid) {
+    var height, altc;
+    
+    if (window.passEnabled || !window.grecaptcha) {
+      height = 175;
+    }
+    else if (altCaptcha) {
+      height = 320;
+      altc = '&altc=1';
+    }
+    else {
+      height = 510;
+      altc = '';
+    }
+    
     window.open(
       'http://sys.4chan.org/' + catalog.slug +
-      '/imgboard.php?mode=report&no=' + tid,
+      '/imgboard.php?mode=report&no=' + tid + altc,
       Date.now(), 
-      'toolbar=0,scrollbars=0,location=0,status=1,menubar=0,resizable=1,' +
-      'width=600,height=270'
+      'toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=380,height=' + height
     );
   }
   

@@ -29,6 +29,10 @@ $.qs = function(sel, root) {
   return (root || document).querySelector(sel);
 };
 
+$.qsa = function(selector, root) {
+  return (root || document).querySelectorAll(selector);
+};
+
 $.extend = function(destination, source) {
   for (var key in source) {
     destination[key] = source[key];
@@ -204,7 +208,7 @@ $.cache = {};
  * Parser
  */
 var Parser = {
-  dateTimeout: null
+  tipTimeout: null
 };
 
 Parser.init = function() {
@@ -415,19 +419,49 @@ Parser.encodeSpecialChars = function(str) {
 };
 
 Parser.onDateMouseOver = function(el) {
-  if (Parser.dateTimeout) {
-    clearTimeout(Parser.dateTimeout);
-    Parser.dateTimeout = null;
+  if (Parser.tipTimeout) {
+    clearTimeout(Parser.tipTimeout);
+    Parser.tipTimeout = null;
   }
   
-  Parser.dateTimeout = setTimeout(Tip.show, 500, el, $.ago(+el.getAttribute('data-utc')));
+  Parser.tipTimeout = setTimeout(Tip.show, 500, el, $.ago(+el.getAttribute('data-utc')));
 };
 
-Parser.onDateMouseOut = function() {
-  if (Parser.dateTimeout) {
-    clearTimeout(Parser.dateTimeout);
-    Parser.dateTimeout = null;
+Parser.onTipMouseOut = function() {
+  if (Parser.tipTimeout) {
+    clearTimeout(Parser.tipTimeout);
+    Parser.tipTimeout = null;
   }
+};
+
+Parser.onUIDMouseOver = function(el) {
+  if (!$.hasClass(el.parentNode, 'posteruid')) {
+    return;
+  }
+  
+  if (Parser.tipTimeout) {
+    clearTimeout(Parser.tipTimeout);
+    Parser.tipTimeout = null;
+  }
+  
+  Parser.tipTimeout = setTimeout(Parser.showUIDCount, 500, el, el.textContent);
+};
+
+Parser.showUIDCount = function(t, uid) {
+  var i, el, nodes, count, msg;
+  
+  count = 0;
+  nodes = $.qsa('.postInfo .hand');
+  
+  for (i = 0; el = nodes[i]; ++i) {
+    if (el.textContent === uid) {
+      ++count;
+    }
+  }
+  
+  msg = count + ' post' + (count != 1 ? 's' : '') + ' by this ID';
+  
+  Tip.show(t, msg);
 };
 
 Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
@@ -2134,8 +2168,8 @@ QuotePreview.show = function(link, post, remote) {
   }
   
   if (!link.parentNode.className) {
-    quotes = post.querySelectorAll(
-      '#' + $.cls('postMessage', post)[0].id + ' > .quotelink'
+    quotes = $.qsa(
+      '#' + $.cls('postMessage', post)[0].id + ' > .quotelink', post
     );
     if (quotes[1]) {
       qid = '>>' + link.parentNode.parentNode.id.split('_')[1];
@@ -3100,11 +3134,11 @@ QR.show = function(tid) {
           }
         }
         else if ((el.name == 'flag')) {
-          if (el2 = el.querySelector('option[selected]')) {
+          if (el2 = $.qs('option[selected]', el)) {
             el2.removeAttribute('selected');
           }
           if ((cookie = Main.getCookie('4chan_flag')) &&
-            (el2 = el.querySelector('option[value="' + cookie + '"]'))) {
+            (el2 = $.qs('option[value="' + cookie + '"]', el))) {
             el2.setAttribute('selected', 'selected');
           }
         }
@@ -3114,7 +3148,7 @@ QR.show = function(tid) {
   }
   
   if (!this.btn) {
-    this.btn = postForm.querySelector('input[type="submit"]').cloneNode(false);
+    this.btn = $.qs('input[type="submit"]', postForm).cloneNode(false);
     this.btn.tabIndex = '';
     
     if (file) {
@@ -3126,7 +3160,7 @@ QR.show = function(tid) {
     }
   }
   
-  if (el = postForm.querySelector('.desktop > label > input[name="spoiler"]')) {
+  if (el = $.qs('.desktop > label > input[name="spoiler"]', postForm)) {
     spoiler = document.createElement('span');
     spoiler.id = 'qrSpoiler';
     spoiler.innerHTML = '<label>[<input type="checkbox" value="on" name="spoiler">Spoiler?]</label>';
@@ -3990,7 +4024,7 @@ ReplyHiding.shouldToggleR = function(el) {
     return false;
   }
   
-  quotes = el.querySelectorAll('#' + el.id + ' > .quotelink');
+  quotes = $.qsa('#' + el.id + ' > .quotelink', el);
   
   if (!quotes[0]) {
     return false;
@@ -4984,7 +5018,7 @@ ThreadUpdater.init = function() {
   
   this.currentIcon = null;
   this.iconPath = '//s.4cdn.org/image/';
-  this.iconNode = document.head.querySelector('link[rel="shortcut icon"]');
+  this.iconNode = $.qs('link[rel="shortcut icon"]', document.head);
   this.iconNode.type = 'image/x-icon';
   this.defaultIcon = this.iconNode.getAttribute('href').replace(this.iconPath, '');
   
@@ -7229,7 +7263,7 @@ Keybinds.onClick = function(e) {
 
 var Del = {
   deletePost: function(pid, file_only) {
-    var pwd, params;
+    var params;
     
     if (!confirm('Delete ' + (file_only ? 'file' : 'post') + '?')) {
       return;
@@ -7326,9 +7360,23 @@ Report.onMessage = function(e) {
 };
 
 Report.open = function(pid, board) {
+  var height, altc;
+  
+  if (QR.noCaptcha) {
+    height = 205;
+  }
+  else if (Config.altCaptcha) {
+    height = 320;
+    altc = '&altc=1';
+  }
+  else {
+    height = 510;
+    altc = '';
+  }
+  
   window.open('https://sys.4chan.org/'
-    + (board || Main.board) + '/imgboard.php?mode=report&no=' + pid, Date.now(),
-    "toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=600,height=170");
+    + (board || Main.board) + '/imgboard.php?mode=report&no=' + pid + altc, Date.now(),
+    "toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=380,height=" + height);
 };
 
 /**
@@ -8860,6 +8908,9 @@ Main.onThreadMouseOver = function(e) {
   else if ($.hasClass(t, 'dateTime')) {
     Parser.onDateMouseOver(t);
   }
+  else if ($.hasClass(t, 'hand')) {
+    Parser.onUIDMouseOver(t);
+  }
   else if (Config.embedYouTube && t.getAttribute('data-type') === 'yt' && !Main.hasMobileLayout) {
     Media.showYTPreview(t);
   }
@@ -8882,8 +8933,8 @@ Main.onThreadMouseOut = function(e) {
   ) {
     ImageHover.hide();
   }
-  else if ($.hasClass(t, 'dateTime')) {
-    Parser.onDateMouseOut(t);
+  else if ($.hasClass(t, 'dateTime') || $.hasClass(t, 'hand')) {
+    Parser.onTipMouseOut(t);
   }
   else if (Config.embedYouTube && t.getAttribute('data-type') === 'yt' && !Main.hasMobileLayout) {
     Media.removeYTPreview();
@@ -8980,7 +9031,6 @@ div.post div.postInfo {\
   -moz-user-select: none !important;\
   -webkit-user-select: none !important;\
 }\
-#quickReport,\
 #quickReply {\
   display: block;\
   position: fixed;\
@@ -9002,12 +9052,6 @@ div.post div.postInfo {\
   float: right;\
 }\
 #qrCaptchaContainer { height: 78px; }\
-#quickReport iframe {\
-  overflow: hidden;\
-}\
-#quickReport {\
-  height: 190px;\
-}\
 #qrForm > div {\
   clear: both;\
 }\
