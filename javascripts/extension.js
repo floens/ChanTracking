@@ -7364,6 +7364,7 @@ Report.open = function(pid, board) {
   
   if (QR.noCaptcha) {
     height = 205;
+    altc = '';
   }
   else if (Config.altCaptcha) {
     height = 320;
