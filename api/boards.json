@@ -1305,7 +1305,7 @@
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
         "bump_limit": 310,
-        "image_limit": 150,
+        "image_limit": 250,
         "cooldowns": {
             "threads": 600,
             "replies": 30,
