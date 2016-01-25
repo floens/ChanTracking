@@ -2025,6 +2025,12 @@ QuoteInline.inline = function(link, src, id) {
     else {
       cnt = link.parentNode;
     }
+    
+    while (cnt.nodeName === 'S') {
+      link = cnt;
+      cnt = cnt.parentNode;
+    }
+    
     cnt.insertBefore(el, link.nextSibling);
   }
 };
