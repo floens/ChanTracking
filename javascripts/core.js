@@ -689,7 +689,7 @@ TeX: { Macros: { newcommand: '{}', renewcommand: '{}', newenvironment: '{}', ren
   head.appendChild(script);  
   
   script = document.createElement('script');
-  script.src = '//cdn.mathjax.org/mathjax/2.5-latest/MathJax.js?config=TeX-AMS_HTML-full';
+  script.src = '//cdn.mathjax.org/mathjax/2.6-latest/MathJax.js?config=TeX-AMS_HTML-full';
   script.onload = parseMath;
   head.appendChild(script);
 }
