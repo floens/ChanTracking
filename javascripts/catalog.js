@@ -782,7 +782,7 @@ var FC = function() {
     }
     else if (tid = t.getAttribute('data-post-menu')) {
       e.preventDefault();
-      PostMenu.open(t, hasThreadWatcher, hiddenThreads[tid], pinnedThreads[tid]);
+      PostMenu.open(t, tid, hasThreadWatcher, hiddenThreads[tid], pinnedThreads[tid]);
     }
     else if (t.hasAttribute('data-cm-edit')) {
       e.preventDefault();
@@ -1841,42 +1841,40 @@ var FC = function() {
         thread += '</div>';
       }
       
-      thread += '<div title="(R)eplies / (I)mages'
+      thread += '<div title="(R)eplies / (I)mage Replies'
         + (onTop ? ' / (P)age' : '') + '" id="meta-' + id + '" class="meta">';
       
-      if (entry.r) {
-        if (entry.bumplimit) {
-          thread += '<i>R: <b>' + entry.r + '</b></i>';
+      if (entry.bumplimit) {
+        thread += '<i>R: <b>' + entry.r + '</b></i>';
+      }
+      else {
+        thread += 'R: <b>' + entry.r + '</b>';
+      }
+      if (pinned) {
+        rDiff = entry.r - pinnedThreads[id];
+        if (rDiff > 0) {
+          thread += ' (+' + rDiff + ')';
+          pinnedThreads[id] = entry.r;
         }
         else {
-          thread += 'R: <b>' + entry.r + '</b>';
+          thread += '(+0)';
         }
-        if (pinned) {
-          rDiff = entry.r - pinnedThreads[id];
-          if (rDiff > 0) {
-            thread += ' (+' + rDiff + ')';
-            pinnedThreads[id] = entry.r;
-          }
-          else {
-            thread += '(+0)';
-          }
+      }
+      if (entry.i) {
+        if (entry.imagelimit) {
+          thread += ' / <i>I: <b>' + entry.i + '</b></i>';
         }
-        if (entry.i) {
-          if (entry.imagelimit) {
-            thread += ' / <i>I: <b>' + entry.i + '</b></i>';
-          }
-          else {
-            thread += ' / I: <b>' + entry.i + '</b>';
-          }
+        else {
+          thread += ' / I: <b>' + entry.i + '</b>';
         }
       }
       
       if (onTop && (page = getThreadPage(id)) >= 0) {
-        if (entry.r) {
-          thread += ' / ';
-        }
-        thread += 'P: <b>' + page + '</b>';
+        thread += ' / P: <b>' + page + '</b>';
       }
+      
+      thread += '<a href="#" class="postMenuBtn" title="Thread Menu" '
+        + 'data-post-menu="' + id + '">▶</a>';
       
       thread += '</div>';
       
@@ -3269,8 +3267,8 @@ var PostMenu = {
   activeBtn: null
 };
 
-PostMenu.open = function(btn, hasThreadWatcher, hidden, pinned) {
-  var div, html, pid, btnPos, left, limit, tr;
+PostMenu.open = function(btn, pid, hasThreadWatcher, hidden, pinned) {
+  var div, html, btnPos, left, limit, tr;
   
   if (PostMenu.activeBtn == btn) {
     PostMenu.close();
@@ -3280,8 +3278,6 @@ PostMenu.open = function(btn, hasThreadWatcher, hidden, pinned) {
   PostMenu.close();
   
   tr = btn.parentNode.parentNode;
-  
-  pid = tr.id.replace(/^[0-9]*[^0-9]+/, '');
   
   html = '<ul><li data-report="' + pid + '">Report thread</li>'
     + '<li data-pin="' + pid + '">'
