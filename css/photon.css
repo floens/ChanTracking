@@ -755,6 +755,17 @@ div.closed {
 	padding-bottom: 100px;
 }
 
+.arc-ads {
+	width: 300px;
+	margin: 30px auto -60px auto;
+}
+
+.arc-ads::after {
+	display: block;
+	content: '';
+	clear: both;
+}
+
 @media screen and (-webkit-min-device-pixel-ratio:0) {tbody textarea {
 		margin-bottom: -3px !important;
 		width: 292px;
