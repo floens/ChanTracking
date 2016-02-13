@@ -9358,12 +9358,12 @@ div.backlink {\
   height: 100%;\
   top: 0;\
   left: 0;\
+  z-index: 9002;\
 }\
 .UIPanel {\
   line-height: 14px;\
   font-size: 14px;\
   background-color: rgba(0, 0, 0, 0.25);\
-  z-index: 9002;\
 }\
 .UIPanel:after {\
   display: inline-block;\
