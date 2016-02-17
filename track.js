@@ -24,6 +24,15 @@ var cookieJar = request.jar(new FileCookieStore('cookies.json'));
 
 var state = {};
 
+var inArray = function(a, n) {
+    for (var i = 0; i < a.length; i++) {
+        if (a[i] === n) {
+            return true;
+        }
+    }
+    return false;
+}
+
 var log = function(e) {
     winston.log('info', e);
 }
@@ -49,13 +58,15 @@ var saveState = function() {
     fs.writeFileSync('state.json', JSON.stringify(state));
 }
 
-var get = function(url, callback) {
+var get = function(url, callback, goodCodes) {
+    var goodCodes = goodCodes === undefined ? [200] : goodCodes;
+
     log('Getting ' + url);
     request({
         url: url,
         jar: cookieJar
     }, function(error, response, body) {
-        if (!error && response.statusCode == 200) {
+        if (inArray(goodCodes, response.statusCode)) {
             log('Got ' + url);
             callback(body);
         } else if ((response.statusCode >= 500 && response.statusCode < 600) || response.statusCode == 409) {
@@ -85,10 +96,10 @@ var loadCssAndBeautify = function(url, name) {
     });
 }
 
-var loadFile = function(url, name) {
+var loadFile = function(url, name, goodCodes) {
     get(url, function(body) {
         fs.writeFileSync(name, body);
-    });
+    }, goodCodes);
 }
 
 var load = function() {
@@ -148,6 +159,7 @@ var load = function() {
     loadFile('https://www.4chan.org/contact', 'pages/contact.html');
     loadFile('https://www.4chan.org/flash', 'pages/flash.html');
     loadFile('https://www.4chan.org/4channews.php', 'pages/4channews.php.html');
+    loadFile('https://www.4chan.org/404foobar', 'pages/404.html', [404]);
 
     loadFile('https://s.4cdn.org/js/core.' + now + '.js', 'javascripts/core.js');
     loadFile('https://s.4cdn.org/js/extension.' + now + '.js', 'javascripts/extension.js');
