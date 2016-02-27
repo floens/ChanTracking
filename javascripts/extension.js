@@ -2280,7 +2280,7 @@ ImageExpansion.expand = function(thumb) {
   href = thumb.parentNode.getAttribute('href');
   
   if (ext = href.match(/\.(?:webm|pdf)$/)) {
-    if (!Main.hasMobileLayout && ext[0] == '.webm') {
+    if (ext[0] == '.webm') {
       return ImageExpansion.expandWebm(thumb);
     }
     return false;
@@ -2382,14 +2382,21 @@ ImageExpansion.expandWebm = function(thumb) {
     el.volume = 0.5;
   }
   
-  fileText = thumb.parentNode.previousElementSibling;
+  if (Main.hasMobileLayout) {
+    el = document.createElement('div');
+    el.className = 'collapseWebm';
+    el.innerHTML = '<span class="button">Close</span>';
+    link.parentNode.appendChild(el);
+  }
+  else {
+    fileText = thumb.parentNode.previousElementSibling;
+    el = document.createElement('span');
+    el.className = 'collapseWebm';
+    el.innerHTML = '-[<a href="#">Close</a>]';
+    fileText.appendChild(el);
+  }
   
-  el = document.createElement('span');
-  el.className = 'collapseWebm';
-  el.innerHTML = '-[<a href="#">Close</a>]';
   el.firstElementChild.addEventListener('click', self.collapseWebm, false);
-  
-  fileText.appendChild(el);
   
   return true;
 };
@@ -2461,7 +2468,13 @@ ImageExpansion.collapseWebm = function(e) {
   this.removeEventListener('click', ImageExpansion.collapseWebm, false);
   
   cnt = this.parentNode;
-  el = cnt.parentNode.parentNode.getElementsByClassName('expandedWebm')[0];
+  
+  if (Main.hasMobileLayout) {
+    el = cnt.previousElementSibling;
+  }
+  else {
+    el = cnt.parentNode.parentNode.getElementsByClassName('expandedWebm')[0];
+  }
   
   el.pause();
   
@@ -9691,6 +9704,7 @@ kbd {\
 .deleted {\
   opacity: 0.66;\
 }\
+div.collapseWebm { text-align: center; margin-top: 10px; }\
 .noPictures a.fileThumb img:not(.expanded-thumb) {\
   opacity: 0;\
 }\
@@ -9875,9 +9889,6 @@ kbd {\
 .centre-exp {\
   width: auto !important;\
   clear: both;\
-}\
-.centeredThreads .expandedWebm {\
-  float: none;\
 }\
 .centeredThreads .summary {\
   margin-left: 12.5%;\
