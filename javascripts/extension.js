@@ -2352,6 +2352,10 @@ ImageExpansion.toggle = function(t) {
 ImageExpansion.expandWebm = function(thumb) {
   var el, link, fileText, left, href, maxWidth, self;
   
+  if (Main.hasMobileLayout && /iPhone|iPad|iPod/.test(navigator.userAgent)) {
+    return false;
+  }
+  
   self = ImageExpansion;
   
   if (el = document.getElementById('image-hover')) {
