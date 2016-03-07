@@ -8,6 +8,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -28,6 +29,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 500,
         "image_limit": 250,
         "cooldowns": {
@@ -50,6 +52,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 250,
         "cooldowns": {
@@ -70,6 +73,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -90,6 +94,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -110,6 +115,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -130,6 +136,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 150,
         "cooldowns": {
@@ -149,6 +156,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -170,6 +178,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -190,6 +199,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -210,6 +220,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -230,6 +241,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -250,6 +262,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 500,
         "image_limit": 250,
         "cooldowns": {
@@ -272,6 +285,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 250,
         "cooldowns": {
@@ -292,6 +306,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -312,6 +327,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 250,
         "cooldowns": {
@@ -332,6 +348,7 @@
         "max_filesize": 10485760,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 250,
         "cooldowns": {
@@ -351,6 +368,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -371,6 +389,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -391,6 +410,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -412,6 +432,7 @@
         "max_filesize": 8388608,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -432,6 +453,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 4194304,
         "max_comment_chars": 2000,
+        "max_webm_duration": 300,
         "bump_limit": 300,
         "image_limit": 250,
         "cooldowns": {
@@ -442,7 +464,8 @@
             "images_intra": 30
         },
         "meta_description": "\u0026quot;\/gif\/ - Adult GIF\u0026quot; is 4chan's imageboard dedicated to animated adult GIFs and WEBMs.",
-        "is_archived": 1
+        "is_archived": 1,
+        "webm_audio": 1
     }, {
         "board": "h",
         "title": "Hentai",
@@ -452,6 +475,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 250,
         "cooldowns": {
@@ -472,6 +496,7 @@
         "max_filesize": 8388608,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 250,
         "cooldowns": {
@@ -482,7 +507,9 @@
             "images_intra": 30
         },
         "meta_description": "\u0026quot;\/hc\/ - Hardcore\u0026quot; is 4chan's imageboard for the posting of adult hardcore pornography.",
-        "is_archived": 1
+        "is_archived": 1,
+        "min_image_width": 500,
+        "min_image_height": 500
     }, {
         "board": "his",
         "title": "History \u0026 Humanities",
@@ -492,6 +519,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -512,6 +540,7 @@
         "max_filesize": 8388608,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 150,
         "cooldowns": {
@@ -532,6 +561,7 @@
         "max_filesize": 8388608,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 250,
         "cooldowns": {
@@ -542,7 +572,9 @@
             "images_intra": 30
         },
         "meta_description": "\u0026quot;\/hr\/ - High Resolution\u0026quot; is 4chan's imageboard for the sharing of high resolution images.",
-        "is_archived": 1
+        "is_archived": 1,
+        "min_image_width": 1000,
+        "min_image_height": 1000
     }, {
         "board": "i",
         "title": "Oekaki",
@@ -552,6 +584,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 250,
         "cooldowns": {
@@ -572,6 +605,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 250,
         "cooldowns": {
@@ -592,6 +626,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -613,6 +648,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 5000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 300,
         "cooldowns": {
@@ -636,6 +672,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -656,6 +693,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -676,6 +714,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 3000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -698,6 +737,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -720,6 +760,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 500,
         "image_limit": 250,
         "cooldowns": {
@@ -742,6 +783,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -762,6 +804,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -782,6 +825,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 500,
         "image_limit": 250,
         "cooldowns": {
@@ -794,7 +838,8 @@
         "meta_description": "\u0026quot;\/news\/ - Current News; is 4chan's board for current news. ",
         "spoilers": 1,
         "custom_spoilers": 1,
-        "is_archived": 1
+        "is_archived": 1,
+        "text_only": 1
     }, {
         "board": "o",
         "title": "Auto",
@@ -804,6 +849,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -824,6 +870,7 @@
         "max_filesize": 5242880,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -844,6 +891,7 @@
         "max_filesize": 5242880,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -864,6 +912,7 @@
         "max_filesize": 8388608,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -884,6 +933,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 250,
         "cooldowns": {
@@ -906,6 +956,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -926,6 +977,7 @@
         "max_filesize": 8388608,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 250,
         "cooldowns": {
@@ -946,6 +998,7 @@
         "max_filesize": 2097152,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 500,
         "image_limit": 150,
         "cooldowns": {
@@ -967,6 +1020,7 @@
         "max_filesize": 8388608,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 150,
         "cooldowns": {
@@ -977,7 +1031,9 @@
             "images_intra": 30
         },
         "meta_description": "\u0026quot;\/s\/ - Sexy Beautiful Women\u0026quot; is 4chan's imageboard dedicated to sharing images of softcore pornography.",
-        "is_archived": 1
+        "is_archived": 1,
+        "min_image_width": 500,
+        "min_image_height": 500
     }, {
         "board": "s4s",
         "title": "Shit 4chan Says",
@@ -987,6 +1043,7 @@
         "max_filesize": 2097152,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 250,
         "cooldowns": {
@@ -1009,6 +1066,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -1030,6 +1088,7 @@
         "max_filesize": 5242880,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 500,
         "image_limit": 250,
         "cooldowns": {
@@ -1051,6 +1110,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 500,
         "image_limit": 250,
         "cooldowns": {
@@ -1072,6 +1132,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 250,
         "cooldowns": {
@@ -1092,6 +1153,7 @@
         "max_filesize": 8388608,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -1114,6 +1176,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -1134,6 +1197,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 250,
         "cooldowns": {
@@ -1153,6 +1217,7 @@
         "max_filesize": 8388608,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -1173,6 +1238,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -1195,6 +1261,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 250,
         "cooldowns": {
@@ -1216,6 +1283,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 500,
         "image_limit": 250,
         "cooldowns": {
@@ -1238,6 +1306,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 750,
         "image_limit": 250,
         "cooldowns": {
@@ -1260,6 +1329,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -1282,6 +1352,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 500,
         "image_limit": 250,
         "cooldowns": {
@@ -1304,6 +1375,7 @@
         "max_filesize": 6291456,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 250,
         "cooldowns": {
@@ -1314,7 +1386,9 @@
             "images_intra": 60
         },
         "meta_description": "\u0026quot;\/w\/ - Anime\/Wallpapers\u0026quot; is 4chan's imageboard for posting Japanese anime wallpapers.",
-        "is_archived": 1
+        "is_archived": 1,
+        "min_image_width": 480,
+        "min_image_height": 600
     }, {
         "board": "wg",
         "title": "Wallpapers\/General",
@@ -1324,6 +1398,7 @@
         "max_filesize": 6291456,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 250,
         "cooldowns": {
@@ -1334,7 +1409,9 @@
             "images_intra": 30
         },
         "meta_description": "\u0026quot;\/wg\/ - Wallpapers\/General\u0026quot; is 4chan's imageboard for posting general wallpapers.",
-        "is_archived": 1
+        "is_archived": 1,
+        "min_image_width": 480,
+        "min_image_height": 600
     }, {
         "board": "wsg",
         "title": "Worksafe GIF",
@@ -1344,6 +1421,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 4194304,
         "max_comment_chars": 2000,
+        "max_webm_duration": 300,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -1354,7 +1432,8 @@
             "images_intra": 60
         },
         "meta_description": "\u0026quot;\/wsg\/ - Worksafe GIF\u0026quot; is 4chan's imageboard dedicated to sharing worksafe animated GIFs and WEBMs.",
-        "is_archived": 1
+        "is_archived": 1,
+        "webm_audio": 1
     }, {
         "board": "wsr",
         "title": "Worksafe Requests",
@@ -1364,6 +1443,7 @@
         "max_filesize": 8388608,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -1384,6 +1464,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
@@ -1404,6 +1485,7 @@
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
+        "max_webm_duration": 120,
         "bump_limit": 300,
         "image_limit": 250,
         "cooldowns": {
