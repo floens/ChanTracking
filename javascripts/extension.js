@@ -2377,22 +2377,17 @@ ImageExpansion.expandWebm = function(thumb) {
   el.className = 'expandedWebm';
   el.onloadedmetadata = ImageExpansion.fitWebm;
   el.onplay = ImageExpansion.onWebmPlay;
-  el.src = href;
   
   link.style.display = 'none';
   link.parentNode.appendChild(el);
+  
+  el.src = href;
   
   if (Config.unmuteWebm) {
     el.volume = 0.5;
   }
   
   if (Main.hasMobileLayout) {
-    if (!$.hasClass(link, 'imgspoiler')) {
-      el.poster = thumb.src;
-    }
-    else {
-      el.poster = '//i.4cdn.org' + (link.pathname.replace(/\/([0-9]+).+$/, '/$1s.jpg'));
-    }
     el = document.createElement('div');
     el.className = 'collapseWebm';
     el.innerHTML = '<span class="button">Close</span>';
