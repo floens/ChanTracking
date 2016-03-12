@@ -2387,6 +2387,12 @@ ImageExpansion.expandWebm = function(thumb) {
   }
   
   if (Main.hasMobileLayout) {
+    if (!$.hasClass(link, 'imgspoiler')) {
+      el.poster = thumb.src;
+    }
+    else {
+      el.poster = '//i.4cdn.org' + (link.pathname.replace(/\/([0-9]+).+$/, '/$1s.jpg'));
+    }
     el = document.createElement('div');
     el.className = 'collapseWebm';
     el.innerHTML = '<span class="button">Close</span>';
@@ -2435,8 +2441,8 @@ ImageExpansion.fitWebm = function() {
     imgWidth = imgWidth * ratio;
   }
   
-  this.style.maxWidth = imgWidth + 'px';
-  this.style.maxHeight = imgHeight + 'px';
+  this.style.maxWidth = (0 | imgWidth) + 'px';
+  this.style.maxHeight = (0 | imgHeight) + 'px';
   
   if (Config.centeredThreads) {
     left = this.getBoundingClientRect().left;
@@ -6015,19 +6021,24 @@ Filter.exec = function(cnt, pi, msg, tid) {
   
   if (hit) {
     if (f.hide) {
-      cnt.className += ' post-hidden';
-      el = document.createElement('span');
-      if (!tid) {
-        el.textContent = '[View]';
-        el.setAttribute('data-filtered', '1');
-        el.setAttribute('data-cmd', 'unfilter');
+      if (tid && Config.hideStubs && !$.cls('stickyIcon', cnt)[0]) {
+        cnt.style.display = cnt.nextElementSibling.style.display = 'none';
       }
       else {
-        el.innerHTML = '[<a data-cmd="unfilter" data-filtered="1" href="thread/'
-          + tid + '">View</a>]';
+        cnt.className += ' post-hidden';
+        el = document.createElement('span');
+        if (!tid) {
+          el.textContent = '[View]';
+          el.setAttribute('data-filtered', '1');
+          el.setAttribute('data-cmd', 'unfilter');
+        }
+        else {
+          el.innerHTML = '[<a data-cmd="unfilter" data-filtered="1" href="thread/'
+            + tid + '">View</a>]';
+        }
+        el.className = 'filter-preview';
+        pi.appendChild(el);
       }
-      el.className = 'filter-preview';
-      pi.appendChild(el);
       return true;
     }
     else {
