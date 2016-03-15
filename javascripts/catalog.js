@@ -2004,7 +2004,7 @@ var FC = function() {
   function buildThreads() {
     var i, tip, fid, threads;
     
-    if (catalog.count == 0) {
+    if (catalog.count === 0) {
       return;
     }
     
@@ -2061,7 +2061,8 @@ var FC = function() {
   }
   
   function showTooltip(t) {
-    var now, tip, pos, el, rect, docWidth, style, page, tid, thread;
+    var now, tip, el, rect, docWidth, style, page, tid, thread, top,
+      bottom, docHeight, left;
     
     now = Date.now() / 1000;
     
@@ -2141,20 +2142,32 @@ var FC = function() {
     el.id = 'post-preview';
     el.innerHTML = tip;
     document.body.appendChild(el);
-    style = el.style;
     
     if ((docWidth - rect.right) < (0 | (docWidth * 0.3))) {
-      pos = docWidth - rect.left;
-      style.right = pos + 5 + 'px';
+      left = rect.left - el.offsetWidth - 5;
     }
     else {
-      pos = rect.left + rect.width;
-      style.left = pos + 5 + 'px';
+      left = rect.left + rect.width + 5;
     }
     
-    style.top =
-      rect.top + t.offsetHeight + window.pageYOffset -
-      el.offsetHeight / 2 - rect.height / 2 + 'px';
+    docHeight = document.documentElement.clientHeight;
+    
+    bottom = rect.top + el.offsetHeight;
+    
+    if (bottom > docHeight) {
+      top = rect.top - (bottom - docHeight) - 20;
+    }
+    else {
+      top = rect.top;
+    }
+    
+    if (top < 0) {
+      top = 3;
+    }
+    
+    style = el.style;
+    style.left = left + window.pageXOffset + 'px';
+    style.top = top + window.pageYOffset + 'px';
     
     hasTooltip = true;
   }
