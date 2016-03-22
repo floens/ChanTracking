@@ -341,7 +341,7 @@ function initAds(category, board) {
       window._top_ad = ados_add_placement(3536, 18130, "azk91603", 4).setZone(16258);
       window._middle_ad = ados_add_placement(3536, 18130, "azk98887", 3).setZone(16259);
       window._bottom_ad = ados_add_placement(3536, 18130, "azk53379", 4).setZone(16260);
-      ados_setDomain('engine.4chan-ads.org');
+      ados_setDomain('engine.adzerk.net');
       ados_setKeywords(category + ', ' + board);
       ados_setNoTrack();
       ados_load();
@@ -667,8 +667,27 @@ function pageHasMath() {
   return false;
 }
 
+function cleanWbr(el) {
+  var i, nodes, n;
+  
+  nodes = el.getElementsByTagName('wbr');
+  
+  for (i = nodes.length - 1; n = nodes[i]; i--) {
+    n.parentNode.removeChild(n);
+  }
+}
+
 function parseMath() {
-  var nodes = document.getElementsByClassName('postMessage');
+  var i, el, nodes;
+  
+  nodes = document.getElementsByClassName('postMessage');
+  
+  for (i = 0; el = nodes[i]; ++i) {
+    if (/\[(?:eqn|math)\]/.test(el.innerHTML)) {
+      cleanWbr(el);
+    }
+  }
+  
   MathJax.Hub.Queue(['Typeset', MathJax.Hub, nodes]);
 }
 

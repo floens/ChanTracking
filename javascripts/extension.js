@@ -999,6 +999,9 @@ Parser.parseThread = function(tid, offset, limit) {
     if (window.math_tags) {
       if (window.MathJax) {
         for (i = j; i < limit; ++i) {
+          if (Parser.postHasMath(posts[i])) {
+            window.cleanWbr(posts[i]);
+          }
           MathJax.Hub.Queue(['Typeset', MathJax.Hub, posts[i]]);
         }
       }

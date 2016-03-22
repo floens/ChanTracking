@@ -146,7 +146,8 @@
             "replies_intra": 15,
             "images_intra": 15
         },
-        "meta_description": "\u0026quot;\/b\/ - Random\u0026quot; is the birthplace of Anonymous, and where people go to discuss random topics and create memes on 4chan."
+        "meta_description": "\u0026quot;\/b\/ - Random\u0026quot; is the birthplace of Anonymous, and where people go to discuss random topics and create memes on 4chan.",
+        "forced_anon": 1
     }, {
         "board": "biz",
         "title": "Business \u0026 Finance",
@@ -595,7 +596,8 @@
             "images_intra": 30
         },
         "meta_description": "\u0026quot;\/i\/ - Oekaki\u0026quot; is 4chan's oekaki board for drawing and sharing art.",
-        "is_archived": 1
+        "is_archived": 1,
+        "oekaki": 1
     }, {
         "board": "ic",
         "title": "Artwork\/Critique",
@@ -1100,7 +1102,8 @@
         },
         "meta_description": "\u0026quot;\/soc\/ - Cams \u0026amp; Meetups\u0026quot; is 4chan's board for camwhores and meetups.",
         "user_ids": 1,
-        "is_archived": 1
+        "is_archived": 1,
+        "forced_anon": 1
     }, {
         "board": "sp",
         "title": "Sports",
@@ -1207,7 +1210,8 @@
             "replies_intra": 60,
             "images_intra": 30
         },
-        "meta_description": "\u0026quot;\/trash\/ - Off-topic\u0026quot; is 4chan's imageboard jail for off-topic threads."
+        "meta_description": "\u0026quot;\/trash\/ - Off-topic\u0026quot; is 4chan's imageboard jail for off-topic threads.",
+        "forced_anon": 1
     }, {
         "board": "trv",
         "title": "Travel",
@@ -1319,7 +1323,8 @@
         "meta_description": "\u0026quot;\/vg\/ - Video Game Generals\u0026quot; is 4chan's imageboard dedicated to the discussion of PC and console video games.",
         "spoilers": 1,
         "custom_spoilers": 1,
-        "is_archived": 1
+        "is_archived": 1,
+        "require_subject": 1
     }, {
         "board": "vp",
         "title": "Pok\u00e9mon",
