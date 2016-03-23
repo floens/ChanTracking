@@ -206,6 +206,7 @@
 	div.post div.file .fileThumb img {
 		max-width: 100px;
 		max-height: 100px;
+		object-fit: scale-down;
 	}
 	
 	span.fileThumb {
@@ -755,11 +756,6 @@
 		right: 10px;
 		margin-top: 10px;
 		background-color: #d6daf0;
-	}
-	
-	.fileThumb img {
-		width: auto !important;
-		height: auto !important;
 	}
 	
 	div.mPagelist a {
