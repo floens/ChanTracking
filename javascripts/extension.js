@@ -1508,7 +1508,7 @@ Depager.init = function() {
 
 Depager.onScroll = function() {
   if (document.documentElement.scrollHeight
-      <= (window.innerHeight + window.pageYOffset + Depager.threshold)) {
+      <= (Math.ceil(window.innerHeight + window.pageYOffset) + Depager.threshold)) {
     if (Depager.threadsLoaded) {
       Depager.renderNext();
     }
@@ -5290,7 +5290,7 @@ ThreadUpdater.onVisibilityChange = function() {
 ThreadUpdater.onScroll = function() {
   if (ThreadUpdater.hadAuto &&
       (document.documentElement.scrollHeight
-      <= (window.innerHeight + window.pageYOffset)
+      <= (Math.ceil(window.innerHeight + window.pageYOffset))
       && !document[ThreadUpdater.hidden])) {
     ThreadUpdater.clearUnread();
   }
@@ -5536,7 +5536,7 @@ ThreadUpdater.onload = function() {
       autoscroll = (
         Config.autoScroll
         && document[self.hidden]
-        && doc.scrollHeight == (window.innerHeight + window.pageYOffset)
+        && doc.scrollHeight == Math.ceil(window.innerHeight + window.pageYOffset)
       );
       
       frag = document.createDocumentFragment();
