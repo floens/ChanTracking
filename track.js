@@ -178,6 +178,7 @@ var load = function() {
     loadCssAndBeautify('https://s.4cdn.org/css/janichan.' + now + '.css', 'janichan');
     loadCssAndBeautify('https://s.4cdn.org/css/global.' + now + '.css', 'global');
     loadCssAndBeautify('https://s.4cdn.org/css/spooky.' + now + '.css', 'spooky');
+    loadCssAndBeautify('https://s.4cdn.org/css/md2016.' + now + '.css', 'md2016');
 }
 
 process.on('uncaughtException', function(e) {
