@@ -125,7 +125,7 @@ table.postForm > tbody > tr > td:first-child, .thread-stats {
 	border-bottom: 1px solid rgb(244, 67, 54) !important;
 }
 
-.recaptcha_input_area #recaptcha_response_field {
+.tomorrow .extPanel, .recaptcha_input_area #recaptcha_response_field {
 	border: 0 !important;
 }
 
