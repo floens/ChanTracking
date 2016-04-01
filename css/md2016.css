@@ -20,12 +20,12 @@ body {
 	padding-bottom: 50px;
 }
 
-a, a:visited, .quoteLink, .quotelink, .deadlink, div#boardNavMobile .pageJump a, .persistentNav .pageJump a, div.post div.postInfo span.postNum a:visited, div.post div.postInfo span.postNum a.replylink:visited {
+a, a:visited, .quoteLink, .quotelink, .deadlink, div#boardNavMobile .pageJump a, .persistentNav .pageJump a, .summary a.replylink, div.post div.postInfo span.postNum a:visited, div.post div.postInfo span.postNum a.replylink {
 	color: rgb(83, 109, 254) !important;
 	text-decoration: none !important;
 }
 
-a:hover, .quoteLink:hover, .quotelink:hover, .deadlink:hover, .persistentNav .pageJump a:hover, div#boardNavMobile .pageJump a:hover, div.post div.postInfo span.postNum a:hover, .posteruid .hand:hover {
+a:hover, .quoteLink:hover, .quotelink:hover, .deadlink:hover, .summary a.replylink:hover, .persistentNav .pageJump a:hover, div#boardNavMobile .pageJump a:hover, div.post div.postInfo span.postNum a:hover, .posteruid .hand:hover {
 	color: rgb(83, 109, 254) !important;
 	text-decoration: underline !important;
 }
@@ -393,7 +393,7 @@ div.reply div.file .fileThumb img:not(.expanded-thumb) {
 	height: 75px !important;
 }
 
-div.op div.file .fileThumb img {
+div.op div.file .fileThumb img:not(.expanded-thumb) {
 	border-radius: 150px;
 	width: 150px !important;
 	height: 150px !important;
