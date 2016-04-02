@@ -8951,10 +8951,6 @@ Main.onThreadMouseOver = function(e) {
     QuotePreview.show(t,
       t.href ? t.parentNode.parentNode.parentNode : t.parentNode.parentNode);
   }
-  else if (t.title === 'Reply to this post' && !t.hasAttribute('data-tip')) {
-    t.setAttribute('data-tip', '+(You) this post');
-    Tip.onMouseOver(e);
-  }
 };
 
 Main.onThreadMouseOut = function(e) {
