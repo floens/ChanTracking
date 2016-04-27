@@ -42,6 +42,26 @@ body {
 	text-transform: uppercase;
 }
 
+.mu-s {
+	font-weight: bold;
+}
+
+.mu-i {
+	font-style: italic;
+}
+
+.mu-r {
+	color: #c41e3a;
+}
+
+.mu-g {
+	color: #00a550;
+}
+
+.mu-b {
+	color: #1d8dc4;
+}
+
 .centeredThreads .party-hat {
 	left: 12%;
 }
