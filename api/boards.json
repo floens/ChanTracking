@@ -382,29 +382,6 @@
         "meta_description": "\u0026quot;\/fa\/ - Fashion\u0026quot; is 4chan's imageboard for images and discussion relating to fashion and apparel.",
         "is_archived": 1
     }, {
-        "board": "film",
-        "title": "film \u0026 movies",
-        "ws_board": 1,
-        "per_page": 15,
-        "pages": 10,
-        "max_filesize": 4194304,
-        "max_webm_filesize": 3145728,
-        "max_comment_chars": 2000,
-        "max_webm_duration": 120,
-        "bump_limit": 310,
-        "image_limit": 150,
-        "cooldowns": {
-            "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
-        },
-        "meta_description": "\u0026quot;\/film\/ - Film\u0026quot; is 4chan's imageboard dedicated to the discussion of film.",
-        "spoilers": 1,
-        "custom_spoilers": 5,
-        "is_archived": 1
-    }, {
         "board": "fit",
         "title": "Fitness",
         "ws_board": 1,
@@ -993,6 +970,32 @@
         },
         "meta_description": "\u0026quot;\/qa\/ - Question \u0026amp; Answer\u0026quot; is 4chan's imageboard for question and answer threads.",
         "is_archived": 1
+    }, {
+        "board": "qst",
+        "title": "Quests",
+        "ws_board": 1,
+        "per_page": 15,
+        "pages": 10,
+        "max_filesize": 8388608,
+        "max_webm_filesize": 3145728,
+        "max_comment_chars": 3000,
+        "max_webm_duration": 120,
+        "bump_limit": 750,
+        "image_limit": 250,
+        "cooldowns": {
+            "threads": 600,
+            "replies": 30,
+            "images": 60,
+            "replies_intra": 90,
+            "images_intra": 120
+        },
+        "meta_description": "\u0026quot;\/qst\/ - Quests\u0026quot; is 4chan's imageboard for grinding XP.",
+        "spoilers": 1,
+        "custom_spoilers": 2,
+        "user_ids": 1,
+        "is_archived": 1,
+        "require_subject": 1,
+        "oekaki": 1
     }, {
         "board": "r",
         "title": "Adult Requests",
