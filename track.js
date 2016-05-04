@@ -11,7 +11,9 @@ var FileCookieStore = require('tough-cookie-filestore');
 var winston = require('winston');
 
 winston.add(winston.transports.File, {
-    filename: 'track.log'
+    filename: 'track.log',
+    maxsize: 1024 * 1024,
+    maxFiles: 1
 });
 
 try {
