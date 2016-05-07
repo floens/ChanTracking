@@ -7632,14 +7632,7 @@ var Draggable = {
       self.scrollX = self.scrollY = 0;
     }
     
-    if (Config.dropDownNav && !Config.autoHideNav) {
-      self.offsetTop = $.id(
-        Config.classicNav ? 'boardNavDesktop' : 'boardNavMobile'
-      ).offsetHeight;
-    }
-    else {
-      self.offsetTop = 0;
-    }
+    self.offsetTop = Main.getDocTopOffset();
     
     document.addEventListener('mouseup', self.endDrag, false);
     document.addEventListener('mousemove', self.onDrag, false);
@@ -7677,7 +7670,8 @@ var Draggable = {
       style.top = Draggable.offsetTop + 'px';
       style.bottom = '';
     }
-    else if (Draggable.bottom < top) {
+    else if (Draggable.bottom < top &&
+      Draggable.el.clientHeight < document.documentElement.clientHeight) {
       style.bottom = '0';
       style.top = '';
     }
@@ -8249,6 +8243,17 @@ Main.addTooltip = function(link, message, id) {
   el.style.marginLeft = pos + 'px';
   
   return el;
+};
+
+Main.getDocTopOffset = function() {
+  if (Config.dropDownNav && !Config.autoHideNav) {
+    return $.id(
+      Config.classicNav ? 'boardNavDesktop' : 'boardNavMobile'
+    ).offsetHeight;
+  }
+  else {
+    return 0;
+  }
 };
 
 Main.init = function() {

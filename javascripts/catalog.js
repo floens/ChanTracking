@@ -252,6 +252,9 @@ var FC = function() {
     if (UA.hasWebStorage) {
       if ((extConfig = localStorage.getItem('4chan-settings'))) {
         extConfig = JSON.parse(extConfig);
+        
+        FC.extConfig = extConfig;
+        
         if (!extConfig.disableAll) {
           CustomMenu.initCtrl(extConfig.dropDownNav, extConfig.classicNav);
           
@@ -2296,6 +2299,17 @@ Filter.match = function(post, board) {
   return hit;
 };
 
+FC.getDocTopOffset = function() {
+  if (FC.extConfig.dropDownNav && !FC.extConfig.autoHideNav) {
+    return $.id(
+      FC.extConfig.classicNav ? 'boardNavDesktop' : 'boardNavMobile'
+    ).offsetHeight;
+  }
+  else {
+    return 0;
+  }
+};
+
 Filter.load = function() {
   var i, j, f, rawFilters, rawPattern, fid, regexEscape, regexType,
     wordSepS, wordSepE, words, inner, regexWildcard, replaceWildcard, boards,
@@ -2966,12 +2980,14 @@ var Draggable = {
     self.bottom = doc.clientHeight - offs.height;
     
     if (getComputedStyle(self.el, null).position != 'fixed') {
-      self.scrollX = window.scrollX || window.pageXOffset;
-      self.scrollY = window.scrollY || window.pageYOffset;
+      self.scrollX = window.pageXOffset;
+      self.scrollY = window.pageYOffset;
     }
     else {
       self.scrollX = self.scrollY = 0;
     }
+    
+    self.offsetTop = FC.getDocTopOffset();
     
     document.addEventListener('mouseup', self.endDrag, false);
     document.addEventListener('mousemove', self.onDrag, false);
@@ -3004,11 +3020,12 @@ var Draggable = {
       style.left = (left / document.documentElement.clientWidth * 100) + '%';
       style.right = '';
     }
-    if (top < 1) {
-      style.top = '0';
+    if (top <= Draggable.offsetTop) {
+      style.top = Draggable.offsetTop + 'px';
       style.bottom = '';
     }
-    else if (Draggable.bottom < top) {
+    else if (Draggable.bottom < top &&
+      Draggable.el.clientHeight < document.documentElement.clientHeight) {
       style.bottom = '0';
       style.top = '';
     }
