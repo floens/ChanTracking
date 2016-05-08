@@ -68,14 +68,18 @@ var get = function(url, callback, goodCodes) {
         url: url,
         jar: cookieJar
     }, function(error, response, body) {
-        if (inArray(goodCodes, response.statusCode)) {
-            log('Got ' + url);
-            callback(body);
-        } else if ((response.statusCode >= 500 && response.statusCode < 600) || response.statusCode == 409) {
-            // Server error / overloaded, ignore
-            log('Got ' + response.statusCode + ' getting ' + url);
+        if (error) {
+            winston.error(error);
         } else {
-            logError('Error loading ' + url + ' (' + response.statusCode + '): ' + error);
+            if (inArray(goodCodes, response.statusCode)) {
+                log('Got ' + url);
+                callback(body);
+            } else if ((response.statusCode >= 500 && response.statusCode < 600) || response.statusCode == 409) {
+                // Server error / overloaded, ignore
+                log('Got ' + response.statusCode + ' getting ' + url);
+            } else {
+                logError('Error loading ' + url + ' (' + response.statusCode + '): ' + error);
+            }
         }
     });
 }
