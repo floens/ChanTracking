@@ -791,8 +791,8 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
         capcodeStart + capcode + userId + flag +
         '<br>' + subject +
         '</span><span class="dateTime postNum" data-utc="' + data.time + '">' +
-        data.now + ' <a href="' + data.no + '#p' + data.no + '" title="Link to this post">No.</a>' +
-        '<a href="javascript:quote(\'' + data.no + '\');" title="Reply to this post">' +
+        data.now + ' <a href="' + noLink + '" title="Link to this post">No.</a><a href="' +
+          quoteLink + '" title="Reply to this post">' +
         data.no + '</a></span>' +
       '</div>' +
       (isOP ? fileHtml : '') +
