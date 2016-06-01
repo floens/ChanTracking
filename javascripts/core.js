@@ -342,7 +342,7 @@ function initAds(category, board) {
       window._middle_ad = ados_add_placement(3536, 18130, "azk98887", 3).setZone(16259);
       window._bottom_ad = ados_add_placement(3536, 18130, "azk53379", 4).setZone(16260);
       ados_setDomain('engine.adzerk.net');
-      ados_setKeywords(category + ', ' + board);
+      ados_setKeywords(category + ', ' + board + (window.thread_archived ? ',archive' : ''));
       ados_setNoTrack();
       ados_load();
     });
