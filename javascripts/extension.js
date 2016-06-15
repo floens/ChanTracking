@@ -435,8 +435,18 @@ Parser.onTipMouseOut = function() {
 };
 
 Parser.onUIDMouseOver = function(el) {
+  var p;
+  
   if (!$.hasClass(el.parentNode, 'posteruid')) {
     return;
+  }
+  
+  if (!Main.tid) {
+    p = el.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+    
+    if (!$.hasClass(p, 'tExpanded')) {
+      return;
+    }
   }
   
   if (Parser.tipTimeout) {
