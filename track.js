@@ -172,6 +172,7 @@ var load = function() {
     loadFile('https://s.4cdn.org/js/core.' + now + '.js', 'javascripts/core.js');
     loadFile('https://s.4cdn.org/js/extension.' + now + '.js', 'javascripts/extension.js');
     loadFile('https://s.4cdn.org/js/catalog.' + now + '.js', 'javascripts/catalog.js');
+    loadFile('https://s.4cdn.org/js/bans.' + now + '.js', 'javascripts/bans.js');
 
     loadCssAndBeautify('https://s.4cdn.org/css/yotsubluenew.' + now + '.css', 'yotsubluenew');
     loadCssAndBeautify('https://s.4cdn.org/css/yotsubanew.' + now + '.css', 'yotsubanew');
@@ -186,6 +187,7 @@ var load = function() {
     loadCssAndBeautify('https://s.4cdn.org/css/spooky.' + now + '.css', 'spooky');
     loadCssAndBeautify('https://s.4cdn.org/css/md2016.' + now + '.css', 'md2016');
     loadCssAndBeautify('https://s.4cdn.org/css/error.' + now + '.css', 'error');
+    loadCssAndBeautify('https://s.4cdn.org/css/bans.' + now + '.css', 'bans');
 }
 
 process.on('uncaughtException', function(e) {
