@@ -499,7 +499,10 @@ var FC = function() {
     refreshWindow();
   }
   
-  function refreshWindow() {
+  function refreshWindow(e) {
+    if (e && e.shiftKey) {
+      return;
+    }
     location.href = location.href;
   }
   
@@ -729,7 +732,7 @@ var FC = function() {
       return;
     }
     if (keybinds[e.keyCode]) {
-      keybinds[e.keyCode]();
+      keybinds[e.keyCode](e);
     }
   }
   
