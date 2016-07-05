@@ -930,7 +930,7 @@
         "board": "pol",
         "title": "Politically Incorrect",
         "ws_board": 0,
-        "per_page": 15,
+        "per_page": 20,
         "pages": 10,
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
@@ -986,12 +986,11 @@
             "threads": 600,
             "replies": 30,
             "images": 60,
-            "replies_intra": 90,
-            "images_intra": 120
+            "replies_intra": 60,
+            "images_intra": 60
         },
         "meta_description": "\u0026quot;\/qst\/ - Quests\u0026quot; is 4chan's imageboard for grinding XP.",
         "spoilers": 1,
-        "custom_spoilers": 2,
         "user_ids": 1,
         "is_archived": 1,
         "require_subject": 1,
