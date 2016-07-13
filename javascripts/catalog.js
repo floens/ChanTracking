@@ -714,7 +714,7 @@ var FC = function() {
     }
     
     window.open(
-      'http://sys.4chan.org/' + catalog.slug +
+      'https://sys.4chan.org/' + catalog.slug +
       '/imgboard.php?mode=report&no=' + tid + altc,
       Date.now(), 
       'toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=380,height=' + height
