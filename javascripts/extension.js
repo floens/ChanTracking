@@ -3449,6 +3449,9 @@ QR.close = function() {
   if (window.RecaptchaState) {
     Recaptcha.destroy();
   }
+  else {
+    QR.resetCaptcha();
+  }
   
   document.body.removeChild(cnt);
 };
