@@ -9062,10 +9062,6 @@ img.pointer {\
   float: none;\
   margin-right: 2px;\
 }\
-div.post div.postInfo {\
-  width: auto;\
-  display: inline;\
-}\
 .right {\
   float: right;\
 }\

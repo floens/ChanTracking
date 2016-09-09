@@ -460,6 +460,7 @@ div.reply input {
 
 div.post div.postInfo {
 	display: block;
+	word-break: break-all;
 	width: 100%;
 }
 
@@ -549,6 +550,7 @@ div.post div.file {
 
 div.post div.file div.fileInfo {
 	margin-right: 10px;
+	word-break: break-all;
 }
 
 div.replyContainer div.post div.file div.fileInfo {
@@ -1189,7 +1191,7 @@ iframe[src="about:blank"] {
 	text-decoration: none !important;
 }
 
-.name-col {
+.name-col, .file-col, table.flashListing .subject {
 	max-width: 250px;
 	overflow: hidden;
 	text-overflow: ellipsis;
