@@ -469,7 +469,6 @@ div.reply input {
 
 div.post div.postInfo {
 	display: block;
-	word-break: break-all;
 	width: 100%;
 }
 
