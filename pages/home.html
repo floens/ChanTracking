@@ -10,7 +10,7 @@
 <meta name="robots" content="noarchive"/>
 <title>4chan</title>
 <link rel="stylesheet" type="text/css" href="//s.4cdn.org/css/yui.8.css"/>
-<link rel="stylesheet" type="text/css" href="//s.4cdn.org/css/global.50.css"/>
+<link rel="stylesheet" type="text/css" href="//s.4cdn.org/css/global.51.css"/>
 <link rel="shortcut icon" href="//s.4cdn.org/image/favicon.ico"/>
 <link rel="apple-touch-icon" href="//s.4cdn.org/image/apple-touch-icon-iphone.png"/>
 <link rel="apple-touch-icon" sizes="72x72" href="//s.4cdn.org/image/apple-touch-icon-ipad.png"/>
@@ -50,11 +50,26 @@ ga('send','pageview')</script>
 </div>
 </div>
 </div>
+<div id="mobile-ad-top"></div>
 <script type="text/javascript">
-  if (document.location.protocol === "http:" && window.matchMedia && (window.matchMedia('(max-width: 480px)').matches
-    || window.matchMedia('(max-device-width: 480px)').matches)) {
-//    document.write('<div style="margin:10px auto;height:50px;width:350px;"><scr' + 'ipt type="text/javascript" src="http://js.medi-8.net/t/082/340/a1082340.js"></scr' + 'ipt></div>');
-  }
+if (window.matchMedia && window.matchMedia('(max-device-width: 480px)').matches) {
+  window.mopub = [{
+    ad_unit: "b90d27bd6740472eac8ee888b73651fe",
+    ad_container_id: "mobile-ad-top",
+    ad_width: 320,
+    ad_height: 50,
+    keywords: "",
+  } ];
+  
+  (function() {
+    var mopubjs = document.createElement("script");
+    mopubjs.async = true;
+    mopubjs.type = "text/javascript";
+    mopubjs.src = "//d1zg4cyg8u4pko.cloudfront.net/mweb/mobileweb.min.js";
+    var node = document.getElementsByTagName("script")[0];
+    node.parentNode.insertBefore(mopubjs, node);
+  })();
+}
 </script>
 <div class="box-outer top-box" id="boards">
 <div class="box-inner">
