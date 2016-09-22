@@ -466,7 +466,7 @@ var FC = function() {
   }
   
   function getThreadPage(tid) {
-    return (0 | (catalog.order.alt.indexOf(+tid) / catalog.pagesize)) + 1;
+    return (0 | (catalog.threads[tid].b / catalog.pagesize)) + 1;
   }
   
   function initStyleSwitcher() {
@@ -1516,8 +1516,10 @@ var FC = function() {
   }
   
   function loadThreadList(key) {
-    var i, threads, mod = false, ft = catalog.order.date[0];
+    var i, threads, mod = false, ft = 0;
+    
     if (threads = localStorage.getItem(key)) {
+      ft = +Object.keys(catalog.threads).pop();
       threads = JSON.parse(threads);
       for (i in threads) {
         if (!catalog.threads[i] && i < ft) {
@@ -1646,6 +1648,45 @@ var FC = function() {
     }
   }
   
+  function sortThreadList(threadList) {
+    var order = options.orderby;
+    
+    if (order == 'date') {
+      threadList.sort(function(a, b) {
+        if (a.id > b.id) return -1;
+        if (a.id < b.id) return 1;
+        return 0;
+      });
+    }
+    else if (order == 'alt') {
+      threadList.sort(function(a, b) {
+        if (a.entry.b < b.entry.b) return -1;
+        if (a.entry.b > b.entry.b) return 1;
+        return 0;
+      });
+    }
+    else if (order == 'r') {
+      threadList.sort(function(a, b) {
+        var 
+          a = a.entry.r || 0,
+          b = b.entry.r || 0;
+        if (a > b) return -1;
+        if (a < b) return 1;
+        return 0;
+      });
+    }
+    else {
+      threadList.sort(function(a, b) {
+        var
+          a = a.entry.lr ? a.entry.lr.date : a.date,
+          b = b.entry.lr ? b.entry.lr.date : b.date;
+        if (a > b) return -1;
+        if (a < b) return 1;
+        return 0;
+      });
+    }
+  }
+  
   function getFilteredThreads() {
     var i, id, entry, hl, onTop, pinned, teaser, tripcode, af, threads, fid,
       filtered;
@@ -1654,8 +1695,8 @@ var FC = function() {
     
     threads = [];
     
-    threadloop: for (i = 0; i < catalog.count; ++i) {
-      id = catalog.order[options.orderby][i];
+    threadloop: for (id in catalog.threads) {
+      id = +id;
       entry = catalog.threads[id];
       hl = onTop = pinned = false;
       
@@ -2035,6 +2076,8 @@ var FC = function() {
     }
     
     threads = getFilteredThreads();
+    
+    sortThreadList(threads);
     
     if (!window.text_only) {
       $threads.innerHTML = formatImageThreads(threads);
