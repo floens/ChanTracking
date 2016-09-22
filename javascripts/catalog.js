@@ -192,8 +192,6 @@ var FC = function() {
   $teaserCtrl,
   $sizeCtrl,
   $orderCtrl,
-  $filtersPanel,
-  $themePanel,
   $filterPalette,
   
   ctxCmds;
@@ -219,8 +217,6 @@ var FC = function() {
     $teaserCtrl = $.id('teaser-ctrl');
     $sizeCtrl = $.id('size-ctrl');
     $orderCtrl = $.id('order-ctrl');
-    $filtersPanel = $.id('filters');
-    $themePanel = $.id('theme');
     
     $.on($qfCtrl, 'click', toggleQuickfilter);
     $.on($.id('filters-clear-hidden'), 'click', toggleHiddenThreads);
@@ -934,6 +930,12 @@ var FC = function() {
     
     filtersPanel = $.id('filters');
     
+    if (!filtersPanel) {
+      filtersPanel = FC.panelHTML.build('filters', 'panel hidden');
+      FC.panelHTML.build('filters-protip', 'panel hidden');
+      FC.panelHTML.build('filter-palette', 'hidden');
+    }
+    
     if (!filtersPanel.hasAttribute('data-built')) {
       $.on(filtersPanel, 'click', onFiltersClick);
       
@@ -1314,7 +1316,7 @@ var FC = function() {
   }
   
   function panelHidden(el) {
-    return $.hasClass(el, 'hidden');
+    return el && $.hasClass(el, 'hidden');
   }
   
   function showThemeEditor() {
@@ -1326,6 +1328,10 @@ var FC = function() {
     }
     
     themePanel = $.id('theme');
+    
+    if (!themePanel) {
+      themePanel = FC.panelHTML.build('theme', 'panel hidden');
+    }
     
     theme = localStorage.getItem('catalog-theme');
     theme = theme ? JSON.parse(theme) : {};
@@ -3294,6 +3300,124 @@ var StickyNav = {
     
     StickyNav.pos = thisPos;
   }
+};
+
+FC.panelHTML = {
+  build: function(id, cls) {
+    var el;
+    
+    el = document.createElement('div');
+    el.id = id;
+    el.className = cls;
+    el.innerHTML = FC.panelHTML[id];
+    
+    document.body.appendChild(el);
+    
+    return el;
+  },
+  
+  'theme': '<div class="panelHeader">Settings<span id="theme-close" class="icon closeIcon" title="Close"></span></div>\
+  <h4>Options</h4>\
+  <ul class="clickset">\
+    <li class="desktop"><label><input id="theme-nobinds" type="checkbox"> Disable keybinds</label></li>\
+    <li><label><input id="theme-nospoiler" type="checkbox"> Don\'t spoiler images</label></li>\
+    <li><label><input id="theme-newtab" type="checkbox"> Open threads in a new tab</label></li>\
+    <li class="desktop"><label><input id="theme-tw" type="checkbox"> Thread Watcher</label></li>\
+    <li class="desktop"><label><input id="theme-ddn" type="checkbox"> Use drop-down navigation</label></li>\
+  </ul>\
+  <h4 class="desktop">Shortcuts</h4>\
+  <ul class="clickset desktop">\
+    <li><kbd>R</kbd> &mdash; Refresh current page</li>\
+    <li><kbd>X</kbd> &mdash; Reorder threads</li>\
+    <li><kbd>S</kbd> &mdash; Open search box, <kbd>Esc</kbd> to close</li>\
+    <li><kbd>Shift</kbd> <kbd title="Left Mouse Button">LMB</kbd> &mdash; Hide threads</li>\
+    <li><kbd>Alt</kbd> <kbd title="Left Mouse Button">LMB</kbd> &mdash; Pin threads</li>\
+    <li><kbd title="Right Mouse Button">RMB</kbd> &mdash; Threads context menu (Firefox only)</li>\
+  </ul>\
+  <h4>Custom CSS</h4>\
+  <textarea id="theme-css" rows="4" cols="45"></textarea>\
+  <div id="theme-btns">\
+    <span id="theme-msg"></span>\
+    <div class="center"><button id="theme-save">Save Settings</button></div>\
+  </div>',
+  
+  'filters-protip': '<div class="panelHeader">Filters &amp; Highlights Help<span id="filters-help-close" class="icon closeIcon" title="Close"></span></div>\
+  <h4>Patterns</h4>\
+  <ul><li><ul>\
+      <li><strong>Matching whole words:</strong></li>\
+      <li><code>feel</code> &mdash; will match <em>"feel"</em> but not <em>"feeling"</em>. This search is case-insensitive.</li>\
+    </ul></li>\
+    <li><ul>\
+      <li><strong>AND operator:</strong></li>\
+      <li><code>feel girlfriend</code> &mdash; will match <em>"feel"</em> AND <em>"girlfriend"</em> in any order.</li>\
+    </ul></li>\
+    <li><ul>\
+      <li><strong>OR operator:</strong></li>\
+      <li><code>feel|girlfriend</code> &mdash; will match <em>"feel"</em> OR <em>"girlfriend"</em>.</li>\
+    </ul></li>\
+    <li><ul>\
+      <li><strong>Mixing both operators:</strong></li>\
+      <li><code>girlfriend|boyfriend feel</code> &mdash; matches <em>"feel"</em> AND <em>"girlfriend"</em>, or <em>"feel"</em> AND <em>"boyfriend"</em>.</li>\
+    </ul></li>\
+    <li><ul>\
+      <li><strong>Exact match search:</strong></li>\
+      <li><code>"that feel when"</code> &mdash; place double quotes around the pattern to search for an exact string</li>\
+    </ul></li>\
+    <li><ul>\
+      <li><strong>Wildcards:</strong></li>\
+      <li><code>feel*</code> &mdash; matches expressions such as <em>"feel"</em>, <em>"feels"</em>, <em>"feeling"</em>, <em>"feeler"</em>, etc&hellip;</li>\
+      <li><code>idolm*ster</code> &mdash; this can match <em>"idolmaster"</em> or <em>"idolm@ster"</em>, etc&hellip;</li>\
+    </ul></li>\
+    <li><ul>\
+      <li><strong>Filtering by name or tripcode:</strong></li>\
+      <li>Prefix the pattern with <code>#</code> to search by <em>tripcode</em>: <code>#!Ep8pui8Vw2</code></li>\
+      <li>Prefix the pattern with <code>##</code> to search by <em>name</em>: <code>##Anonymous</code></li>\
+      <li>To filter by <em>capcode</em>: <code>#!#admin</code>, <code>#!#mod</code>, <code>#!#developer</code></li>\
+    </ul></li>\
+    <li><ul>\
+      <li><strong>It is also possible to filter by regular expression:</strong></li>\
+      <li><code>/^(?=.*detachable)(?=.*hats).*$/i</code> &mdash; AND operator.</li>\
+      <li><code>/^(?!.*touhou).*$/i</code> &mdash; NOT operator.</li>\
+      <li><code>/^&amp;gt;/</code> &mdash; threads starting with a quote (<em>"&gt;"</em> character as an html entity).</li>\
+      <li><code>/^$/</code> &mdash; threads with no text.</li>\
+    </ul></li>\
+  </ul>\
+  <hr>\
+  <h4>Controls</h4>\
+  <ul>\
+    <li><strong>On</strong> &mdash; enables or disables the filter.</li>\
+    <li><strong>Boards</strong> &mdash; space separated list of boards on which the filter will be active. Leave blank to apply to all boards.</li>\
+    <li><strong>Hide</strong> &mdash; hides matched threads.</li>\
+    <li><strong>Top</strong> &mdash; puts matched threads on top of the list.</li>\
+  </ul>',
+  
+  'filter-palette': '<div id="colorpicker" class="panel"><table id="filter-color-table"><tbody></tbody><tfoot>\
+    <tr><td>Custom</td></tr>\
+    <tr><td class="middle-txt"><input class="custom-rgb" type="text" name="custom-rgb" value="" id="filter-rgb"><span title="Select Color" id="filter-rgb-ok" class="button clickbox"></span></td></tr>\
+    <tr><td>\
+      <span class="btn-wrap"><span id="filter-palette-close" class="button">Close</span></span>\
+      <span class="btn-wrap"><span id="filter-palette-clear" class="button">Clear</span></span>\
+    </td></tr>\
+    </tfoot></table></div>',
+  
+  'filters': '<div class="panelHeader"><input placeholder="Search" type="text" id="filters-search">Filters &amp; Highlights<span id="filters-help-open" class="icon helpIcon" title="Help"></span><span id="filters-close" class="icon closeIcon" title="Close"></span></div>\
+  <table id="filter-table">\
+    <thead><tr>\
+      <th>Order</th>\
+      <th>On</th>\
+      <th>Pattern</th>\
+      <th>Boards</th>\
+      <th>Color</th>\
+      <th>Hide</th>\
+      <th>Top</th>\
+      <th>Del</th>\
+      <th></th>\
+    </tr></thead>\
+    <tbody id="filter-list"></tbody>\
+    <tfoot><tr><td colspan="9">\
+      <button id="filters-add" class="left">Add</button>\
+      <span class="right"><span id="filters-msg"></span><button id="filters-save">Save</button></span>\
+    </td></tr></tfoot></table>'
 };
 
 var PostMenu = {
