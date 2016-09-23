@@ -1677,9 +1677,8 @@ var FC = function() {
     }
     else {
       threadList.sort(function(a, b) {
-        var
-          a = a.entry.lr ? a.entry.lr.date : a.date,
-          b = b.entry.lr ? b.entry.lr.date : b.date;
+        a = a.entry.lr.id;
+        b = b.entry.lr.id;
         if (a > b) return -1;
         if (a < b) return 1;
         return 0;
