@@ -133,7 +133,7 @@
         "ws_board": 0,
         "per_page": 15,
         "pages": 10,
-        "max_filesize": 4194304,
+        "max_filesize": 2097152,
         "max_webm_filesize": 3145728,
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
