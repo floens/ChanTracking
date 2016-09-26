@@ -1266,6 +1266,12 @@ function contentLoaded() {
   
   document.removeEventListener('DOMContentLoaded', contentLoaded, true);
   
+  if (document.post) {
+    document.post.name.value = get_cookie("4chan_name");
+    document.post.email.value = get_cookie("options");
+    document.post.pwd.value = get_pass("4chan_pass");
+  }
+  
   cloneTopNav();
   
   initAnalytics();
