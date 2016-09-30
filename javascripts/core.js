@@ -324,7 +324,7 @@ function initAnalytics() {
 }
 
 function initAds(category, board) {
-  var p = "http", d = "s";
+  var p = "http", d = "s", el;
   
   if (document.location.protocol == "https:") {
     p += "s";
@@ -338,10 +338,16 @@ function initAds(category, board) {
     ados = ados || {};
     ados.run = ados.run || [];
     ados.run.push(function () {
-      window._top_ad = ados_add_placement(3536, 18130, "azk91603", 4).setZone(16258);
-      window._middle_ad = ados_add_placement(3536, 18130, "azk98887", 3).setZone(16259);
-      window._bottom_ad = ados_add_placement(3536, 18130, "azk53379", 4).setZone(16260);
-      ados_setPassbackTimeout(2000);
+      if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches) {
+        if (el = document.getElementById('azk91603')) {
+          el.id = 'azk92421';
+          window._top_ad = ados_add_placement(3536, 18130, "azk92421", 5).setZone(162389);
+        }
+      }
+      else {
+        window._top_ad = ados_add_placement(3536, 18130, "azk91603", 4).setZone(16258);
+      }
+      ados_setPassbackTimeout(3000);
       ados_setDomain('engine.4chan-ads.org');
       ados_setKeywords(category + ', ' + board + (window.thread_archived ? ',archive' : ''));
       ados_setNoTrack();
@@ -832,10 +838,9 @@ function checkForBlock() {
       
       s = plea.style;
       
-      if (/middlead/.test(el.className)) {
-        s.width = '448px';
-        s.height = '60px';
-        s.padding = '0 10px';
+      if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches) {
+        s.width = '300px';
+        s.height = '250px';
       }
       else {
         s.width = '728px';

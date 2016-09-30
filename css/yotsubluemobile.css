@@ -72,11 +72,8 @@
 	}
 	
 	img.topad, .topad > div, .topad a img {
-		width: 320px;
-		height: 40px;
-		max-width: 100%;
-		overflow: hidden;
-		margin: auto;
+		width: 300px;
+		height: 250px;
 	}
 	
 	img.middlead, .middlead > div, .middlead a img {
