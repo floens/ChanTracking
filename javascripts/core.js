@@ -1,3 +1,5 @@
+var blockPlea = 'Please <a class="aplnk" href="//www.4chan.org/news?all#109" target="_blank">support 4chan</a> by disabling your ad blocker on *.4chan.org/*, <a class="aplnk" href="https://www.4chan.org/advertise?selfserve" target="_blank">purchasing a self-serve ad</a>, or <a class="aplnk" href="https://www.4chan.org/pass" target="_blank">buying a 4chan Pass</a>.';
+
 /**
  * Tooltips
  */
