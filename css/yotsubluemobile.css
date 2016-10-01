@@ -30,6 +30,10 @@
 		pointer-events: none;
 	}
 	
+	.pu-img {
+		background: url('//s.4cdn.org/image/minileaf@2x.gif');
+	}
+	
 	body {
 		background: #eef2ff url(/image/fade-blue.png) center top repeat-x;
 		color: #000000;

@@ -62,6 +62,23 @@ body {
 	color: #1d8dc4;
 }
 
+.pu-lbl {
+	color: #117743;
+	font-weight: bold;
+	font-size: 12px;
+}
+
+.pu-img {
+	vertical-align: middle;
+	margin-top: -3px;
+	margin-right: 3px;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	background: url('//s.4cdn.org/image/minileaf.gif');
+	background-size: 100%;
+}
+
 .centeredThreads .party-hat {
 	left: 12%;
 }
