@@ -340,7 +340,7 @@ function initAds(category, board) {
     ados = ados || {};
     ados.run = ados.run || [];
     ados.run.push(function () {
-      if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches) {
+      if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches && localStorage.getItem('4chan_never_show_mobile') != 'true') {
         if (el = document.getElementById('azk91603')) {
           el.id = 'azk92421';
           window._top_ad = ados_add_placement(3536, 18130, "azk92421", 5).setZone(162389);
