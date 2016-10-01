@@ -2806,6 +2806,12 @@ QR.init = function() {
     this.cooldowns[item] = window.cooldowns[item] * 1000;
   }
   
+  if (this.noCaptcha) {
+    for (item in this.cooldowns) {
+      this.cooldowns[item] = Math.ceil(this.cooldowns[item] / 2);
+    }
+  }
+  
   this.painterData = null;
   
   this.captchaWidgetCnt = null;
@@ -2817,8 +2823,6 @@ QR.init = function() {
   this.fileDisabled = !!window.imagelimit;
   
   this.tracked = {};
-  
-  this.lastTid = localStorage.getItem('4chan-cd-' + Main.board + '-tid');
   
   if (Main.tid && !Main.hasMobileLayout && !Main.threadClosed) {
     QR.addReplyLink();
@@ -2922,12 +2926,7 @@ QR.syncStorage = function(e) {
   }
   
   if (key[1] == 'cd' && e.newValue && Main.board == key[2]) {
-    if (key[3] == 'tid') {
-      QR.lastTid = e.newValue;
-    }
-    else {
-      QR.startCooldown();
-    }
+    QR.startCooldown();
   }
 };
 
@@ -3608,10 +3607,6 @@ QR.submit = function(force) {
         tid = ids[1];
         pid = ids[2];
         
-        QR.lastTid = tid;
-        
-        localStorage.setItem('4chan-cd-' + Main.board + '-tid', tid);
-        
         hasFile = (el = $.id('qrFile')) && el.value;
         
         QR.setPostTime();
@@ -3731,12 +3726,7 @@ QR.presubmitChecks = function(force) {
 };
 
 QR.getCooldown = function(type) {
-  if (QR.currentTid != QR.lastTid) {
-    return QR.cooldowns[type];
-  }
-  else {
-    return QR.cooldowns[type + '_intra'];
-  }
+  return QR.cooldowns[type];
 };
 
 QR.setPostTime = function() {
@@ -3775,7 +3765,7 @@ QR.startCooldown = function() {
   
   QR.cdElapsed = Date.now() - QR.timestamp;
   
-  QR.cooldown = Math.floor((QR.activeDelay - QR.cdElapsed) / 1000);
+  QR.cooldown = Math.ceil((QR.activeDelay - QR.cdElapsed) / 1000);
   
   if (QR.cooldown <= 0 || QR.cdElapsed < 0) {
     QR.cooldown = false;
@@ -3790,7 +3780,7 @@ QR.startCooldown = function() {
 
 QR.onPulse = function() {
   QR.cdElapsed = Date.now() - QR.timestamp;
-  QR.cooldown = Math.floor((QR.activeDelay - QR.cdElapsed) / 1000);
+  QR.cooldown = Math.ceil((QR.activeDelay - QR.cdElapsed) / 1000);
   if (QR.cooldown <= 0) {
     clearInterval(QR.pulse);
     QR.btn.value = 'Post';
