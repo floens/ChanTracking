@@ -13,10 +13,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/3\/ - 3DCG\u0026quot; is 4chan's board for 3D modeling and imagery.",
         "is_archived": 1
@@ -34,10 +32,8 @@
         "image_limit": 250,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/a\/ - Anime \u0026amp; Manga\u0026quot; is 4chan's imageboard dedicated to the discussion of Japanese animation and manga.",
         "spoilers": 1,
@@ -58,9 +54,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/aco\/ - Adult Cartoons\u0026quot; is 4chan's imageboard for posting western-styled adult cartoon artwork.",
         "is_archived": 1
@@ -78,10 +72,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/adv\/ - Advice\u0026quot; is 4chan's board for giving and receiving advice. ",
         "is_archived": 1
@@ -99,10 +91,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/an\/ - Animals \u0026amp; Nature\u0026quot; is 4chan's imageboard for posting pictures of animals, pets, and nature.",
         "is_archived": 1
@@ -120,10 +110,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/asp\/ - Alternative Sports \u0026amp; Wrestling\u0026quot; is 4chan's imageboard for the discussion of alternative and extreme sports such as wrestling and paintball.",
         "is_archived": 1
@@ -134,7 +122,7 @@
         "per_page": 15,
         "pages": 10,
         "max_filesize": 2097152,
-        "max_webm_filesize": 3145728,
+        "max_webm_filesize": 2097152,
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 300,
@@ -142,9 +130,7 @@
         "cooldowns": {
             "threads": 60,
             "replies": 15,
-            "images": 15,
-            "replies_intra": 15,
-            "images_intra": 15
+            "images": 15
         },
         "meta_description": "\u0026quot;\/b\/ - Random\u0026quot; is the birthplace of Anonymous, and where people go to discuss random topics and create memes on 4chan.",
         "forced_anon": 1
@@ -162,10 +148,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/biz\/ - Business \u0026amp; Finance\u0026quot; is 4chan's imageboard for the discussion of business and finance, and cryptocurrencies such as Bitcoin and Dogecoin.",
         "user_ids": 1,
@@ -184,10 +168,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/c\/ - Anime\/Cute\u0026quot; is 4chan's imageboard for cute and moe anime images.",
         "is_archived": 1
@@ -205,10 +187,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/cgl\/ - Cosplay \u0026amp; EGL\u0026quot; is 4chan's imageboard for the discussion of cosplay, elegant gothic lolita (EGL), and anime conventions.",
         "is_archived": 1
@@ -226,10 +206,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/ck\/ - Food \u0026amp; Cooking\u0026quot; is 4chan's imageboard for food pictures and cooking recipes.",
         "is_archived": 1
@@ -247,10 +225,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/cm\/ - Cute\/Male\u0026quot; is 4chan's imageboard for posting pictures of cute anime males.",
         "is_archived": 1
@@ -268,10 +244,8 @@
         "image_limit": 250,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/co\/ - Comics \u0026amp; Cartoons\u0026quot; is 4chan's imageboard dedicated to the discussion of Western cartoons and comics.",
         "spoilers": 1,
@@ -292,9 +266,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/d\/ - Hentai\/Alternative\u0026quot; is 4chan's imageboard for alternative hentai images.",
         "is_archived": 1
@@ -312,10 +284,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/diy\/ - Do It Yourself\u0026quot; is 4chan's imageboard for DIY\/do it yourself projects, home improvement, and makers.",
         "is_archived": 1
@@ -334,9 +304,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/e\/ - Ecchi\u0026quot; is 4chan's imageboard for suggestive (ecchi) hentai images.",
         "is_archived": 1
@@ -355,9 +323,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/f\/ - Flash\u0026quot; is 4chan's upload board for sharing Adobe Flash files (SWFs)."
     }, {
@@ -374,10 +340,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/fa\/ - Fashion\u0026quot; is 4chan's imageboard for images and discussion relating to fashion and apparel.",
         "is_archived": 1
@@ -395,10 +359,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/fit\/ - Fitness\u0026quot; is 4chan's imageboard for weightlifting, health, and fitness.",
         "is_archived": 1
@@ -416,10 +378,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/g\/ - Technology\u0026quot; is 4chan's imageboard for discussing computer hardware and software, programming, and general technology.",
         "is_archived": 1,
@@ -438,10 +398,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/gd\/ - Graphic Design\u0026quot; is 4chan's imageboard for graphic design.",
         "is_archived": 1
@@ -460,9 +418,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/gif\/ - Adult GIF\u0026quot; is 4chan's imageboard dedicated to animated adult GIFs and WEBMs.",
         "is_archived": 1,
@@ -482,9 +438,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/h\/ - Hentai\u0026quot; is 4chan's imageboard for adult Japanese anime hentai images.",
         "is_archived": 1
@@ -503,9 +457,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/hc\/ - Hardcore\u0026quot; is 4chan's imageboard for the posting of adult hardcore pornography.",
         "is_archived": 1,
@@ -526,9 +478,7 @@
         "cooldowns": {
             "threads": 60,
             "replies": 15,
-            "images": 15,
-            "replies_intra": 15,
-            "images_intra": 15
+            "images": 15
         },
         "meta_description": "\u0026quot;\/his\/ - History \u0026amp; Humanities\u0026quot; is 4chan's board for discussing and debating history.",
         "is_archived": 1
@@ -547,9 +497,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/hm\/ - Handsome Men\u0026quot; is 4chan's imageboard dedicated to sharing adult images of handsome men.",
         "is_archived": 1
@@ -568,9 +516,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/hr\/ - High Resolution\u0026quot; is 4chan's imageboard for the sharing of high resolution images.",
         "is_archived": 1,
@@ -591,9 +537,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/i\/ - Oekaki\u0026quot; is 4chan's oekaki board for drawing and sharing art.",
         "is_archived": 1,
@@ -613,9 +557,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/ic\/ - Artwork\/Critique\u0026quot; is 4chan's imageboard for the discussion and critique of art.",
         "is_archived": 1
@@ -633,10 +575,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/int\/ - International\u0026quot; is 4chan's international board, for the exchange of foreign language and culture.",
         "is_archived": 1,
@@ -655,10 +595,8 @@
         "image_limit": 300,
         "cooldowns": {
             "threads": 3600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/jp\/ - Otaku Culture\u0026quot; is 4chan's board for discussing Japanese otaku culture.",
         "spoilers": 1,
@@ -679,10 +617,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/k\/ - Weapons\u0026quot; is 4chan's imageboard for discussing all types of weaponry, from military tanks to guns and knives.",
         "is_archived": 1
@@ -700,10 +636,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/lgbt\/ - LGBT\u0026quot; is 4chan's imageboard for Lesbian-Gay-Bisexual-Transgender-Queer and sexuality discussion.",
         "is_archived": 1
@@ -721,10 +655,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/lit\/ - Literature\u0026quot; is 4chan's board for the discussion of books, authors, and literature.",
         "spoilers": 1,
@@ -744,10 +676,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/m\/ - Mecha\u0026quot; is 4chan's imageboard for discussing Japanese mecha robots and anime, like Gundam and Macross.",
         "spoilers": 1,
@@ -767,10 +697,8 @@
         "image_limit": 250,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/mlp\/ - Pony\u0026quot; is 4chan's imageboard dedicated to the discussion of My Little Pony: Friendship is Magic.",
         "spoilers": 1,
@@ -790,10 +718,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/mu\/ - Music\u0026quot; is 4chan's imageboard for discussing all types of music.",
         "is_archived": 1
@@ -811,10 +737,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/n\/ - Transportation\u0026quot; is 4chan's imageboard for discussing modes of transportation like trains and bicycles.",
         "is_archived": 1
@@ -832,10 +756,8 @@
         "image_limit": 250,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/news\/ - Current News; is 4chan's board for current news. ",
         "spoilers": 1,
@@ -857,10 +779,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/o\/ - Auto\u0026quot; is 4chan's imageboard for discussing cars and motorcycles.",
         "is_archived": 1
@@ -878,10 +798,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/out\/ - Outdoors\u0026quot; is 4chan's imageboard for discussing survivalist skills and outdoor activities such as hiking.",
         "is_archived": 1
@@ -899,10 +817,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/p\/ - Photography\u0026quot; is 4chan's imageboard for sharing and critiquing photos.",
         "is_archived": 1
@@ -920,10 +836,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/po\/ - Papercraft \u0026amp; Origami\u0026quot; is 4chan's imageboard for posting papercraft and origami templates and instructions.",
         "is_archived": 1
@@ -942,9 +856,7 @@
         "cooldowns": {
             "threads": 60,
             "replies": 15,
-            "images": 15,
-            "replies_intra": 15,
-            "images_intra": 15
+            "images": 15
         },
         "meta_description": "\u0026quot;\/pol\/ - Politically Incorrect\u0026quot; is 4chan's board for discussing and debating politics and current events.",
         "user_ids": 1,
@@ -964,10 +876,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/qa\/ - Question \u0026amp; Answer\u0026quot; is 4chan's imageboard for question and answer threads.",
         "is_archived": 1
@@ -985,10 +895,8 @@
         "image_limit": 250,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/qst\/ - Quests\u0026quot; is 4chan's imageboard for grinding XP.",
         "spoilers": 1,
@@ -1011,9 +919,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/r\/ - Request\u0026quot; is 4chan's imageboard dedicated to fulfilling all types of user requests.",
         "is_archived": 1
@@ -1032,9 +938,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/r9k\/ - ROBOT9001\u0026quot; is a board for hanging out and posting greentext stories.",
         "spoilers": 1,
@@ -1054,9 +958,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/s\/ - Sexy Beautiful Women\u0026quot; is 4chan's imageboard dedicated to sharing images of softcore pornography.",
         "is_archived": 1,
@@ -1077,9 +979,7 @@
         "cooldowns": {
             "threads": 300,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;[s4s] - Shit 4chan Says\u0026quot; is 4chan's imageboard for posting dank memes :^)",
         "spoilers": 1,
@@ -1099,10 +999,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/sci\/ - Science \u0026amp; Math\u0026quot; is 4chan's board for the discussion of science and math.",
         "is_archived": 1,
@@ -1122,9 +1020,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/soc\/ - Cams \u0026amp; Meetups\u0026quot; is 4chan's board for camwhores and meetups.",
         "user_ids": 1,
@@ -1144,10 +1040,8 @@
         "image_limit": 250,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/sp\/ - Sports\u0026quot; is 4chan's imageboard for sports discussion.",
         "is_archived": 1,
@@ -1167,9 +1061,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/t\/ - Torrents\u0026quot; is 4chan's imageboard for posting links and descriptions to torrents.",
         "is_archived": 1
@@ -1187,10 +1079,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/tg\/ - Traditional Games\u0026quot; is 4chan's imageboard for discussing traditional gaming, such as board games and tabletop RPGs.",
         "spoilers": 1,
@@ -1210,10 +1100,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/toy\/ - Toys\u0026quot; is 4chan's imageboard for talking about all kinds of toys!",
         "is_archived": 1
@@ -1232,9 +1120,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/trash\/ - Off-topic\u0026quot; is 4chan's imageboard jail for off-topic threads.",
         "forced_anon": 1
@@ -1252,10 +1138,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/trv\/ - Travel\u0026quot; is 4chan's imageboard dedicated to travel and the countries of the world.",
         "is_archived": 1
@@ -1273,10 +1157,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/tv\/ - Television \u0026amp; Film\u0026quot; is 4chan's imageboard dedicated to the discussion of television and film.",
         "spoilers": 1,
@@ -1297,9 +1179,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/u\/ - Yuri\u0026quot; is 4chan's imageboard for yuri hentai images.",
         "spoilers": 1,
@@ -1318,10 +1198,8 @@
         "image_limit": 250,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/v\/ - Video Games\u0026quot; is 4chan's imageboard dedicated to the discussion of PC and console video games.",
         "spoilers": 1,
@@ -1341,10 +1219,8 @@
         "image_limit": 250,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 90,
-            "images_intra": 120
+            "replies": 90,
+            "images": 120
         },
         "meta_description": "\u0026quot;\/vg\/ - Video Game Generals\u0026quot; is 4chan's imageboard dedicated to the discussion of PC and console video games.",
         "spoilers": 1,
@@ -1365,10 +1241,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/vp\/ - Pok\u0026eacute;mon\u0026quot; is 4chan's imageboard dedicated to discussing the Pok\u0026eacute;mon series of video games and shows.",
         "spoilers": 1,
@@ -1388,10 +1262,8 @@
         "image_limit": 250,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/vr\/ - Retro Games\u0026quot; is 4chan's imageboard for discussing retro console video games and classic arcade games.",
         "spoilers": 1,
@@ -1411,10 +1283,8 @@
         "image_limit": 250,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/w\/ - Anime\/Wallpapers\u0026quot; is 4chan's imageboard for posting Japanese anime wallpapers.",
         "is_archived": 1,
@@ -1435,9 +1305,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/wg\/ - Wallpapers\/General\u0026quot; is 4chan's imageboard for posting general wallpapers.",
         "is_archived": 1,
@@ -1457,10 +1325,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/wsg\/ - Worksafe GIF\u0026quot; is 4chan's imageboard dedicated to sharing worksafe animated GIFs and WEBMs.",
         "is_archived": 1,
@@ -1479,10 +1345,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/wsr\/ - Worksafe Requests\u0026quot; is 4chan's imageboard dedicated to fulfilling non-NSFW requests.",
         "is_archived": 1
@@ -1500,10 +1364,8 @@
         "image_limit": 150,
         "cooldowns": {
             "threads": 600,
-            "replies": 30,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 60
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/x\/ - Paranormal\u0026quot; is 4chan's imageboard for the discussion of paranormal, spooky pictures and conspiracy theories.",
         "is_archived": 1
@@ -1522,9 +1384,7 @@
         "cooldowns": {
             "threads": 600,
             "replies": 60,
-            "images": 60,
-            "replies_intra": 60,
-            "images_intra": 30
+            "images": 30
         },
         "meta_description": "\u0026quot;\/y\/ - Yaoi\u0026quot; is 4chan's imageboard for posting adult yaoi hentai images.",
         "is_archived": 1
