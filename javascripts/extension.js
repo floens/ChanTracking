@@ -811,8 +811,9 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
         '<input type="checkbox" name="' + data.no + '" value="delete"> ' +
         subject +
         '<span class="nameBlock' + capcodeClass + '">' + emailStart +
-          '<span class="name">' + name + '</span>' +
-          tripcode + capcodeStart + emailEnd + capcode + userId + flag +
+          '<span class="name">' + name + '</span>' + tripcode
+          + (data.since4pass ? (' <span title="Pass user since ' + data.since4pass + '" class="n-pu"></span>') : '')
+          + capcodeStart + emailEnd + capcode + userId + flag +
         ' </span> ' +
         '<span class="dateTime" data-utc="' + data.time + '">' + data.now + '</span> ' +
         '<span class="postNum desktop">' +
