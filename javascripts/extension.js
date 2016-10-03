@@ -5027,7 +5027,7 @@ ThreadExpansion.fetch = function(tid) {
 var ThreadUpdater = {};
 
 ThreadUpdater.init = function() {
-  if (!UA.hasCORS) {
+  if (!UA.hasCORS || window.thread_archived) {
     return;
   }
   
@@ -5044,7 +5044,10 @@ ThreadUpdater.init = function() {
   this.timeLeft = 0;
   this.interval = null;
   
+  this.tailSize = window.tailSize || 0;
+  this.lastUpdated = Date.now();
   this.lastModified = '0';
+  this.lastModifiedTail = '0';
   this.lastReply = null;
   
   this.currentIcon = null;
@@ -5218,7 +5221,6 @@ ThreadUpdater.start = function() {
   this.auto = this.hadAuto = true;
   this.autoNode.checked = this.autoNodeBot.checked = true;
   this.force = this.updating = false;
-  this.lastUpdated = Date.now();
   if (this.hidden) {
     document.addEventListener(this.visibilitychange,
       this.onVisibilityChange, false);
@@ -5286,7 +5288,6 @@ ThreadUpdater.onVisibilityChange = function() {
   }
   
   self.timeLeft = self.delayRange[0];
-  self.lastUpdated = Date.now();
   clearTimeout(self.interval);
   self.pulse();
 };
@@ -5331,8 +5332,8 @@ ThreadUpdater.toggleSound = function() {
     this.audioEnabled = !this.audioEnabled;
 };
 
-ThreadUpdater.update = function() {
-  var self;
+ThreadUpdater.update = function(full) {
+  var self, isTail;
   
   self = ThreadUpdater;
   
@@ -5346,15 +5347,57 @@ ThreadUpdater.update = function() {
   
   self.setStatus('Updating...');
   
-  $.get('//a.4cdn.org/' + Main.board + '/thread/' + Main.tid + '.json',
+  isTail = !full && self.checkTailUpdate();
+  
+  console.log('Updating (' + (isTail ? 'tail)' : 'full)'));
+  
+  $.get('//a.4cdn.org/' + Main.board + '/thread/' + Main.tid
+    + (isTail ? '-tail' : '') + '.json',
     {
       onload: self.onload,
-      onerror: self.onerror
+      onerror: self.onerror,
+      istail: isTail
     },
     {
-      'If-Modified-Since': self.lastModified
+      'If-Modified-Since': isTail ? self.lastModifiedTail : self.lastModified
     }
   );
+};
+
+ThreadUpdater.checkTailUpdate = function() {
+  var self, nodes, el, dtr, dtp;
+  
+  self = ThreadUpdater;
+  
+  if (!self.tailSize) {
+    return false;
+  }
+  
+  nodes = $.cls('replyContainer');
+  
+  el = nodes[nodes.length - self.tailSize];
+  
+  if (!el) {
+    return true;
+  }
+  
+  el = $.cls('dateTime', el)[0];
+  
+  dtp = (0 | (self.lastUpdated / 1000)) - (+el.getAttribute('data-utc'));
+  dtr = 0 | ((Date.now() - self.lastUpdated) / 1000);
+  
+  return dtp > dtr;
+};
+
+ThreadUpdater.checkTailValid = function(posts) {
+  var op = posts[0];
+  
+  if (!op || !op.tail_id) {
+    ThreadUpdater.tailSize = 0;
+    return false;
+  }
+  
+  return !!$.id('p' + op.tail_id);
 };
 
 ThreadUpdater.initAds = function() {
@@ -5433,7 +5476,7 @@ ThreadUpdater.refreshAds = function() {
     ados_refresh(ad, 0, false);
   }
 };
-
+/*
 ThreadUpdater.markDeletedReplies = function(newposts) {
   var i, j, posthash, oldposts, el;
   
@@ -5460,7 +5503,7 @@ ThreadUpdater.markDeletedReplies = function(newposts) {
     }
   }
 };
-
+*/
 ThreadUpdater.onload = function() {
   var i, state, self, nodes, thread, newposts, frag, lastrep, lastid,
     op, doc, autoscroll, count, fromQR, lastRepPos;
@@ -5471,14 +5514,27 @@ ThreadUpdater.onload = function() {
   self.setStatus('');
   
   if (this.status == 200) {
-    self.lastModified = this.getResponseHeader('Last-Modified');
+    newposts = Parser.parseThreadJSON(this.responseText);
+    
+    if (this.istail) {
+      if (!self.checkTailValid(newposts)) {
+        self.updating = self.force = false;
+        self.update(true);
+        return;
+      }
+      self.lastModifiedTail = this.getResponseHeader('Last-Modified');
+    }
+    else {
+      if (newposts[0].tail_size !== self.tailSize) {
+        self.tailSize = newposts[0].tail_size || 0;
+      }
+      self.lastModified = this.getResponseHeader('Last-Modified');
+    }
     
     thread = $.id('t' + Main.tid);
     
     lastrep = thread.children[thread.childElementCount - 1];
     lastid = +lastrep.id.slice(2);
-    
-    newposts = Parser.parseThreadJSON(this.responseText);
     
     state = !!newposts[0].archived;
     if (window.thread_archived !== undefined && state != window.thread_archived) {
@@ -5529,11 +5585,11 @@ ThreadUpdater.onload = function() {
       fromQR = true;
       QR.lastReplyId = null;
     }
-    
+    /*
     if (!fromQR) {
       self.markDeletedReplies(newposts);
     }
-    
+    */
     if (count) {
       doc = document.documentElement;
       
@@ -5620,6 +5676,11 @@ ThreadUpdater.onload = function() {
     self.setStatus('No new posts');
   }
   else if (this.status === 404) {
+    if (this.istail) {
+      self.updating = self.force = false;
+      self.update(true);
+      return;
+    }
     self.setIcon('dead');
     self.setError('This thread has been pruned or deleted');
     self.dead = true;
