@@ -1228,6 +1228,27 @@
         "is_archived": 1,
         "require_subject": 1
     }, {
+        "board": "vip",
+        "title": "Very Important Posts",
+        "ws_board": 1,
+        "per_page": 15,
+        "pages": 10,
+        "max_filesize": 4194304,
+        "max_webm_filesize": 3145728,
+        "max_comment_chars": 2000,
+        "max_webm_duration": 120,
+        "bump_limit": 300,
+        "image_limit": 300,
+        "cooldowns": {
+            "threads": 600,
+            "replies": 60,
+            "images": 60
+        },
+        "meta_description": "\u0026quot;\/vip\/ - Very Important Posts\u0026quot; is 4chan's imageboard for Pass users.",
+        "spoilers": 1,
+        "is_archived": 1,
+        "sjis_tags": 1
+    }, {
         "board": "vp",
         "title": "Pok\u00e9mon",
         "ws_board": 1,
