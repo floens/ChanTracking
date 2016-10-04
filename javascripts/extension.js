@@ -5218,6 +5218,9 @@ ThreadUpdater.initControls = function() {
 };
 
 ThreadUpdater.start = function() {
+  if (this.dead) {
+    return;
+  }
   this.auto = this.hadAuto = true;
   this.autoNode.checked = this.autoNodeBot.checked = true;
   this.force = this.updating = false;
@@ -5337,7 +5340,7 @@ ThreadUpdater.update = function(full) {
   
   self = ThreadUpdater;
   
-  if (self.updating) {
+  if (self.updating || self.dead) {
     return;
   }
   
