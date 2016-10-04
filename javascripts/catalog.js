@@ -1824,7 +1824,6 @@ var FC = function() {
       }
       
       thread += '<a ' + newtab + 'href="' + provider + id
-        + (entry.semantic_url ? ('/' + entry.semantic_url) : '')
         +'"><img alt="" id="thumb-' + id + '" class="thumb';
       
       if (hl.color) {
@@ -1998,9 +1997,7 @@ var FC = function() {
         pinhl = '';
       }
       
-      aTag = '<a ' + newtab + 'href="'
-        + provider + id + (entry.semantic_url ? ('/' + entry.semantic_url) : '')
-        + '">';
+      aTag = '<a ' + newtab + 'href="' + provider + id + '">';
       
       thread = '<tr id="thread-' + id + '"' + pinhl
         + '><td class="txt-no">' + aTag
