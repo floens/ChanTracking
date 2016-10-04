@@ -5518,7 +5518,7 @@ ThreadUpdater.onload = function() {
     
     if (this.istail) {
       if (!self.checkTailValid(newposts)) {
-        self.updating = self.force = false;
+        self.updating = false;
         self.update(true);
         return;
       }
@@ -5677,7 +5677,7 @@ ThreadUpdater.onload = function() {
   }
   else if (this.status === 404) {
     if (this.istail) {
-      self.updating = self.force = false;
+      self.updating = false;
       self.update(true);
       return;
     }
