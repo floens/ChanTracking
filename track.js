@@ -173,6 +173,7 @@ var load = function() {
     loadFile('https://s.4cdn.org/js/extension.' + now + '.js', 'javascripts/extension.js');
     loadFile('https://s.4cdn.org/js/catalog.' + now + '.js', 'javascripts/catalog.js');
     loadFile('https://s.4cdn.org/js/bans.' + now + '.js', 'javascripts/bans.js');
+    loadFile('https://s.4cdn.org/js/frontpage.' + now + '.js', 'javascripts/frontpage.js');
 
     loadCssAndBeautify('https://s.4cdn.org/css/yotsubluenew.' + now + '.css', 'yotsubluenew');
     loadCssAndBeautify('https://s.4cdn.org/css/yotsubanew.' + now + '.css', 'yotsubanew');
