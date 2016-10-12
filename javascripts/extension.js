@@ -701,7 +701,7 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
       filePath = imgDir + '/' + data.tim + data.ext;
       
       imgSrc = '<a class="fileThumb' + fileClass + '" href="' + filePath
-        + '" target="_blank"><img src="' + fileThumb
+        + '" target="_blank"' + (data.m_img ? ' data-m' : '') + '><img src="' + fileThumb
         + '" alt="' + size + 'B" data-md5="' + data.md5
         + '" style="height: ' + data.tn_h + 'px; width: '
         + data.tn_w + 'px;">'
@@ -2285,19 +2285,25 @@ var ImageExpansion = {
 };
 
 ImageExpansion.expand = function(thumb) {
-  var img, href, ext;
+  var img, href, ext, a;
   
   if (Config.imageHover) {
     ImageHover.hide();
   }
   
-  href = thumb.parentNode.getAttribute('href');
+  a = thumb.parentNode;
+  
+  href = a.getAttribute('href');
   
   if (ext = href.match(/\.(?:webm|pdf)$/)) {
     if (ext[0] == '.webm') {
       return ImageExpansion.expandWebm(thumb);
     }
     return false;
+  }
+  
+  if (Main.hasMobileLayout && a.hasAttribute('data-m')) {
+    href = ImageExpansion.setMobileSrc(a);
   }
   
   thumb.setAttribute('data-expanding', '1');
@@ -2361,6 +2367,17 @@ ImageExpansion.toggle = function(t) {
   }
   
   return true;
+};
+
+ImageExpansion.setMobileSrc = function(a) {
+  var href;
+  
+  a.removeAttribute('data-m');
+  href = a.getAttribute('href');
+  href = href.replace(/\/([0-9]+).+$/, '/$1m.jpg');
+  a.setAttribute('href', href);
+  
+  return href;
 };
 
 ImageExpansion.expandWebm = function(thumb) {
@@ -8429,12 +8446,12 @@ Main.run = function() {
   $.id('settingsWindowLinkBot').addEventListener('click', SettingsMenu.toggle, false);
   $.id('settingsWindowLinkMobile').addEventListener('click', SettingsMenu.toggle, false);
   
+  Main.hasMobileLayout = Main.checkMobileLayout();
+  Main.isMobileDevice = /Mobile|Android|Dolfin|Opera Mobi|PlayStation Vita|Nintendo DS/.test(navigator.userAgent);
+  
   if (Config.disableAll) {
     return;
   }
-  
-  Main.hasMobileLayout = Main.checkMobileLayout();
-  Main.isMobileDevice = /Mobile|Android|Dolfin|Opera Mobi|PlayStation Vita|Nintendo DS/.test(navigator.userAgent);
   
   Report.init();
   
@@ -8968,6 +8985,8 @@ Main.onclick = function(e) {
       if (ImageExpansion.toggle(t)) {
         e.preventDefault();
       }
+      
+      return;
     }
     else if (Config.inlineQuotes && e.which == 1 && $.hasClass(t, 'quotelink') && Main.page !== 'archive') {
       if (!e.shiftKey) {
@@ -8990,6 +9009,12 @@ Main.onclick = function(e) {
     else if ($.hasClass(t, 'mFileInfo')) {
       e.preventDefault();
       e.stopPropagation();
+    }
+  }
+  
+  if (Main.hasMobileLayout && (Config.disableAll || !Config.imageExpansion)) {
+    if (t.parentNode && t.parentNode.hasAttribute('data-m')) {
+      ImageExpansion.setMobileSrc(t.parentNode);
     }
   }
 };
