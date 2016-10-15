@@ -1,6 +1,7 @@
 {
     "name": "ChanTracking",
-    "description": "Tracing some website",
+    "description": "Tracking some website",
+    "private": true,
     "dependencies": {
         "request": "2.62.x",
         "js-beautify": "1.5.x",
