@@ -38,8 +38,7 @@
         "meta_description": "\u0026quot;\/a\/ - Anime \u0026amp; Manga\u0026quot; is 4chan's imageboard dedicated to the discussion of Japanese animation and manga.",
         "spoilers": 1,
         "custom_spoilers": 1,
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "aco",
         "title": "Adult Cartoons",
@@ -58,8 +57,7 @@
             "images": 30
         },
         "meta_description": "\u0026quot;\/aco\/ - Adult Cartoons\u0026quot; is 4chan's imageboard for posting western-styled adult cartoon artwork.",
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "adv",
         "title": "Advice",
@@ -78,8 +76,7 @@
             "images": 60
         },
         "meta_description": "\u0026quot;\/adv\/ - Advice\u0026quot; is 4chan's board for giving and receiving advice. ",
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "an",
         "title": "Animals \u0026 Nature",
@@ -136,8 +133,7 @@
             "images": 15
         },
         "meta_description": "\u0026quot;\/b\/ - Random\u0026quot; is the birthplace of Anonymous, and where people go to discuss random topics and create memes on 4chan.",
-        "forced_anon": 1,
-        "json_tail_size": 50
+        "forced_anon": 1
     }, {
         "board": "biz",
         "title": "Business \u0026 Finance",
@@ -214,8 +210,7 @@
             "images": 60
         },
         "meta_description": "\u0026quot;\/ck\/ - Food \u0026amp; Cooking\u0026quot; is 4chan's imageboard for food pictures and cooking recipes.",
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "cm",
         "title": "Cute\/Male",
@@ -255,8 +250,7 @@
         "meta_description": "\u0026quot;\/co\/ - Comics \u0026amp; Cartoons\u0026quot; is 4chan's imageboard dedicated to the discussion of Western cartoons and comics.",
         "spoilers": 1,
         "custom_spoilers": 5,
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "d",
         "title": "Hentai\/Alternative",
@@ -275,8 +269,7 @@
             "images": 30
         },
         "meta_description": "\u0026quot;\/d\/ - Hentai\/Alternative\u0026quot; is 4chan's imageboard for alternative hentai images.",
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "diy",
         "title": "Do It Yourself",
@@ -314,8 +307,7 @@
             "images": 30
         },
         "meta_description": "\u0026quot;\/e\/ - Ecchi\u0026quot; is 4chan's imageboard for suggestive (ecchi) hentai images.",
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "f",
         "title": "Flash",
@@ -352,8 +344,7 @@
             "images": 60
         },
         "meta_description": "\u0026quot;\/fa\/ - Fashion\u0026quot; is 4chan's imageboard for images and discussion relating to fashion and apparel.",
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "fit",
         "title": "Fitness",
@@ -372,8 +363,7 @@
             "images": 60
         },
         "meta_description": "\u0026quot;\/fit\/ - Fitness\u0026quot; is 4chan's imageboard for weightlifting, health, and fitness.",
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "g",
         "title": "Technology",
@@ -393,8 +383,7 @@
         },
         "meta_description": "\u0026quot;\/g\/ - Technology\u0026quot; is 4chan's imageboard for discussing computer hardware and software, programming, and general technology.",
         "is_archived": 1,
-        "code_tags": 1,
-        "json_tail_size": 50
+        "code_tags": 1
     }, {
         "board": "gd",
         "title": "Graphic Design",
@@ -433,8 +422,7 @@
         },
         "meta_description": "\u0026quot;\/gif\/ - Adult GIF\u0026quot; is 4chan's imageboard dedicated to animated adult GIFs and WEBMs.",
         "is_archived": 1,
-        "webm_audio": 1,
-        "json_tail_size": 50
+        "webm_audio": 1
     }, {
         "board": "h",
         "title": "Hentai",
@@ -453,8 +441,7 @@
             "images": 30
         },
         "meta_description": "\u0026quot;\/h\/ - Hentai\u0026quot; is 4chan's imageboard for adult Japanese anime hentai images.",
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "hc",
         "title": "Hardcore",
@@ -475,8 +462,7 @@
         "meta_description": "\u0026quot;\/hc\/ - Hardcore\u0026quot; is 4chan's imageboard for the posting of adult hardcore pornography.",
         "is_archived": 1,
         "min_image_width": 500,
-        "min_image_height": 500,
-        "json_tail_size": 50
+        "min_image_height": 500
     }, {
         "board": "his",
         "title": "History \u0026 Humanities",
@@ -495,8 +481,7 @@
             "images": 15
         },
         "meta_description": "\u0026quot;\/his\/ - History \u0026amp; Humanities\u0026quot; is 4chan's board for discussing and debating history.",
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "hm",
         "title": "Handsome Men",
@@ -595,8 +580,7 @@
         },
         "meta_description": "\u0026quot;\/int\/ - International\u0026quot; is 4chan's international board, for the exchange of foreign language and culture.",
         "is_archived": 1,
-        "country_flags": 1,
-        "json_tail_size": 50
+        "country_flags": 1
     }, {
         "board": "jp",
         "title": "Otaku Culture",
@@ -618,8 +602,7 @@
         "spoilers": 1,
         "custom_spoilers": 1,
         "is_archived": 1,
-        "sjis_tags": 1,
-        "json_tail_size": 50
+        "sjis_tags": 1
     }, {
         "board": "k",
         "title": "Weapons",
@@ -638,8 +621,7 @@
             "images": 60
         },
         "meta_description": "\u0026quot;\/k\/ - Weapons\u0026quot; is 4chan's imageboard for discussing all types of weaponry, from military tanks to guns and knives.",
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "lgbt",
         "title": "LGBT",
@@ -658,8 +640,7 @@
             "images": 60
         },
         "meta_description": "\u0026quot;\/lgbt\/ - LGBT\u0026quot; is 4chan's imageboard for Lesbian-Gay-Bisexual-Transgender-Queer and sexuality discussion.",
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "lit",
         "title": "Literature",
@@ -722,8 +703,7 @@
         "meta_description": "\u0026quot;\/mlp\/ - Pony\u0026quot; is 4chan's imageboard dedicated to the discussion of My Little Pony: Friendship is Magic.",
         "spoilers": 1,
         "custom_spoilers": 1,
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "mu",
         "title": "Music",
@@ -742,8 +722,7 @@
             "images": 60
         },
         "meta_description": "\u0026quot;\/mu\/ - Music\u0026quot; is 4chan's imageboard for discussing all types of music.",
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "n",
         "title": "Transportation",
@@ -882,8 +861,7 @@
         "meta_description": "\u0026quot;\/pol\/ - Politically Incorrect\u0026quot; is 4chan's board for discussing and debating politics and current events.",
         "user_ids": 1,
         "is_archived": 1,
-        "country_flags": 1,
-        "json_tail_size": 50
+        "country_flags": 1
     }, {
         "board": "qa",
         "title": "Question \u0026 Answer",
@@ -902,8 +880,7 @@
             "images": 60
         },
         "meta_description": "\u0026quot;\/qa\/ - Question \u0026amp; Answer\u0026quot; is 4chan's imageboard for question and answer threads.",
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "qst",
         "title": "Quests",
@@ -926,8 +903,7 @@
         "user_ids": 1,
         "is_archived": 1,
         "require_subject": 1,
-        "oekaki": 1,
-        "json_tail_size": 50
+        "oekaki": 1
     }, {
         "board": "r",
         "title": "Adult Requests",
@@ -966,8 +942,7 @@
         },
         "meta_description": "\u0026quot;\/r9k\/ - ROBOT9001\u0026quot; is a board for hanging out and posting greentext stories.",
         "spoilers": 1,
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "s",
         "title": "Sexy Beautiful Women",
@@ -988,8 +963,7 @@
         "meta_description": "\u0026quot;\/s\/ - Sexy Beautiful Women\u0026quot; is 4chan's imageboard dedicated to sharing images of softcore pornography.",
         "is_archived": 1,
         "min_image_width": 500,
-        "min_image_height": 500,
-        "json_tail_size": 50
+        "min_image_height": 500
     }, {
         "board": "s4s",
         "title": "Shit 4chan Says",
@@ -1051,8 +1025,7 @@
         "meta_description": "\u0026quot;\/soc\/ - Cams \u0026amp; Meetups\u0026quot; is 4chan's board for camwhores and meetups.",
         "user_ids": 1,
         "is_archived": 1,
-        "forced_anon": 1,
-        "json_tail_size": 50
+        "forced_anon": 1
     }, {
         "board": "sp",
         "title": "Sports",
@@ -1072,8 +1045,7 @@
         },
         "meta_description": "\u0026quot;\/sp\/ - Sports\u0026quot; is 4chan's imageboard for sports discussion.",
         "is_archived": 1,
-        "country_flags": 1,
-        "json_tail_size": 50
+        "country_flags": 1
     }, {
         "board": "t",
         "title": "Torrents",
@@ -1113,8 +1085,7 @@
         "meta_description": "\u0026quot;\/tg\/ - Traditional Games\u0026quot; is 4chan's imageboard for discussing traditional gaming, such as board games and tabletop RPGs.",
         "spoilers": 1,
         "custom_spoilers": 2,
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "toy",
         "title": "Toys",
@@ -1152,8 +1123,7 @@
             "images": 30
         },
         "meta_description": "\u0026quot;\/trash\/ - Off-topic\u0026quot; is 4chan's imageboard jail for off-topic threads.",
-        "forced_anon": 1,
-        "json_tail_size": 50
+        "forced_anon": 1
     }, {
         "board": "trv",
         "title": "Travel",
@@ -1193,8 +1163,7 @@
         "meta_description": "\u0026quot;\/tv\/ - Television \u0026amp; Film\u0026quot; is 4chan's imageboard dedicated to the discussion of television and film.",
         "spoilers": 1,
         "custom_spoilers": 5,
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "u",
         "title": "Yuri",
@@ -1214,8 +1183,7 @@
         },
         "meta_description": "\u0026quot;\/u\/ - Yuri\u0026quot; is 4chan's imageboard for yuri hentai images.",
         "spoilers": 1,
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "v",
         "title": "Video Games",
@@ -1236,8 +1204,7 @@
         "meta_description": "\u0026quot;\/v\/ - Video Games\u0026quot; is 4chan's imageboard dedicated to the discussion of PC and console video games.",
         "spoilers": 1,
         "custom_spoilers": 1,
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "vg",
         "title": "Video Game Generals",
@@ -1259,8 +1226,7 @@
         "spoilers": 1,
         "custom_spoilers": 1,
         "is_archived": 1,
-        "require_subject": 1,
-        "json_tail_size": 50
+        "require_subject": 1
     }, {
         "board": "vip",
         "title": "Very Important Posts",
@@ -1281,8 +1247,7 @@
         "meta_description": "\u0026quot;\/vip\/ - Very Important Posts\u0026quot; is 4chan's imageboard for Pass users.",
         "spoilers": 1,
         "is_archived": 1,
-        "sjis_tags": 1,
-        "json_tail_size": 50
+        "sjis_tags": 1
     }, {
         "board": "vp",
         "title": "Pok\u00e9mon",
@@ -1303,8 +1268,7 @@
         "meta_description": "\u0026quot;\/vp\/ - Pok\u0026eacute;mon\u0026quot; is 4chan's imageboard dedicated to discussing the Pok\u0026eacute;mon series of video games and shows.",
         "spoilers": 1,
         "custom_spoilers": 1,
-        "is_archived": 1,
-        "json_tail_size": 50
+        "is_archived": 1
     }, {
         "board": "vr",
         "title": "Retro Games",
