@@ -16,6 +16,21 @@ body {
 	padding-right: 5px;
 }
 
+.adg-rects {
+	margin: 10px 0;
+	text-align: center;
+}
+
+.adg-rects > span {
+	display: inline-block;
+	width: 300px;
+	height: 250px;
+}
+
+.adg-rects > span.desktop {
+	margin: 0 10px;
+}
+
 .party-hat {
 	left: 0;
 	margin-top: -80px;

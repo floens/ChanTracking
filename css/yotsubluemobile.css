@@ -22,6 +22,10 @@
 		line-height: 2em;
 	}
 	
+	.adg-rects > span.mobile {
+		display: inline-block !important;
+	}
+	
 	.party-hat {
 		left: -15px;
 		margin-top: -30px;
