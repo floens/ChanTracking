@@ -340,11 +340,12 @@ function initAds(category, board) {
     ados = ados || {};
     ados.run = ados.run || [];
     ados.run.push(function () {
+      if (!(el = document.getElementById('azk91603'))) {
+        return;
+      }
       if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches && localStorage.getItem('4chan_never_show_mobile') != 'true') {
-        if (el = document.getElementById('azk91603')) {
-          el.id = 'azk92421';
-          window._top_ad = ados_add_placement(3536, 18130, "azk92421", 5).setZone(162389);
-        }
+        el.id = 'azk92421';
+        window._top_ad = ados_add_placement(3536, 18130, "azk92421", 5).setZone(162389);
       }
       else {
         window._top_ad = ados_add_placement(3536, 18130, "azk91603", 4).setZone(16258);
@@ -359,6 +360,31 @@ function initAds(category, board) {
   
   var s = document.getElementsByTagName("script")[0];
   s.parentNode.insertBefore(z, s);
+}
+
+function initAdsAG() {
+  var el, nodes, i, cls, s;
+  
+  if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches && localStorage.getItem('4chan_never_show_mobile') != 'true') {
+    cls = 'adg-m';
+    
+    if (el = document.getElementById('adg-ol')) {
+      s = document.createElement('script');
+      s.src = '//utraffic.engine.adglare.net/?' + el.getAttribute('data-id');
+      document.body.appendChild(s);
+    }
+  }
+  else {
+    cls = 'adg';
+  }
+  
+  nodes = document.getElementsByClassName(cls);
+  
+  for (i = 0; el = nodes[i]; ++i) {
+    s = document.createElement('script');
+    s.src = '//utraffic.engine.adglare.net/?' + el.id.replace('zone', '');
+    document.body.appendChild(s);
+  }
 }
 
 function applySearch(e) {
@@ -1273,6 +1299,10 @@ function contentLoaded() {
   var i, el, el2, nodes, len, mobileSelect, params, board, val;
   
   document.removeEventListener('DOMContentLoaded', contentLoaded, true);
+  
+  if (window._adg) {
+    initAdsAG();
+  }
   
   if (document.post) {
     document.post.name.value = get_cookie("4chan_name");
