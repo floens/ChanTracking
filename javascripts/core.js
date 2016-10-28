@@ -366,11 +366,13 @@ function initAdsAG() {
   var el, nodes, i, cls, s;
   
   if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches && localStorage.getItem('4chan_never_show_mobile') != 'true') {
+    return;
+    
     cls = 'adg-m';
     
     if (el = document.getElementById('adg-ol')) {
       s = document.createElement('script');
-//      s.src = '//utraffic.engine.adglare.net/?' + el.getAttribute('data-id');
+      s.src = '//utraffic.engine.adglare.net/?' + el.getAttribute('data-id');
       document.body.appendChild(s);
     }
   }
