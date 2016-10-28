@@ -370,7 +370,7 @@ function initAdsAG() {
     
     if (el = document.getElementById('adg-ol')) {
       s = document.createElement('script');
-      s.src = '//utraffic.engine.adglare.net/?' + el.getAttribute('data-id');
+//      s.src = '//utraffic.engine.adglare.net/?' + el.getAttribute('data-id');
       document.body.appendChild(s);
     }
   }
