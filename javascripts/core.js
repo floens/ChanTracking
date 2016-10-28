@@ -366,8 +366,6 @@ function initAdsAG() {
   var el, nodes, i, cls, s;
   
   if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches && localStorage.getItem('4chan_never_show_mobile') != 'true') {
-    return;
-    
     cls = 'adg-m';
     
     if (el = document.getElementById('adg-ol')) {
