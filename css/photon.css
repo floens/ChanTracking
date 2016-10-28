@@ -1292,10 +1292,6 @@ table.flashListing .subject {
 	margin-bottom: -1px;
 }
 
-iframe[src="about:blank"] {
-	display: none;
-}
-
 .deadlink {
 	text-decoration: line-through;
 }

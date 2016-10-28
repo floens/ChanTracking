@@ -1199,10 +1199,6 @@ table.postForm > tbody > tr > td > input[type="text"] {
 	width: 244px;
 }
 
-iframe[src="about:blank"] {
-	display: none;
-}
-
 .deadlink {
 	text-decoration: line-through;
 }

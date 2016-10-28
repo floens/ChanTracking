@@ -889,10 +889,6 @@
 		border: 1px solid #9988ee !important;
 	}
 	
-	iframe[src="about:blank"] {
-		display: none;
-	}
-	
 	a:hover, .posteruid .hand:hover {
 		color: #dd0000 !important;
 	}
