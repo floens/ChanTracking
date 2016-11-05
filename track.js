@@ -164,7 +164,6 @@ var load = function() {
     loadFile('https://www.4chan.org/press', 'pages/press.html');
     loadFile('https://www.4chan.org/contact', 'pages/contact.html');
     loadFile('https://www.4chan.org/flash', 'pages/flash.html');
-    loadFile('https://www.4chan.org/4channews.php', 'pages/4channews.php.html');
     loadFile('https://www.4chan.org/404foobar', 'pages/404.html', [404]);
     loadFile('https://www.4chan.org/robots.txt', 'pages/robots.txt');
     loadFile('https://www.4chan.org/sitemap.xml', 'pages/sitemap.xml');
