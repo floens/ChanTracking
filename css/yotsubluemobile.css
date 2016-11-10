@@ -52,8 +52,12 @@
 		width: 100%;
 	}
 	
-	.ad-plea, embed {
+	embed {
 		display: none !important;
+	}
+	
+	.jlist-link {
+		margin: 15px auto 30px auto;
 	}
 	
 	a, .useremail:not(:hover) .name:not(.capcode), .useremail:not(:hover) .postertrip:not(.capcode) {
