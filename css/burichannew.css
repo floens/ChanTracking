@@ -29,6 +29,8 @@ body {
 
 .adg-rects > span.desktop {
 	margin: 0 10px;
+	width: 728px;
+	height: 90px;
 }
 
 .party-hat {
