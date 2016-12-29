@@ -520,7 +520,7 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
     
     imgDir;
   
-  if (board !== 'f' && data.ext !== '.webm') {
+  if (board !== 'f') {
     imgDir = '//is.4chan.org/' + board;
   }
   else {
@@ -9038,7 +9038,7 @@ Main.onThreadMouseOver = function(e) {
   else if (Config.imageHover && (
     (t.hasAttribute('data-md5') && !$.hasClass(t.parentNode, 'deleted'))
     ||
-    (t.href && !$.hasClass(t.parentNode, 'fileText') && /i\.4cdn\.org\/[a-z0-9]+\/[0-9]+\.(gif|jpg|png|webm)$/.test(t.href))
+    (t.href && !$.hasClass(t.parentNode, 'fileText') && /(i\.4cdn|is\.4chan)\.org\/[a-z0-9]+\/[0-9]+\.(gif|jpg|png|webm)$/.test(t.href))
     )
   ) {
     ImageHover.show(t);
@@ -9066,7 +9066,7 @@ Main.onThreadMouseOut = function(e) {
   }
   else if (Config.imageHover &&
     (t.hasAttribute('data-md5')
-    || (t.href && !$.hasClass(t.parentNode, 'fileText') && /i\.4cdn\.org\/[a-z0-9]+\/[0-9]+\.(gif|jpg|png|webm)$/.test(t.href))
+    || (t.href && !$.hasClass(t.parentNode, 'fileText') && /(i\.4cdn|is\.4chan)\.org\/[a-z0-9]+\/[0-9]+\.(gif|jpg|png|webm)$/.test(t.href))
     )
   ) {
     ImageHover.hide();
@@ -10014,7 +10014,7 @@ div.collapseWebm { text-align: center; margin-top: 10px; }\
 #yt-preview { position: absolute; }\
 #yt-preview img { display: block; }\
 .autohide-nav { transition: top 0.2s ease-in-out }\
-.ql-tracked { text-decoration: none; border-bottom: 1px dotted; }\
+.ql-tracked { text-decoration: none; border-bottom: 2px dotted; }\
 #feedback {\
   position: fixed;\
   top: 10px;\
