@@ -1057,6 +1057,7 @@ Parser.parseTrackedReplies = function(post) {
   for (i = 0; link = quotelinks[i]; ++i) {
     if (Parser.trackedReplies[link.textContent]) {
       link.className += ' ql-tracked';
+      link.textContent += ' (You)';
       Parser.hasYouMarkers = true;
     }
   }
@@ -10014,7 +10015,6 @@ div.collapseWebm { text-align: center; margin-top: 10px; }\
 #yt-preview { position: absolute; }\
 #yt-preview img { display: block; }\
 .autohide-nav { transition: top 0.2s ease-in-out }\
-.ql-tracked { text-decoration: none; border-bottom: 2px dotted; }\
 #feedback {\
   position: fixed;\
   top: 10px;\
