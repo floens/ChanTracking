@@ -521,7 +521,7 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
     imgDir;
   
   if (board !== 'f') {
-    if (data.no % 3 > 1) {
+    if (data.no % 3 > 2) {
       imgDir = '//is.4chan.org/' + board;
     }
     else {
@@ -3675,6 +3675,8 @@ QR.submit = function(force) {
           Parser.saveTrackedReplies(tid, tracked);
         }
         
+        Parser.touchTrackedReplies(tid);
+        
         UA.dispatchEvent('4chanQRPostSuccess', { threadId: tid, postId: pid });
       }
       
@@ -5381,8 +5383,6 @@ ThreadUpdater.update = function(full) {
   self.setStatus('Updating...');
   
   isTail = !full && self.checkTailUpdate();
-  
-  console.log('Updating (' + (isTail ? 'tail)' : 'full)'));
   
   $.get('//a.4cdn.org/' + Main.board + '/thread/' + Main.tid
     + (isTail ? '-tail' : '') + '.json',
