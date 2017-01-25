@@ -934,6 +934,10 @@ span.capcodeManager span.name, span.capcodeManager span.name a, span.capcodeMana
 	color: #ff0080 !important;
 }
 
+span.capcodeVerified span.name, span.capcodeVerified span.name a, span.capcodeVerified span.postertrip, span.capcodeVerified strong.capcode {
+	color: #007fff !important;
+}
+
 .summary, .omittedposts, .abbr {
 	color: #707070;
 }
