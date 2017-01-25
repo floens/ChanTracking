@@ -961,6 +961,10 @@ span.capcodeManager span.name, span.capcodeManager span.name a, span.capcodeMana
 	color: #ff0080 !important;
 }
 
+span.capcodeVerified span.name, span.capcodeVerified span.name a, span.capcodeVerified span.postertrip, span.capcodeVerified strong.capcode {
+	color: #007fff !important;
+}
+
 #reportTypes a, .useremail {
 	text-decoration: underline;
 }

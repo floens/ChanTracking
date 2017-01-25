@@ -985,6 +985,10 @@ span.capcodeFounder span.name, span.capcodeFounder span.name a, span.capcodeFoun
 	color: #ff0080 !important;
 }
 
+.nameBlock.capcodeVerified span.name, span.capcodeVerified span.name a, span.capcodeVerified span.postertrip, span.capcodeVerified strong.capcode {
+	color: #007fff !important;
+}
+
 .useremail *:hover, .useremail:hover * {
 	color: #dd0000 !important;
 }

@@ -628,6 +628,12 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
       capcode = ' <img src="' + Parser.icons.founder + '" '
         + 'alt="This user is 4chan\'s Founder." '
         + 'title="This user is 4chan\'s Founder." class="identityIcon">';
+    case 'verified':
+      capcodeStart = ' <strong class="capcode hand id_verified" '
+        + 'title="Highlight posts by Verified Users">## Verified</strong>';
+      capcodeClass = ' capcodeVerified';
+      
+      capcode = '';
       break;
   }
   

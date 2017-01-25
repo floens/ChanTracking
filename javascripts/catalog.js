@@ -147,7 +147,8 @@ var FC = function() {
     mod: 'Moderator',
     developer: 'Developer',
     manager: 'Manager',
-    founder: 'Founder'
+    founder: 'Founder',
+    verified: 'Verified'
   },
   
   keybinds = {
