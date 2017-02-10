@@ -95,7 +95,7 @@ var Tip = {
     }
   }
 }
-
+/*
 function toggleArcSort() {
   var i, j, el, cid, body, rows, data;
   
@@ -122,7 +122,7 @@ function toggleArcSort() {
   
   body.style.display = '';
 }
-
+*/
 function mShowFull(t) {
   var el, data;
   
@@ -1317,11 +1317,11 @@ function contentLoaded() {
   params = location.pathname.split(/\//);
   
   board = params[1];
-  
+  /*
   if (params[2] == 'archive') {
     document.getElementById('arc-sort').addEventListener('click', toggleArcSort, false);
   }
-  
+  */
   if (window.passEnabled) {
     setPassMsg();
   }
