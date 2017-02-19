@@ -519,7 +519,7 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
     i, q, href, quotes, tmp,
     
     imgDir;
-  
+  /*
   if (board !== 'f') {
     if (data.no % 3 > 2) {
       imgDir = '//is.4chan.org/' + board;
@@ -528,9 +528,9 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
       imgDir = '//is2.4chan.org/' + board;
     }
   }
-  else {
+  else {*/
     imgDir = '//i.4cdn.org/' + board;
-  }
+  //}
   
   if (data.resto === 0) {
     isOP = true;
