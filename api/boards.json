@@ -922,7 +922,8 @@
             "images": 30
         },
         "meta_description": "\u0026quot;\/r\/ - Request\u0026quot; is 4chan's imageboard dedicated to fulfilling all types of user requests.",
-        "is_archived": 1
+        "is_archived": 1,
+        "webm_audio": 1
     }, {
         "board": "r9k",
         "title": "ROBOT9001",
@@ -1370,7 +1371,8 @@
             "images": 60
         },
         "meta_description": "\u0026quot;\/wsr\/ - Worksafe Requests\u0026quot; is 4chan's imageboard dedicated to fulfilling non-NSFW requests.",
-        "is_archived": 1
+        "is_archived": 1,
+        "webm_audio": 1
     }, {
         "board": "x",
         "title": "Paranormal",
