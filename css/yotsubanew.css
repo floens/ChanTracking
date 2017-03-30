@@ -28,7 +28,7 @@ body {
 }
 
 .adg-rects > span.desktop {
-	margin: 0 10px;
+	margin: auto;
 	width: 728px;
 	height: 90px;
 }
