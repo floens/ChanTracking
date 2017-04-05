@@ -104,6 +104,30 @@ body {
 	background: url('//s.4cdn.org/image/minileaf.gif');
 }
 
+.jla-it {
+	height: 420px;
+	width: 680px;
+}
+
+.jla-it-p {
+	font-size: .85em;
+	text-align: center;
+}
+
+@media only screen and (max-width: 700px) {.jla-it {
+		width: 340px;
+		height: 220px;
+		margin: auto;
+	}
+	
+	.jla-it img {
+		width: 340px;
+		height: 200px;
+	}
+	
+	
+}
+
 .centeredThreads .party-hat {
 	left: 12%;
 }
