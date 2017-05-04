@@ -135,6 +135,26 @@
         "meta_description": "\u0026quot;\/b\/ - Random\u0026quot; is the birthplace of Anonymous, and where people go to discuss random topics and create memes on 4chan.",
         "forced_anon": 1
     }, {
+        "board": "bant",
+        "title": "International\/Random",
+        "ws_board": 0,
+        "per_page": 15,
+        "pages": 10,
+        "max_filesize": 2097152,
+        "max_webm_filesize": 2097152,
+        "max_comment_chars": 2000,
+        "max_webm_duration": 120,
+        "bump_limit": 300,
+        "image_limit": 150,
+        "cooldowns": {
+            "threads": 60,
+            "replies": 15,
+            "images": 15
+        },
+        "meta_description": "\u0026quot;\/bant\/ - International\/Random\u0026quot; is 4chan's international hanging out board, where you can have fun with Anonymous all over the world.",
+        "user_ids": 1,
+        "country_flags": 1
+    }, {
         "board": "biz",
         "title": "Business \u0026 Finance",
         "ws_board": 1,
