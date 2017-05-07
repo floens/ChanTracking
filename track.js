@@ -66,7 +66,10 @@ var get = function(url, callback, goodCodes) {
     log('Getting ' + url);
     request({
         url: url,
-        jar: cookieJar
+        jar: cookieJar,
+        headers: {
+            'User-Agent': 'curl'
+        }
     }, function(error, response, body) {
         if (error) {
             winston.error(error);
