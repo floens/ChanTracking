@@ -1777,7 +1777,7 @@ var FC = function() {
     var
       i, k, id, entry, item, thread, hl, onTop, pinned, spoiler,
       rDiff, html, provider, contentUrl,
-      pinhl, newtab, watchKey, teaser, topHtml,
+      pinhl, newtab, watchKey, teaser, topHtml, stickyHtml,
       ratio, maxSize, imgWidth, imgHeight, calcSize,
       capcodeReplies, capcodeReply, capcodeTitle, page;
     
@@ -1796,6 +1796,7 @@ var FC = function() {
     
     html = '';
     topHtml = '';
+    stickyHtml = '';
     
     for (i = 0; item = threads[i]; ++i) {
       id = item.id;
@@ -1947,13 +1948,18 @@ var FC = function() {
         thread += '</div>';
       }
       
-      if (onTop) {
+      if (entry.sticky) {
+        stickyHtml += thread;
+      }
+      else if (onTop) {
         topHtml += thread;
       }
       else {
         html += thread;
       }
     }
+    
+    topHtml = stickyHtml + topHtml;
     
     if (quickFilterPattern && (html === '' && topHtml === '')) {
       html = '<div class="error">Nothing Found</div>';
