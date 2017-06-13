@@ -665,11 +665,23 @@ z-index: 2000;
           el.parentNode.removeChild(el);
         }
         
+        if (el = document.getElementById('stripeTokenType')) {
+          el.parentNode.removeChild(el);
+        }
+        
         el = document.createElement('input');
         el.type = 'hidden';
         el.name = 'stripeToken';
         el.id = 'stripeToken';
         el.value = res.id;
+        
+        form.appendChild(el);
+        
+        el = document.createElement('input');
+        el.type = 'hidden';
+        el.name = 'stripeTokenType';
+        el.id = 'stripeTokenType';
+        el.value = res.type;
         
         form.appendChild(el);
         
