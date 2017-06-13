@@ -642,11 +642,11 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
     emailEnd = '</a>';
   }
   
-  if (data.country) {
-    if (window.trollFlags) {
+  if (data.country_name) {
+    if (data.troll_country) {
       flag = ' <img src="//s.4cdn.org/image/country/troll/'
-        + data.country.toLowerCase() + '.gif" alt="'
-        + data.country + '" title="' + data.country_name + '" class="countryFlag">';
+        + data.troll_country.toLowerCase() + '.gif" alt="'
+        + data.troll_country + '" title="' + data.country_name + '" class="countryFlag">';
     }
     else {
       flag = ' <span title="' + data.country_name + '" class="flag flag-'
