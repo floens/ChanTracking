@@ -881,7 +881,7 @@
         "meta_description": "\u0026quot;\/pol\/ - Politically Incorrect\u0026quot; is 4chan's board for discussing and debating politics and current events.",
         "user_ids": 1,
         "is_archived": 1,
-        "country_flags": 1
+        "troll_flags": 1
     }, {
         "board": "qa",
         "title": "Question \u0026 Answer",
@@ -1431,5 +1431,29 @@
         },
         "meta_description": "\u0026quot;\/y\/ - Yaoi\u0026quot; is 4chan's imageboard for posting adult yaoi hentai images.",
         "is_archived": 1
-    }]
+    }],
+    "troll_flags": {
+        "AC": "Anarcho-Capitalist",
+        "AN": "Anarchist",
+        "BL": "Black Nationalist",
+        "CF": "Confederate",
+        "CM": "Communist",
+        "DM": "Democrat",
+        "EU": "European",
+        "FC": "Fascist",
+        "GN": "Gadsden",
+        "GY": "Gay",
+        "JH": "Jihadi",
+        "KN": "Kekistani",
+        "MF": "Muslim",
+        "NB": "National Bolshevik",
+        "NZ": "Nazi",
+        "PC": "Hippie",
+        "PR": "Pirate",
+        "RE": "Republican",
+        "TM": "Templar",
+        "TR": "Tree Hugger",
+        "UN": "United Nations",
+        "WP": "White Supremacist"
+    }
 }
