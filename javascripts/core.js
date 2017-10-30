@@ -312,7 +312,7 @@ function initRecaptcha() {
   if (!window.passEnabled && window.grecaptcha) {
     grecaptcha.render(el, {
       sitekey: window.recaptchaKey,
-      theme: activeStyleSheet === 'Tomorrow' ? 'dark' : 'light'
+      theme: (activeStyleSheet === 'Tomorrow' || window.dark_captcha) ? 'dark' : 'light'
     });
   }
 }
@@ -649,34 +649,37 @@ function initStyleSheet() {
     return;
   }
   
-  // hack for people on old things
-  if (typeof style_group != "undefined" && style_group) {
+  if (window.style_group) {
     var cookie = readCookie(style_group);
     activeStyleSheet = cookie ? cookie : getPreferredStyleSheet();
   }
-
+  
+  if (window.css_event && localStorage.getItem('4chan_stop_css_event') !== window.css_event) {
+    activeStyleSheet = '_special';
+  }
+  
   switch(activeStyleSheet) {
-  case "Yotsuba B":
-    setActiveStyleSheet("Yotsuba B New", true);
-    break;
+    case "Yotsuba B":
+      setActiveStyleSheet("Yotsuba B New", true);
+      break;
 
-  case "Yotsuba":
-    setActiveStyleSheet("Yotsuba New", true);
-    break;
+    case "Yotsuba":
+      setActiveStyleSheet("Yotsuba New", true);
+      break;
 
-  case "Burichan":
-    setActiveStyleSheet("Burichan New", true);
-    break;
+    case "Burichan":
+      setActiveStyleSheet("Burichan New", true);
+      break;
 
-  case "Futaba":
-    setActiveStyleSheet("Futaba New", true);
-    break;
+    case "Futaba":
+      setActiveStyleSheet("Futaba New", true);
+      break;
 
     default:
       setActiveStyleSheet(activeStyleSheet, true);
     break;
   }
-
+  
   if (localStorage.getItem('4chan_never_show_mobile') == 'true') {
     link = document.querySelectorAll('link');
     len = link.length;
@@ -1005,7 +1008,7 @@ function locationHashChanged(e)
 }
 
 function setActiveStyleSheet(title, init) {
-  var a, link, href, i, nodes;
+  var a, link, href, i, nodes, fn;
   
   if( document.querySelectorAll('link[title]').length == 1 ) {
     return;
@@ -1030,7 +1033,22 @@ function setActiveStyleSheet(title, init) {
   link && link.setAttribute("href", href);
 
   if (!init) {
-    createCookie(style_group, title, 365, "4chan.org");
+    if (title !== '_special') {
+      createCookie(style_group, title, 365, "4chan.org");
+      
+      if (window.css_event) {
+        fn = window['fc_' + window.css_event + '_cleanup'];
+        localStorage.setItem('4chan_stop_css_event', window.css_event);
+      }
+    }
+    else if (window.css_event) {
+      fn = window['fc_' + window.css_event + '_init'];
+      localStorage.removeItem('4chan_stop_css_event');
+    }
+    
+    activeStyleSheet = title;
+    
+    fn && fn();
   }
 }
 
@@ -1296,7 +1314,7 @@ var PainterCore = {
 };
 
 function contentLoaded() {
-  var i, el, el2, nodes, len, mobileSelect, params, board, val;
+  var i, el, el2, nodes, len, mobileSelect, params, board, val, fn;
   
   document.removeEventListener('DOMContentLoaded', contentLoaded, true);
   
@@ -1317,11 +1335,7 @@ function contentLoaded() {
   params = location.pathname.split(/\//);
   
   board = params[1];
-  /*
-  if (params[2] == 'archive') {
-    document.getElementById('arc-sort').addEventListener('click', toggleArcSort, false);
-  }
-  */
+  
   if (window.passEnabled) {
     setPassMsg();
   }
@@ -1444,6 +1458,11 @@ function contentLoaded() {
   initBlotter();
   
   loadBannerImage();
+  
+  if (window.css_event && activeStyleSheet === '_special') {
+    fn = window['fc_' + window.css_event + '_init'];
+    fn && fn();
+  }
 }
 
 initPass();

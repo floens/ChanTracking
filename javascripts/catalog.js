@@ -207,7 +207,7 @@ var FC = function() {
   loadTheme();
   
   self.init = function() {
-    var extConfig, el, val;
+    var extConfig, el, val, fn;
     
     FC.hasMobileLayout = checkMobileLayout();
     
@@ -284,6 +284,11 @@ var FC = function() {
       }
       else {
         CustomMenu.initCtrl(false, false);
+      }
+      
+      if (window.css_event && activeStyleSheet === '_special') {
+        fn = window['fc_' + window.css_event + '_init'];
+        fn && fn();
       }
     }
     
@@ -486,12 +491,25 @@ var FC = function() {
   }
   
   function onStyleSheetChange() {
-    var expires = new Date();
+    var expires;
     
-    expires.setTime(expires.getTime() + 31536000000);
-    
-    document.cookie = activeStyleGroup + '=' + this.value + ';'
-      + expires.toGMTString() + '; path=/; domain=4chan.org';
+    if (this.value !== '_special') {
+      expires = new Date();
+      
+      expires.setTime(expires.getTime() + 31536000000);
+      
+      document.cookie = activeStyleGroup + '=' + this.value + ';'
+        + expires.toGMTString() + '; path=/; domain=4chan.org';
+      
+      if (window.css_event) {
+        fn = window['fc_' + window.css_event + '_cleanup'];
+        localStorage.setItem('4chan_stop_css_event', window.css_event);
+      }
+    }
+    else if (window.css_event) {
+      fn = window['fc_' + window.css_event + '_init'];
+      localStorage.removeItem('4chan_stop_css_event');
+    }
     
     refreshWindow();
   }
@@ -1413,7 +1431,15 @@ var FC = function() {
       }
       
       activeStyleGroup = style_group;
-      activeStyleSheet = ss;
+      
+      if (window.css_event && localStorage.getItem('4chan_stop_css_event') !== window.css_event) {
+        activeStyleSheet = '_special'
+        ss = window.css_event;
+      }
+      else {
+        activeStyleSheet = ss;
+      }
+      
       style = document.createElement('link');
       style.type = 'text/css';
       style.id = 'base-css';

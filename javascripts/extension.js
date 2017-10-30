@@ -628,6 +628,7 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
       capcode = ' <img src="' + Parser.icons.founder + '" '
         + 'alt="This user is 4chan\'s Founder." '
         + 'title="This user is 4chan\'s Founder." class="identityIcon">';
+      break;
     case 'verified':
       capcodeStart = ' <strong class="capcode hand id_verified" '
         + 'title="Highlight posts by Verified Users">## Verified</strong>';
@@ -831,12 +832,14 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
         '<span class="nameBlock' + capcodeClass + '">' + emailStart +
           '<span class="name">' + name + '</span>' + tripcode
           + (data.since4pass ? (' <span title="Pass user since ' + data.since4pass + '" class="n-pu"></span>') : '')
+          + (data.xh17 ? (' <span title="Has tricked ' + data.xh17 + ' user' + (data.xh17 === 1 ? '' : 's')
+            + '" class="n-pu n-jol' + data.xh17c + '"></span>') : '')
           + capcodeStart + emailEnd + capcode + userId + flag +
         ' </span> ' +
         '<span class="dateTime" data-utc="' + data.time + '">' + data.now + '</span> ' +
         '<span class="postNum desktop">' +
           '<a href="' + noLink + '" title="Link to this post">No.</a><a href="' +
-          quoteLink + '" title="Reply to this post">' + data.no + '</a> '
+          quoteLink + '" title="Reply to this post">' + data.no + '</a>'
             + threadIcons + replySpan +
         '</span>' +
       '</div>' +
@@ -3278,7 +3281,7 @@ QR.renderCaptcha = function() {
   
   QR.captchaWidgetId = grecaptcha.render(QR.captchaWidgetCnt, {
     sitekey: window.recaptchaKey,
-    theme: Main.stylesheet === 'tomorrow' ? 'dark' : 'light'
+    theme: (Main.stylesheet === 'tomorrow' || window.dark_captcha) ? 'dark' : 'light'
   });
 };
 
@@ -9970,16 +9973,16 @@ div.collapseWebm { text-align: center; margin-top: 10px; }\
   color: #000080;\
 }\
 .tomorrow .postMenuBtn {\
-  color: #5F89AC !important;\
+  color: #5F89AC;\
 }\
 .tomorrow .postMenuBtn:hover {\
-  color: #81a2be !important;\
+  color: #81a2be;\
 }\
 .photon .postMenuBtn {\
-  color: #FF6600 !important;\
+  color: #FF6600;\
 }\
 .photon .postMenuBtn:hover {\
-  color: #FF3300 !important;\
+  color: #FF3300;\
 }\
 .menuOpen {\
   -webkit-transform: rotate(90deg);\
