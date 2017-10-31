@@ -832,7 +832,7 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
         '<span class="nameBlock' + capcodeClass + '">' + emailStart +
           '<span class="name">' + name + '</span>' + tripcode
           + (data.since4pass ? (' <span title="Pass user since ' + data.since4pass + '" class="n-pu"></span>') : '')
-          + (data.xh17 ? (' <span title="Has tricked ' + data.xh17 + ' user' + (data.xh17 === 1 ? '' : 's')
+          + (data.xh17 !== undefined ? (' <span title="Has tricked ' + data.xh17 + ' user' + (data.xh17 === 1 ? '' : 's')
             + '" class="n-pu n-jol' + data.xh17c + '"></span>') : '')
           + capcodeStart + emailEnd + capcode + userId + flag +
         ' </span> ' +
