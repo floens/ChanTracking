@@ -2840,6 +2840,9 @@ QR.init = function() {
   this.cdElapsed = 0;
   this.activeDelay = 0;
   
+  this.ctTTL = 170;
+  this.ctTimeout = null;
+  
   this.cooldowns = {};
   
   for (item in window.cooldowns) {
@@ -2856,7 +2859,6 @@ QR.init = function() {
   
   this.captchaWidgetCnt = null;
   this.captchaWidgetId = null;
-  this.hasCaptchaAltJs = false;
   this.pulse = null;
   this.xhr = null;
   
@@ -2930,6 +2932,73 @@ QR.processTeX = function() {
 
 QR.onTeXReady = function() {
   QR.processingTeX = false;
+};
+
+QR.validateCT = function() {
+  var ct, now, d;
+  
+  if (!QR.captchaWidgetCnt) {
+    return;
+  }
+  
+  ct = Main.getCookie('_ct');
+  
+  if (!ct) {
+    if (QR.ctTimeout) {
+      QR.setCTTag();
+    }
+    return;
+  }
+  
+  if (QR.ctTimeout) {
+    return;
+  }
+  
+  ct = ct.split('.')[1];
+  now = 0 | (Date.now() / 1000);
+
+  d = now - ct;
+  
+  if (d >= QR.ctTTL) {
+    QR.setCTTag();
+  }
+  else {
+    QR.setCTTag(QR.ctTTL - d);
+  }
+};
+
+QR.setCTTag = function(sec) {
+  var el = QR.captchaWidgetCnt;
+  
+  QR.clearCTTimeout();
+  
+  if (sec && sec > 0) {
+    QR.ctTimeout = setTimeout(QR.setCTTag, sec * 1000);
+    el.style.opacity = '0.25';
+    $.on(el, 'mouseover', QR.onCTMouseOver);
+    $.on(el, 'mouseout', QR.onCTMouseOut);
+  }
+  else {
+    el.style.opacity = '';
+    $.off(el, 'mouseover', QR.onCTMouseOver);
+    $.off(el, 'mouseout', QR.onCTMouseOut);
+  }
+};
+
+QR.onCTMouseOver = function() {
+  QR.onCTMouseOut();
+  QR.ctTipTimeout = setTimeout(Tip.show, Tip.delay, QR.captchaWidgetCnt,
+    'Verification not required for your next post.');
+};
+
+QR.onCTMouseOut = function() {
+  clearTimeout(QR.ctTipTimeout);
+  Tip.hide();
+};
+
+QR.clearCTTimeout = function() {
+  clearTimeout(QR.ctTimeout);
+  QR.ctTimeout = null;
 };
 
 QR.addReplyLink = function() {
@@ -3138,12 +3207,7 @@ QR.show = function(tid) {
       if (QR.noCaptcha) {
         continue;
       }
-      if (Config.altCaptcha) {
-        row.id = 'qrCaptchaContainerAlt';
-      }
-      else {
-        row.id = 'qrCaptchaContainer';
-      }
+      row.id = 'qrCaptchaContainer';
       QR.captchaWidgetCnt = row;
     }
     else {
@@ -3261,12 +3325,7 @@ QR.show = function(tid) {
   }
   
   if (!window.passEnabled) {
-    if (Config.altCaptcha) {
-      QR.renderCaptchaAlt();
-    }
-    else {
-      QR.renderCaptcha();
-    }
+    QR.renderCaptcha();
   }
   
   if (!Main.hasMobileLayout) {
@@ -3283,69 +3342,18 @@ QR.renderCaptcha = function() {
     sitekey: window.recaptchaKey,
     theme: (Main.stylesheet === 'tomorrow' || window.dark_captcha) ? 'dark' : 'light'
   });
+  
+  QR.validateCT();
 };
 
-QR.renderCaptchaAlt = function() {
-  if (!window.grecaptcha) {
-    return;
-  }
-  
-  if (!window.Recaptcha) {
-    QR.initCaptchaAlt();
-    return;
-  }
-  
-  Recaptcha.create(window.recaptchaKey,
-    'qrCaptchaContainerAlt',
-    {
-      theme: 'clean',
-      tabindex: 0
-    }
-  );
-};
-
-QR.initCaptchaAlt = function(loadOnly) {
-  if (QR.hasCaptchaAltJs) {
-    return;
-  }
-  
-  var el = document.createElement('script');
-  el.type = 'text/javascript';
-  el.src = '//www.google.com/recaptcha/api/js/recaptcha_ajax.js';
-  
-  if (!loadOnly) {
-    el.onload = QR.renderCaptchaAlt;
-  }
-  
-  QR.hasCaptchaAltJs = true;
-  
-  document.head.appendChild(el);
-};
-
-QR.resetCaptchaAlt = function(focus) {
-  if (!window.grecaptcha || !$.id('recaptcha_image') || !window.RecaptchaState) {
-    return;
-  }
-  
-  if (focus) {
-    Recaptcha.reload('t');
-  }
-  else {
-    Recaptcha.reload();
-  }
-};
-
-QR.resetCaptcha = function(focus) {
-  if (Config.altCaptcha) {
-    QR.resetCaptchaAlt(focus);
-    return;
-  }
-  
+QR.resetCaptcha = function() {
   if (!window.grecaptcha || QR.captchaWidgetId === null) {
     return;
   }
   
   grecaptcha.reset(QR.captchaWidgetId);
+  
+  QR.validateCT();
 };
 
 QR.onPassError = function() {
@@ -3485,11 +3493,8 @@ QR.close = function() {
   
   Draggable.unset($.id('qrHeader'));
   
-  if (window.RecaptchaState) {
-    Recaptcha.destroy();
-  }
-  else {
-    QR.resetCaptcha();
+  if (!QR.noCaptcha) {
+    QR.setCTTag();
   }
   
   document.body.removeChild(cnt);
@@ -3520,9 +3525,6 @@ QR.onClick = function(e) {
         else {
           $.id('qrFile').click();
         }
-        break;
-      case 'recaptcha_challenge_image':
-        QR.resetCaptcha(true);
         break;
       case 'qrClose':
         QR.close();
@@ -3637,7 +3639,7 @@ QR.submit = function(force) {
           QR.onPassError();
         }
         else {
-          QR.resetCaptcha(true);
+          QR.resetCaptcha();
         }
         QR.showPostError(resp[1]);
         return;
@@ -7505,10 +7507,6 @@ Report.open = function(pid, board) {
     height = 205;
     altc = '';
   }
-  else if (Config.altCaptcha) {
-    height = 320;
-    altc = '&altc=1';
-  }
   else {
     height = 510;
     altc = '';
@@ -7837,7 +7835,6 @@ var Config = {
   quickReply: true,
   threadUpdater: true,
   threadHiding: true,
-  altCaptcha: false,
   
   alwaysAutoUpdate: false,
   topPageNav: false,
@@ -8008,7 +8005,6 @@ SettingsMenu.options = {
     inlineQuotes: [ 'Inline quote links', 'Clicking quote links will inline expand the quoted post, Shift-click to bypass inlining' ],
     quickReply: [ 'Quick Reply', 'Quickly respond to a post by clicking its post number', true ],
     persistentQR: [ 'Persistent Quick Reply', 'Keep Quick Reply window open after posting' ],
-    altCaptcha: [ 'Legacy CAPTCHA', 'Use reCAPTCHA v1 in the Quick Reply window', true ]
   },
   'Monitoring': {
     threadUpdater: [ 'Thread updater', 'Append new posts to bottom of thread without refreshing the page', true ],
