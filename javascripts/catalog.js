@@ -498,7 +498,7 @@ var FC = function() {
       
       expires.setTime(expires.getTime() + 31536000000);
       
-      document.cookie = activeStyleGroup + '=' + this.value + ';'
+      document.cookie = activeStyleGroup + '=' + this.value + '; expires='
         + expires.toGMTString() + '; path=/; domain=4chan.org';
       
       if (window.css_event) {
