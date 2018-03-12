@@ -1533,6 +1533,38 @@ table.flashListing .subject {
 	right: 100%;
 }
 
+#g-search-form {
+	text-align: center;
+}
+
+.g-search-ctrl {
+	vertical-align: top;
+	margin: 0 3px;
+}
+
+#js-sf-qf {
+	width: 185px;
+	padding: 2px 4px 3px 4px;
+}
+
+#js-sf-bf {
+	padding: 2px 4px 3px 4px;
+	width: 125px;
+}
+
+#js-sf-status {
+	text-align: center;
+	font-size: 24px;
+}
+
+.js-sf-err {
+	color: #c41e3a;
+}
+
+.boardBlock {
+	font-weight: bold;
+}
+
 .blink {
 	-webkit-animation: blink 1.5s step-end infinite;
 	-moz-animation: blink 1.5s step-end infinite;
