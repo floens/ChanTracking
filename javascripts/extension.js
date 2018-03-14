@@ -25,6 +25,10 @@ $.tag = function(tag, root) {
   return (root || document).getElementsByTagName(tag);
 };
 
+$.el = function(tag) {
+  return document.createElement(tag);
+};
+
 $.qs = function(sel, root) {
   return (root || document).querySelector(sel);
 };
@@ -514,6 +518,7 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
     resto,
     capcode_replies = '',
     threadIcons = '',
+    boardTag = '',
     needFileTip = false,
     
     i, q, href, quotes, tmp,
@@ -532,7 +537,7 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
     imgDir = '//i.4cdn.org/' + board;
   //}
   
-  if (data.resto === 0) {
+  if (!data.resto) {
     isOP = true;
     
     if (standalone) {
@@ -548,11 +553,16 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
       
       mobileLink = '<div class="postLink mobile"><span class="info">'
         + tmp + '</span><a href="'
-        + 'thread/' + data.no + '" class="button">View Thread</a></div>';
+        + '//boards.4chan.org/' + board + '/thread/' + data.no
+        + '" class="button">View Thread</a></div>';
       postType = 'op';
       replySpan = '&nbsp; <span>[<a href="'
-        + 'thread/' + data.no + (data.semantic_url ? ('/' + data.semantic_url) : '')
+        + '//boards.4chan.org/' + board + '/thread/' + data.no + (data.semantic_url ? ('/' + data.semantic_url) : '')
         + '" class="replylink" rel="canonical">Reply</a>]</span>';
+    }
+    
+    if (board != Main.board) {
+      boardTag = '<span class="boardBlock">/' + board + '/</span> ';
     }
     
     resto = data.no;
@@ -563,8 +573,8 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
   
   
   if (!Main.tid || board != Main.board) {
-    noLink = 'thread/' + resto + '#p' + data.no;
-    quoteLink = 'thread/' + resto + '#q' + data.no;
+    noLink = '//boards.4chan.org/' + board + '/thread/' + resto + '#p' + data.no;
+    quoteLink = '//boards.4chan.org/' + board + '/thread/' + resto + '#q' + data.no;
   }
   else {
     noLink = '#p' + data.no;
@@ -753,7 +763,7 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
   
   name = data.name || '';
   
-  if (name.length > 30) {
+  if (Main.hasMobileLayout && name.length > 30) {
     mName = '<span class="name" data-tip data-tip-cb="mShowFull">'
       + Parser.truncate(name, 30) + '(...)</span> ';
   }
@@ -796,7 +806,7 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
     if (data.sub === undefined) {
       subject = '<span class="subject"></span> ';
     }
-    else if (data.sub.length > 30) {
+    else if (Main.hasMobileLayout && data.sub.length > 30) {
       subject = '<span class="subject" data-tip data-tip-cb="mShowFull">'
         + Parser.truncate(data.sub, 30) + '(...)</span> ';
     }
@@ -815,7 +825,7 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
     (isOP ? '' : '<div class="sideArrows" id="sa' + data.no + '">&gt;&gt;</div>') +
     '<div id="p' + data.no + '" class="post ' + postType + highlight + '">' +
       '<div class="postInfoM mobile" id="pim' + data.no + '">' +
-        '<span class="nameBlock' + capcodeClass + '">' +
+        '<span class="nameBlock' + capcodeClass + '">' + boardTag +
         mName + tripcode +
         capcodeStart + capcode + userId + flag +
         '<br>' + subject +
@@ -827,7 +837,7 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
       (isOP ? fileHtml : '') +
       '<div class="postInfo desktop" id="pi' + data.no + '"' +
         (board != Main.board ? (' data-board="' + board + '"') : '') + '>' +
-        '<input type="checkbox" name="' + data.no + '" value="delete"> ' +
+        '<input type="checkbox" name="' + data.no + '" value="delete"> ' + boardTag +
         subject +
         '<span class="nameBlock' + capcodeClass + '">' + emailStart +
           '<span class="name">' + name + '</span>' + tripcode
@@ -853,7 +863,7 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
     for (i = 0; q = quotes[i]; ++i) {
       href = q.getAttribute('href');
       if (href.charAt(0) != '/') {
-        q.href = '/' + board + '/thread/' + resto + href;
+        q.href = '//boards.4chan.org/' + board + '/thread/' + resto + href;
       }
     }
   }
@@ -2826,7 +2836,7 @@ QR.init = function() {
     return;
   }
   
-  this.enabled = true;
+  this.enabled = !!document.forms.post;
   this.currentTid = null;
   this.cooldown = null;
   this.timestamp = null;
