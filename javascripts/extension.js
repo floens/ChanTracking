@@ -1483,6 +1483,391 @@ PostMenu.close = function() {
 };
 
 /**
+ * 
+ */
+var Search = {
+  xhr: null,
+  
+  pageSize: 10,
+  
+  maxPages: 10,
+  
+  init: function() {
+    var el;
+    
+    if (el = $.id('g-search-form')) {
+      $.on(el, 'submit', Search.onSearch);
+      $.on(window, 'hashchange', Search.onHashChanged);
+      
+      Search.initFromURL(true);
+    }
+  },
+  
+  initFromURL: function(init) {
+    var self, frag, i, el, nodes, opt;
+    
+    self = Search;
+    
+    self.query = '';
+    self.board = '';
+    self.offset = 0;
+    
+    frag = window.location.hash;
+    
+    if (frag !== '' && frag.length <= 512) {
+      frag = frag.split('/').slice(1);
+      
+      if (frag[0]) {
+        self.query = decodeURIComponent(frag[0]);
+      }
+      else {
+        self.query = '';
+      }
+      
+      self.board = frag[1] || '';
+      
+      if (frag[1]) {
+        if (frag[1] === 'all') {
+          self.board = '';
+        }
+        else {
+          self.board = frag[1];
+        }
+      }
+      
+      self.offset = self.pageToOffset(0 | frag[2]);
+    }
+    
+    if (init && self.query === '') {
+      return;
+    }
+    
+    $.id('js-sf-qf').value = self.query;
+    
+    el = $.id('js-sf-bf');
+    
+    el.selectedIndex = 0;
+    
+    for (i = 0, nodes = el.options; opt = nodes[i]; ++i) {
+      if (opt.value === self.board) {
+        el.selectedIndex = i;
+        break;
+      }
+    }
+    
+    if (el.selectedIndex === 0 && self.board !== '') {
+      self.board = '';
+    }
+    
+    Search.exec(self.query, self.board, self.offset);
+  },
+  
+  onHashChanged: function() {
+    Search.initFromURL();
+  },
+  
+  pageToOffset: function(p) {
+    if (p < 1 || p > Search.maxPages) {
+      p = 1;
+    }
+    
+    return (p - 1) * Search.pageSize;
+  },
+  
+  offsetToPage: function(o) {
+    var p = o / Search.pageSize + 1;
+    
+    if (p < 1 || p > Search.maxPages) {
+      p = 1;
+    }
+    
+    return p;
+  },
+  
+  updateURL: function() {
+    var self, frags = [];
+    
+    self = Search;
+    
+    if (self.query !== '') {
+      frags.push(encodeURIComponent(self.query));
+      
+      if (self.offset > 0) {
+        if (!self.board || self.board === '') {
+          frags.push('all');
+        }
+        else {
+          frags.push(self.board);
+        }
+        
+        frags.push(Search.offsetToPage(self.offset));
+      }
+      else if (self.board) {
+        frags.push(self.board);
+      }
+    }
+    
+    if (frags.length) {
+      window.history.replaceState(null, '', '#/' + frags.join('/'));
+    }
+    else {
+      window.history.replaceState(null, '',
+        window.location.href.replace(/#.*$/, '')
+      );
+    }
+  },
+  
+  onSearch: function(e) {
+    var qf, bf;
+    
+    e && e.preventDefault();
+    
+    Search.query = qf = $.id('js-sf-qf').value;
+    Search.board = bf = $.id('js-sf-bf').value;
+    
+    Search.exec(qf, bf, 0);
+  },
+  
+  exec: function(query, board, offset) {
+    var self, qs = [];
+    
+    self = Search;
+    
+    self.toggleSpinner(false);
+    
+    self.updateCtrl(false);
+    
+    if (self.xhr) {
+      self.xhr.abort();
+      self.xhr = null;
+    }
+    
+    if (query === '') {
+      return;
+    }
+    
+    qs.push('q=' + encodeURIComponent(query));
+    
+    if (board !== '') {
+      qs.push('b=' + board);
+    }
+    
+    if (offset) {
+      qs.push('o=' + (0 | offset));
+    }
+    
+    qs = qs.join('&');
+    
+    self.query = query;
+    self.board = board;
+    self.offset = offset;
+    
+    self.updateURL();
+    
+    self.toggleSpinner(true);
+    
+    self.xhr = $.get('https://find.4chan.org/api?' + qs, {
+      onload: self.onLoad,
+      onerror: self.onError
+    });
+  },
+  
+  onPageClick: function() {
+    var offset;
+    
+    offset = +this.getAttribute('data-o');
+    
+    Search.exec(Search.query, Search.board, offset);
+  },
+  
+  onLoad: function() {
+    var data;
+    
+    Search.toggleSpinner(false);
+    
+    try {
+      data = JSON.parse(this.responseText);
+    }
+    catch (err) {
+      Search.showError('Something went wrong.');
+      console.log(err);
+      return;
+    }
+    
+    Search.buildResults(data);
+  },
+  
+  onError: function() {
+    Search.showError('Connection error.');
+  },
+  
+  updateCtrl: function(offset, total) {
+    var cnt, el, el2, maxPage, curPage;
+    
+    if (offset === false) {
+      el = $.id('js-sf-pl');
+    
+      if (el) {
+        el.parentNode.removeChild(el);
+      }
+      
+      return;
+    }
+    
+    cnt = $.id('js-sf-pl');
+    
+    if (cnt) {
+      cnt.parentNode.removeChild(cnt);
+    }
+    
+    cnt = $.el('div');
+    cnt.id = 'js-sf-pl';
+    
+    if (!Main.hasMobileLayout) {
+      cnt.className = 'pagelist desktop';
+    }
+    else {
+      cnt.className = 'mPagelist mobile';
+    }
+    
+    total = +total;
+    offset = +offset;
+    
+    maxPage = Math.ceil(total / Search.pageSize);
+    
+    if (maxPage > Search.maxPages) {
+      maxPage = Search.maxPages;
+    }
+    
+    curPage = offset / Search.pageSize + 1;
+    
+    if (curPage > 1) {
+      el = $.el('div');
+      el.className = 'prev';
+      
+      if (!Main.hasMobileLayout) {
+        el2 = $.el('input');
+        el2.type = 'button';
+        el2.value = 'Previous';
+      }
+      else {
+        el2 = $.el('a');
+        el2.className = 'button';
+        el2.textContent = 'Previous';
+      }
+      
+      el2.setAttribute('data-o', offset - Search.pageSize);
+      
+      $.on(el2, 'click', Search.onPageClick);
+      
+      el.appendChild(el2);
+      
+      cnt.appendChild(el);
+    }
+    
+    el = $.el('div');
+    el.className = 'pages';
+    el.textContent = 'Page ' + curPage + ' / ' + maxPage;
+    
+    cnt.appendChild(el);
+    
+    if (curPage < maxPage) {
+      el = $.el('div');
+      el.className = 'next';
+      
+      if (!Main.hasMobileLayout) {
+        el2 = $.el('input');
+        el2.type = 'button';
+        el2.value = 'Next';
+      }
+      else {
+        el2 = $.el('a');
+        el2.className = 'button';
+        el2.textContent = 'Next';
+      }
+      
+      el2.setAttribute('data-o', offset + Search.pageSize);
+      
+      $.on(el2, 'click', Search.onPageClick);
+      
+      el.appendChild(el2);
+      
+      cnt.appendChild(el);
+    }
+    
+    el = $.id('delform');
+    
+    el.parentNode.insertBefore(cnt, el.nextElementSibling);
+  },
+  
+  showStatus: function(msg, cls) {
+    var cnt;
+    
+    cnt = $.cls('board')[0];
+    
+    if (msg) {
+      cnt.innerHTML = '<div id="js-sf-status" class="js-sf-' + cls + '">' + msg + '</div>';
+    }
+    else {
+      cnt.innerHTML = '';
+    }
+  },
+  
+  showError: function(msg) {
+    Search.showStatus(msg, 'error');
+  },
+  
+  toggleSpinner: function(flag) {
+    var el = $.id('js-sf-btn');
+    
+    if (flag) {
+      el.disabled = true;
+      Search.showStatus('Searching…', 'spnr');
+    }
+    else {
+      el.disabled = false;
+      Search.showStatus(false);
+    }
+  },
+  
+  buildResults: function(data) {
+    var j, k, op, cnt, threads, thread, boardDiv, reply;
+    
+    threads = data.threads;
+    
+    if (threads.length < 1) {
+      Search.showError('Nothing found.');
+      Search.updateCtrl(false);
+      return;
+    }
+    
+    boardDiv = $.cls('board')[0];
+    
+    boardDiv.textContent = '';
+    
+    for (j = 0; thread = threads[j]; ++j) {
+      op = thread.posts[0];
+      
+      cnt = $.el('div');
+      cnt.id = 't' + op.no;
+      cnt.className = 'thread';
+      
+      cnt.appendChild(Parser.buildHTMLFromJSON(op, thread.board, true));
+      
+      for (k = 1; reply = thread.posts[k]; ++k) {
+        cnt.appendChild(Parser.buildHTMLFromJSON(reply, thread.board));
+      }
+      
+      boardDiv.appendChild(cnt);
+      
+      boardDiv.appendChild($.el('hr'));
+    }
+    
+    Search.updateCtrl(data.offset, data.nhits);
+  }
+};
+
+/**
  * Depager
  */
 var Depager = {};
@@ -8476,6 +8861,8 @@ Main.run = function() {
   
   Main.hasMobileLayout = Main.checkMobileLayout();
   Main.isMobileDevice = /Mobile|Android|Dolfin|Opera Mobi|PlayStation Vita|Nintendo DS/.test(navigator.userAgent);
+  
+  Search.init();
   
   if (Config.disableAll) {
     return;
