@@ -1698,6 +1698,7 @@ var Search = {
   },
   
   onError: function() {
+    Search.toggleSpinner(false);
     Search.showError('Connection error.');
   },
   
