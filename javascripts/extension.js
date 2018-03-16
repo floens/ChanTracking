@@ -9389,7 +9389,7 @@ Main.onclick = function(e) {
   else if (!Config.disableAll) {
     if (QR.enabled && t.title == 'Reply to this post') {
       e.preventDefault();
-      tid = Main.tid || t.previousElementSibling.getAttribute('href').split('#')[0].split('/')[1];
+      tid = Main.tid || t.previousElementSibling.getAttribute('href').split('#')[0].split('/').slice(-1)[0];
       QR.quotePost(tid, !e.ctrlKey && t.textContent);
     }
     else if (Config.imageExpansion && e.which == 1 && t.parentNode
