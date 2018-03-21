@@ -35,7 +35,7 @@ div#boardNavDesktopFoot, div#boardNavDesktop, div.pagelist, div#absbot {
 	animation: spookyhover 3s linear;
 }
 
-@-webkit-keyframes spookyhover{
+@-webkit-keyframes spookyhover {
 	from {
 		opacity: 0;
 	}
@@ -44,7 +44,7 @@ div#boardNavDesktopFoot, div#boardNavDesktop, div.pagelist, div#absbot {
 	}
 }
 
-@-moz-keyframes spookyhover{
+@-moz-keyframes spookyhover {
 	from {
 		opacity: 0;
 	}
@@ -53,7 +53,7 @@ div#boardNavDesktopFoot, div#boardNavDesktop, div.pagelist, div#absbot {
 	}
 }
 
-@keyframes spookyhover{
+@keyframes spookyhover {
 	from {
 		opacity: 0;
 	}

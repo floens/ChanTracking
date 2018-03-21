@@ -240,6 +240,8 @@ body {
 	box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.25);
 }
 
+/* reCaptcha */
+
 #captchaContainerAlt {
 	height: 80px;
 }
@@ -591,6 +593,8 @@ blockquote > span.quote {
 a.quoteLink:hover, a.quotelink:hover {
 	color: #81a2be !important;
 }
+
+/* Archived threads list */
 
 .is_arclist .belowLeaderboard {
 	display: none;
@@ -1261,6 +1265,8 @@ span.pln {
 	color: #c5c8c6;
 }
 
+/** this is not important **/
+
 #captchaContainer {
 	overflow: hidden;
 }
@@ -1573,25 +1579,25 @@ table.flashListing .subject {
 	animation: blink 1.5s step-end infinite;
 }
 
-@-webkit-keyframes blink{
+@-webkit-keyframes blink {
 	50% {
 		opacity: 0;
 	}
 }
 
-@-moz-keyframes blink{
+@-moz-keyframes blink {
 	50% {
 		opacity: 0;
 	}
 }
 
-@-o-keyframes blink{
+@-o-keyframes blink {
 	50% {
 		opacity: 0;
 	}
 }
 
-@keyframes blink{
+@keyframes blink {
 	50% {
 		opacity: 0;
 	}
