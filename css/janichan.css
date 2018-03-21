@@ -1,3 +1,425 @@
+/*body {
+	font-family: arial, helvetica, sans-serif;
+	font-size: 10pt;
+	background: #FFF2EE url(/image/fade-pink.png) top center repeat-x;
+	color: #000;
+	padding-left: 5px;
+	padding-right: 5px;
+	margin-right: 0;
+	margin-left: 0;
+	margin-top: 5px;
+}
+
+td {
+	font-size: 10pt;
+	padding: 0;
+	margin: 0;
+}
+
+td.reply {
+	border: 1px solid #d9b9b7;
+	border-left: none;
+	border-top: none;
+	padding: 2px;
+}
+
+blockquote {
+	font-size: 10pt;
+}
+
+.doubledash {
+	color: #000;
+}
+
+.inputtext {
+	margin: 0;
+	margin-right: 2px;
+	padding: 1px 4px;
+	border: 1px solid #aaa;
+	outline: none;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 10pt;
+}
+
+input.inputtext {
+	height: 1.75em;
+}
+
+td>.inputtext {
+	height: auto;
+	padding-top: 2px;
+	padding-bottom: 3px;
+}
+
+.inputtext:focus {
+	border: 1px solid #E89;
+}
+
+.logo img {
+	border: 1px solid #000;
+}
+
+.logo b span {
+	font-family: tahoma;
+}
+
+.logo span {
+	font-size: 28px;
+	letter-spacing: -2px;
+}
+
+hr {
+	border: none;
+	border-top: 1px solid #d9b9b7;
+	height: 0;
+}
+
+.postblock {
+	border: 1px solid #000;
+	font-size: 10pt;
+	padding: 0 5px;
+	line-height: 20px;
+}
+
+.rules {
+	font-size: 10pt;
+}
+
+.rules a {
+	text-decoration: none;
+}
+
+form a img {
+	margin-top: 3px;
+}
+
+iframe,.rotating {
+	background: #F0DAD6;
+	border-right: 1px solid #d9b9b7;
+	border-bottom: 1px solid #d9b9b7;
+}
+
+.pages {
+	border: none;
+	background: #F0DAD6;
+	border-right: 1px solid #d9b9b7;
+	border-bottom: 1px solid #d9b9b7;
+}
+
+.pages td {
+	border: none;
+	padding: 1px 5px;
+}
+
+.pages td {
+	color: #d9b9b7;
+}
+
+.pages td b {
+	color: #000;
+}
+
+.deletebuttons {
+	text-align: right;
+}
+
+.deletebuttons br {
+	display: none;
+}
+
+a,a:visited {
+	color: #5C3434;
+}
+
+a:hover {
+	color: #00D;
+}
+
+a.quotelink {
+	color: #229978;
+}
+
+.logo {
+	clear: both;
+	text-align: center;
+	font-size: 24pt;
+	color: #0F0AAF;
+	width: 100%;
+}
+
+form {
+	margin-top: 0;
+}
+
+.rules {
+	width: 468px;
+	font-size: 10px;
+}
+
+.rules>li {
+	list-style: none;
+}
+
+.rules>li:before {
+	content: "\2022 \20";
+}
+
+.postblock {
+	background: #E89;
+	color: #000;
+	font-weight: 800;
+}
+
+.footer {
+	text-align: center;
+	font-size: 12px;
+}
+
+.unkfunc {
+	color: #229978;
+}
+
+.filesize {
+	text-decoration: none;
+}
+
+td .filesize {
+	display: inline;
+	background: none;
+}
+
+.filesize span,span.postername,span.filetitle,span.commentpostername {
+	unicode-bidi: embed;
+}
+
+.filetitle,.replytitle {
+	background: inherit;
+	color: #5D0C0F;
+	font-weight: 800;
+}
+
+.postername,.commentpostername {
+	background: inherit;
+	color: #437711;
+	font-weight: 800;
+}
+
+.postertrip {
+	background: inherit;
+	color: #548822;
+}
+
+.oldpost {
+	background: inherit;
+	color: #5D0C0F;
+	font-weight: 800;
+}
+
+.omittedposts,.abbr {
+	color: #070707;
+}
+
+.reply {
+	background: #F0DAD6;
+	color: #000;
+}
+
+.replyhl {
+	background: #D0BAD6;
+	color: #000;
+}
+
+.doubledash {
+	vertical-align: top;
+	clear: both;
+	float: left;
+}
+
+a.quotejs:active,a.quotejs:link,a.quotejs:visited {
+	color: #000;
+	text-decoration: none;
+}
+
+a.quotejs:hover {
+	color: #d00;
+}
+
+.tn_thread {
+	width: 200px;
+	height: 100px;
+	margin: 0 20px 20px 20px;
+	float: left;
+	background: #fff2ee;
+	border: #98e 1px solid;
+	text-align: center;
+}
+
+.tn_reply {
+	width: 100px;
+	height: 100px;
+	margin: 0 20px 20px 20px;
+	float: left;
+	background: #fff2ee;
+	border: #98e 1px solid;
+	text-align: center;
+}
+
+.adHeadline {
+	font: bold 10pt serif;
+	text-decoration: underline;
+	color: #00e;
+}
+
+.adText {
+	font: normal 10pt serif;
+	text-decoration: none;
+	color: #800;
+}
+
+#ad {
+	width: 120px;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	right: 150px;
+	border: 1px solid #98E;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 11px;
+}
+
+#ad div {
+	margin: 0;
+	padding: .4em;
+}
+
+#ad div.ad-title {
+	padding: 0;
+	background: #98E;
+	color: #000;
+	font-size: 11px;
+}
+
+#ad div.ad-title a {
+	font-family: arial, helvetica, sans-serif;
+	color: #000;
+}
+
+#ad div.ad-text a {
+	font-family: arial, helvetica, sans-serif;
+}
+
+.bottomAdTitle {
+	font-family: arial, helvetica, sans-serif;
+	background: #98E;
+	color: #000;
+}
+
+#bottomAd {
+	height: 52px;
+	font-size: 11px;
+}
+
+#bottomAdOuter {
+	width: 600px;
+	border: 1px solid #98E;
+	font-size: 11px;
+}
+
+.spoiler a.quotelink,.spoiler .unkfunc {
+	color: inherit;
+}
+
+.exif {
+	display: none;
+	font-family: arial, helvetica, sans-serif;
+	font-size: xx-small;
+}
+
+.exif td {
+	font-family: arial, helvetica, sans-serif;
+	font-size: xx-small;
+}
+
+.exif td b {
+	font-weight: 800;
+	text-decoration: underline;
+	font-size: x-small;
+}
+
+#header {
+	position: absolute;
+	top: 2px;
+	left: 5px;
+	right: 5px;
+}
+
+* html #header {
+	width: 100%;
+}
+
+#navtop,#navbot {
+	left: 0;
+	float: left;
+}
+
+#navtopright,#navbotright {
+	right: 0;
+	display: block;
+	float: right;
+	text-align: right;
+}
+
+#header,#navbot,#navbotright {
+	font-size: 9pt;
+	color: #d9b9b7;
+}
+
+#header a,#navbot a,#navbotr a,.pages td a {
+	font-weight: normal;
+	padding: 1px;
+	text-decoration: none;
+	color: #5C3434;
+}
+
+#header a:hover,#navbot a:hover,#navbotr a:hover,.pages td a:hover {
+	color: #00D;
+}
+
+#footer {
+	clear: both;
+	padding-top: 10px;
+}
+
+#footer center font {
+	font-size: 7pt;
+}
+
+.pages td a {
+	color: #5C3434;
+}
+
+td.replyhl {
+	border: 1px solid #D0BAD6;
+	border-left: none;
+	border-top: none;
+	padding: 2px;
+}
+
+td.deletebuttons input.checkbox {
+	margin: 1px 2px 1px 2px;
+}
+
+div.logo img {
+	margin: 5px 0 5px 0;
+}
+
+.fstitle {
+	float: left;
+	width: 25px;
+}*/
+
+/** GENERIC / ELEMENT STYLING **/
+
 body {
 	background: #fff2ee url(/image/fade-pink.png) center top repeat-x;
 	color: #000;
@@ -70,9 +492,13 @@ span.x-small {
 	font-size: x-small;
 }
 
+/** MOBILE ONLY DISABLES **/
+
 .mobile {
 	display: none;
 }
+
+/** HEADER **/
 
 ul.rules {
 	margin: 0;
@@ -127,6 +553,8 @@ div#boardNavDesktop a {
 	color: #800000;
 }
 
+/** General Containers **/
+
 div.pContainer {
 }
 
@@ -142,10 +570,14 @@ div.sideArrows {
 	margin-left: 2px;
 }
 
+/** Thread Container **/
+
 div.thread {
 	margin: 0;
 	clear: both;
 }
+
+/** Post Container **/
 
 div.post {
 	margin: 4px 0;
@@ -167,6 +599,8 @@ div.reply input {
 	float: none;
 }
 
+/** Post Information **/
+
 div.post div.postInfo {
 	display: block;
 	width: 100%;
@@ -184,6 +618,8 @@ div.post div.postInfo span.postNum a:hover {
 	color: d00 !important;
 }
 
+/* Name */
+
 div.post div.postInfo span.nameBlock {
 	display: inline-block;
 }
@@ -198,16 +634,22 @@ div.post div.postInfo span.nameBlock span.postertrip {
 	font-weight: normal !important;
 }
 
+/* Date/Time */
+
 div.post div.postInfo span.date {
 }
 
 div.post div.postInfo span.time {
 }
 
+/* Subject */
+
 div.post div.postInfo span.subject {
 	color: #5d0c0f;
 	font-weight: bold;
 }
+
+/** Message **/
 
 div.post blockquote.postMessage {
 	display: block;
@@ -220,6 +662,8 @@ blockquote > span.quote {
 a.quoteLink, a.quotelink, .deadlink {
 	color: #229978 !important;
 }
+
+/** File Information **/
 
 div.post div.file {
 	display: block;
@@ -257,10 +701,14 @@ div.post div.file .fileThumb img {
 	margin-bottom: 5px;
 }
 
+/** Summary **/
+
 span.summary {
 	color: #707070;
 	margin-top: 10px;
 }
+
+/** POST FORM **/
 
 div.postingMode {
 	background-color: #e04000;
@@ -283,6 +731,8 @@ div.navLinksBot {
 	border: none !important;
 	margin: 0;
 }
+
+/** FOOTER **/
 
 div.thread:last-child {
 	padding-bottom: 21px;
@@ -317,7 +767,7 @@ div.pagelist div.pages {
 }
 
 div.pagelist div.pages a {
-	text-decoration: none !important;
+	text-decoration: none !important;  /* FINE MOOT GOSH JEEZ */
 }
 
 div.pagelist form {
@@ -381,6 +831,8 @@ div#absbot {
 #recaptcha_response_field {
 	padding: 0;
 }
+
+/** POST FORM **/
 
 table {
 	border-spacing: 1px;
@@ -676,6 +1128,8 @@ div.pageJump {
 	padding-right: 10px;
 }
 
+/** QUICK REPLY **/
+
 div.qrWindow {
 	position: absolute;
 	z-index: 10000;
@@ -732,6 +1186,8 @@ img.expandedImg {
 	max-height: none !important;
 }
 
+/** this is not important **/
+
 #captchaContainer {
 	overflow: hidden;
 }
@@ -770,6 +1226,8 @@ input[type="text"], input[type="password"], textarea {
 	-webkit-appearance: none;
 	-webkit-border-radius: 0;
 }
+
+/** fix stupid google recaptcha padding in webkit **/
 
 iframe[src="about:blank"] {
 	display: none;

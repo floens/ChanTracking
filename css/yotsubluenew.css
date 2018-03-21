@@ -1,5 +1,3 @@
-/** GENERIC / ELEMENT STYLING **/
-
 html {
 	-moz-text-size-adjust: 100%;
 	-webkit-text-size-adjust: 100%;
@@ -222,8 +220,6 @@ body {
 	max-width: 100%;
 }
 
-/* reCaptcha */
-
 #captchaContainerAlt {
 	height: 80px;
 }
@@ -444,13 +440,9 @@ div.backlink {
 	box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.25);
 }
 
-/** MOBILE ONLY DISABLES **/
-
 .mobile {
 	display: none;
 }
-
-/** HEADER **/
 
 ul.rules {
 	margin: 0;
@@ -518,8 +510,6 @@ div#boardNavDesktop a {
 	color: #34345c;
 }
 
-/** General Containers **/
-
 div.pContainer {
 }
 
@@ -535,14 +525,10 @@ div.sideArrows {
 	margin-left: 2px;
 }
 
-/** Thread Container **/
-
 div.thread {
 	margin: 0;
 	clear: both;
 }
-
-/** Post Container **/
 
 div.post {
 	margin: 4px 0;
@@ -564,8 +550,6 @@ div.reply input {
 	float: none;
 }
 
-/** Post Information **/
-
 div.post div.postInfo {
 	display: block;
 	width: 100%;
@@ -583,8 +567,6 @@ div.post div.postInfo span.postNum a:hover, .posteruid .hand:hover {
 	color: #dd0000 !important;
 }
 
-/* Name */
-
 div.post div.postInfo span.nameBlock {
 	display: inline-block;
 }
@@ -599,22 +581,16 @@ div.post div.postInfo span.nameBlock span.postertrip {
 	font-weight: normal !important;
 }
 
-/* Date/Time */
-
 div.post div.postInfo span.date {
 }
 
 div.post div.postInfo span.time {
 }
 
-/* Subject */
-
 div.post div.postInfo span.subject {
 	color: #0f0c5d;
 	font-weight: bold;
 }
-
-/** Message **/
 
 div.post blockquote.postMessage {
 	display: block;
@@ -628,8 +604,6 @@ blockquote > span.quote {
 	color: #d00 !important;
 	text-decoration: underline;
 }
-
-/* Archived threads list */
 
 .is_arclist .belowLeaderboard {
 	display: none;
@@ -661,8 +635,6 @@ blockquote > span.quote {
 	border-bottom: 1px dotted;
 	cursor: pointer;
 }
-
-/** File Information **/
 
 div.post div.file {
 	display: block;
@@ -701,14 +673,10 @@ div.post div.file .fileThumb img {
 	float: left;
 }
 
-/** Summary **/
-
 span.summary {
 	color: #707070;
 	margin-top: 10px;
 }
-
-/** POST FORM **/
 
 div.postingMode {
 	background-color: #e04000;
@@ -724,8 +692,6 @@ div.postingMode {
 	border: none !important;
 	margin: 0;
 }
-
-/** FOOTER **/
 
 div.thread:last-child {
 	padding-bottom: 21px;
@@ -760,7 +726,7 @@ div.pagelist div.pages {
 }
 
 div.pagelist div.pages a {
-	text-decoration: none !important;  /* FINE MOOT GOSH JEEZ */
+	text-decoration: none !important;
 }
 
 div.pagelist form {
@@ -826,8 +792,6 @@ div#absbot {
 #recaptcha_response_field {
 	padding: 0;
 }
-
-/** POST FORM **/
 
 table {
 	border-spacing: 1px;
@@ -1184,8 +1148,6 @@ div.pageJump {
 	padding-right: 5px;
 }
 
-/** QUICK REPLY **/
-
 div.qrWindow {
 	position: absolute;
 	z-index: 8000;
@@ -1237,8 +1199,6 @@ img.expandedImg {
 	max-width: none !important;
 	max-height: none !important;
 }
-
-/** this is not important **/
 
 #captchaContainer > img {
 	float: left;
@@ -1564,25 +1524,25 @@ table.flashListing .subject {
 	animation: blink 1.5s step-end infinite;
 }
 
-@-webkit-keyframes blink {
+@-webkit-keyframes blink{
 	50% {
 		opacity: 0;
 	}
 }
 
-@-moz-keyframes blink {
+@-moz-keyframes blink{
 	50% {
 		opacity: 0;
 	}
 }
 
-@-o-keyframes blink {
+@-o-keyframes blink{
 	50% {
 		opacity: 0;
 	}
 }
 
-@keyframes blink {
+@keyframes blink{
 	50% {
 		opacity: 0;
 	}
