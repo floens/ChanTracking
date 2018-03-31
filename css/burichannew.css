@@ -116,6 +116,53 @@ body {
 	text-align: center;
 }
 
+.n-atb {
+	border-radius: 6px;
+	padding: 1px 4px;
+	color: #353839;
+}
+
+.n-atb-0 {
+	background-color: #f56fa1;
+}
+
+.n-atb-1 {
+	background-color: #7b3f00;
+	color: #f2f3f4;
+}
+
+.n-atb-2 {
+	background-color: #fffdd0;
+}
+
+.n-atb-3 {
+	background-color: #e4d00a;
+}
+
+.n-atb-4 {
+	background-color: #50c878;
+}
+
+.n-atb-0::after {
+	content: 'Team Peep';
+}
+
+.n-atb-1::after {
+	content: 'Team Chocolate';
+}
+
+.n-atb-2::after {
+	content: 'Team Creme';
+}
+
+.n-atb-3::after {
+	content: 'Team Peanut Butter';
+}
+
+.n-atb-4::after {
+	content: 'Team Mini';
+}
+
 @media only screen and (max-width: 700px) {.jla-it {
 		width: 340px;
 		height: 220px;
