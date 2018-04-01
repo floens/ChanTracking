@@ -821,6 +821,11 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
   container.className = 'postContainer ' + postType + 'Container';
   container.id = 'pc' + data.no;
   
+  if (data.xa18 !== undefined && !data.capcode) {
+    capcodeStart = ' <strong class="capcode hand n-atb n-atb-'
+      + data.xa18 + ' id_at' + data.xa18 + '"></strong>';
+  }
+  
   container.innerHTML =
     (isOP ? '' : '<div class="sideArrows" id="sa' + data.no + '">&gt;&gt;</div>') +
     '<div id="p' + data.no + '" class="post ' + postType + highlight + '">' +
