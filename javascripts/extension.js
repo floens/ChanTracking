@@ -4103,6 +4103,10 @@ QR.submit = function(force) {
   
   formdata = new FormData(document.forms.qrPost);
   
+  if (formdata.get && formdata.delete && formdata.get('upfile') === '') {
+    formdata.delete('upfile');
+  }
+  
   if (QR.painterData) {
     QR.appendPainter(formdata);
   }
