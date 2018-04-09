@@ -4103,7 +4103,7 @@ QR.submit = function(force) {
   
   formdata = new FormData(document.forms.qrPost);
   
-  if (formdata.get && formdata.delete
+  if (formdata.entries && formdata.delete
     && (!formdata.get('upfile') || !formdata.get('upfile').size)) {
     formdata.delete('upfile');
   }
