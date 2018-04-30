@@ -1268,7 +1268,8 @@
         "meta_description": "\u0026quot;\/vip\/ - Very Important Posts\u0026quot; is 4chan's imageboard for Pass users.",
         "spoilers": 1,
         "is_archived": 1,
-        "sjis_tags": 1
+        "sjis_tags": 1,
+        "oekaki": 1
     }, {
         "board": "vp",
         "title": "Pok\u00e9mon",
