@@ -151,6 +151,7 @@ var load = function() {
     get('https://www.4chan.org/pass', function(body) {
         body = body.replace(/var temp_id = '[\w]+'/gi, 'var temp_id = \'snip\'');
         body = body.replace(/'temp_id', '[\w]+'/gi, '\'temp_id\', \'snip\'');
+        body = body.replace(/name="temp_id" value="([^"]*)"/gi, 'name="temp_id" value="snip"');
 
         fs.writeFileSync('pages/pass.html', body);
     });
