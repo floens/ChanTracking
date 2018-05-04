@@ -28,16 +28,26 @@ var coinbase_interval = false;
 var isRenewal = false;
 
 document.addEventListener('DOMContentLoaded', function() {
-	$('.email-errors').text('');
-	hasCookie = readCookie("temp_id") !== null;
+  $('.email-errors').text('');
+  hasCookie = readCookie("temp_id") !== null;
   if( !hasCookie ) {
-  	// Block stuff and show error.
-  	$('.email-errors').text('You have cookies blocked. You must enable cookies in order to purchase a 4chan Pass.');
-	$('.submit-button').attr("disabled", "disabled");
-  	return;
+    // Block stuff and show error.
+    $('.email-errors').text('You have cookies blocked. You must enable cookies in order to purchase a 4chan Pass.');
+    $('.submit-button').attr("disabled", "disabled");
+    $('.submit-button-cg').attr("disabled", "disabled");
+    return;
   }
 
   $("#payment-form").submit(function(event) {
+    if (this.action.indexOf('/payments/coinbase') !== -1) {
+      var btn = document.getElementById('pbac-button');
+      if (btn.disabled) {
+        return false;
+      }
+      btn.disabled = true;
+      return true;
+    }
+    
     // disable the submit button to prevent repeated clicks
     if ($('.submit-button').attr("disabled") == "disabled") return false;
     $('.submit-button').attr("disabled", "disabled");
@@ -71,18 +81,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (window.isRenewal) {
       build = '4chan Pass renewal for ' + window.ownerEmail;
-    	createCookie( 'pass_renew', '', 1, '4chan.org' );
+      createCookie( 'pass_renew', '', 1, '4chan.org' );
     }
     else {
       build = '4chan Pass purchase for ' + $('#email').val();
-    	createCookie( 'pass_email', $('#email').val(), 1, '4chan.org' );
+      createCookie( 'pass_email', $('#email').val(), 1, '4chan.org' );
     }
     
     if( $('#giftemail').val() != '' && $('#get').val() == '1' ) {
       build += ' (Gift from: ' + $('#giftemail').val() + ')';
     }
     
-		createCookie( 'pass_giftemail', $('#giftemail').val(), $('#giftemail').val() ? 1 : -1, '4chan.org' );
+    createCookie( 'pass_giftemail', $('#giftemail').val(), $('#giftemail').val() ? 1 : -1, '4chan.org' );
 
     build += ' || ' + temp_id;
     
@@ -95,33 +105,33 @@ document.addEventListener('DOMContentLoaded', function() {
     var buildn = encodeURIComponent(build);
     // Cleanup any previous modals that got generated
      
-	  while( $('#coinbase_modal_iframe_'+item_id).attr('id') ) $('#coinbase_modal_iframe_'+item_id).get(0).remove();
-	  $('#coinbase_js').remove();
+    while( $('#coinbase_modal_iframe_'+item_id).attr('id') ) $('#coinbase_modal_iframe_'+item_id).get(0).remove();
+    $('#coinbase_js').remove();
 
-	  // Load the modal with our new custom param
-	  $('#coinbase_dynamic_load').html(dynamicu.replace('CUSTOM_REPLACE', build));
+    // Load the modal with our new custom param
+    $('#coinbase_dynamic_load').html(dynamicu.replace('CUSTOM_REPLACE', build));
 
 
-	  // Wait until the modal has finished loading, then trigger it
-	  //setTimeout( "$(document).trigger('coinbase_show_modal', 'ee545c6d1c1a5d5aaa3d0acaf1808652');", 2000 );
-	  coinbase_interval = setInterval(function() {
-	  	if( $('#coinbase_modal_iframe_'+item_id).attr('id') ) {
-	  		$('#coinbase_modal_iframe_'+item_id).load(function(){
-				console.log("Modal has finished loading.  Triggering...");
-				$(document).trigger('coinbase_show_modal', item_id);
-	  		});
+    // Wait until the modal has finished loading, then trigger it
+    //setTimeout( "$(document).trigger('coinbase_show_modal', 'ee545c6d1c1a5d5aaa3d0acaf1808652');", 2000 );
+    coinbase_interval = setInterval(function() {
+      if( $('#coinbase_modal_iframe_'+item_id).attr('id') ) {
+        $('#coinbase_modal_iframe_'+item_id).load(function(){
+        console.log("Modal has finished loading.  Triggering...");
+        $(document).trigger('coinbase_show_modal', item_id);
+        });
 
-	  		clearInterval(coinbase_interval);
+        clearInterval(coinbase_interval);
 
-	  	}
-	  }, 50);
+      }
+    }, 50);
   });
 
-	if (!window.isRenewal) {
-	  $('#email').keyup(doCheckEmail);
-	  $('#emailverify').keyup(doCheckEmail);
-	}
-	
+  if (!window.isRenewal) {
+    $('#email').keyup(doCheckEmail);
+    $('#emailverify').keyup(doCheckEmail);
+  }
+  
   $('#giftemail').keyup(doCheckEmail);
   $('#giftemailverify').keyup(doCheckEmail);
 
@@ -136,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }, false);
 
 function buttonClick(evt) {
-	if( !hasCookie ) return;
+  if( !hasCookie ) return;
 
     if( !checkEmail() ) {
         disableButton();
@@ -156,15 +166,15 @@ function showGift(evt) {
         return;
       }
     }
-		$('#email-label').text('Gift Recipient E-mail');
-		$('#token-label').text('Gift Recipient 4chan Pass Token');
+    $('#email-label').text('Gift Recipient E-mail');
+    $('#token-label').text('Gift Recipient 4chan Pass Token');
     $('#gift_email').css('display', 'block');
     $('#get').val('1');
 }
 
 function hideGift() {
-		$('#email-label').text('Your E-mail');
-		$('#token-label').text('Your 4chan Pass Token');
+    $('#email-label').text('Your E-mail');
+    $('#token-label').text('Your 4chan Pass Token');
     $('#gift_email').css('display', 'none');
     $('#get').val('0');
     createCookie( 'pass_giftemail', '', -1, '4chan.org' );
@@ -173,16 +183,18 @@ function hideGift() {
 undisableButton = function()
 {
     $('.submit-button').removeAttr('disabled');
+    $('.submit-button-cg').removeAttr('disabled');
 };
 
 disableButton = function()
 {
     $('.submit-button').attr("disabled", "disabled");
+    $('.submit-button-cg').attr("disabled", "disabled");
 };
 
 function stripeResponseHandler(status, response)
 {
-    console.log(status, response);
+    //console.log(status, response);
 
     if( response.error ) {
         $('.payment-errors').text(response.error.message + '.');
@@ -190,11 +202,18 @@ function stripeResponseHandler(status, response)
     } else {
         var form$ = $('#payment-form');
         var token = response['id'];
-		if (document.getElementById('id_stripeToken')) return;
-		if (token == '') return;
+        if (document.getElementById('id_stripeToken')) return;
+        if (token == '') return;
         form$.append('<input type="hidden" name="stripeToken" id="id_stripeToken" value="' + token + '" />');
         $('.payment-errors').text('Processing payment. Please wait...').css('color', 'red');
-        form$.get(0).submit();
+        
+        var el = form$.get(0);
+        
+        if (el.hasAttribute('data-stripe-action') && el.getAttribute('data-stripe-action') !== el.action) {
+          el.action = el.getAttribute('data-stripe-action');
+        }
+        
+        el.submit();
     }
 }
 
@@ -210,20 +229,20 @@ function createCookie(name, value, days, domain) {
 }
 
 function readCookie(name) {
-	var nameEQ = name + "=";
-	var ca = document.cookie.split(';');
-	for (var i = 0; i < ca.length; i++) {
-		var c = ca[i];
-		while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-	}
-	return null;
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
 }
 
 timeoutHold = null;
 function doCheckEmail()
 {
-	if( !hasCookie ) return;
+  if( !hasCookie ) return;
 
     if( timeoutHold != null ) clearTimeout(timeoutHold);
     timeoutHold = setTimeout(checkEmail, 1000);
@@ -237,14 +256,14 @@ function validateEmail(email) {
 function checkEmail()
 {
     var isOk = true, isOkG = true;
-		
-		if (!window.isRenewal) {
+    
+    if (!window.isRenewal) {
       isOk = checkRegularEmail();
       $('#he').val($('#email').val());
       $('#hev').val($('#emailverify').val());
       if( !isOk ) return;
-		}
-		
+    }
+    
     if( $('#giftpass').attr('checked') ) {
         isOkG = checkGiftEmail();
         $('#hge').val($('#giftemail').val());
@@ -557,14 +576,14 @@ z-index: 2000;
           </div>
     <div class="boxcontent">
       <p>A 4chan Pass ("Pass") allows users to bypass typing a CAPTCHA verification when posting and reporting posts on the
-	4chan image and discussion boards. The idea for Passes came directly from the community
-	and were introduced as a way for users to show their support and receive a convenient feature in return. Passes
-	cost $20 <!--<span style="text-decoration: line-through; color: grey;">$20</span> $15 <em>(Discounted&mdash;25%
-		Off)</em>--> per year,
-	which is about $1.67<!--<span style="text-decoration: line-through; color: grey;">$1.67</span> $1.25-->
-	per month&mdash;or less than a single 20oz bottle of soda.</p>
+  4chan image and discussion boards. The idea for Passes came directly from the community
+  and were introduced as a way for users to show their support and receive a convenient feature in return. Passes
+  cost $20 <!--<span style="text-decoration: line-through; color: grey;">$20</span> $15 <em>(Discounted&mdash;25%
+    Off)</em>--> per year,
+  which is about $1.67<!--<span style="text-decoration: line-through; color: grey;">$1.67</span> $1.25-->
+  per month&mdash;or less than a single 20oz bottle of soda.</p>
 <p>See below for more information and payment instructions, or <a href="https://sys.4chan.org/auth" target="_blank">click
-	here if you've already purchased a 4chan Pass.</a></p>
+  here if you've already purchased a 4chan Pass.</a></p>
 <p>Forgot your PIN? <a href="https://www.4chan.org/pass?reset">Reset it here.</a></p>
 
 <p>If your Pass has expired or is expiring in less than 6 months, you can <a href="https://www.4chan.org/pass?req_renew">renew it here.</a></p>
@@ -572,13 +591,13 @@ z-index: 2000;
 <hr style="border: 0; color: #800; background: #800; height: 1px; margin-top: 1.0em; margin-bottom: 1.0em;" />
 
 <p><span style="text-decoration: underline;">Note for international customers</span>: We accept most major international
-	cards (this includes bank, credit, charge, debit, and prepaid cards).</p>
+  cards (this includes bank, credit, charge, debit, and prepaid cards).</p>
 <p><span style="text-decoration: underline;">Note for customers failing ZIP/Postal Code check</span>: If you receive an
-	error
-	stating payment was declined due to a bad ZIP/Postal Code, please call your card's issuer and verify what they
-	have on file.</p>
+  error
+  stating payment was declined due to a bad ZIP/Postal Code, please call your card's issuer and verify what they
+  have on file.</p>
 <p><strong>If you have any trouble purchasing a Pass, or have questions before purchasing, please e-mail us at: 
-	<a href="mailto:4chanpass@4chan.org?subject=4chan%20Pass%20-%20Purchase%20Support">4chanpass@4chan.org</a></strong></p>
+  <a href="mailto:4chanpass@4chan.org?subject=4chan%20Pass%20-%20Purchase%20Support">4chanpass@4chan.org</a></strong></p>
     </div>
   </div>
 </div>
@@ -590,71 +609,74 @@ z-index: 2000;
       <h2>Purchase a 4chan Pass<img src="//s.4cdn.org/image/lock.gif" alt="Secure Transaction" title="Secure Transaction" style="width: 12px; height: 14px; float: right; margin: 6px 6px 0 0;" class="retina"/></h2>
           </div>
     <div class="boxcontent">
-      <form action="https://www.4chan.org/payments/" method="post" id="payment-form">
+      <form data-cg-action="https://www.4chan.org/payments/coinbase.php?action=order" action="https://www.4chan.org/payments/" method="post" id="payment-form">
 
 <div id="email_collection_form">
-	<div class="form-row email-row">
-		<div class="left-column">
-			<h3>Your E-mail</h3>
-			<input type="text" size="17" autocomplete="off" name="email" id="email"
-				   title="E-mail address must be valid." />
-		</div>
+  <div class="form-row email-row">
+    <div class="left-column">
+      <h3>Your E-mail</h3>
+      <input type="text" size="17" autocomplete="off" name="email" id="email"
+           title="E-mail address must be valid." />
+    </div>
 
-		<div class="right-column">
-			<h3>Verify E-mail</h3>
-			<input type="text" size="17" autocomplete="off" name="emailverify" id="emailverify"
-				   title="Verify your e-mail address." />
-		</div>
-	</div>
+    <div class="right-column">
+      <h3>Verify E-mail</h3>
+      <input type="text" size="17" autocomplete="off" name="emailverify" id="emailverify"
+           title="Verify your e-mail address." />
+    </div>
+  </div>
 
-	<div style="text-align: center;">
-		<input type="checkbox" autocomplete="off" name="giftpass" id="giftpass" value="1" onclick="giftToggle(this);" />&nbsp;
+  <div style="text-align: center;">
+    <input type="checkbox" autocomplete="off" name="giftpass" id="giftpass" value="1" onclick="giftToggle(this);" />&nbsp;
 
-		<label for="giftpass">
-			Purchase this Pass as a gift for someone else?
-		</label>
-	</div>
+    <label for="giftpass">
+      Purchase this Pass as a gift for someone else?
+    </label>
+  </div>
 
-	<div class="form-row email-row" id="gift_email" style="display: none;">
-		<div class="left-column">
-			<h3>Gift Recipient E-mail</h3>
-			<input type="text" size="17" autocomplete="off" name="giftemail" id="giftemail"
-				   title="E-mail for the gift recipient." value="" />
-		</div>
+  <div class="form-row email-row" id="gift_email" style="display: none;">
+    <div class="left-column">
+      <h3>Gift Recipient E-mail</h3>
+      <input type="text" size="17" autocomplete="off" name="giftemail" id="giftemail"
+           title="E-mail for the gift recipient." value="" />
+    </div>
 
-		<div class="right-column">
-			<h3>Verify Gift Recipient E-mail</h3>
-			<input type="text" size="17" autocomplete="off" id="giftemailverify" name="giftemailverify"
-				   title="Verify gift recipient's e-mail address." value="" />
-		</div>
-	</div>
-	<hr/>
+    <div class="right-column">
+      <h3>Verify Gift Recipient E-mail</h3>
+      <input type="text" size="17" autocomplete="off" id="giftemailverify" name="giftemailverify"
+           title="Verify gift recipient's e-mail address." value="" />
+    </div>
+  </div>
+  <hr/>
 
-	<div class="form-row" style="text-align: center;" id="priceinfo">
-		<h3>Cost</h3>
-		<h2 style="padding-top: 5px;">$20.00 USD</h2>
+  <div class="form-row" style="text-align: center;" id="priceinfo">
+    <h3>Cost</h3>
+    <h2 style="padding-top: 5px;">$20.00 USD</h2>
 
-		<!--<h3 style="text-decoration: line-through; color: grey; padding-top: 5px;">$20.00 USD</h3>
+    <!--<h3 style="text-decoration: line-through; color: grey; padding-top: 5px;">$20.00 USD</h3>
 
-		<h2 style="color: red;">$15.00 USD</h2>
+    <h2 style="color: red;">$15.00 USD</h2>
 
-		<h3 style="color: red;">(25% Off)</h3>-->
-	</div>
+    <h3 style="color: red;">(25% Off)</h3>-->
+  </div>
 
-	<hr/>
+  <hr/>
 
-	<div class="form-row" style="text-align: center;">
-		<input type="checkbox" autocomplete="off" name="acceptterms" id="acceptterms" value="accept"
-			   onclick="buttonClick(this);" />&nbsp;
-		<label for="acceptterms">
-			I have read and agree to the <br/><a href="#termsofsale">Terms of Sale</a> and <a href="#termsofuse">Terms
-			of Use</a>.
-		</label>
+  <div class="form-row" style="text-align: center;">
+    <input type="checkbox" autocomplete="off" name="acceptterms" id="acceptterms" value="accept"
+         onclick="buttonClick(this);" />&nbsp;
+    <label for="acceptterms">
+      I have read and agree to the <br/><a href="#termsofsale">Terms of Sale</a> and <a href="#termsofuse">Terms
+      of Use</a>.
+    </label>
 
-		<br /><br />
-		
-		<button type="submit" class="submit-button stripe-button-el" disabled="disabled" id="pbc-button"><span>Pay with Card</span></button>
-		
+    <br /><br />
+    
+    <button type="submit" class="submit-button stripe-button-el" disabled="disabled" id="pbc-button"><span>Pay with Card</span></button>
+    <br><br>
+    <input type="hidden" name="temp_id" value="c0468ae85802313c827a6d2c6a67a91d">
+    <button type="button" class="submit-button-cg stripe-button-el" disabled="disabled" id="pbac-button"><span>Pay with Digital Currency</span></button>
+    <div style="margin-top: 10px">We currently accept<br>Bitcoin, Bitcoin Cash, Ethereum and Litecoin.</div>
     <script type="text/javascript">
       function appendToken(res) {
         var el, form;
@@ -727,18 +749,44 @@ z-index: 2000;
           email: email,
           token: appendToken
         });
-	    }
-	    
-	    document.getElementById('pbc-button').addEventListener('click', onPayClick, false);
+      }
+      
+      function onCoinbaseClick(e) {
+        var el;
+        
+        e.preventDefault();
+        e.stopPropagation();
+        
+        
+        if (!checkEmail()) {
+          return;
+        }
+        
+        if (this.disabled) {
+          return;
+        }
+        
+        el = document.getElementById('payment-form');
+        
+        if (!el.hasAttribute('data-stripe-action')) {
+          el.setAttribute('data-stripe-action', el.action);
+        }
+        
+        el.action = el.getAttribute('data-cg-action');
+        el.submit();
+      }
+      
+      document.getElementById('pbc-button').addEventListener('click', onPayClick, false);
+      document.getElementById('pbac-button').addEventListener('click', onCoinbaseClick, false);
     </script>
     
-		<br /><br />
-		
-		<div style="text-align: center; font-size: smaller;">Note: You must have JavaScript and browser cookies
-			enabled in order to complete this purchase. Please provide a valid e-mail address, as you may have trouble receiving your Pass credentials if you fail to do so.
-		</div>
-		<div class="email-errors"></div>
-	</div>
+    <br /><br />
+    
+    <div style="text-align: center; font-size: smaller;">Note: You must have JavaScript and browser cookies
+      enabled in order to complete this purchase. Please provide a valid e-mail address, as you may have trouble receiving your Pass credentials if you fail to do so.
+    </div>
+    <div class="email-errors"></div>
+  </div>
 
   </div>
 </form>
@@ -752,11 +800,11 @@ z-index: 2000;
           </div>
     <div class="boxcontent">
       <ol>
-	<li>Your Pass will be valid for 12 months from the date of purchase.</li>
-	<li>Use of your Pass is bound by the 4chan Pass <a href="#termsofuse">Terms of Use</a>.</li>
+  <li>Your Pass will be valid for 12 months from the date of purchase.</li>
+  <li>Use of your Pass is bound by the 4chan Pass <a href="#termsofuse">Terms of Use</a>.</li>
     <li>You are encouraged to read and understand the 4chan Pass <a href="#faq">FAQ</a> before making your purchase.</li>
-	<li>This payment will be listed on your billing statement as "4CHAN.ORG".</li>
-	<li>All sales are final. No refunds will be issued.</li>
+  <li>This payment will be listed on your billing statement as "4CHAN.ORG".</li>
+  <li>All sales are final. No refunds will be issued.</li>
 </ol>
     </div>
   </div>
@@ -768,30 +816,30 @@ z-index: 2000;
           </div>
     <div class="boxcontent">
       <ol>
-	<li>You understand that the service being offered <em>only</em> allows you to bypass entering a CAPTCHA verification
-		on the 4chan image and discussion boards while using an authorized device.
-	</li>
-	<li>A Pass may be used to authorize multiple devices, but can only be associated with one IP address at a time. This IP may only be changed once every 30 minutes.</li>
-	<li>Passes are for individual use by the purchaser only.</li>
-	<li>Passes may not be shared, transferred, or sold. Passes that are found to violate this term will be revoked.</li>
-	<li>Posting spam messages, advertising of any kind, or other content that violates United States law to 4chan will
-		result in immediate revocation of the Pass with no refund given.
-	</li>
-	<li>You must have browser cookies enabled to use your Pass. JavaScript is optional, but recommended.</li>
-	<li>Passes are valid for 12 months from date of purchase.</li>
-	<li>You agree to comply with the <a href="/rules" target="_blank">Rules</a> of 4chan, and understand that failure to do so may result
-		in the temporary or permanent suspension, in 4chan's sole discretion, of your posting privileges. Suspended
-		("banned") users shall not be eligible for a refund and will not have lost time credited to their Pass account.
-	</li>
-	<li>Passes and all related services offered by 4chan are provided "as is" and without any warranty of any kind.
-		4chan makes no guarantee that Passes or the use thereof will be available at any particular time or that the
-		results of using the Pass will meet your requirements.
-	</li>
-	<li>In no event will 4chan or any of its employees or affiliates be liable for any damages relating to the Passes in
-		excess of the prorated portion&mdash;in relation to the date you bought the Pass&mdash;of the amount (in USD)
-		you spent to buy the Pass.
-	</li>
-	<li>These terms are subject to change without notice.</li>
+  <li>You understand that the service being offered <em>only</em> allows you to bypass entering a CAPTCHA verification
+    on the 4chan image and discussion boards while using an authorized device.
+  </li>
+  <li>A Pass may be used to authorize multiple devices, but can only be associated with one IP address at a time. This IP may only be changed once every 30 minutes.</li>
+  <li>Passes are for individual use by the purchaser only.</li>
+  <li>Passes may not be shared, transferred, or sold. Passes that are found to violate this term will be revoked.</li>
+  <li>Posting spam messages, advertising of any kind, or other content that violates United States law to 4chan will
+    result in immediate revocation of the Pass with no refund given.
+  </li>
+  <li>You must have browser cookies enabled to use your Pass. JavaScript is optional, but recommended.</li>
+  <li>Passes are valid for 12 months from date of purchase.</li>
+  <li>You agree to comply with the <a href="/rules" target="_blank">Rules</a> of 4chan, and understand that failure to do so may result
+    in the temporary or permanent suspension, in 4chan's sole discretion, of your posting privileges. Suspended
+    ("banned") users shall not be eligible for a refund and will not have lost time credited to their Pass account.
+  </li>
+  <li>Passes and all related services offered by 4chan are provided "as is" and without any warranty of any kind.
+    4chan makes no guarantee that Passes or the use thereof will be available at any particular time or that the
+    results of using the Pass will meet your requirements.
+  </li>
+  <li>In no event will 4chan or any of its employees or affiliates be liable for any damages relating to the Passes in
+    excess of the prorated portion&mdash;in relation to the date you bought the Pass&mdash;of the amount (in USD)
+    you spent to buy the Pass.
+  </li>
+  <li>These terms are subject to change without notice.</li>
 </ol>
     </div>
   </div>
@@ -805,69 +853,69 @@ z-index: 2000;
     <div class="boxcontent">
       
 <dl>
-	<dt class="first" id="alloweduses">What exactly does a Pass allow me to do?</dt>
-	<dd>
-		<p>A 4chan Pass allows you to bypass typing a CAPTCHA verification when posting and reporting posts on the 4chan image and discussion boards. 4chan Pass users have reduced post cooldown timers. 4chan Passes also bypass IP range and country blocks.</p>
-	</dd>
-	<dt id="disalloweduses">What doesn't a Pass allow me to do?</dt>
-	<dd>
-		<p>A Pass does not confer any additional privileges beyond bypassing the CAPTCHA verification. You will still be
-			subject to various post timers and must comply with the <a href="/rules" target="_blank">Rules</a> of 4chan.</p>
-	</dd>
-	<dt id="knowuse">Will other people know I'm using a Pass?</dt>
-	<dd>
-		<p>No. Unless you enter <i>since4pass</i> in the Options field, there will be no indication that you are using a Pass to other users, and your posts will display exactly the same as any other. The <i>since4pass</i> Options command allows you to publicly display since when you have been using a 4chan Pass.</p>
-	</dd>
-	<dt id="howuse">How will I receive and use my Pass?</dt>
-	<dd>
-		<p>Upon successful payment, you will receive a unique 10-character Token and 6-digit PIN. You may then authorize
-			your devices by visiting <a href="https://sys.4chan.org/auth" target="_blank">sys.4chan.org/auth</a>. A receipt containing
-			this information will also be e-mailed to the address you provide.</p>
-	</dd>
-	<dt id="validfor">How long is my Pass valid for?</dt>
-	<dd>
-		<p>Your Pass is valid for 12 months from the date of purchase.</p>
-	</dd>
-	<dt id="passlength">Can I purchase a Pass for more or less than 12 months?</dt>
-	<dd>
-		<p>No, we only offer annual Passes at a cost of $20 per year. You will be notified when your Pass is due for renewal.</p>
-	</dd>
+  <dt class="first" id="alloweduses">What exactly does a Pass allow me to do?</dt>
+  <dd>
+    <p>A 4chan Pass allows you to bypass typing a CAPTCHA verification when posting and reporting posts on the 4chan image and discussion boards. 4chan Pass users have reduced post cooldown timers. 4chan Passes also bypass IP range and country blocks.</p>
+  </dd>
+  <dt id="disalloweduses">What doesn't a Pass allow me to do?</dt>
+  <dd>
+    <p>A Pass does not confer any additional privileges beyond bypassing the CAPTCHA verification. You will still be
+      subject to various post timers and must comply with the <a href="/rules" target="_blank">Rules</a> of 4chan.</p>
+  </dd>
+  <dt id="knowuse">Will other people know I'm using a Pass?</dt>
+  <dd>
+    <p>No. Unless you enter <i>since4pass</i> in the Options field, there will be no indication that you are using a Pass to other users, and your posts will display exactly the same as any other. The <i>since4pass</i> Options command allows you to publicly display since when you have been using a 4chan Pass.</p>
+  </dd>
+  <dt id="howuse">How will I receive and use my Pass?</dt>
+  <dd>
+    <p>Upon successful payment, you will receive a unique 10-character Token and 6-digit PIN. You may then authorize
+      your devices by visiting <a href="https://sys.4chan.org/auth" target="_blank">sys.4chan.org/auth</a>. A receipt containing
+      this information will also be e-mailed to the address you provide.</p>
+  </dd>
+  <dt id="validfor">How long is my Pass valid for?</dt>
+  <dd>
+    <p>Your Pass is valid for 12 months from the date of purchase.</p>
+  </dd>
+  <dt id="passlength">Can I purchase a Pass for more or less than 12 months?</dt>
+  <dd>
+    <p>No, we only offer annual Passes at a cost of $20 per year. You will be notified when your Pass is due for renewal.</p>
+  </dd>
     <dt id="passrenewal">How do I renew my Pass?</dt>
     <dd>
         <p>You will be e-mailed with a renewal link when your Pass is due to expire in one week, and will receive a follow-up e-mail once it expires. When you renew your Pass with this link, its expiration will be extended by one year. You cannot renew Passes that are not due to expire in less than one week.</p>
     </dd>
-	<dt id="multiple">Can I use my Pass on multiple devices?</dt>
-	<dd>
-		<p>Passes may be used on multiple devices (computers, tablets, phones, etc), but can only be associated with one IP address at a time. For
-			customers with dynamic IP addresses or who wish to use their Pass while on the move, you may update this IP
-			address by re-authenticating from a new IP (currently limited to once every 30 minutes, subject to change).
-			Note this is done automatically on devices that have already been authorized and are cookied.</p>
-	</dd>
-	<dt id="paymentsecure">Do you store payment information on your servers?</dt>
-	<dd>
-		<p>No. All payment information is stored securely by our <a href="//en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard">PCI</a>-certified payment provider. More information is
-			available <a href="https://stripe.com/help/security" target="_blank">here</a>.</p>
-	</dd>
-	<dt id="paymentmethods">What payment methods do you accept?</dt>
-	<dd>
-		<p>We currently accept most major international debit and credit cards (this includes "bank," "charge," and prepaid cards). Unfortunately we cannot accept
-			PayPal or Google Checkout at this time, however
-			it may be possible for you to generate a virtual credit card number for use with our payment provider. You
-			may also purchase and use a gift credit card issued by any of the aforementioned companies.</p>
-	</dd>
-	<dt id="countryban">I can't post because my ISP, IP range, or country is blocked&mdash;can I use a 4chan Pass?</dt>
-	<dd>
-		<p>Yes. 4chan Pass users may bypass ISP, IP range, and country blocks, but are still subject to the same rules and restrictions as any other user. Pass users cannot bypass individual (regular) IP bans.<br /><br />Don't know the difference? <em>ISP, IP range, and country blocks</em> display red "Error" messages when attempting to post (these <u>can</u> be bypassed with a 4chan Pass), whereas <em>individual IP bans</em> redirect you to www.4chan.org/banned (these <u>cannot</u> be bypassed with a 4chan Pass).</p>
-	</dd>
-	<dt id="spam">What if spammers abuse this?</dt>
-	<dd>
-		<p>Passes used for spam or advertising of any kind will be permanently suspended. Furthermore, Pass users are still
-			subject to post timers and a Pass may only be associated with one IP address at a time.</p>
-	</dd>
-	<dt id="banned">What happens if I am banned?</dt>
-	<dd class="last">
-		<p>Your Pass will be permanently suspended for posting spam messages, advertising of any kind, or posting content that violates United States law. Regular bans and auto-bans will not revoke your Pass, however you may not use your Pass while banned. Only senior moderators may revoke Passes for the aforementioned violations, and must do so manually. No refund is provided for suspended Passes, nor will time be credited in the event you are not able to use your Pass due to a ban or for any other reason.</p>
-	</dd>
+  <dt id="multiple">Can I use my Pass on multiple devices?</dt>
+  <dd>
+    <p>Passes may be used on multiple devices (computers, tablets, phones, etc), but can only be associated with one IP address at a time. For
+      customers with dynamic IP addresses or who wish to use their Pass while on the move, you may update this IP
+      address by re-authenticating from a new IP (currently limited to once every 30 minutes, subject to change).
+      Note this is done automatically on devices that have already been authorized and are cookied.</p>
+  </dd>
+  <dt id="paymentsecure">Do you store payment information on your servers?</dt>
+  <dd>
+    <p>No. All payment information is stored securely by our <a href="//en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard">PCI</a>-certified payment provider. More information is
+      available <a href="https://stripe.com/help/security" target="_blank">here</a>.</p>
+  </dd>
+  <dt id="paymentmethods">What payment methods do you accept?</dt>
+  <dd>
+    <p>We currently accept most major international debit and credit cards (this includes "bank," "charge," and prepaid cards). In addition to cards, we also accept Bitcoin, Bitcoin Cash, Ethereum and Litecoin. Unfortunately we cannot accept
+      PayPal or Google Checkout at this time, however
+      it may be possible for you to generate a virtual credit card number for use with our payment provider. You
+      may also purchase and use a gift credit card issued by any of the aforementioned companies.</p>
+  </dd>
+  <dt id="countryban">I can't post because my ISP, IP range, or country is blocked&mdash;can I use a 4chan Pass?</dt>
+  <dd>
+    <p>Yes. 4chan Pass users may bypass ISP, IP range, and country blocks, but are still subject to the same rules and restrictions as any other user. Pass users cannot bypass individual (regular) IP bans.<br /><br />Don't know the difference? <em>ISP, IP range, and country blocks</em> display red "Error" messages when attempting to post (these <u>can</u> be bypassed with a 4chan Pass), whereas <em>individual IP bans</em> redirect you to www.4chan.org/banned (these <u>cannot</u> be bypassed with a 4chan Pass).</p>
+  </dd>
+  <dt id="spam">What if spammers abuse this?</dt>
+  <dd>
+    <p>Passes used for spam or advertising of any kind will be permanently suspended. Furthermore, Pass users are still
+      subject to post timers and a Pass may only be associated with one IP address at a time.</p>
+  </dd>
+  <dt id="banned">What happens if I am banned?</dt>
+  <dd class="last">
+    <p>Your Pass will be permanently suspended for posting spam messages, advertising of any kind, or posting content that violates United States law. Regular bans and auto-bans will not revoke your Pass, however you may not use your Pass while banned. Only senior moderators may revoke Passes for the aforementioned violations, and must do so manually. No refund is provided for suspended Passes, nor will time be credited in the event you are not able to use your Pass due to a ban or for any other reason.</p>
+  </dd>
 </dl>
     </div>
   </div>
