@@ -280,7 +280,7 @@ function checkRegularEmail()
 {
     var m, email = $('#email').val();
     
-    if (m = email.match(/@(sbcglobal\.net|aol\.com)/i)) {
+    if (m = email.match(/@(sbcglobal\.net|aol\.com|mail\.com)/i)) {
       $('.email-errors').text("We're sorry, but " + m[1] + " email addresses are not permitted. Please try again using another email account.");
       disableButton();
       return false;
