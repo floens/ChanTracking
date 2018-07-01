@@ -1098,7 +1098,7 @@ Parser.parseMobileQuotelinks = function(post) {
   quotelinks = $.cls('quotelink', post);
   
   for (i = 0; link = quotelinks[i]; ++i) {
-    t = link.getAttribute('href').match(/^(?:\/([^\/]+)\/)?(?:thread\/)?([0-9]+)?#p([0-9]+)$/);
+    t = link.getAttribute('href').match(/(?:\/([a-z0-9]+)\/thread\/)?([0-9]+)?#p([0-9]+)$/);
     
     if (!t) {
       continue;
@@ -2268,9 +2268,9 @@ QuoteInline.isSelfQuote = function(node, pid, board) {
 QuoteInline.toggle = function(link, e) {
   var i, j, t, pfx, src, el, count, media;
   
-  t = link.getAttribute('href').match(/^(?:\/([^\/]+)\/)?(?:thread\/)?([0-9]+)?#p([0-9]+)$/);
+  t = link.getAttribute('href').match(/(?:\/([a-z0-9]+)\/thread\/)?([0-9]+)?#p([0-9]+)$/);
   
-  if (!t || t[1] == 'rs' || QuoteInline.isSelfQuote(link, t[3], t[1])) {
+  if (!t || QuoteInline.isSelfQuote(link, t[3], t[1])) {
     return;
   }
   
@@ -2478,7 +2478,7 @@ QuoteInline.inline = function(link, src, id) {
 var QuotePreview = {};
 
 QuotePreview.init = function() {
-  this.regex = /^(?:\/([^\/]+)\/)?(?:thread\/)?([0-9]+)?#p([0-9]+)$/;
+  this.regex = /(?:\/([a-z0-9]+)\/thread\/)?([0-9]+)?#p([0-9]+)$/;
   this.highlight = null;
   this.highlightAnti = null;
   this.cur = null;
