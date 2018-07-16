@@ -907,7 +907,8 @@ div.closed {
 	padding-bottom: 100px;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) {tbody textarea {
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	tbody textarea {
 		margin-bottom: -3px !important;
 	}
 	

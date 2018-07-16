@@ -2,7 +2,8 @@
 
 /** Chrome Mobile seems to dislike media="" in html, so we do it this way instead. **/
 
-@media only screen and (max-width: 480px) {/** GENERIC / ELEMENT STYLING **/
+@media only screen and (max-width: 480px) {
+	/** GENERIC / ELEMENT STYLING **/
 	
 	html {
 		-moz-text-size-adjust: 100%;

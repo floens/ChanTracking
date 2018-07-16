@@ -181,7 +181,8 @@ body {
 	content: 'Team Mini';
 }
 
-@media only screen and (max-width: 700px) {.jla-it {
+@media only screen and (max-width: 700px) {
+	.jla-it {
 		width: 340px;
 		height: 220px;
 		margin: auto;
@@ -938,7 +939,8 @@ div.closed {
 	clear: both;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) {tbody textarea {
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	tbody textarea {
 		margin-bottom: -3px !important;
 	}
 	
@@ -1584,24 +1586,28 @@ table.postForm > tbody > tr > td > input[type="text"] {
 }
 
 @-webkit-keyframes blink {
+	
 	50% {
 		opacity: 0;
 	}
 }
 
 @-moz-keyframes blink {
+	
 	50% {
 		opacity: 0;
 	}
 }
 
 @-o-keyframes blink {
+	
 	50% {
 		opacity: 0;
 	}
 }
 
 @keyframes blink {
+	
 	50% {
 		opacity: 0;
 	}

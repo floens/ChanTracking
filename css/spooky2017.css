@@ -157,7 +157,8 @@ body {
 	display: block !important;
 }
 
-@media only screen and (max-width: 700px) {.jla-it {
+@media only screen and (max-width: 700px) {
+	.jla-it {
 		width: 340px;
 		height: 220px;
 		margin: auto;
@@ -900,7 +901,8 @@ div.closed {
 	clear: both;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) {tbody textarea {
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	tbody textarea {
 		margin-bottom: -3px !important;
 		width: 292px;
 	}
@@ -1531,24 +1533,28 @@ table.flashListing .subject {
 }
 
 @-webkit-keyframes blink {
+	
 	50% {
 		opacity: 0;
 	}
 }
 
 @-moz-keyframes blink {
+	
 	50% {
 		opacity: 0;
 	}
 }
 
 @-o-keyframes blink {
+	
 	50% {
 		opacity: 0;
 	}
 }
 
 @keyframes blink {
+	
 	50% {
 		opacity: 0;
 	}
@@ -1597,6 +1603,7 @@ div.post div.postInfo span.nameBlock span.postertrip, div.post div.postInfo span
 }
 
 @-webkit-keyframes spookyhover {
+	
 	from {
 		opacity: 0;
 	}
@@ -1606,6 +1613,7 @@ div.post div.postInfo span.nameBlock span.postertrip, div.post div.postInfo span
 }
 
 @-moz-keyframes spookyhover {
+	
 	from {
 		opacity: 0;
 	}
@@ -1615,6 +1623,7 @@ div.post div.postInfo span.nameBlock span.postertrip, div.post div.postInfo span
 }
 
 @keyframes spookyhover {
+	
 	from {
 		opacity: 0;
 	}
@@ -1629,7 +1638,8 @@ div.post div.postInfo span.nameBlock span.postertrip, div.post div.postInfo span
 	animation: spookyhover 0.2s ease-in;
 }
 
-@media (max-width: 480px) {.ws .dd-menu ul {
+@media (max-width: 480px) {
+	.ws .dd-menu ul {
 		background-color: #d6daf0;
 		border: 1px solid #b7c5d9;
 		border-right-width: 2px;
@@ -1660,7 +1670,8 @@ div.post div.postInfo span.nameBlock span.postertrip, div.post div.postInfo span
 	
 }
 
-@media (min-width: 481px) {body {
+@media (min-width: 481px) {
+	body {
 		background: #140814;
 		color: #96b4aa;
 	}

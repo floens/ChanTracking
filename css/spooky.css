@@ -36,6 +36,7 @@ div#boardNavDesktopFoot, div#boardNavDesktop, div.pagelist, div#absbot {
 }
 
 @-webkit-keyframes spookyhover {
+	
 	from {
 		opacity: 0;
 	}
@@ -45,6 +46,7 @@ div#boardNavDesktopFoot, div#boardNavDesktop, div.pagelist, div#absbot {
 }
 
 @-moz-keyframes spookyhover {
+	
 	from {
 		opacity: 0;
 	}
@@ -54,6 +56,7 @@ div#boardNavDesktopFoot, div#boardNavDesktop, div.pagelist, div#absbot {
 }
 
 @keyframes spookyhover {
+	
 	from {
 		opacity: 0;
 	}
