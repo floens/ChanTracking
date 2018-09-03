@@ -385,7 +385,7 @@ function initAdsAG() {
     
     z = el.id.replace('zone', '');
     
-    if (z === '599286443' || z === '223429795') {
+    if (z === '599286443' || z === '223429795' || z === '625631158' || z === '674523307') {
       s.src = '//community4chan.engine.adglare.net/?' + z;
     }
     else {
