@@ -363,14 +363,21 @@ function initAds(category, board) {
 }
 
 function initAdsAG() {
-  var el, nodes, i, cls, s;
+  var el, nodes, i, cls, s, z;
   
   if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches && localStorage.getItem('4chan_never_show_mobile') != 'true') {
     cls = 'adg-m';
     
     if (el = document.getElementById('adg-ol')) {
       s = document.createElement('script');
-      s.src = '//utraffic.engine.adglare.net/?' + el.getAttribute('data-id');
+      z = el.getAttribute('data-id');
+      
+      if (z === '599286443' || z === '223429795') {
+        s.src = '//community4chan.engine.adglare.net/?' + z;
+      }
+      else {
+        s.src = '//utraffic.engine.adglare.net/?' + z;
+      }
       document.body.appendChild(s);
     }
   }
