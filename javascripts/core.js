@@ -370,14 +370,7 @@ function initAdsAG() {
     
     if (el = document.getElementById('adg-ol')) {
       s = document.createElement('script');
-      z = el.getAttribute('data-id');
-      
-      if (z === '599286443' || z === '223429795') {
-        s.src = '//community4chan.engine.adglare.net/?' + z;
-      }
-      else {
-        s.src = '//utraffic.engine.adglare.net/?' + z;
-      }
+      s.src = '//utraffic.engine.adglare.net/?' + el.getAttribute('data-id');
       document.body.appendChild(s);
     }
   }
@@ -389,7 +382,16 @@ function initAdsAG() {
   
   for (i = 0; el = nodes[i]; ++i) {
     s = document.createElement('script');
-    s.src = '//utraffic.engine.adglare.net/?' + el.id.replace('zone', '');
+    
+    z = el.id.replace('zone', '');
+    
+    if (z === '599286443' || z === '223429795') {
+      s.src = '//community4chan.engine.adglare.net/?' + z;
+    }
+    else {
+      s.src = '//utraffic.engine.adglare.net/?' + z;
+    }
+    
     document.body.appendChild(s);
   }
 }
