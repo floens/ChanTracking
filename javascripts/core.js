@@ -363,14 +363,14 @@ function initAds(category, board) {
 }
 
 function initAdsAG() {
-  var el, nodes, i, cls, s, z;
+  var el, nodes, i, cls, s;
   
   if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches && localStorage.getItem('4chan_never_show_mobile') != 'true') {
     cls = 'adg-m';
     
     if (el = document.getElementById('adg-ol')) {
       s = document.createElement('script');
-      s.src = '//utraffic.engine.adglare.net/?' + el.getAttribute('data-id');
+      s.src = '//community4chan.engine.adglare.net/?' + el.getAttribute('data-id');
       document.body.appendChild(s);
     }
   }
@@ -383,13 +383,11 @@ function initAdsAG() {
   for (i = 0; el = nodes[i]; ++i) {
     s = document.createElement('script');
     
-    z = el.id.replace('zone', '');
-    
-    if (z === '599286443' || z === '223429795' || z === '625631158' || z === '674523307') {
-      s.src = '//community4chan.engine.adglare.net/?' + z;
+    if (el.hasAttribute('data-rc')) {
+      s.text = '(function(){var referer="";try{if(referer=document.referrer,"undefined"==typeof referer||""==referer)throw"undefined";}catch(exception){referer=document.location.href,(""==referer||"undefined"==typeof referer)&&(referer=document.URL)}referer=referer.substr(0,700);var rcds=document.getElementById("' + el.id + '");var rcel=document.createElement("script");rcel.id="rc_"+Math.floor(Math.random()*1E3);rcel.type="text/javascript";rcel.src="//trends.revcontent.com/serve.js.php?w=' + el.getAttribute('data-rc') + '&t="+rcel.id+"&c="+(new Date).getTime()+"&width="+(window.outerWidth||document.documentElement.clientWidth)+"&referer="+referer;rcel.async=true;rcds.appendChild(rcel)})();';
     }
     else {
-      s.src = '//utraffic.engine.adglare.net/?' + z;
+      s.src = '//community4chan.engine.adglare.net/?' + el.id.replace('zone', '');
     }
     
     document.body.appendChild(s);
