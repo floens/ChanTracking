@@ -19,18 +19,35 @@ body {
 .adg-rects {
 	margin: 10px 0;
 	text-align: center;
+	overflow: hidden;
 }
 
-.adg-rects > span {
-	display: inline-block;
+.adp-228 {
+	margin: auto;
+	width: 728px;
+	height: 228px;
+}
+
+.adp-90 {
+	margin: auto;
+	width: 728px;
+	height: 90px;
+}
+
+.adp-50 {
+	margin: auto;
+	width: 300px;
+	height: 50px;
+}
+
+.adp-250 {
+	margin: auto;
 	width: 300px;
 	height: 250px;
 }
 
-.adg-rects > span.desktop {
-	margin: auto;
-	width: 728px;
-	height: 90px;
+hr#op, #ctrl-top {
+	clear: both;
 }
 
 .party-hat {
