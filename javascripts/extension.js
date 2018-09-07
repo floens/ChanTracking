@@ -2385,7 +2385,7 @@ QuoteInline.inlineRemote = function(link, board, tid, pid) {
 };
 
 QuoteInline.inline = function(link, src, id) {
-  var i, j, now, el, blcnt, isBl, inner, tblcnt, pfx, dest, count, cnt, media;
+  var i, j, now, el, blcnt, isBl, inner, tblcnt, pfx, dest, count, cnt;
   
   now = Date.now();
   
@@ -2409,6 +2409,8 @@ QuoteInline.inline = function(link, src, id) {
   link.className += ' linkfade';
   link.setAttribute('data-pfx', now);
   
+  QuotePreview.stopMedia(src);
+  
   el = src.cloneNode(true);
   el.id = now + el.id;
   el.setAttribute('data-pfx', now);
@@ -2425,12 +2427,6 @@ QuoteInline.inline = function(link, src, id) {
       j.removeAttribute('data-pfx');
       $.removeClass(j, 'linkfade');
     }
-  }
-  
-  media = $.cls('expandedWebm', el);
-  
-  for (i = 0; j = media[i]; ++i) {
-    j.autoplay = false;
   }
   
   for (i = 0; j = el.children[i]; ++i) {
@@ -2587,6 +2583,8 @@ QuotePreview.show = function(link, post, remote) {
   var rect, postHeight, doc, docWidth, style, pos, quotes, i, j, qid,
     top, scrollTop, img, media;
   
+  QuotePreview.stopMedia(post);
+  
   if (remote) {
     Parser.parsePost(post);
     post.style.display = '';
@@ -2696,6 +2694,22 @@ QuotePreview.remove = function(el) {
   
   if (cnt = $.id('quote-preview')) {
     document.body.removeChild(cnt);
+  }
+};
+
+QuotePreview.stopMedia = function(el) {
+  var i, el, media;
+  
+  if ((media = $.tag('VIDEO', el))[0]) {
+    for (i = 0; el = media[i]; ++i) {
+      el.autoplay = false;
+    }
+  }
+  
+  if ((media = $.tag('AUDIO', el))[0]) {
+    for (i = 0; el = media[i]; ++i) {
+      el.autoplay = false;
+    }
   }
 };
 
