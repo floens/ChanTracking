@@ -386,6 +386,9 @@ function initAdsAG() {
     if (el.hasAttribute('data-rc')) {
       s.text = '(function(){var referer="";try{if(referer=document.referrer,"undefined"==typeof referer||""==referer)throw"undefined";}catch(exception){referer=document.location.href,(""==referer||"undefined"==typeof referer)&&(referer=document.URL)}referer=referer.substr(0,700);var rcds=document.getElementById("' + el.id + '");var rcel=document.createElement("script");rcel.id="rc_"+Math.floor(Math.random()*1E3);rcel.type="text/javascript";rcel.src="//trends.revcontent.com/serve.js.php?w=' + el.getAttribute('data-rc') + '&t="+rcel.id+"&c="+(new Date).getTime()+"&width="+(window.outerWidth||document.documentElement.clientWidth)+"&referer="+referer;rcel.async=true;rcds.appendChild(rcel)})();';
     }
+    else if (el.hasAttribute('data-adn')) {
+      s.text = '(function(parentNode){var adnOpt={"id":' + el.id.replace('adn-', '') + ',"pid":6099,"sid":1291218,"type":6,"width":300,"height":250};var adn=document.createElement("script");adn.type="text/javascript";adn.async=true;adn.src="//a.adnium.com/static?r="+Math.floor(Math.random()*99999999)+"&id="+adnOpt.id+"&pid="+adnOpt.pid+"&sid="+adnOpt.sid+"&tid="+adnOpt.type+"&w="+adnOpt.width+"&h="+adnOpt.height;parentNode.appendChild(adn)})(document.getElementsByTagName("script")[document.getElementsByTagName("script").length-1].parentNode);';
+    }
     else {
       s.src = '//community4chan.engine.adglare.net/?' + el.id.replace('zone', '');
     }
