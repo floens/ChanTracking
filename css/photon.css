@@ -46,6 +46,11 @@ body {
 	height: 250px;
 }
 
+.adp-row {
+	display: inline-block;
+	margin: 0 10px;
+}
+
 hr#op, #ctrl-top {
 	clear: both;
 }

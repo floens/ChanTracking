@@ -381,19 +381,34 @@ function initAdsAG() {
   nodes = document.getElementsByClassName(cls);
   
   for (i = 0; el = nodes[i]; ++i) {
-    s = document.createElement('script');
-    
     if (el.hasAttribute('data-rc')) {
+      s = document.createElement('script');
       s.text = '(function(){var referer="";try{if(referer=document.referrer,"undefined"==typeof referer||""==referer)throw"undefined";}catch(exception){referer=document.location.href,(""==referer||"undefined"==typeof referer)&&(referer=document.URL)}referer=referer.substr(0,700);var rcds=document.getElementById("' + el.id + '");var rcel=document.createElement("script");rcel.id="rc_"+Math.floor(Math.random()*1E3);rcel.type="text/javascript";rcel.src="//trends.revcontent.com/serve.js.php?w=' + el.getAttribute('data-rc') + '&t="+rcel.id+"&c="+(new Date).getTime()+"&width="+(window.outerWidth||document.documentElement.clientWidth)+"&referer="+referer;rcel.async=true;rcds.appendChild(rcel)})();';
+      document.body.appendChild(s);
     }
     else if (el.hasAttribute('data-adn')) {
+      s = document.createElement('script');
       s.text = '(function(parentNode){var adnOpt={"id":' + el.id.replace('adn-', '') + ',"pid":6099,"sid":1291218,"type":6,"width":300,"height":250};var adn=document.createElement("script");adn.type="text/javascript";adn.async=true;adn.src="//a.adnium.com/static?r="+Math.floor(Math.random()*99999999)+"&id="+adnOpt.id+"&pid="+adnOpt.pid+"&sid="+adnOpt.sid+"&tid="+adnOpt.type+"&w="+adnOpt.width+"&h="+adnOpt.height;parentNode.appendChild(adn)})(document.getElementsByTagName("script")[document.getElementsByTagName("script").length-1].parentNode);';
+      document.body.appendChild(s);
+    }
+    else if (el.hasAttribute('data-abc')) {
+      s = document.createElement('iframe');
+      s.setAttribute('scrolling', 'no');
+      s.setAttribute('frameborder', '0');
+      s.setAttribute('allowtransparency', 'true');
+      s.setAttribute('marginheight', '0');
+      s.setAttribute('marginwidth', '0');
+      s.setAttribute('width', '300');
+      s.setAttribute('height', '250');
+      s.setAttribute('name', 'spot_id_' + el.getAttribute('data-abc'));
+      s.src = 'https://ads2.contentabc.com/ads?spot_id=' + el.getAttribute('data-abc') + '&rand=' + (0 | (Math.random() * 1e8));
+      el.appendChild(s);
     }
     else {
+      s = document.createElement('script');
       s.src = '//community4chan.engine.adglare.net/?' + el.id.replace('zone', '');
+      document.body.appendChild(s);
     }
-    
-    document.body.appendChild(s);
   }
 }
 
