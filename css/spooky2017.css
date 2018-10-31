@@ -531,6 +531,7 @@ div.boardBanner > div.boardSubtitle {
 }
 
 div#boardNavDesktop {
+	color: #140814;
 	font-size: 9pt;
 	display: block;
 }
@@ -814,7 +815,7 @@ div.deleteform input[type=checkbox] {
 
 div#boardNavDesktopFoot {
 	font-size: 9pt;
-	color: #96b4aa;
+	color: #140814;
 	clear: both;
 	padding-top: 10px;
 	padding-bottom: 3px;
@@ -1403,6 +1404,7 @@ table.flashListing .subject {
 
 #blotter tfoot {
 	text-align: right;
+	color: #140814;
 }
 
 .redtxt {
@@ -1419,12 +1421,29 @@ table.flashListing .subject {
 	width: 292px;
 }
 
+#postForm tr > td > .desktop, #ctrl-top, .navLinks.desktop, .postNum.desktop > span {
+	color: #140814;
+}
+
+.open-qr-wrap {
+	color: #140814 !important;
+}
+
+.navLinks.desktop > * {
+	color: #96b4aa;
+}
+
+td {
+	border-color: #140814 !important;
+}
+
 #postForm {
 	width: 468px;
 	display: none;
 }
 
 #togglePostFormLink {
+	color: #140814;
 	font-size: 22px;
 	font-weight: bold;
 	text-align: center;
@@ -1622,6 +1641,16 @@ div.post div.postInfo span.nameBlock span.postertrip, div.post div.postInfo span
 	-webkit-animation: spookyhover 3s linear;
 	-moz-animation: spookyhover 3s linear;
 	animation: spookyhover 3s linear;
+}
+
+.topskel {
+	transform: rotate(180deg);
+	bottom: auto;
+	top: 0;
+}
+
+div.sideArrows, hr {
+	visibility: hidden;
 }
 
 @-webkit-keyframes spookyhover {
