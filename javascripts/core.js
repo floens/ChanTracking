@@ -1,4 +1,10 @@
-var blockPlea = 'Please <a class="aplnk" href="//www.4chan.org/news?all#109" target="_blank">support 4chan</a> by disabling your ad blocker on *.4chan.org/*, <a class="aplnk" href="https://www.4chan.org/advertise?selfserve" target="_blank">purchasing a self-serve ad</a>, or <a class="aplnk" href="https://www.4chan.org/pass" target="_blank">buying a 4chan Pass</a>.';
+var $L = {
+  nws: {"aco":1,"b":1,"bant":1,"d":1,"e":1,"f":1,"gif":1,"h":1,"hc":1,"hm":1,"hr":1,"i":1,"ic":1,"pol":1,"r":1,"r9k":1,"s":1,"s4s":1,"soc":1,"t":1,"trash":1,"u":1,"wg":1,"y":1},
+  blue: '4chan.org', red: '4chan.org',
+  d: function(b) {
+    return $L.nws[b] ? $L.red : $L.blue;
+  }
+};
 
 /**
  * Tooltips
@@ -167,7 +173,7 @@ function onMobileSelectChange() {
   board = this.options[this.selectedIndex].value;
   page = (board !== 'f' && /\/catalog$/.test(location.pathname)) ? 'catalog' : '';
   
-  window.location = '//boards.4chan.org/' + board + '/' + page;
+  window.location = '//boards.' + $L.d(board) + '/' + board + '/' + page;
 }
 
 function buildMobileNav(currentBoard) {
@@ -365,6 +371,10 @@ function initAds(category, board) {
 function initAdsAG() {
   var el, nodes, i, cls, s;
   
+  if (location.host == 'boards.4channel.org') {
+    return;
+  }
+  
   if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches && localStorage.getItem('4chan_never_show_mobile') != 'true') {
     cls = 'adg-m';
     
@@ -439,7 +449,7 @@ function onReportClick(e) {
   
   for (i = 0; input = nodes[i]; ++i) {
     if (input.type == 'checkbox' && input.checked && input.value == 'delete') {
-      return reppop('https://sys.4chan.org/' + board + '/imgboard.php?mode=report&no='
+      return reppop('https://sys.' + $L.d(board) + '/' + board + '/imgboard.php?mode=report&no='
         + input.name.replace(/[a-z]+/, '')
       );
     }
@@ -651,7 +661,7 @@ function setPassMsg() {
     return;
   }
   
-  msg = 'You are using a 4chan Pass. [<a href="https://sys.4chan.org/auth?act=logout" onclick="confirmPassLogout(event);" tabindex="-1">Logout</a>]';
+  msg = 'You are using a 4chan Pass. [<a href="https://sys.' + $L.d(location.pathname.split(/\//)[1]) + '/auth?act=logout" onclick="confirmPassLogout(event);" tabindex="-1">Logout</a>]';
   el.children[1].innerHTML = '<div style="padding: 5px;">' + msg + '</div>';
 }
 
@@ -835,8 +845,6 @@ function init() {
   //window.addEventListener('onhashchange', locationHashChanged, false);
 
   if( typeof extra != "undefined" && extra && !error ) extra.init();
-  
-  if( window.check_for_block ) checkForBlock();
 }
 
 var coreLenCheckTimeout = null;
@@ -875,53 +883,6 @@ function disableMobile() {
 function enableMobile() {
   localStorage.removeItem('4chan_never_show_mobile');
   location.reload(true);
-}
-
-function checkForBlock() {
-  var i, el, plea, nodes, s, b;
-  
-  if (/Mobile|Android|Dolfin|Opera Mobi|PlayStation Vita|Nintendo DS/.test(navigator.userAgent) || readCookie('pass_enabled') == 1) {
-    return;
-  }
-  
-  nodes = document.getElementsByClassName('ad-cnt');
-  
-  for (i = 0; el = nodes[i]; ++i) {
-    if (el.offsetHeight == 0) {
-      plea = document.createElement('div');
-      plea.className = 'center';
-      plea.innerHTML = '<div style="display:table-cell;vertical-align:middle">' + blockPlea + '</div>';
-      
-      s = plea.style;
-      
-      if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches) {
-        s.width = '300px';
-        s.height = '250px';
-      }
-      else {
-        s.width = '728px';
-        s.height = '90px';
-      }
-      
-      s.display = 'table';
-      
-      b = '1px solid ';
-      
-      if (activeStyleSheet == 'Yotsuba B New') {
-        b += '#34345c';
-      }
-      else if (activeStyleSheet == 'Yotsuba New') {
-        b += '#800';
-      }
-      else {
-        b += '#000';
-      }
-      
-      s.border = b;
-      
-      el.parentNode.insertBefore(plea, el);
-    }
-  }
 }
 
 var currentHighlighted = null;
@@ -1059,7 +1020,7 @@ function setActiveStyleSheet(title, init) {
 
   if (!init) {
     if (title !== '_special') {
-      createCookie(style_group, title, 365, "4chan.org");
+      createCookie(style_group, title, 365, $L.d(location.pathname.split(/\//)[1]));
       
       if (window.css_event) {
         fn = window['fc_' + window.css_event + '_cleanup'];

@@ -553,11 +553,11 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
       
       mobileLink = '<div class="postLink mobile"><span class="info">'
         + tmp + '</span><a href="'
-        + '//boards.4chan.org/' + board + '/thread/' + data.no
+        + '//boards.' + $L.d(board) + '/' + board + '/thread/' + data.no
         + '" class="button">View Thread</a></div>';
       postType = 'op';
       replySpan = '&nbsp; <span>[<a href="'
-        + '//boards.4chan.org/' + board + '/thread/' + data.no + (data.semantic_url ? ('/' + data.semantic_url) : '')
+        + '//boards.' + $L.d(board) + '/' + board + '/thread/' + data.no + (data.semantic_url ? ('/' + data.semantic_url) : '')
         + '" class="replylink" rel="canonical">Reply</a>]</span>';
     }
     
@@ -573,8 +573,8 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
   
   
   if (!Main.tid || board != Main.board) {
-    noLink = '//boards.4chan.org/' + board + '/thread/' + resto + '#p' + data.no;
-    quoteLink = '//boards.4chan.org/' + board + '/thread/' + resto + '#q' + data.no;
+    noLink = '//boards.' + $L.d(board) + '/' + board + '/thread/' + resto + '#p' + data.no;
+    quoteLink = '//boards.' + $L.d(board) + '/' + board + '/thread/' + resto + '#q' + data.no;
   }
   else {
     noLink = '#p' + data.no;
@@ -868,7 +868,7 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
     for (i = 0; q = quotes[i]; ++i) {
       href = q.getAttribute('href');
       if (href.charAt(0) != '/') {
-        q.href = '//boards.4chan.org/' + board + '/thread/' + resto + href;
+        q.href = '//boards.' + $L.d(board) + '/' + board + '/thread/' + resto + href;
       }
     }
   }
@@ -1671,7 +1671,7 @@ var Search = {
     
     self.toggleSpinner(true);
     
-    self.xhr = $.get('https://find.4chan.org/api?' + qs, {
+    self.xhr = $.get('https://find.' + location.host.replace(/^boards\./, '') + '/api?' + qs, {
       onload: self.onLoad,
       onerror: self.onError
     });
@@ -7329,7 +7329,7 @@ var Linkify = {
     this.probeRe = /(?:^|[^\B"])https?:\/\/[-.a-z0-9]+\.[a-z]{2,4}/;
     this.linkRe = /(^|[^\B"])(https?:\/\/[-.a-z0-9\u200b]+\.[a-z\u200b]{2,15}(?:\/[^\s<>]*)?)/ig;
     this.punct = /[:!?,.'"]+$/g;
-    this.derefer = '//sys.4chan.org/derefer?url=';
+    this.derefer = '//sys.' + $L.d(Main.board) + '/derefer?url=';
   },
   
   exec: function(el) {
@@ -7841,7 +7841,7 @@ var Del = {
       params['onlyimgdel'] = 'on';
     }
     
-    $.xhr('POST', 'https://sys.4chan.org/' + Main.board + '/imgboard.php',
+    $.xhr('POST', 'https://sys.' + $L.d(Main.board) + '/' + Main.board + '/imgboard.php',
       {
         onload: Del.onPostDeleted,
         onerror: Del.onError,
@@ -7897,7 +7897,7 @@ var Report = {
 Report.onMessage = function(e) {
   var id;
   
-  if (e.origin === 'https://sys.4chan.org' && /^done-report/.test(e.data)) {
+  if (e.origin === ('https://sys.' + $L.d(Main.board)) && /^done-report/.test(e.data)) {
     id = e.data.split('-')[2];
     
     if (Config.threadHiding && $.id('t' + id)) {
@@ -7932,7 +7932,7 @@ Report.open = function(pid, board) {
     altc = '';
   }
   
-  window.open('https://sys.4chan.org/'
+  window.open('https://sys.' + $L.d(Main.board) + '/'
     + (board || Main.board) + '/imgboard.php?mode=report&no=' + pid + altc, Date.now(),
     "toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=380,height=" + height);
 };
@@ -8003,7 +8003,7 @@ CustomMenu.apply = function(str) {
     }
     el = document.createElement('a');
     el.textContent = board;
-    el.href = '//boards.4chan.org/' + board + '/';
+    el.href = '//boards.' + $L.d(board) + '/' + board + '/';
     cnt.appendChild(el);
   }
   
@@ -8402,12 +8402,12 @@ Config.save = function(old) {
   
   if (old.darkTheme != Config.darkTheme) {
     if (Config.darkTheme) {
-      Main.setCookie('nws_style', 'Tomorrow', '.4chan.org');
-      Main.setCookie('ws_style', 'Tomorrow', '.4chan.org');
+      Main.setCookie('nws_style', 'Tomorrow', '.' + $L.d(Main.board));
+      Main.setCookie('ws_style', 'Tomorrow', '.' + $L.d(Main.board));
     }
     else {
-      Main.removeCookie('nws_style', '.4chan.org');
-      Main.removeCookie('ws_style', '.4chan.org');
+      Main.removeCookie('nws_style', '.' + $L.d(Main.board));
+      Main.removeCookie('ws_style', '.' + $L.d(Main.board));
     }
   }
 };
@@ -8834,7 +8834,7 @@ Main.initPersistentNav = function() {
     el.className = 'pageJump';
     el.innerHTML = '<a href="#bottom">&#9660;</a>'
       + '<a href="javascript:void(0);" id="settingsWindowLinkClassic">Settings</a>'
-      + '<a href="//www.4chan.org" target="_top">Home</a></div>';
+      + '<a href="//www.' + $L.d(Main.board) + '" target="_top">Home</a></div>';
     
     top.appendChild(el);
     
@@ -9273,7 +9273,7 @@ Main.setCookie = function(name, value, domain) {
   date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
   
   if (!domain) {
-    domain = 'boards.4chan.org';
+    domain = location.host;
   }
   
   document.cookie = name + '=' + value
@@ -9283,7 +9283,7 @@ Main.setCookie = function(name, value, domain) {
 
 Main.removeCookie = function(name, domain) {
   if (!domain) {
-    domain = 'boards.4chan.org';
+    domain = location.host;
   }
   
   document.cookie = name + '='
