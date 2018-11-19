@@ -65,6 +65,8 @@ var APP = {
       'ok-disc': APP.onOkDiscClick
     };
     
+    this.is_4channel = window.location.host !== 'www.4chan.org';
+    
     $.on(document, 'DOMContentLoaded', APP.run);
     $.on(document, 'click', APP.onClick);
   },
@@ -116,7 +118,7 @@ var APP = {
       t = t.parentNode;
     }
     
-    if (t.href && t.href.indexOf('boards.4chan.org') != -1) {
+    if (t.href && /boards\.(4chan|4channel)\.org/.test(t.href)) {
       e.preventDefault();
       APP.showDisclaimer(t.getAttribute('href'));
     }
@@ -203,21 +205,27 @@ var APP = {
     
     opts = window.Opts;
     
-    html = '<ul>'
-      + '<li ' + (opts.fpb == 'all' ? 'class="fp-menu-sel" ' : '')
-        + 'data-cmd="set" data-opt="fpb" data-val="all">Show All Boards</li>'
-      + '<li ' + (opts.fpb == 'nws' ? 'class="fp-menu-sel" ' : '')
-        + 'data-cmd="set" data-opt="fpb" data-val="nws">Show NSFW Boards Only</li>'
-      + '<li ' + (opts.fpb == 'ws' ? 'class="fp-menu-sel" ' : '')
-        + 'data-cmd="set" data-opt="fpb" data-val="ws">Show Worksafe Boards Only</li>'
-      + '<li ' + (opts.fpb == 'allc' ? 'class="fp-menu-sel" ' : '')
-        + 'data-cmd="set" data-opt="fpb" data-val="allc">Show All Boards (Classic)</li>'
-      + '<li class="fp-menu-sep"></li>'
-      + '<li ' + (opts['4chan_frames'] ? 'class="fp-menu-sel" ' : '')
-        + 'data-cmd="set" data-opt="4chan_frames">Use Frames</li>'
-      + '<li ' + (opts.fpcat ? 'class="fp-menu-sel" ' : '')
-        + 'data-cmd="set" data-opt="fpcat">Use Catalog</li>'
-    + '</ul>';
+    if (APP.is_4channel) {
+      html = '<ul>';
+    }
+    else {
+      html = '<ul>'
+        + '<li ' + (opts.fpb == 'all' ? 'class="fp-menu-sel" ' : '')
+          + 'data-cmd="set" data-opt="fpb" data-val="all">Show All Boards</li>'
+        + '<li ' + (opts.fpb == 'nws' ? 'class="fp-menu-sel" ' : '')
+          + 'data-cmd="set" data-opt="fpb" data-val="nws">Show NSFW Boards Only</li>'
+        + '<li ' + (opts.fpb == 'ws' ? 'class="fp-menu-sel" ' : '')
+          + 'data-cmd="set" data-opt="fpb" data-val="ws">Show Worksafe Boards Only</li>'
+        + '<li ' + (opts.fpb == 'allc' ? 'class="fp-menu-sel" ' : '')
+          + 'data-cmd="set" data-opt="fpb" data-val="allc">Show All Boards (Classic)</li>'
+        + '<li class="fp-menu-sep"></li>';
+    }
+    
+    html += '<li ' + (opts['4chan_frames'] ? 'class="fp-menu-sel" ' : '')
+          + 'data-cmd="set" data-opt="4chan_frames">Use Frames</li>'
+        + '<li ' + (opts.fpcat ? 'class="fp-menu-sel" ' : '')
+          + 'data-cmd="set" data-opt="fpcat">Use Catalog</li>'
+      + '</ul>';
     
     APP.showMenu(html, btn);
   },
