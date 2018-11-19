@@ -790,7 +790,7 @@ captchainterval = null;
 function init() {
   var el;
   var error = typeof is_error != "undefined";
-  var board = location.href.match(/4chan\.org\/(\w+)/)[1];
+  var board = location.href.match(/(?:4chan|4channel)\.org\/(\w+)/)[1];
   var arr = location.href.split(/#/);
   if( arr[1] && arr[1].match(/q[0-9]+$/) ) {
     repquote( arr[1].match(/q([0-9]+)$/)[1] );
