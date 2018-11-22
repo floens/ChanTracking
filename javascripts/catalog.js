@@ -247,7 +247,9 @@ var FC = function() {
     }
     
     if (UA.hasWebStorage) {
-      if ((extConfig = localStorage.getItem('4chan-settings'))) {
+      FC.extConfig = {};
+      
+      if (extConfig = localStorage.getItem('4chan-settings')) {
         extConfig = JSON.parse(extConfig);
         
         FC.extConfig = extConfig;
