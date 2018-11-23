@@ -1504,7 +1504,26 @@ var Search = {
       $.on(el, 'submit', Search.onSearch);
       $.on(window, 'hashchange', Search.onHashChanged);
       
+      if (location.host == 'boards.4channel.org') {
+        Search.initSelector();
+      }
+      
       Search.initFromURL(true);
+    }
+  },
+  
+  initSelector: function() {
+    var i, el, nodes, sel, len;
+    
+    sel = $.id('js-sf-bf');
+    nodes = sel.options;
+    len = nodes.length
+    
+    for (i = len - 1; i >= 0; i--) {
+      el = nodes[i];
+      if (el.value === '' || $L.d(el.value) === '4chan.org') {
+        sel.removeChild(el);
+      }
     }
   },
   

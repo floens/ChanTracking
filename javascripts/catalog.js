@@ -318,7 +318,7 @@ var FC = function() {
       el.className = 'pageJump';
       el.innerHTML = '<a href="#bottom">&#9660;</a>'
         + '<a href="javascript:void(0);" id="settingsWindowLinkClassic">Settings</a>'
-        + '<a href="//www.4chan.org" target="_top">Home</a></div>';
+        + '<a href="//www.' + $L.d(catalog.slug) + '" target="_top">Home</a></div>';
       
       top.appendChild(el);
       
@@ -501,7 +501,7 @@ var FC = function() {
       expires.setTime(expires.getTime() + 31536000000);
       
       document.cookie = activeStyleGroup + '=' + this.value + '; expires='
-        + expires.toGMTString() + '; path=/; domain=4chan.org';
+        + expires.toGMTString() + '; path=/; domain=' + $L.d(catalog.slug);
       
       if (window.css_event) {
         fn = window['fc_' + window.css_event + '_cleanup'];
@@ -731,7 +731,7 @@ var FC = function() {
     }
     
     window.open(
-      'https://sys.4chan.org/' + catalog.slug +
+      'https://sys.' + $L.d(catalog.slug) + '/' + catalog.slug +
       '/imgboard.php?mode=report&no=' + tid + altc,
       Date.now(), 
       'toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=380,height=' + height
@@ -1809,7 +1809,7 @@ var FC = function() {
       ratio, maxSize, imgWidth, imgHeight, calcSize,
       capcodeReplies, capcodeReply, capcodeTitle, page;
     
-    provider = '//boards.4chan.org/' + catalog.slug + '/thread/';
+    provider = '//boards.' + $L.d(catalog.slug) + '/' + catalog.slug + '/thread/';
     contentUrl = 'i.4cdn.org/' + catalog.slug + '/';
     
     calcSize = !options.large;
@@ -2008,7 +2008,7 @@ var FC = function() {
       rDiff, html, provider,
       pinhl, newtab, topHtml, aTag;
     
-    provider = '//boards.4chan.org/' + catalog.slug + '/thread/';
+    provider = '//boards.' + $L.d(catalog.slug) + '/' + catalog.slug + '/thread/';
     
     newtab = activeTheme.newtab ? 'target="_blank" ' : '';
     
@@ -3191,7 +3191,7 @@ CustomMenu.apply = function(str) {
     }
     el = document.createElement('a');
     el.textContent = board;
-    el.href = '//boards.4chan.org/' + board + (board !== 'f' ? '/catalog' : '');
+    el.href = '//boards.' + $L.d(board) + '/' + board + (board !== 'f' ? '/catalog' : '');
     cnt.appendChild(el);
   }
   
@@ -3518,7 +3518,7 @@ PostMenu.open = function(btn, pid, hasThreadWatcher, hidden, pinned) {
   
   if (hasThreadWatcher) {
     html += '<li data-watch="' + pid + '">'
-      + (ThreadWatcher.watched[pid + '-' + window.catalog.slug] ? 'Remove from' : 'Add to')
+      + (ThreadWatcher.watched[pid + '-' + catalog.slug] ? 'Remove from' : 'Add to')
       + ' watch list</li>';
   }
   
