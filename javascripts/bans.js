@@ -333,3 +333,7 @@ function run() {
 }
 
 document.addEventListener('DOMContentLoaded', run, false);
+
+if (/(^|\.)4channel\.org/.test(location.host)) {
+  location = location.protocol + '//www.4chan.org/bans'
+}
