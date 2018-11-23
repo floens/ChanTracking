@@ -628,6 +628,11 @@ div.post div.postInfo {
 	width: 100%;
 }
 
+.fileText {
+	max-width: 600px;
+	white-space: nowrap;
+}
+
 div.post div.postInfo span.postNum {
 }
 
