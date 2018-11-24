@@ -18,6 +18,10 @@ body {
 	padding-right: 5px;
 }
 
+.nwsb {
+	display: none;
+}
+
 .adg-rects {
 	margin: 10px 0;
 	text-align: center;

@@ -432,6 +432,10 @@ body {
 	padding-right: 5px;
 }
 
+.nwsb {
+	display: none;
+}
+
 .party-hat {
 	left: 0;
 	margin-top: -80px;
