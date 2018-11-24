@@ -257,6 +257,10 @@ var FC = function() {
         if (!extConfig.disableAll) {
           CustomMenu.initCtrl(extConfig.dropDownNav, extConfig.classicNav);
           
+          if (location.host === 'boards.4channel.org' && extConfig.showNWSBoards) {
+            CustomMenu.showNWSBoards();
+          }
+          
           if (extConfig.filter) {
             ThreadWatcher.hasFilters = true;
           }
@@ -3145,6 +3149,16 @@ CustomMenu.initCtrl = function(dropDownNav, classicNav) {
     cnt = $.cls('boardList');
     cnt[0] && cnt[0].appendChild(el);
     cnt[1] && cnt[1].appendChild(el.cloneNode(true));
+  }
+};
+
+CustomMenu.showNWSBoards = function() {
+  var i, el, nodes;
+  
+  nodes = $.cls('nwsb');
+  
+  for (i = 0; el = nodes[i]; ++i) {
+    $.removeClass(el, 'nwsb');
   }
 };
 

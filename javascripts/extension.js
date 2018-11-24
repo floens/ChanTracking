@@ -7979,6 +7979,16 @@ CustomMenu.initCtrl = function() {
   }
 };
 
+CustomMenu.showNWSBoards = function() {
+  var i, el, nodes;
+  
+  nodes = $.cls('nwsb');
+  
+  for (i = 0; el = nodes[i]; ++i) {
+    $.removeClass(el, 'nwsb');
+  }
+};
+
 CustomMenu.reset = function() {
   var i, el, full, custom, navs;
   
@@ -8286,6 +8296,7 @@ var Config = {
   stickyNav: false,
   keyBinds: false,
   inlineQuotes: false,
+  showNWSBoards: false,
   
   filter: false,
   revealSpoilers: false,
@@ -8465,6 +8476,7 @@ SettingsMenu.options = {
     classicNav: [ 'Use traditional board list', '', false, true ],
     autoHideNav: [ 'Auto-hide on scroll', '', false, true ],
     customMenu: [ 'Custom board list [<a href="javascript:;" data-cmd="custom-menu-edit">Edit</a>]', 'Only show selected boards in top and bottom board lists' ],
+    showNWSBoards: [ 'Show all boards', 'Show all boards in top and bottom board lists on 4channel.org'],
     alwaysDepage: [ 'Always use infinite scroll', 'Enable infinite scroll by default, so reaching the bottom of the board index will load subsequent pages', true ],
     topPageNav: [ 'Page navigation at top of page', 'Show the page switcher at the top of the page, hold Shift and drag to move' ],
     stickyNav: [ 'Navigation arrows', 'Show top and bottom navigation arrows, hold Shift and drag to move' ],
@@ -8805,6 +8817,8 @@ Main.init = function() {
   
   Main.now = Date.now();
   
+  Main.is_4channel = location.host === 'boards.4channel.org';
+  
   UA.init();
   
   Config.load();
@@ -8925,6 +8939,10 @@ Main.run = function() {
     if (Main.isMobileDevice) {
       $.addClass(document.body, 'isMobileDevice');
     }
+  }
+  
+  if (Main.is_4channel && Config.showNWSBoards) {
+    CustomMenu.showNWSBoards();
   }
   
   if (Config.linkify) {

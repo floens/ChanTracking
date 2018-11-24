@@ -183,10 +183,12 @@ function buildMobileNav(currentBoard) {
     html = '';
     order = [];
     
-    boards = document.querySelectorAll('#boardNavDesktop .boardList > a');
+    boards = document.querySelectorAll('#boardNavDesktop .boardList a');
     
     for (i = 0; b = boards[i]; ++i) {
-      order.push(b);
+      if (!b.parentNode.classList.contains('nwsb') || (window.Config && Config.showNWSBoards)) {
+        order.push(b);
+      }
     }
     
     order.sort(function(a, b) {
