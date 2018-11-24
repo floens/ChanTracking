@@ -3153,11 +3153,12 @@ CustomMenu.initCtrl = function(dropDownNav, classicNav) {
 };
 
 CustomMenu.showNWSBoards = function() {
-  var i, el, nodes;
+  var i, el, nodes, len;
   
   nodes = $.cls('nwsb');
+  len = nodes.length;
   
-  for (i = 0; el = nodes[i]; ++i) {
+  for (i = len - 1; el = nodes[i]; i--) {
     $.removeClass(el, 'nwsb');
   }
 };
