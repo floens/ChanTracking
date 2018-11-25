@@ -8477,7 +8477,7 @@ SettingsMenu.options = {
     classicNav: [ 'Use traditional board list', '', false, true ],
     autoHideNav: [ 'Auto-hide on scroll', '', false, true ],
     customMenu: [ 'Custom board list [<a href="javascript:;" data-cmd="custom-menu-edit">Edit</a>]', 'Only show selected boards in top and bottom board lists' ],
-    showNWSBoards: [ 'Show all boards', 'Show all boards in top and bottom board lists on 4channel.org'],
+    showNWSBoards: [ 'Show all boards', 'Show all boards in top and bottom board lists on 4channel.org', true],
     alwaysDepage: [ 'Always use infinite scroll', 'Enable infinite scroll by default, so reaching the bottom of the board index will load subsequent pages', true ],
     topPageNav: [ 'Page navigation at top of page', 'Show the page switcher at the top of the page, hold Shift and drag to move' ],
     stickyNav: [ 'Navigation arrows', 'Show top and bottom navigation arrows, hold Shift and drag to move' ],
