@@ -1517,7 +1517,7 @@ var Search = {
     
     sel = $.id('js-sf-bf');
     nodes = sel.options;
-    len = nodes.length
+    len = nodes.length;
     
     for (i = len - 1; i >= 0; i--) {
       el = nodes[i];
@@ -2717,7 +2717,7 @@ QuotePreview.remove = function(el) {
 };
 
 QuotePreview.stopMedia = function(el) {
-  var i, el, media;
+  var i, media;
   
   if ((media = $.tag('VIDEO', el))[0]) {
     for (i = 0; el = media[i]; ++i) {
@@ -4995,8 +4995,11 @@ ThreadWatcher.save = function() {
   
   localStorage.setItem('4chan-watch', JSON.stringify(ThreadWatcher.watched));
   
+  StorageSync.sync('4chan-watch');
+  
   for (i in ThreadWatcher.blacklisted) {
     localStorage.setItem('4chan-watch-bl', JSON.stringify(ThreadWatcher.blacklisted));
+    StorageSync.sync('4chan-watch-bl');
     break;
   }
 };
@@ -5045,6 +5048,7 @@ ThreadWatcher.canAutoRefresh = function() {
 
 ThreadWatcher.setRefreshTimestamp = function() {
   localStorage.setItem('4chan-tw-timestamp', Date.now());
+  StorageSync.sync('4chan-tw-timestamp');
 };
 
 ThreadWatcher.refreshWithAutoWatch = function() {
@@ -8420,6 +8424,8 @@ Config.toURL = function() {
 Config.save = function(old) {
   localStorage.setItem('4chan-settings', JSON.stringify(Config));
   
+  StorageSync.sync('4chan-settings');
+  
   if (!old) {
     return;
   }
@@ -9257,6 +9263,8 @@ Main.toggleGlobalMessage = function() {
     btn.style.opacity = '0.5';
     localStorage.setItem('4chan-global-msg', msg.getAttribute('data-utc'));
   }
+  
+  StorageSync.sync('4chan-global-msg');
 };
 
 Main.setStickyNav = function() {

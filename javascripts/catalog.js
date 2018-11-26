@@ -456,6 +456,8 @@ var FC = function() {
       btn.style.opacity = '0.5';
       localStorage.setItem('4chan-global-msg', msg.getAttribute('data-utc'));
     }
+    
+    StorageSync.sync('4chan-global-msg');
   }
   
   function togglePostFormMobile() {
@@ -516,6 +518,8 @@ var FC = function() {
       fn = window['fc_' + window.css_event + '_init'];
       localStorage.removeItem('4chan_stop_css_event');
     }
+    
+    StorageSync.sync('4chan_stop_css_event');
     
     refreshWindow();
   }
@@ -1525,6 +1529,7 @@ var FC = function() {
     extConfig.threadWatcher = tw;
     extConfig.dropDownNav = ddn;
     localStorage.setItem('4chan-settings', JSON.stringify(extConfig));
+    StorageSync.sync('4chan-settings');
     
     hasThreadWatcher = tw;
     hasDropDownNav = ddn;
@@ -1541,6 +1546,8 @@ var FC = function() {
       localStorage.setItem('catalog-theme', JSON.stringify(customTheme));
       break;
     }
+    
+    StorageSync.sync('catalog-theme');
     
     activeTheme = customTheme;
     
@@ -1594,6 +1601,7 @@ var FC = function() {
       settings[key] = options[key];
     }
     localStorage.setItem('catalog-settings', JSON.stringify(settings));
+    StorageSync.sync('catalog-settings');
   }
   
   function setExtended(mode, init) {
@@ -2727,8 +2735,11 @@ ThreadWatcher.save = function() {
   
   localStorage.setItem('4chan-watch', JSON.stringify(ThreadWatcher.watched));
   
+  StorageSync.sync('4chan-watch');
+  
   for (i in ThreadWatcher.blacklisted) {
     localStorage.setItem('4chan-watch-bl', JSON.stringify(ThreadWatcher.blacklisted));
+    StorageSync.sync('4chan-watch-bl');
     break;
   }
 };
@@ -2776,6 +2787,7 @@ ThreadWatcher.canAutoRefresh = function() {
 
 ThreadWatcher.setRefreshTimestamp = function() {
   localStorage.setItem('4chan-tw-timestamp', Date.now());
+  StorageSync.sync('4chan-tw-timestamp');
 };
 
 ThreadWatcher.refreshWithAutoWatch = function() {
@@ -3317,6 +3329,7 @@ CustomMenu.save = function(standalone) {
       extConfig.customMenuList = input.value;
       
       localStorage.setItem('4chan-settings', JSON.stringify(extConfig));
+      StorageSync.sync('4chan-settings');
     }
   }
   

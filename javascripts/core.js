@@ -101,34 +101,92 @@ var Tip = {
     }
   }
 }
-/*
-function toggleArcSort() {
-  var i, j, el, cid, body, rows, data;
+
+/**
+ * Settings Syncher
+ */
+var StorageSync = {
+  queue: [],
   
-  cid = 3;
-  body = document.getElementById('arc-list').getElementsByTagName('tbody')[0]
-  rows = body.children;
+  init: function() {
+    var el, self = StorageSync;
+    
+    if (self.inited) {
+      return;
+    }
+    
+    self.remoteFrame = null;
+    
+    self.remoteOrigin = location.protocol + '//boards.'
+      + (location.host === 'boards.4channel.org' ? '4chan' : '4channel')
+      + '.org';
+    
+    window.addEventListener('message', self.onMessage, false);
+    
+    el = document.createElement('iframe');
+    el.width = 0;
+    el.height = 0;
+    el.style.display = 'none';
+    el.style.visibility = 'hidden';
+    
+    el.onerror = self.onChannelError;
+    el.onload = self.onChannelLoaded;
+    
+    el.src = self.remoteOrigin + '/syncframe.html';
+    
+    document.body.appendChild(el);
+    
+    self.inited = true;
+  },
   
-  data = [];
+  onMessage: function(e) {
+    var self = StorageSync;
+    
+    if (e.origin !== self.remoteOrigin) {
+      return;
+    }
+    
+    if (e.data === 'ready') {
+      self.remoteFrame = e.source;
+      
+      if (self.queue.length) {
+        self.send();
+      }
+      
+      return;
+    }
+  },
   
-  for (i = 0; el = rows[i]; ++i) {
-    data.push([+el.children[cid].textContent, el]);
+  sync: function(key) {
+    var self = StorageSync;
+    
+    self.queue.push(key);
+    self.send();
+  },
+  
+  send: function() {
+    var i, key, data, self = StorageSync;
+    
+    if (!self.inited) {
+      return self.init();
+    }
+    
+    if (!self.remoteFrame) {
+      return;
+    }
+    
+    data = {};
+    
+    for (i = 0; key = self.queue[i]; ++i) {
+      data[key] = localStorage.getItem(key);
+    }
+    
+    self.queue = [];
+    
+    self.remoteFrame.postMessage({ storage: data }, self.remoteOrigin);
   }
-  
-  data.sort(function(a, b) {
-    return b[0] - a[0];
-  });
-  
-  body.style.display = 'none';
-  body.textContent = '';
-  
-  for (i = 0; el = data[i]; ++i) {
-    body.appendChild(el[1]);
-  }
-  
-  body.style.display = '';
-}
-*/
+};
+
 function mShowFull(t) {
   var el, data;
   
@@ -1033,6 +1091,8 @@ function setActiveStyleSheet(title, init) {
       fn = window['fc_' + window.css_event + '_init'];
       localStorage.removeItem('4chan_stop_css_event');
     }
+    
+    StorageSync.sync('4chan_stop_css_event');
     
     activeStyleSheet = title;
     
