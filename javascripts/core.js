@@ -129,9 +129,6 @@ var StorageSync = {
     el.style.display = 'none';
     el.style.visibility = 'hidden';
     
-    el.onerror = self.onChannelError;
-    el.onload = self.onChannelLoaded;
-    
     el.src = self.remoteOrigin + '/syncframe.html';
     
     document.body.appendChild(el);
