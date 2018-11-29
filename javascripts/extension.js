@@ -282,10 +282,11 @@ Parser.getTrackedReplies = function(board, tid) {
 };
 
 Parser.saveTrackedReplies = function(tid, replies) {
-  localStorage.setItem(
-    '4chan-track-' + Main.board + '-' + tid,
-    JSON.stringify(replies)
-  );
+  var key = '4chan-track-' + Main.board + '-' + tid;
+  
+  localStorage.setItem(key, JSON.stringify(replies));
+  
+  StorageSync.sync(key);
 };
 
 Parser.touchTrackedReplies = function(tid) {
