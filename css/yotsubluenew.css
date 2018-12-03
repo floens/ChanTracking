@@ -64,6 +64,23 @@ body {
 	margin: 0 10px;
 }
 
+.bsa-cnt {
+	margin: 20px 0;
+	height: 90px;
+	text-align: center;
+}
+
+@media only screen and (max-width: 640px) {
+	.bsa-cnt {
+		height: 250px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	
+}
+
 hr#op, #ctrl-top {
 	clear: both;
 }
