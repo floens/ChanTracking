@@ -1,1 +1,75 @@
-MySQL connection error
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Feedback - 4chan</title>
+<link rel="stylesheet" type="text/css" href="//s.4cdn.org/css/feedback.css?6">
+<link rel="shortcut icon" href="//s.4cdn.org/image/favicon.ico" type="image/x-icon">
+<script type="text/javascript" src="//s.4cdn.org/js/feedback.js?6"></script>
+<noscript>
+    <style type="text/css">
+      #form {
+        display: block;
+      }
+      #captcha-cnt { height: auto; }
+    </style>
+  </noscript>
+</head>
+<body>
+<header>
+<h1 id="title">4chan Feedback</h1>
+</header>
+<section id="content">
+<div id="form">
+<h2>Submit Feedback</h2>
+<form method="post" enctype="multipart/form-data">
+<div class="form-col">
+<label for="form-cat">Category:</label>
+<select name="category" id="form-cat">
+<option value="0">Moderation Feedback</option>
+<option value="1">Bug Report</option>
+<option value="2">Feature Suggestion</option>
+<option value="3">Spam Filter Issue</option>
+<option value="4">IP Range Ban Issue</option>
+<option value="5">Board Suggestion</option>
+</select>
+</div>
+<label for="form-subject">Subject:</label>
+<input maxlength="150" type="text" name="subject" id="form-subject" required>
+<label for="form-message">Message:</label>
+<textarea maxlength="5000" name="message" rows="8" cols="40" id="form-message" required></textarea>
+<div id="captcha-cnt"><label>Verification:</label>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script><script>window.recaptchaKey = "6Ldp2bsSAAAAAAJ5uyx_lx34lJeEpTLVkP5k04qc";</script><div id="g-recaptcha" class="g-recaptcha" data-sitekey="6Ldp2bsSAAAAAAJ5uyx_lx34lJeEpTLVkP5k04qc"></div><noscript>
+  <div style="width: 302px;">
+    <div style="width: 302px; position: relative;">
+      <div style="width: 302px; height: 422px;">
+        <iframe src="https://www.google.com/recaptcha/api/fallback?k=6Ldp2bsSAAAAAAJ5uyx_lx34lJeEpTLVkP5k04qc" frameborder="0" scrolling="no" style="width: 302px; height:422px; border-style: none;"></iframe>
+      </div>
+      <div style="width: 300px; height: 60px; border-style: none;bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+        <textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid #c1c1c1;margin: 10px 25px; padding: 0px; resize: none;"></textarea>
+      </div>
+    </div>
+  </div>
+</noscript> </div>
+<button type="submit" id="form-submit">Submit</button>
+<input type="hidden" name="action" value="submit">
+</form>
+</div>
+</section>
+<footer>
+<ul> <li><a href="/">Home</a></li>
+<li><a href="/4channews.php">News</a></li>
+<li><a href="http://blog.4chan.org/">Blog</a></li>
+<li><a href="/faq">FAQ</a></li>
+<li><a href="/rules">Rules</a></li>
+<li><a href="https://www.4chan.org/pass">Support 4chan</a></li>
+<li><a href="/advertise">Advertise</a></li>
+<li><a href="/press">Press</a></li>
+<li><a href="/japanese">日本語</a></li>
+</ul>
+<div id="copyright"><a href="/faq#what4chan">About</a> &bull; <a href="/feedback">Feedback</a> &bull; <a href="/legal">Legal</a> &bull; <a href="/contact">Contact</a><br>
+Copyright &copy; 2003-2018 4chan community support LLC. All rights reserved.
+</div>
+</footer>
+</body>
+</html>
