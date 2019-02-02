@@ -381,9 +381,11 @@ function initRecaptcha() {
 }
 
 function initAnalytics() {
+  var tid = location.host.indexOf('.4channel.org') !== -1 ? 'UA-166538-5' : 'UA-166538-1';
+  
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
   
-  ga('create','UA-166538-1', {'sampleRate': 1});
+  ga('create', tid, {'sampleRate': 1});
   ga('set', 'anonymizeIp', true);
   ga('send','pageview');
 }
@@ -464,7 +466,7 @@ function initAdsAG() {
       s.setAttribute('width', '300');
       s.setAttribute('height', '250');
       s.setAttribute('name', 'spot_id_' + el.getAttribute('data-abc'));
-      s.src = 'https://ads2.contentabc.com/ads?spot_id=' + el.getAttribute('data-abc') + '&rand=' + (0 | (Math.random() * 1e8));
+      s.src = 'https://a.adtng.com/get/' + el.getAttribute('data-abc') + '?time=' + Date.now();
       el.appendChild(s);
     }
     else {
