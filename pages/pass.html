@@ -589,6 +589,8 @@ z-index: 2000;
 
 <p>If your Pass has expired or is expiring in less than 6 months, you can <a href="https://www.4chan.org/pass?req_renew">renew it here.</a></p>
 
+<p>If you have trouble purchasing a 4chan Pass, please e-mail <a href="mailto:4chanpass@4chan.org">4chanpass@4chan.org</a></p>
+
 <hr style="border: 0; color: #800; background: #800; height: 1px; margin-top: 1.0em; margin-bottom: 1.0em;" />
 
 <!--<p><span style="text-decoration: underline;">Note for international customers</span>: We accept most major international
@@ -610,7 +612,7 @@ z-index: 2000;
       <h2>Purchase a 4chan Pass<img src="//s.4cdn.org/image/lock.gif" alt="Secure Transaction" title="Secure Transaction" style="width: 12px; height: 14px; float: right; margin: 6px 6px 0 0;" class="retina"/></h2>
           </div>
     <div class="boxcontent">
-      <form data-cg-action="https://www.4chan.org/payments/coinbase.php?action=order" action="https://www.4chan.org/payments/" method="post" id="payment-form">
+      <form data-cg-action="https://www.4chan.org/payments/coinbase.php?action=order" data-pp-action="https://www.4chan.org/payments/paypal.php?action=order" action="https://www.4chan.org/payments/" method="post" id="payment-form">
 
 <div id="email_collection_form">
   <div class="form-row email-row">
@@ -670,12 +672,8 @@ z-index: 2000;
       I have read and agree to the <br/><a href="#termsofsale">Terms of Sale</a> and <a href="#termsofuse">Terms
       of Use</a>.
     </label>
-
-    <br /><br />
-    
-    <button style="display:none" type="submit" class="submit-button stripe-button-el" disabled="disabled" id="pbc-button"><span>Pay with Card</span></button>
     <br><br>
-    <input type="hidden" name="temp_id" value="snip">
+        <input type="hidden" name="temp_id" value="snip">
     <button type="button" class="submit-button-cg stripe-button-el" disabled="disabled" id="pbac-button"><span>Pay with Digital Currency</span></button>
     <div style="margin-top: 10px">We currently accept<br>Bitcoin, Bitcoin Cash, Ethereum and Litecoin.</div>
     <script type="text/javascript">
@@ -777,8 +775,36 @@ z-index: 2000;
         el.submit();
       }
       
-      document.getElementById('pbc-button').addEventListener('click', onPayClick, false);
+      function onPayPalClick(e) {
+        var el;
+        
+        e.preventDefault();
+        e.stopPropagation();
+        
+        
+        if (!checkEmail()) {
+          return;
+        }
+        
+        if (this.disabled) {
+          return;
+        }
+        
+        el = document.getElementById('payment-form');
+        
+        if (!el.hasAttribute('data-stripe-action')) {
+          el.setAttribute('data-stripe-action', el.action);
+        }
+        
+        el.action = el.getAttribute('data-pp-action');
+        el.submit();
+      }
+      
+      //document.getElementById('pbc-button').addEventListener('click', onPayClick, false);
       document.getElementById('pbac-button').addEventListener('click', onCoinbaseClick, false);
+      
+      var el = document.getElementById('pbpp-button');
+      el && el.addEventListener('click', onPayPalClick, false);
     </script>
     
     <br /><br />
@@ -902,7 +928,7 @@ z-index: 2000;
     <p><!-- We currently accept most major international debit and credit cards (this includes "bank," "charge," and prepaid cards). In addition to cards, we also accept Bitcoin, Bitcoin Cash, Ethereum and Litecoin. Unfortunately we cannot accept
       PayPal or Google Checkout at this time, however
       it may be possible for you to generate a virtual credit card number for use with our payment provider. You
-      may also purchase and use a gift credit card issued by any of the aforementioned companies.-->We accept Bitcoin, Bitcoin Cash, Ethereum and Litecoin. Unfortunately we cannot accept PayPal or Credit Cards at this time.</p>
+      may also purchase and use a gift credit card issued by any of the aforementioned companies.-->We accept Bitcoin, Bitcoin Cash, Ethereum and Litecoin. Unfortunately we cannot accept <!-- PayPal or -->Credit Cards at this time.</p>
   </dd>
   <dt id="countryban">I can't post because my ISP, IP range, or country is blocked&mdash;can I use a 4chan Pass?</dt>
   <dd>
@@ -933,7 +959,7 @@ z-index: 2000;
 <li><a href="http://blog.4chan.org/">Blog</a></li>
 <li><a href="/faq">FAQ</a></li>
 <li><a href="/rules">Rules</a></li>
-<li><a href="https://www.4chan.org/pass">Support 4chan</a></li>
+<li><a href="/pass">Support 4chan</a></li>
 <li><a href="/advertise">Advertise</a></li>
 <li><a href="/press">Press</a></li>
 <li><a href="/japanese">日本語</a></li>
