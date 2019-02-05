@@ -160,7 +160,7 @@ var load = function() {
     loadFile('https://www.4chan.org/faq', 'pages/faq.html');
     loadFile('https://www.4chan.org/rules', 'pages/rules.html');
     loadFile('https://www.4chan.org/4channews.php', 'pages/news.html');
-    loadFile('https://www.4chan.org/blotter', 'pages/blotter.html');
+    // loadFile('https://www.4chan.org/blotter', 'pages/blotter.html');
     loadFile('https://www.4chan.org/legal', 'pages/legal.html');
     loadFile('https://www.4chan.org/security', 'pages/security.html');
     loadFile('https://www.4chan.org/feedback', 'pages/feedback.html');
