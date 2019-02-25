@@ -1237,7 +1237,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 750,
-        "image_limit": 250,
+        "image_limit": 375,
         "cooldowns": {
             "threads": 600,
             "replies": 90,
