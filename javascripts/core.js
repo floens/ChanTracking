@@ -428,7 +428,7 @@ function initAds(category, board) {
 }
 
 function initAdsAG() {
-  var el, nodes, i, cls, s, jaLoaded;
+  var el, nodes, i, cls, s;
   
   if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches && localStorage.getItem('4chan_never_show_mobile') != 'true') {
     cls = 'adg-m';
@@ -452,15 +452,17 @@ function initAdsAG() {
       document.body.appendChild(s);
     }
     else if (el.hasAttribute('data-ja')) {
-      if (!jaLoaded) {
-        s = document.createElement('script');
-        s.src = 'https://adserver.juicyads.com/js/jads.js';
-        document.body.appendChild(s);
-        jaLoaded = true;
-      }
-      s = document.createElement('script');
-      s.text = "(adsbyjuicy=window.adsbyjuicy || []).push({'adzone':" + el.id + "});";
-      document.body.appendChild(s);
+      s = document.createElement('iframe');
+      s.setAttribute('scrolling', 'no');
+      s.setAttribute('border', '0');
+      s.setAttribute('frameborder', '0');
+      s.setAttribute('allowtransparency', 'true');
+      s.setAttribute('marginheight', '0');
+      s.setAttribute('marginwidth', '0');
+      s.setAttribute('width', '728');
+      s.setAttribute('height', '102');
+      s.src = '//adserver.juicyads.com/adshow.php?adzone=' + el.getAttribute('data-ja');
+      el.appendChild(s);
     }
     else if (el.hasAttribute('data-adn')) {
       s = document.createElement('script');
