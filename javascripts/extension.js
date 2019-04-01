@@ -846,16 +846,18 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
         '<input type="checkbox" name="' + data.no + '" value="delete"> ' + boardTag +
         subject +
         '<span class="nameBlock' + capcodeClass + '">' + emailStart +
-          '<span class="name">' + name + '</span>' + tripcode
+          '<span class="name">' + name + '</span>'
+          + tripcode
+          + (data.xa19s !== undefined ? ('<span class="like-score">' + data.xa19s + '</span>') : '')
           + (data.since4pass ? (' <span title="Pass user since ' + data.since4pass + '" class="n-pu"></span>') : '')
-          + (data.xh17 !== undefined ? (' <span title="Has tricked ' + data.xh17 + ' user' + (data.xh17 === 1 ? '' : 's')
-            + '" class="n-pu n-jol' + data.xh17c + '"></span>') : '')
           + capcodeStart + emailEnd + capcode + userId + flag +
         ' </span> ' +
         '<span class="dateTime" data-utc="' + data.time + '">' + data.now + '</span> ' +
         '<span class="postNum desktop">' +
           '<a href="' + noLink + '" title="Link to this post">No.</a><a href="' +
           quoteLink + '" title="Reply to this post">' + data.no + '</a>'
+            + (isOP ? '' : ('<a data-cmd="like-post" href="#" class="like-btn">Like!'
+              + (data.xa19l !== undefined ? (' ×' + data.xa19l) : '') + '</a>'))
             + threadIcons + replySpan +
         '</span>' +
       '</div>' +
@@ -3691,6 +3693,12 @@ QR.show = function(tid) {
             if (el.nextElementSibling) {
               el.parentNode.removeChild(el.nextElementSibling); 
             }
+            var xel = $.el('a');
+            xel.className = 'like-perks-btn';
+            xel.setAttribute('href', '#');
+            xel.setAttribute('data-cmd', 'like-show-perks');
+            xel.textContent = 'Perks';
+            row.appendChild(xel);
           }
           else if (el.name == 'com') {
             QR.comField = el;
@@ -4081,6 +4089,8 @@ QR.submit = function(force) {
       }
       
       if (ids = this.responseText.match(/<!-- thread:([0-9]+),no:([0-9]+) -->/)) {
+        PostLiker.onPostSubmit(this.responseText);
+        
         tid = ids[1];
         pid = ids[2];
         
@@ -8786,6 +8796,261 @@ var Feedback = {
 };
 
 /**
+ * Post Liker
+ */
+var PostLiker = {
+  state: {},
+  
+  captchaId: null,
+  
+  activeBtn: null,
+  
+  cd: 120,
+  
+  init: function() {
+    var data;
+    
+    if (data = localStorage.getItem('4chan-event')) {
+      PostLiker.state = JSON.parse(data);
+    }
+  },
+  
+  onShowPerksClick: function() {
+    var allPerks = ['showscore','smiley','sad','dice+1d6','ok','animal','food',
+    'card','like','rabbit','unlove','fortune','dice+1d100','party','pickle',
+    'trash','heart','santa','joy','pig','dog','cat','frog','dino','spooky'];
+    
+    var el, unlocked, locked, html, i, perk, hasPerks;
+    
+    PostLiker.onHidePerksClick();
+    
+    if (!PostLiker.state.perks) {
+      hasPerks = ['showscore'];
+    }
+    else {
+      hasPerks = PostLiker.state.perks;
+    }
+    
+    el = document.createElement('div');
+    el.id = 'like-perks-cnt';
+    el.className = 'UIPanel';
+    el.setAttribute('data-cmd', 'like-hide-perks');
+    
+    html = '\
+<div class="extPanel reply"><div class="panelHeader">Perks\
+<span class="panelCtrl"><img alt="Close" title="Close" class="pointer" data-cmd="like-hide-perks" src="'
++ Main.icons.cross + '"></span></div><ul><li>Unlock perks by accumulating points.</li>'
++ '<li>Points are gained for making posts, giving Likes and receiving Likes.</li>'
++ '<li>Points are lost if you get banned, warned or get your posts deleted by the moderation team.</li>'
++ '<li>Perks are entered in the Options field.</li>'
++ '<li>Only one perk can be used at a time.</li>'
++ '</ul>';
+    
+    html += '<h4>Your Score: ' + (PostLiker.state.score || 0) + '</h4>'
+    
+    unlocked = [];
+    locked = [];
+    
+    for (i = 0; perk = allPerks[i]; ++i) {
+      if (hasPerks.indexOf(perk) !== -1) {
+        unlocked.push(perk);
+      }
+      else {
+        locked.push(perk);
+      }
+    }
+    
+    if (unlocked[0]) {
+      html += '<h4>Unlocked Perks:</h4>'
+      html += '<div class="like-perk-list"><kbd>' + unlocked.join('</kbd> <kbd>') + '</kbd></div>';
+    }
+    
+    if (locked[0]) {
+      html += '<h4>Locked Perks:</h4>'
+      html += '<div class="like-perk-list"><kbd>' + locked.join('</kbd> <kbd>') + '</kbd></div>';
+    }
+    
+    el.innerHTML = html;
+    
+    document.body.appendChild(el);
+  },
+  
+  onHidePerksClick: function() {
+    var el;
+    
+    if (el = $.id('like-perks-cnt')) {
+      el.parentNode.removeChild(el);
+    }
+  },
+  
+  onLikeClick: function(btn) {
+    var left, self = PostLiker;
+    
+    if (self.state.ts && (left = Math.ceil((Date.now() - self.state.ts) / 1000)) < self.cd) {
+      alert("You need to wait a while before doing this again (" + (self.cd - left) + 's left)');
+      return;
+    }
+    
+    self.activeBtn = btn;
+    self.captchaId = null;
+    
+    if (!self.state.known && !window.passEnabled) {
+      self.showCaptcha();
+    }
+    else {
+      self.like();
+    }
+  },
+  
+  like: function() {
+    var params, self, pid;
+    
+    self = PostLiker;
+    
+    pid = self.activeBtn.parentNode.parentNode.id.slice(2);
+    
+    params = {
+      mode: 'like_post',
+      post_id: pid
+    }
+    
+    if (self.captchaId !== null) {
+      params['g-recaptcha-response'] = grecaptcha.getResponse(self.captchaId);
+    }
+    
+    window.createCookie('xa19', pid, 1, '.' + $L.d(Main.board));
+    
+    self.activeBtn.style.opacity = '0.25';
+    
+    $.xhr('POST', 'https://sys.' + $L.d(Main.board) + '/' + Main.board + '/imgboard.php',
+      {
+        onload: self.onPostLiked,
+        onerror: self.onError,
+        withCredentials: true,
+        btn: self.activeBtn,
+      },
+      params
+    );
+  },
+  
+  onPostSubmit: function(txt) {
+    var data;
+    
+    data = txt.match(/<!-- xa19:([0-9]+) ([^:]+):xa19 -->/);
+    
+    if (!data) {
+      console.log('PostLiker: state error');
+      return;
+    }
+    
+    PostLiker.state.score = +data[1];
+    PostLiker.state.perks = data[2].split(/ /);
+  },
+  
+  onPostLiked: function() {
+    var data, self;
+    
+    self = PostLiker;
+    
+    self.closeCaptcha();
+    
+    if (!this.responseText) {
+      return;
+    }
+    
+    data = this.responseText;
+    
+    if (data[0] === '0') {
+      console.log(data.slice(2));
+      this.btn.style.opacity = '1';
+      return;
+    }
+    
+    if (data[0] === '1') {
+      data = data.split(/\n/);
+      this.btn.textContent = 'Like! ×' + data[1];
+      this.btn.style.opacity = '1';
+      self.state.known = true;
+      self.state.score = +data[2];
+      self.state.perks = data[3].split(' ');
+      self.state.ts = Date.now();
+      self.saveState();
+      return;
+    }
+    
+    this.btn.textContent = 'Like!';
+    this.btn.style.opacity = '1';
+    
+    self.state.known = false;
+    self.saveState();
+    
+    self.onError();
+  },
+  
+  onError: function() {
+    console.log('PostLiker: error');
+    PostLiker.closeCaptcha();
+  },
+  
+  showCaptcha: function() {
+    var self, cnt, btnPos, btn;
+    
+    self = PostLiker;
+    
+    self.closeCaptcha();
+    
+    btn = self.activeBtn;
+    
+    cnt = $.el('div');
+    cnt.id = 'js-like-captcha';
+    cnt.innerHTML = '<div style="margin-bottom: 2px">Please solve the captcha. ' +
+      'This is done only once.</div><div id="js-like-captcha-cnt"></div>';
+    
+    cnt.className = 'reply';
+    
+    btnPos = btn.getBoundingClientRect();
+    
+    cnt.style.padding = '4px';
+    cnt.style.position = 'absolute';
+    cnt.style.boxShadow = '0 0 4px 2px rgba(0, 0, 0, 0.5)';
+    cnt.style.top = (btnPos.top - 120 + window.pageYOffset) + 'px';
+    cnt.style.left = (btnPos.left + window.pageXOffset) + 'px';
+    
+    document.addEventListener('click', self.closeCaptcha, false);
+    
+    document.body.appendChild(cnt);
+    
+    self.captchaId = grecaptcha.render(
+      $.id('js-like-captcha-cnt'),
+      {
+        sitekey: window.recaptchaKey,
+        'callback' : self.onCaptchaDone,
+      }
+    );
+  },
+  
+  closeCaptcha: function() {
+    var el;
+    
+    if (el = $.id('js-like-captcha')) {
+      PostLiker.captchaId = null;
+      PostLiker.activeBtn = null;
+      el.parentNode.removeChild(el);
+      document.removeEventListener('click', PostLiker.closeCaptcha, false);
+    }
+  },
+  
+  onCaptchaDone: function() {
+    PostLiker.like()
+  },
+  
+  saveState: function() {
+    localStorage.setItem('4chan-event', JSON.stringify(PostLiker.state));
+    StorageSync.sync('4chan-event');
+  }
+};
+
+/**
  * Main
  */
 var Main = {};
@@ -8849,6 +9114,8 @@ Main.init = function() {
   }
   
   QR.noCaptcha = QR.noCaptcha || window.passEnabled;
+  
+  PostLiker.init();
   
   Main.initIcons();
   
@@ -9350,6 +9617,18 @@ Main.onclick = function(e) {
       case 'update':
         e.preventDefault();
         ThreadUpdater.forceUpdate();
+        break;
+      case 'like-post':
+        e.preventDefault();
+        PostLiker.onLikeClick(t);
+        break;
+      case 'like-show-perks':
+        e.preventDefault();
+        PostLiker.onShowPerksClick(t);
+        break;
+      case 'like-hide-perks':
+        e.preventDefault();
+        PostLiker.onHidePerksClick(t);
         break;
       case 'post-menu':
         e.preventDefault();
