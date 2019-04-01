@@ -8808,11 +8808,7 @@ var PostLiker = {
   cd: 120,
   
   init: function() {
-    var data;
-    
-    if (data = localStorage.getItem('4chan-event')) {
-      PostLiker.state = JSON.parse(data);
-    }
+    PostLiker.loadState();
   },
   
   onShowPerksClick: function() {
@@ -8823,6 +8819,8 @@ var PostLiker = {
     var el, unlocked, locked, html, i, perk, hasPerks;
     
     PostLiker.onHidePerksClick();
+    
+    PostLiker.loadState();
     
     if (!PostLiker.state.perks) {
       hasPerks = ['showscore'];
@@ -8945,6 +8943,7 @@ var PostLiker = {
     
     PostLiker.state.score = +data[1];
     PostLiker.state.perks = data[2].split(/ /);
+    PostLiker.saveState();
   },
   
   onPostLiked: function() {
@@ -9047,6 +9046,14 @@ var PostLiker = {
   saveState: function() {
     localStorage.setItem('4chan-event', JSON.stringify(PostLiker.state));
     StorageSync.sync('4chan-event');
+  },
+  
+  loadState: function() {
+    var data;
+    
+    if (data = localStorage.getItem('4chan-event')) {
+      PostLiker.state = JSON.parse(data);
+    }
   }
 };
 
