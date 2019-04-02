@@ -848,7 +848,6 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
         '<span class="nameBlock' + capcodeClass + '">' + emailStart +
           '<span class="name">' + name + '</span>'
           + tripcode
-          + (data.xa19s !== undefined ? ('<span class="like-score">' + data.xa19s + '</span>') : '')
           + (data.since4pass ? (' <span title="Pass user since ' + data.since4pass + '" class="n-pu"></span>') : '')
           + capcodeStart + emailEnd + capcode + userId + flag +
         ' </span> ' +
@@ -856,8 +855,6 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
         '<span class="postNum desktop">' +
           '<a href="' + noLink + '" title="Link to this post">No.</a><a href="' +
           quoteLink + '" title="Reply to this post">' + data.no + '</a>'
-            + (isOP ? '' : ('<a data-cmd="like-post" href="#" class="like-btn">Like!'
-              + (data.xa19l !== undefined ? (' ×' + data.xa19l) : '') + '</a>'))
             + threadIcons + replySpan +
         '</span>' +
       '</div>' +
@@ -3693,12 +3690,6 @@ QR.show = function(tid) {
             if (el.nextElementSibling) {
               el.parentNode.removeChild(el.nextElementSibling); 
             }
-            var xel = $.el('a');
-            xel.className = 'like-perks-btn';
-            xel.setAttribute('href', '#');
-            xel.setAttribute('data-cmd', 'like-show-perks');
-            xel.textContent = 'Perks';
-            row.appendChild(xel);
           }
           else if (el.name == 'com') {
             QR.comField = el;
@@ -4089,7 +4080,7 @@ QR.submit = function(force) {
       }
       
       if (ids = this.responseText.match(/<!-- thread:([0-9]+),no:([0-9]+) -->/)) {
-        PostLiker.onPostSubmit(this.responseText);
+        //PostLiker.onPostSubmit(this.responseText);
         
         tid = ids[1];
         pid = ids[2];
@@ -8798,6 +8789,7 @@ var Feedback = {
 /**
  * Post Liker
  */
+/*
 var PostLiker = {
   state: {},
   
@@ -8812,9 +8804,12 @@ var PostLiker = {
   },
   
   onShowPerksClick: function() {
-    var allPerks = ['showscore','smiley','sad','dice+1d6','ok','animal','food',
-    'card','like','rabbit','unlove','fortune','dice+1d100','party','pickle',
-    'trash','heart','santa','joy','pig','dog','cat','frog','dino','spooky'];
+    var allPerks = ['showscore','smiley','sad','coinflip','dice+1d6','ok',
+    'animal','food','check','cross','nofile',
+    'card','wflag','bflag','like','rabbit','unlove','rage','perfect','fortune',
+    'dice+1d100','bricks','onsen','party','verified','partyhat','pickle',
+    'trash','heart','santa','joy','marquee','pig','dog','cat','rainbow','frog',
+    'dino','spooky'];
     
     var el, unlocked, locked, html, i, perk, hasPerks;
     
@@ -9056,7 +9051,7 @@ var PostLiker = {
     }
   }
 };
-
+*/
 /**
  * Main
  */
@@ -9122,7 +9117,7 @@ Main.init = function() {
   
   QR.noCaptcha = QR.noCaptcha || window.passEnabled;
   
-  PostLiker.init();
+  //PostLiker.init();
   
   Main.initIcons();
   
@@ -9625,6 +9620,7 @@ Main.onclick = function(e) {
         e.preventDefault();
         ThreadUpdater.forceUpdate();
         break;
+      /*
       case 'like-post':
         e.preventDefault();
         PostLiker.onLikeClick(t);
@@ -9637,6 +9633,7 @@ Main.onclick = function(e) {
         e.preventDefault();
         PostLiker.onHidePerksClick(t);
         break;
+      */
       case 'post-menu':
         e.preventDefault();
         PostMenu.open(t);
