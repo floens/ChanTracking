@@ -7420,7 +7420,7 @@ Media.init = function() {
   this.matchSC = /(?:soundcloud\.com|snd\.sc)\/[^\s<]+(?:<wbr>)?[^\s<]*/g;
   this.matchYT = /(?:youtube\.com\/watch\?[^\s]*?v=|youtu\.be\/)[^\s<]+(?:<wbr>)?[^\s<]*(?:<wbr>)?[^\s<]*(?:<wbr>)?[^\s<]*/g;
   this.toggleYT = /(?:v=|\.be\/)([a-zA-Z0-9_-]{11})/;
-  this.timeYT = /[#&]t=([ms0-9]+)/;
+  this.timeYT = /[\?#&]t=([ms0-9]+)/;
   
   this.map = {
     yt: this.toggleYouTube,
@@ -10247,7 +10247,7 @@ div.backlink {\
   height: 100%;\
   top: 0;\
   left: 0;\
-  z-index: 9002;\
+  z-index: 100002;\
 }\
 .UIPanel {\
   line-height: 14px;\

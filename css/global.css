@@ -418,6 +418,15 @@ body {
 	background-image: url('/image/fp/icon-down-teal.png');
 }
 
+.right-box .list-alpha {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.right-box .list-alpha li {
+	list-style-type: lower-alpha;
+}
+
 #ft ul {
 	border-top: 1px solid;
 }

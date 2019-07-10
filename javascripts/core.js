@@ -459,8 +459,8 @@ function initAdsAG() {
       s.setAttribute('allowtransparency', 'true');
       s.setAttribute('marginheight', '0');
       s.setAttribute('marginwidth', '0');
-      s.setAttribute('width', '728');
-      s.setAttribute('height', '102');
+      s.setAttribute('width', el.getAttribute('data-adw') || '728');
+      s.setAttribute('height', el.getAttribute('data-adh') || '102');
       s.src = '//adserver.juicyads.com/adshow.php?adzone=' + el.getAttribute('data-ja');
       el.appendChild(s);
     }
