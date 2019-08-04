@@ -29,7 +29,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 500,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -50,7 +50,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 300,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -261,7 +261,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 500,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -282,7 +282,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 300,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -320,7 +320,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 300,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -339,7 +339,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 300,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -434,7 +434,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 300,
         "bump_limit": 300,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -454,7 +454,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 300,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -473,7 +473,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 300,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -532,7 +532,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 300,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -553,7 +553,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 300,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -573,7 +573,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 300,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -714,7 +714,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 500,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -773,7 +773,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 500,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -872,7 +872,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 300,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 60,
             "replies": 15,
@@ -912,7 +912,7 @@
         "max_comment_chars": 3000,
         "max_webm_duration": 120,
         "bump_limit": 750,
-        "image_limit": 250,
+        "image_limit": 375,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -935,7 +935,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 300,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -996,7 +996,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 300,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 300,
             "replies": 60,
@@ -1037,7 +1037,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 500,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -1058,7 +1058,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 500,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -1078,7 +1078,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 300,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -1137,7 +1137,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 300,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -1196,7 +1196,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 300,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -1216,7 +1216,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 500,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -1302,7 +1302,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 500,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -1323,7 +1323,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 310,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -1344,7 +1344,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 300,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -1360,8 +1360,8 @@
         "ws_board": 1,
         "per_page": 15,
         "pages": 10,
-        "max_filesize": 5242880,
-        "max_webm_filesize": 5242880,
+        "max_filesize": 6291456,
+        "max_webm_filesize": 6291456,
         "max_comment_chars": 2000,
         "max_webm_duration": 300,
         "bump_limit": 310,
@@ -1424,7 +1424,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 300,
-        "image_limit": 250,
+        "image_limit": 300,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
