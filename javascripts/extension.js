@@ -4667,7 +4667,7 @@ ReplyHiding.save = function() {
 var ThreadWatcher = {};
 
 ThreadWatcher.init = function() {
-  var cnt, jumpTo, rect, el;
+  var cnt, jumpTo, rect, el, awt;
   
   this.listNode = null;
   this.charLimit = 45;
@@ -4703,6 +4703,24 @@ ThreadWatcher.init = function() {
     
     if (window.history && history.replaceState) {
       history.replaceState(null, '', location.href.split('#', 1)[0]);
+    }
+  }
+  
+  if (Config.threadAutoWatcher) {
+    if (awt = Main.getCookie('4chan_awt')) {
+      Main.removeCookie('4chan_awt', '.' + $L.d(Main.board), '/' + Main.board + '/');
+      
+      this.add(+awt, Main.board);
+      this.save();
+    }
+    
+    if (document.forms.post) {
+      el = $.el('input');
+      el.type = 'hidden';
+      el.name = 'awt';
+      el.value = '1';
+      
+      document.forms.post.appendChild(el);
     }
   }
   
@@ -4948,7 +4966,7 @@ ThreadWatcher.generateLabel = function(sub, com, tid) {
 };
 
 ThreadWatcher.toggle = function(tid, board) {
-  var key, label, sub, com, lastReply, thread;
+  var key;
   
   key = tid + '-' + (board || Main.board);
   
@@ -4957,23 +4975,32 @@ ThreadWatcher.toggle = function(tid, board) {
     delete this.watched[key];
   }
   else {
-    sub = $.cls('subject', $.id('pi' + tid))[0].textContent;
-    com = $.id('m' + tid).innerHTML;
-    
-    label = ThreadWatcher.generateLabel(sub, com, tid);
-    
-    if ((thread = $.id('t' + tid)).children[1]) {
-      lastReply = thread.lastElementChild.id.slice(2);
-    }
-    else {
-      lastReply = tid;
-    }
-    
-    this.watched[key] = [ label, lastReply, 0 ];
+    this.add(tid, board, key);
   }
+  
   this.save();
   this.load();
   this.build(true);
+};
+
+ThreadWatcher.add = function(tid, board) {
+  var key, label, sub, com, lastReply, thread;
+  
+  key = tid + '-' + board;
+  
+  sub = $.cls('subject', $.id('pi' + tid))[0].textContent;
+  com = $.id('m' + tid).innerHTML;
+  
+  label = this.generateLabel(sub, com, tid);
+  
+  if ((thread = $.id('t' + tid)).children[1]) {
+    lastReply = thread.lastElementChild.id.slice(2);
+  }
+  else {
+    lastReply = tid;
+  }
+  
+  this.watched[key] = [ label, lastReply, 0 ];
 };
 
 ThreadWatcher.addRaw = function(post, board) {
@@ -8295,6 +8322,7 @@ var Config = {
   alwaysAutoUpdate: false,
   topPageNav: false,
   threadWatcher: false,
+  threadAutoWatcher: false,
   imageExpansion: true,
   fitToScreenExpansion: false,
   threadExpansion: true,
@@ -8469,6 +8497,7 @@ SettingsMenu.options = {
     threadUpdater: [ 'Thread updater', 'Append new posts to bottom of thread without refreshing the page', true ],
     alwaysAutoUpdate:[ 'Auto-update by default', 'Always auto-update threads', true ],
     threadWatcher: [ 'Thread Watcher', 'Keep track of threads you\'re watching and see when they receive new posts', true ],
+    threadAutoWatcher: [ 'Automatically watch threads you create', '', true, true ],
     autoScroll: [ 'Auto-scroll with auto-updated posts', 'Automatically scroll the page as new posts are added' ],
     updaterSound: [ 'Sound notification', 'Play a sound when somebody replies to your post(s)' ],
     fixedThreadWatcher: [ 'Pin Thread Watcher to the page', 'Thread Watcher will scroll with you' ],
@@ -9596,14 +9625,18 @@ Main.setCookie = function(name, value, domain) {
     + '; path=/; domain=' + domain;
 };
 
-Main.removeCookie = function(name, domain) {
+Main.removeCookie = function(name, domain, path) {
   if (!domain) {
     domain = location.host;
   }
   
+  if (!path) {
+    path = '/';
+  }
+  
   document.cookie = name + '='
     + '; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
-    + '; path=/; domain=' + domain;
+    + '; path=' + path + '; domain=' + domain;
 };
 
 Main.onclick = function(e) {
