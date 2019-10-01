@@ -4986,7 +4986,7 @@ ThreadWatcher.toggle = function(tid, board) {
 ThreadWatcher.add = function(tid, board) {
   var key, label, sub, com, lastReply, thread;
   
-  key = tid + '-' + board;
+  key = tid + '-' + (board || Main.board);
   
   sub = $.cls('subject', $.id('pi' + tid))[0].textContent;
   com = $.id('m' + tid).innerHTML;
@@ -5006,7 +5006,7 @@ ThreadWatcher.add = function(tid, board) {
 ThreadWatcher.addRaw = function(post, board) {
   var key, label;
   
-  key = post.no + '-' + board;
+  key = post.no + '-' + (board || Main.board);
   
   if (this.watched[key]) {
     return;
