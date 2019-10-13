@@ -803,7 +803,6 @@
 		padding: 5px !important;
 		display: inline-block;
 		max-height: 400px;
-		overflow: hidden;
 		max-width: 300px;
 		word-wrap: break-word;
 	}
