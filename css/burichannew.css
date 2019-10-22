@@ -553,6 +553,10 @@ div.container {
 	vertical-align: middle;
 }
 
+.painter-ctrl label {
+	margin-right: 4px;
+}
+
 #oe-canvas-preview {
 	position: absolute;
 	margin-left: 5px;

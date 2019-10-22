@@ -350,9 +350,17 @@ hr#op, #ctrl-top {
 	color: #fff;
 }
 
-.painter-ctrl input, #qr-painter-ctrl input {
+.painter-ctrl input[type="text"], #qr-painter-ctrl input[type="text"] {
 	width: 30px !important;
 	text-align: center;
+}
+
+.oe-r-cb {
+	vertical-align: middle;
+}
+
+.painter-ctrl label {
+	margin-right: 4px;
 }
 
 #oe-canvas-preview {
