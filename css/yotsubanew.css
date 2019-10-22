@@ -545,12 +545,8 @@ span.x-small {
 	text-align: center;
 }
 
-.oe-r-cb {
-	vertical-align: middle;
-}
-
-.painter-ctrl label {
-	margin-right: 4px;
+#qr-painter-ctrl .oe-r-cb {
+	vertical-align: sub;
 }
 
 #oe-canvas-preview {
