@@ -1418,6 +1418,12 @@ function contentLoaded() {
     initAdsAG();
   }
   
+  if (window.style_group === 'ws_style' && window.matchMedia && !window.matchMedia('(max-width: 480px)').matches) {
+    var s = document.createElement('script');
+    s.src = '//pl15117601.pvclouds.com/eaed4d55144c813097d5aa84a204a7c2/invoke.js';
+    document.body.appendChild(s);
+  }
+  
   if (document.post) {
     document.post.name.value = get_cookie("4chan_name");
     document.post.email.value = get_cookie("options");
