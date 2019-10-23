@@ -1241,11 +1241,15 @@ var PainterCore = {
     }
     
     this.data = null;
+    this.replayBlob = null;
+    
+    this.time = 0;
     
     this.btnDraw = btns[0];
     this.btnClear = btns[1];
     this.btnFile = document.getElementById('postFile');
     this.btnSubmit = document.forms.post.querySelector('input[type="submit"]');
+    this.replayCb = document.forms.post.getElementsByClassName('oe-r-cb')[0];
     
     btns[0].addEventListener('click', this.onDrawClick, false);
     btns[1].addEventListener('click', this.onCancel, false);
@@ -1264,8 +1268,18 @@ var PainterCore = {
     Tegaki.open({
       onDone: PainterCore.onDone,
       onCancel: PainterCore.onCancel,
+      saveReplay: PainterCore.replayCb && PainterCore.replayCb.checked,
       width: w,
       height: h
+    });
+  },
+  
+  replay: function(id) {
+    id = +id;
+    
+    Tegaki.open({
+      replayMode: true,
+      replayURL: '//i.4cdn.org/' + location.pathname.split(/\//)[1] + '/' + id + '.tgkr'
     });
   },
   
@@ -1295,11 +1309,27 @@ var PainterCore = {
     
     PainterCore.data = Tegaki.flatten().toDataURL('image/png');
     
+    if (Tegaki.saveReplay) {
+      PainterCore.replayBlob = Tegaki.replayRecorder.toBlob();
+    }
+    
+    if (PainterCore.replayCb) {
+      PainterCore.replayCb.disabled = true;
+    }
+    
+    PainterCore.time = Math.round((Date.now() - Tegaki.startTimeStamp) / 1000);
+    
     document.forms.post.addEventListener('submit', PainterCore.onSubmit, false);
   },
   
   onCancel: function() {
     PainterCore.data = null;
+    PainterCore.replayBlob = null;
+    PainterCore.time = 0;
+    
+    if (PainterCore.replayCb) {
+      PainterCore.replayCb.disabled = false;
+    }
     
     PainterCore.btnFile.disabled = false;
     PainterCore.btnClear.disabled = true;
@@ -1318,7 +1348,13 @@ var PainterCore = {
     
     if (blob) {
       formdata.append('upfile', blob, 'tegaki.png');
+      
+      if (PainterCore.replayBlob) {
+        formdata.append('oe_replay', PainterCore.replayBlob, 'tegaki.tgkr');
+      }
     }
+    
+    formdata.append('oe_time', PainterCore.time);
     
     xhr = new XMLHttpRequest();
     xhr.open('POST', this.action, true);
@@ -1368,6 +1404,10 @@ var PainterCore = {
     }
   }
 };
+
+function oeReplay(id) {
+  PainterCore.replay(id);
+}
 
 function contentLoaded() {
   var i, el, el2, nodes, len, mobileSelect, params, board, val, fn;

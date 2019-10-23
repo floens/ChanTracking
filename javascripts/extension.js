@@ -3289,7 +3289,9 @@ QR.init = function() {
     }
   }
   
+  this.painterTime = 0;
   this.painterData = null;
+  this.replayBlob = null;
   
   this.captchaWidgetCnt = null;
   this.captchaWidgetId = null;
@@ -3474,7 +3476,7 @@ QR.syncStorage = function(e) {
 };
 
 QR.openPainter = function() {
-  var w, h, dims;
+  var w, h, dims, cb;
   
   dims = $.tag('input', $.id('qr-painter-ctrl'));
   
@@ -3485,9 +3487,12 @@ QR.openPainter = function() {
     return;
   }
   
+  cb = $.cls('oe-r-cb', $.id('qr-painter-ctrl'))[0];
+  
   window.Tegaki.open({
     onDone: QR.onPainterDone,
     onCancel: QR.onPainterCancel,
+    saveReplay: cb && cb.checked,
     width: w,
     height: h
   });
@@ -3498,12 +3503,22 @@ QR.onPainterDone = function() {
   
   QR.painterData = Tegaki.flatten().toDataURL('image/png');
   
+  if (Tegaki.saveReplay) {
+    QR.replayBlob = Tegaki.replayRecorder.toBlob();
+  }
+  
+  QR.painterTime = Math.round((Date.now() - Tegaki.startTimeStamp) / 1000);
+  
   if (el = $.id('qrFile')) {
     el.disabled = true;
   }
   
   if (el = $.tag('button', $.id('qr-painter-ctrl'))[1]) {
     el.disabled = false;
+  }
+  
+  if (el = $.cls('oe-r-cb', $.id('qr-painter-ctrl'))[0]) {
+    el.disabled = true;
   }
 };
 
@@ -3511,6 +3526,9 @@ QR.onPainterCancel = function() {
   var el;
   
   QR.painterData = null;
+  QR.replayBlob = null;
+  
+  QR.painterTime = 0;
   
   if (el = $.id('qrFile')) {
     el.disabled = false;
@@ -3518,6 +3536,10 @@ QR.onPainterCancel = function() {
   
   if (el = $.tag('button', $.id('qr-painter-ctrl'))[1]) {
     el.disabled = true;
+  }
+  
+  if (el = $.cls('oe-r-cb', $.id('qr-painter-ctrl'))[0]) {
+    el.disabled = false;
   }
 };
 
@@ -3843,6 +3865,7 @@ QR.onFileChange = function() {
   }
   
   QR.painterData = null;
+  QR.replayBlob = null;
   
   QR.startCooldown();
 };
@@ -4005,9 +4028,10 @@ QR.resetFile = function() {
   var file, el;
   
   QR.painterData = null;
+  QR.replayBlob = null;
   
-  if (el = $.id('qrDraw')) {
-    el.firstElementChild.textContent = 'Draw';
+  if (el = $.cls('oe-r-cb', $.id('qr-painter-ctrl'))[0]) {
+    el.disabled = false;
   }
   
   el = document.createElement('input');
@@ -4145,6 +4169,12 @@ QR.submit = function(force) {
   
   if (QR.painterData) {
     QR.appendPainter(formdata);
+    
+	  if (QR.replayBlob) {
+	    formdata.append('oe_replay', QR.replayBlob, 'tegaki.tgkr');
+	  }
+    
+    formdata.append('oe_time', QR.painterTime);
   }
   
   clearInterval(QR.pulse);
@@ -10023,13 +10053,6 @@ img.pointer {\
   width: 130px;\
   margin-right: 5px;\
 }\
-#qrDraw {\
-  display: inline-block;\
-  text-align: center;\
-  width: 40px;\
-}\
-#qrDraw a { text-decoration: none }\
-.qrDrawActive a:after { content: "*" }\
 .yotsuba_new #qrFile {\
   color:black;\
 }\
@@ -10724,6 +10747,7 @@ div.collapseWebm { text-align: center; margin-top: 10px; }\
   top: 1px;\
 }\
 #qr-painter-ctrl { text-align: center; }\
+#qr-painter-ctrl label { margin-right: 4px; }\
 .open-qr-wrap {\
   text-align: center;\
   width: 200px;\
