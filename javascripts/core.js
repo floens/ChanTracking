@@ -1317,7 +1317,12 @@ var PainterCore = {
       PainterCore.replayCb.disabled = true;
     }
     
-    PainterCore.time = Math.round((Date.now() - Tegaki.startTimeStamp) / 1000);
+    if (!Tegaki.hasCustomCanvas && Tegaki.startTimeStamp) {
+      PainterCore.time = Math.round((Date.now() - Tegaki.startTimeStamp) / 1000);
+    }
+    else {
+      PainterCore.time = 0;
+    }
     
     document.forms.post.addEventListener('submit', PainterCore.onSubmit, false);
   },

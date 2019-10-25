@@ -3507,7 +3507,12 @@ QR.onPainterDone = function() {
     QR.replayBlob = Tegaki.replayRecorder.toBlob();
   }
   
-  QR.painterTime = Math.round((Date.now() - Tegaki.startTimeStamp) / 1000);
+  if (!Tegaki.hasCustomCanvas && Tegaki.startTimeStamp) {
+    QR.painterTime = Math.round((Date.now() - Tegaki.startTimeStamp) / 1000);
+  }
+  else {
+    QR.painterTime = 0;
+  }
   
   if (el = $.id('qrFile')) {
     el.disabled = true;
@@ -4170,9 +4175,9 @@ QR.submit = function(force) {
   if (QR.painterData) {
     QR.appendPainter(formdata);
     
-	  if (QR.replayBlob) {
-	    formdata.append('oe_replay', QR.replayBlob, 'tegaki.tgkr');
-	  }
+    if (QR.replayBlob) {
+      formdata.append('oe_replay', QR.replayBlob, 'tegaki.tgkr');
+    }
     
     formdata.append('oe_time', QR.painterTime);
   }
