@@ -1770,13 +1770,13 @@ div.sideArrows, hr {
 	}
 	
 	select {
-		background-color: #241023;
 		border: 1px solid rgba(150, 180, 170, 0.3);
-		color: #96b4aa;
+		background-color: #111738;
+		color: #8f95b3;
 	}
 	
 	#qrForm textarea, .extPanel input[type="text"], .extPanel textarea {
-		background-color: #241023 !important;
+		background-color: #111738 !important;
 		border: 1px solid rgba(150, 180, 170, 0.3) !important;
 	}
 	
@@ -1798,7 +1798,7 @@ div.sideArrows, hr {
 	}
 	
 	input::-moz-placeholder, textarea::-moz-placeholder, input::placeholder, textarea::placeholder, #quickReply #qrForm input::-moz-placeholder, #quickReply #qrForm input::placeholder, #quickReply #qrForm textarea::-moz-placeholder, #quickReply #qrForm textarea::placeholder {
-		color: #96b4aa !important;
+		color: #8f95b3 !important;
 		opacity: 0.6 !important;
 	}
 	
@@ -1820,7 +1820,6 @@ div.sideArrows, hr {
 	}
 	
 	.postblock {
-		background-color: #241023;
 		border: 1px solid rgba(150, 180, 170, 0.3);
 	}
 	
