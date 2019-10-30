@@ -7,8 +7,8 @@ html {
 }
 
 body {
-	background: #140814;
-	color: #96b4aa;
+	background: #0d1126;
+	color: #8f95b3;
 	font-family: arial, helvetica, sans-serif;
 	font-size: 10pt;
 	margin-left: 0;
@@ -498,9 +498,13 @@ span.x-small {
 	color: #fff;
 }
 
-.painter-ctrl input, #qr-painter-ctrl input {
+.painter-ctrl input[type="text"], #qr-painter-ctrl input[type="text"] {
 	width: 30px !important;
 	text-align: center;
+}
+
+#qr-painter-ctrl .oe-r-cb {
+	vertical-align: sub;
 }
 
 #oe-canvas-preview {
@@ -616,7 +620,7 @@ div.post {
 
 
 div.reply {
-	background-color: #241023;
+	background-color: #111733;
 	border: none;
 	display: table;
 	padding: 2px;
@@ -864,7 +868,7 @@ div#absbot {
 	font-size: x-small !important;
 	padding-bottom: 4px;
 	padding-top: 10px;
-	color: #96b4aa;
+	color: #8f95b3;
 	clear: both;
 }
 
@@ -900,7 +904,7 @@ td {
 }
 
 input[type="checkbox"] {
-	opacity: 0.25;
+	opacity: 0.5;
 }
 
 input[type=text], input[type=password], table.postForm > tbody textarea, #recaptcha_response_field {
@@ -1052,7 +1056,7 @@ div.closed {
 }
 
 .reply:target, .reply.highlight {
-	background-color: #331433;
+	background-color: #161d40;
 	border: none;
 	padding: 2px;
 }
@@ -1458,7 +1462,7 @@ table.flashListing .subject {
 }
 
 .navLinks.desktop > * {
-	color: #96b4aa;
+	color: #8f95b3;
 }
 
 td {
@@ -1630,7 +1634,7 @@ td {
 }
 
 .post.reply.highlight-anti {
-	background-color: #3b1839 !important;
+	background-color: #1a224d !important;
 }
 
 #quote-preview {
@@ -1639,8 +1643,7 @@ td {
 
 div.post div.postInfo span.postNum a:hover, .posteruid .hand:hover, .backlink span a.quotelink:hover, a:hover, .button:hover, .dd-menu li:hover, #arc-list .quotelink:hover, s .sjis:hover {
 	color: #ff9d1c !important;
-	transition-duration: 1s !important;
-	transition-property: color !important;
+	text-shadow: 0 0 8px rgba(217, 133, 24, 1);
 }
 
 .ws div.post div.postInfo span.subject {
@@ -1649,10 +1652,6 @@ div.post div.postInfo span.postNum a:hover, .posteruid .hand:hover, .backlink sp
 
 .nws div.post div.postInfo span.subject {
 	color: #b35968;
-}
-
-div.post div.postInfo span.nameBlock span.postertrip, div.post div.postInfo span.nameBlock span.name {
-	color: #d98518;
 }
 
 
@@ -1750,32 +1749,24 @@ div.sideArrows, hr {
 }
 
 @media (min-width: 481px) {
-	body {
-		background: #140814;
-		color: #96b4aa;
-	}
-	
 	.ws div.boardBanner {
 		color: #5995b3;
-		text-shadow: 0 0 5px rgba(89, 149, 179, 0.75);
 	}
 	
 	.nws div.boardBanner {
 		color: #b35968;
-		text-shadow: 0 0 5px rgba(179, 89, 104, 0.75);
 	}
 	
 	.quoteLink, .quotelink, .deadlink, a, a.visited, .button, .dd-menu li, .backlink span a.quotelink, #arc-list .quotelink, s .sjis {
 		color: #d98518 !important;
-		text-shadow: 0 0 8px rgba(217, 133, 24, 1);
 	}
 	
 	.flag {
-		opacity: 0.5;
+		opacity: 0.7;
 	}
 	
 	.middlead a img, #bannerCnt {
-		opacity: 0.5;
+		opacity: 0.7;
 	}
 	
 	select {
@@ -1798,7 +1789,7 @@ div.sideArrows, hr {
 		font-weight: bold;
 		padding: 0 5px;
 		font-size: 10pt;
-		background-color: #241023;
+		background-color: #111738;
 		border: 1px solid rgba(150, 180, 170, 0.3);
 	}
 	
@@ -1820,13 +1811,12 @@ div.sideArrows, hr {
 	}
 	
 	input[type=text], input[type=password], table.postForm > tbody textarea, #recaptcha_response_field {
-		background-color: #241023;
-		color: #96b4aa;
+		background-color: #111738;
+		color: #8f95b3;
 	}
 	
 	a.replylink:not(:hover), div#absbot a:not(:hover) {
 		color: #d98518 !important;
-		text-shadow: 0 0 8px rgba(217, 133, 24, 1);
 	}
 	
 	.postblock {
