@@ -1423,16 +1423,6 @@ function contentLoaded() {
     initAdsAG();
   }
   
-  if (window.style_group === 'ws_style' && window.matchMedia && !window.matchMedia('(max-width: 480px)').matches) {
-    var s = document.createElement('script');
-    s.src = '//pl15117601.pvclouds.com/eaed4d55144c813097d5aa84a204a7c2/invoke.js';
-    document.body.appendChild(s);
-    
-    s = document.createElement('script');
-    s.src = '//pl15209890.pvclouds.com/c0b83c42f274bdfa2042504993ae51a2/invoke.js';
-    document.body.appendChild(s);
-  }
-  
   if (document.post) {
     document.post.name.value = get_cookie("4chan_name");
     document.post.email.value = get_cookie("options");
