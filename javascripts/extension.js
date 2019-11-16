@@ -3489,6 +3489,8 @@ QR.openPainter = function() {
   
   cb = $.cls('oe-r-cb', $.id('qr-painter-ctrl'))[0];
   
+  Keybinds.enabled = false;
+  
   window.Tegaki.open({
     onDone: QR.onPainterDone,
     onCancel: QR.onPainterCancel,
@@ -3500,6 +3502,8 @@ QR.openPainter = function() {
 
 QR.onPainterDone = function() {
   var el;
+  
+  Keybinds.enabled = true;
   
   QR.painterData = Tegaki.flatten().toDataURL('image/png');
   
@@ -3529,6 +3533,8 @@ QR.onPainterDone = function() {
 
 QR.onPainterCancel = function() {
   var el;
+  
+  Keybinds.enabled = true;
   
   QR.painterData = null;
   QR.replayBlob = null;
@@ -7788,9 +7794,13 @@ CustomCSS.onClick = function(e) {
 /**
  * Keyboard shortcuts
  */
-var Keybinds = {};
+var Keybinds = {
+  enabled: false
+};
 
 Keybinds.init = function() {
+  this.enabled = true;
+
   this.map = {
     // A
     65: function() {
@@ -7842,7 +7852,7 @@ Keybinds.init = function() {
 Keybinds.resolve = function(e) {
   var bind, el = e.target;
   
-  if (el.nodeName == 'TEXTAREA' || el.nodeName == 'INPUT') {
+  if (!Keybinds.enabled || el.nodeName == 'TEXTAREA' || el.nodeName == 'INPUT') {
     return;
   }
   

@@ -1265,6 +1265,8 @@ var PainterCore = {
       return;
     }
     
+    window.Keybinds && (Keybinds.enabled = false);
+    
     Tegaki.open({
       onDone: PainterCore.onDone,
       onCancel: PainterCore.onCancel,
@@ -1304,6 +1306,8 @@ var PainterCore = {
   onDone: function() {
     var formdata, blob;
     
+    window.Keybinds && (Keybinds.enabled = true);
+    
     PainterCore.btnFile.disabled = true;
     PainterCore.btnClear.disabled = false;
     
@@ -1328,6 +1332,8 @@ var PainterCore = {
   },
   
   onCancel: function() {
+    window.Keybinds && (Keybinds.enabled = true);
+    
     PainterCore.data = null;
     PainterCore.replayBlob = null;
     PainterCore.time = 0;
