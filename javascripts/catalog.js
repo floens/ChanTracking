@@ -1866,7 +1866,7 @@ var FC = function() {
       }
       
       thread += '<a ' + newtab + 'href="' + provider + id
-        +'"><img alt="" id="thumb-' + id + '" class="thumb';
+        +'"><img loading="lazy" alt="" id="thumb-' + id + '" class="thumb';
       
       if (hl.color) {
         pinhl = ' hl" style="border-color: ' + hl.color;
