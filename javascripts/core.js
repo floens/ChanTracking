@@ -427,6 +427,20 @@ function initAds(category, board) {
   s.parentNode.insertBefore(z, s);
 }
 
+function initAdsAT() {
+  var i, s, el, nodes;
+  
+  if (window.matchMedia && !window.matchMedia('(max-width: 480px)').matches) {
+    nodes = document.getElementsByClassName('adt-800');
+    
+    for (i = 0; el = nodes[i]; ++i) {
+      s = document.createElement('script');
+      s.src = '//' + el.getAttribute('data-d') + '.pvclouds.com/' + el.id.replace('container-', '') + '/invoke.js';
+      document.body.appendChild(s);
+    }
+  }
+}
+
 function initAdsAG() {
   var el, nodes, i, cls, s;
   
@@ -1428,6 +1442,8 @@ function contentLoaded() {
   if (window._adg) {
     initAdsAG();
   }
+  
+  initAdsAT();
   
   if (document.post) {
     document.post.name.value = get_cookie("4chan_name");
