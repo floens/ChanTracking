@@ -430,14 +430,12 @@ function initAds(category, board) {
 function initAdsAT() {
   var i, s, el, nodes;
   
-  if (window.matchMedia && !window.matchMedia('(max-width: 480px)').matches) {
-    nodes = document.getElementsByClassName('adt-800');
-    
-    for (i = 0; el = nodes[i]; ++i) {
-      s = document.createElement('script');
-      s.src = '//' + el.getAttribute('data-d') + '.pvclouds.com/' + el.id.replace('container-', '') + '/invoke.js';
-      document.body.appendChild(s);
-    }
+  nodes = document.getElementsByClassName('adt-800');
+  
+  for (i = 0; el = nodes[i]; ++i) {
+    s = document.createElement('script');
+    s.src = '//' + el.getAttribute('data-d') + '.pvclouds.com/' + el.id.replace('container-', '') + '/invoke.js';
+    document.body.appendChild(s);
   }
 }
 
