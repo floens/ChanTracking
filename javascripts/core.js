@@ -231,7 +231,7 @@ function onMobileSelectChange() {
   window.location = '//boards.' + $L.d(board) + '/' + board + '/' + page;
 }
 
-function buildMobileNav(currentBoard) {
+function buildMobileNav() {
   var el, cnt, boards, i, b, html, order;
   
   if (el = document.getElementById('boardSelectMobile')) {
@@ -241,9 +241,7 @@ function buildMobileNav(currentBoard) {
     boards = document.querySelectorAll('#boardNavDesktop .boardList a');
     
     for (i = 0; b = boards[i]; ++i) {
-      if (!b.parentNode.classList.contains('nwsb') || (window.Config && Config.showNWSBoards)) {
-        order.push(b);
-      }
+      order.push(b);
     }
     
     order.sort(function(a, b) {
@@ -257,7 +255,8 @@ function buildMobileNav(currentBoard) {
     });
     
     for (i = 0; b = order[i]; ++i) {
-      html += '<option value="'
+      html += '<option class="'
+        + (b.parentNode.classList.contains('nwsb') ? 'nwsb' : '') + '" value="'
         + b.textContent + '">/'
         + b.textContent + '/ - '
         + b.title + '</option>';
@@ -1491,7 +1490,7 @@ function contentLoaded() {
   }
   
   // Mobile nav menu
-  buildMobileNav(board);
+  buildMobileNav();
   
   // Mobile global message toggle
   if (el = document.getElementById('globalToggle')) {
