@@ -246,13 +246,13 @@ var FC = function() {
       buildContextMenu();
     }
     
+    window.Config = {};
+    
     if (UA.hasWebStorage) {
-      FC.extConfig = {};
-      
       if (extConfig = localStorage.getItem('4chan-settings')) {
         extConfig = JSON.parse(extConfig);
         
-        FC.extConfig = extConfig;
+        window.Config = extConfig;
         
         if (!extConfig.disableAll) {
           CustomMenu.initCtrl(extConfig.dropDownNav, extConfig.classicNav);
@@ -2395,9 +2395,9 @@ Filter.match = function(post, board) {
 };
 
 FC.getDocTopOffset = function() {
-  if (FC.extConfig.dropDownNav && !FC.extConfig.autoHideNav) {
+  if (window.Config.dropDownNav && !window.Config.autoHideNav) {
     return $.id(
-      FC.extConfig.classicNav ? 'boardNavDesktop' : 'boardNavMobile'
+      window.Config.classicNav ? 'boardNavDesktop' : 'boardNavMobile'
     ).offsetHeight;
   }
   else {
@@ -3096,7 +3096,15 @@ var Draggable = {
     document.removeEventListener('mouseup', Draggable.endDrag, false);
     document.removeEventListener('mousemove', Draggable.onDrag, false);
     if (Draggable.key) {
-      localStorage.setItem('catalog-tw-pos', Draggable.el.style.cssText);
+      if (Draggable.key === 'catalog-tw-pos') {
+        localStorage.setItem(Draggable.key, Draggable.el.style.cssText);
+        StorageSync.sync(Draggable.key);
+      }
+      else {
+        window.Config[Draggable.key] = Draggable.el.style.cssText;
+        localStorage.setItem('4chan-settings', JSON.stringify(window.Config));
+        StorageSync.sync('4chan-settings');
+      }
     }
     delete Draggable.el;
   },
