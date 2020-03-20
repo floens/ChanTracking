@@ -8710,7 +8710,7 @@ SettingsMenu.showExport = function() {
     return;
   }
   
-  str = location.href.replace(location.hash, '') + '#cfg=' + Config.toURL();
+  str = location.href.replace(location.hash, '').replace(/^http:/, 'https:') + '#cfg=' + Config.toURL();
   
   cnt = document.createElement('div');
   cnt.id = 'exportSettings';
