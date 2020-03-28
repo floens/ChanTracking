@@ -111,7 +111,7 @@ var StorageSync = {
   init: function() {
     var el, self = StorageSync;
     
-    if (self.inited) {
+    if (self.inited || !document.body) {
       return;
     }
     
