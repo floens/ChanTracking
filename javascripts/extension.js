@@ -822,9 +822,9 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
   container.className = 'postContainer ' + postType + 'Container';
   container.id = 'pc' + data.no;
   
-  if (data.xa18 !== undefined && !data.capcode) {
-    capcodeStart = ' <strong class="capcode hand n-atb n-atb-'
-      + data.xa18 + ' id_at' + data.xa18 + '"></strong>';
+  if (data.xa20 !== undefined && !data.capcode) {
+    capcodeStart = '  <span class="xa20e"></span>';
+    container.className += ' xa20' + data.xa20;
   }
   
   container.innerHTML =
