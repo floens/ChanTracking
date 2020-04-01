@@ -128,9 +128,9 @@
         "bump_limit": 300,
         "image_limit": 150,
         "cooldowns": {
-            "threads": 60,
-            "replies": 15,
-            "images": 15
+            "threads": 90,
+            "replies": 30,
+            "images": 30
         },
         "meta_description": "\u0026quot;\/b\/ - Random\u0026quot; is the birthplace of Anonymous, and where people go to discuss random topics and create memes on 4chan.",
         "forced_anon": 1
@@ -874,9 +874,9 @@
         "bump_limit": 300,
         "image_limit": 300,
         "cooldowns": {
-            "threads": 60,
-            "replies": 15,
-            "images": 15
+            "threads": 90,
+            "replies": 30,
+            "images": 30
         },
         "meta_description": "\u0026quot;\/pol\/ - Politically Incorrect\u0026quot; is 4chan's board for discussing and debating politics and current events.",
         "user_ids": 1,
