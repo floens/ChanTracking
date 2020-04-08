@@ -2523,8 +2523,8 @@ ThreadWatcher.init = function() {
     cnt.style.display = 'none';
   }
   else {
-    if (pos = localStorage.getItem('catalog-tw-pos')) {
-      cnt.style.cssText = pos;
+    if (window.Config['TW-position']) {
+      cnt.style.cssText = window.Config['TW-position'];
     }
     else {
       cnt.style.left = '10px';
@@ -3095,16 +3095,10 @@ var Draggable = {
   endDrag: function() {
     document.removeEventListener('mouseup', Draggable.endDrag, false);
     document.removeEventListener('mousemove', Draggable.onDrag, false);
-    if (Draggable.key) {
-      if (Draggable.key === 'catalog-tw-pos') {
-        localStorage.setItem(Draggable.key, Draggable.el.style.cssText);
-        StorageSync.sync(Draggable.key);
-      }
-      else {
-        window.Config[Draggable.key] = Draggable.el.style.cssText;
-        localStorage.setItem('4chan-settings', JSON.stringify(window.Config));
-        StorageSync.sync('4chan-settings');
-      }
+    if (Draggable.key && window.Config) {
+      window.Config[Draggable.key] = Draggable.el.style.cssText;
+      localStorage.setItem('4chan-settings', JSON.stringify(window.Config));
+      StorageSync.sync('4chan-settings');
     }
     delete Draggable.el;
   },
