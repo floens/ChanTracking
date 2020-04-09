@@ -1206,6 +1206,10 @@ Parser.parsePost = function(pid, tid) {
     if (Config.backlinks) {
       Parser.parseBacklinks(pid, tid);
     }
+    
+    if (Main.isOekakiBoard && Main.tid) {
+      Parser.addOekakiEditLink(pid, tid);
+    }
   }
   
   if (IDColor.enabled && (uid = $.cls('posteruid', pi.parentNode)[hasMobileLayout ? 0 : 1])) {
@@ -1220,7 +1224,7 @@ Parser.parsePost = function(pid, tid) {
     Media.parseSoundCloud(msg);
   }
   
-  if (Config.embedYouTube || Main.hasMobileLayout) {
+  if (Config.embedYouTube || hasMobileLayout) {
     Media.parseYouTube(msg);
   }
   
@@ -1246,7 +1250,27 @@ Parser.parsePost = function(pid, tid) {
         = Parser.getLocaleDate(new Date(el.getAttribute('data-utc') * 1000));
     }
   }
+};
+
+Parser.addOekakiEditLink = function(pid, tid) {
+  var cnt, el, a;
   
+  cnt = $.id('fT' + pid);
+  
+  if (!cnt) {
+    return;
+  }
+  
+  a = cnt.firstElementChild;
+  
+  if (!a.href || !/\.(png|jpg)$/.test(a.href)) {
+    return;
+  }
+  
+  el = $.el('small');
+  el.innerHTML = ' <a href="#" data-pid="' + pid + '" data-tid="'
+    + tid + '" data-tip="Open in Tegaki" data-cmd="qr-painter-edit">Edit</a>';
+  cnt.appendChild(el);
 };
 
 Parser.getLocaleDate = function(date) {
@@ -3292,6 +3316,7 @@ QR.init = function() {
   this.painterTime = 0;
   this.painterData = null;
   this.replayBlob = null;
+  this.canvasLoading = false;
   
   this.captchaWidgetCnt = null;
   this.captchaWidgetId = null;
@@ -3475,6 +3500,76 @@ QR.syncStorage = function(e) {
   }
 };
 
+QR.onOpenInPainterClick = function(btn) {
+  var img, el, tid, pid;
+  
+  if (QR.canvasLoading) {
+    Feedback.error('An image is already being loaded.');
+    return;
+  }
+  
+  pid = +btn.getAttribute('data-pid');
+  tid = +btn.getAttribute('data-tid');
+  
+  if (!pid || !tid) {
+    return false;
+  }
+  
+  el = $.qs('#f' + pid + ' a[class="fileThumb"]');
+  
+  if (!el) {
+    return false;
+  }
+  
+  if (/\.(png|jpg)$/.test(el.href) === false) {
+    return false;
+  }
+  
+  QR.canvasLoading = true;
+  
+  img = new Image();
+  img.crossOrigin = 'Anonymous';
+  img.onload = QR.onPainterCanvasLoaded;
+  img.onerror = QR.onPainterCanvasError; 
+  
+  Feedback.notify('Loading…', 0);
+  
+  img.src = el.href;
+  
+  QR.quotePost(tid, pid);
+};
+
+QR.onPainterCanvasError = function() {
+  QR.canvasLoading = false;
+  Feedback.error("Couldn't load the image.", 5000);
+};
+
+QR.onPainterCanvasLoaded = function() {
+  Feedback.hideMessage();
+  
+  QR.canvasLoading = false;
+  
+  if (this.naturalWidth < 1 || this.naturalHeight < 1) {
+    return;
+  }
+  
+  if (Tegaki.startTimeStamp) {
+    Tegaki.destroy();
+  }
+  
+  Keybinds.enabled = false;
+  
+  Tegaki.open({
+    onDone: QR.onPainterDone,
+    onCancel: QR.onPainterCancel,
+    saveReplay: false,
+    width: 1,
+    height: 1
+  });
+  
+  Tegaki.onOpenImageLoaded.call(this);
+};
+
 QR.openPainter = function() {
   var w, h, dims, cb;
   
@@ -3600,6 +3695,7 @@ QR.addQuote = function(pid) {
   if (ta.selectionStart == ta.value.length) {
     ta.scrollTop = ta.scrollHeight;
   }
+  
   ta.focus();
 };
 
@@ -9267,6 +9363,8 @@ Main.run = function() {
   $.id('settingsWindowLinkBot').addEventListener('click', SettingsMenu.toggle, false);
   $.id('settingsWindowLinkMobile').addEventListener('click', SettingsMenu.toggle, false);
   
+  Main.isOekakiBoard = Main.board === 'i';
+  
   Main.hasMobileLayout = Main.checkMobileLayout();
   Main.isMobileDevice = /Mobile|Android|Dolfin|Opera Mobi|PlayStation Vita|Nintendo DS/.test(navigator.userAgent);
   
@@ -9698,20 +9796,6 @@ Main.onclick = function(e) {
         e.preventDefault();
         ThreadUpdater.forceUpdate();
         break;
-      /*
-      case 'like-post':
-        e.preventDefault();
-        PostLiker.onLikeClick(t);
-        break;
-      case 'like-show-perks':
-        e.preventDefault();
-        PostLiker.onShowPerksClick(t);
-        break;
-      case 'like-hide-perks':
-        e.preventDefault();
-        PostLiker.onHidePerksClick(t);
-        break;
-      */
       case 'post-menu':
         e.preventDefault();
         PostMenu.open(t);
@@ -9752,6 +9836,10 @@ Main.onclick = function(e) {
         break;
       case 'qr-painter-clear':
         QR.onPainterCancel();
+        break;
+      case 'qr-painter-edit':
+        e.preventDefault();
+        QR.onOpenInPainterClick(t);
         break;
       case 'unfilter':
         Filter.unfilter(t);
