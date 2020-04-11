@@ -3298,7 +3298,7 @@ QR.init = function() {
   this.cdElapsed = 0;
   this.activeDelay = 0;
   
-  this.ctTTL = 170;
+  this.ctTTL = 290;
   this.ctTimeout = null;
   
   this.cooldowns = {};
