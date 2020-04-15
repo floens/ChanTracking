@@ -3315,6 +3315,7 @@ QR.init = function() {
   
   this.painterTime = 0;
   this.painterData = null;
+  this.painterSrc = null;
   this.replayBlob = null;
   this.canvasLoading = false;
   
@@ -3531,12 +3532,13 @@ QR.onOpenInPainterClick = function(btn) {
   img.crossOrigin = 'Anonymous';
   img.onload = QR.onPainterCanvasLoaded;
   img.onerror = QR.onPainterCanvasError; 
+  img._pid = pid;
   
   Feedback.notify('Loading…', 0);
   
   img.src = el.href;
   
-  QR.quotePost(tid, pid);
+  QR.show(tid);
 };
 
 QR.onPainterCanvasError = function() {
@@ -3549,6 +3551,10 @@ QR.onPainterCanvasLoaded = function() {
   
   QR.canvasLoading = false;
   
+  if (!QR.currentTid) {
+    return;
+  }
+  
   if (this.naturalWidth < 1 || this.naturalHeight < 1) {
     return;
   }
@@ -3558,6 +3564,8 @@ QR.onPainterCanvasLoaded = function() {
   }
   
   Keybinds.enabled = false;
+  
+  QR.painterSrc = this._pid;
   
   Tegaki.open({
     onDone: QR.onPainterDone,
@@ -3596,7 +3604,7 @@ QR.openPainter = function() {
 };
 
 QR.onPainterDone = function() {
-  var el;
+  var el, cnt;
   
   Keybinds.enabled = true;
   
@@ -3606,45 +3614,58 @@ QR.onPainterDone = function() {
     QR.replayBlob = Tegaki.replayRecorder.toBlob();
   }
   
-  if (!Tegaki.hasCustomCanvas && Tegaki.startTimeStamp) {
-    QR.painterTime = Math.round((Date.now() - Tegaki.startTimeStamp) / 1000);
-  }
-  else {
-    QR.painterTime = 0;
+  QR.painterTime = 0;
+  
+  if (Tegaki.startTimeStamp) {
+    if (!Tegaki.hasCustomCanvas || QR.painterSrc) {
+      QR.painterTime = Math.round((Date.now() - Tegaki.startTimeStamp) / 1000);
+    }
   }
   
   if (el = $.id('qrFile')) {
-    el.disabled = true;
+    el.style.visibility = 'hidden';
   }
   
-  if (el = $.tag('button', $.id('qr-painter-ctrl'))[1]) {
+  cnt = $.id('qr-painter-ctrl');
+  
+  if (el = $.tag('button', cnt)[0]) {
+    el.textContent = 'Edit';
+  }
+  
+  if (el = $.tag('button', cnt)[1]) {
     el.disabled = false;
   }
   
-  if (el = $.cls('oe-r-cb', $.id('qr-painter-ctrl'))[0]) {
+  for (el of $.tag('input', cnt)) {
     el.disabled = true;
   }
 };
 
 QR.onPainterCancel = function() {
-  var el;
+  var el, cnt;
   
   Keybinds.enabled = true;
   
   QR.painterData = null;
+  QR.painterSrc = null;
   QR.replayBlob = null;
-  
   QR.painterTime = 0;
   
   if (el = $.id('qrFile')) {
-    el.disabled = false;
+    el.style.visibility = '';
   }
   
-  if (el = $.tag('button', $.id('qr-painter-ctrl'))[1]) {
+  cnt = $.id('qr-painter-ctrl');
+  
+  if (el = $.tag('button', cnt)[0]) {
+    el.textContent = 'Draw';
+  }
+  
+  if (el = $.tag('button', cnt)[1]) {
     el.disabled = true;
   }
   
-  if (el = $.cls('oe-r-cb', $.id('qr-painter-ctrl'))[0]) {
+  for (el of $.tag('input', cnt)) {
     el.disabled = false;
   }
 };
@@ -4042,6 +4063,12 @@ QR.close = function() {
   QR.comField = null;
   QR.currentTid = null;
   
+  QR.painterTime = 0;
+  QR.painterData = null;
+  QR.painterSrc = null;
+  QR.replayBlob = null;
+  QR.canvasLoading = false;
+  
   clearInterval(QR.pulse);
   
   if (QR.xhr) {
@@ -4136,10 +4163,6 @@ QR.resetFile = function() {
   
   QR.painterData = null;
   QR.replayBlob = null;
-  
-  if (el = $.cls('oe-r-cb', $.id('qr-painter-ctrl'))[0]) {
-    el.disabled = false;
-  }
   
   el = document.createElement('input');
   el.id = 'qrFile';
@@ -4282,6 +4305,10 @@ QR.submit = function(force) {
     }
     
     formdata.append('oe_time', QR.painterTime);
+    
+    if (QR.painterSrc) {
+      formdata.append('oe_src', QR.painterSrc);
+    }
   }
   
   clearInterval(QR.pulse);

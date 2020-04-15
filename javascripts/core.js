@@ -1233,19 +1233,19 @@ function oeClearPreview(e) {
 
 var PainterCore = {
   init: function() {
-    var btns;
+    var cnt, btns;
     
     if (!document.forms.post) {
       return;
     }
     
-    btns = document.forms.post.getElementsByClassName('painter-ctrl')[0];
+    cnt = document.forms.post.getElementsByClassName('painter-ctrl')[0];
     
-    if (!btns) {
+    if (!cnt) {
       return;
     }
     
-    btns = btns.getElementsByTagName('button');
+    btns = cnt.getElementsByTagName('button');
     
     if (!btns[1]) {
       return;
@@ -1260,7 +1260,7 @@ var PainterCore = {
     this.btnClear = btns[1];
     this.btnFile = document.getElementById('postFile');
     this.btnSubmit = document.forms.post.querySelector('input[type="submit"]');
-    this.replayCb = document.forms.post.getElementsByClassName('oe-r-cb')[0];
+    this.inputNodes = cnt.getElementsByTagName('input');
     
     btns[0].addEventListener('click', this.onDrawClick, false);
     btns[1].addEventListener('click', this.onCancel, false);
@@ -1315,48 +1315,60 @@ var PainterCore = {
   },
   
   onDone: function() {
-    var formdata, blob;
+    var self, blob, el;
+    
+    self = PainterCore;
     
     window.Keybinds && (Keybinds.enabled = true);
     
-    PainterCore.btnFile.disabled = true;
-    PainterCore.btnClear.disabled = false;
+    self.btnFile.disabled = true;
+    self.btnClear.disabled = false;
     
-    PainterCore.data = Tegaki.flatten().toDataURL('image/png');
+    self.data = Tegaki.flatten().toDataURL('image/png');
     
     if (Tegaki.saveReplay) {
-      PainterCore.replayBlob = Tegaki.replayRecorder.toBlob();
-    }
-    
-    if (PainterCore.replayCb) {
-      PainterCore.replayCb.disabled = true;
+      self.replayBlob = Tegaki.replayRecorder.toBlob();
     }
     
     if (!Tegaki.hasCustomCanvas && Tegaki.startTimeStamp) {
-      PainterCore.time = Math.round((Date.now() - Tegaki.startTimeStamp) / 1000);
+      self.time = Math.round((Date.now() - Tegaki.startTimeStamp) / 1000);
     }
     else {
-      PainterCore.time = 0;
+      self.time = 0;
     }
     
-    document.forms.post.addEventListener('submit', PainterCore.onSubmit, false);
+    self.btnFile.style.visibility = 'hidden';
+    
+    self.btnDraw.textContent = 'Edit';
+    
+    for (el of self.inputNodes) {
+      el.disabled = true;
+    }
+    
+    document.forms.post.addEventListener('submit', self.onSubmit, false);
   },
   
   onCancel: function() {
+    var self = PainterCore;
+    
     window.Keybinds && (Keybinds.enabled = true);
     
-    PainterCore.data = null;
-    PainterCore.replayBlob = null;
-    PainterCore.time = 0;
+    self.data = null;
+    self.replayBlob = null;
+    self.time = 0;
     
-    if (PainterCore.replayCb) {
-      PainterCore.replayCb.disabled = false;
+    self.btnFile.disabled = false;
+    self.btnClear.disabled = true;
+    
+    self.btnFile.style.visibility = '';
+    
+    self.btnDraw.textContent = 'Draw';
+    
+    for (el of self.inputNodes) {
+      el.disabled = false;
     }
     
-    PainterCore.btnFile.disabled = false;
-    PainterCore.btnClear.disabled = true;
-    
-    document.forms.post.removeEventListener('submit', PainterCore.onSubmit, false);
+    document.forms.post.removeEventListener('submit', self.onSubmit, false);
   },
   
   onSubmit: function(e) {
