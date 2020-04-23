@@ -821,12 +821,12 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
   
   container.className = 'postContainer ' + postType + 'Container';
   container.id = 'pc' + data.no;
-  
+  /*
   if (data.xa20 !== undefined && !data.capcode) {
     capcodeStart = '  <span class="xa20e"></span>';
     container.className += ' xa20' + data.xa20;
   }
-  
+  */
   container.innerHTML =
     (isOP ? '' : '<div class="sideArrows" id="sa' + data.no + '">&gt;&gt;</div>') +
     '<div id="p' + data.no + '" class="post ' + postType + highlight + '">' +
@@ -8051,8 +8051,7 @@ var Del = {
     }
     
     params = {
-      mode: window.thread_archived ? 'arcdel' : 'usrdel',
-      pwd: Main.getCookie('4chan_pass') || ''
+      mode: window.thread_archived ? 'arcdel' : 'usrdel'
     };
     
     params[pid] = 'delete';

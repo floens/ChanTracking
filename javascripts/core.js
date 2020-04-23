@@ -561,25 +561,6 @@ function onMobileRefreshClick(e) {
   locationHashChanged(this);
 }
 
-function get_pass(name){
-  var pass, chars, i, len, rnd;
-  
-  pass = get_cookie(name);
-  
-  if (pass) return pass;
-  
-  chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  len = chars.length;
-  pass = '';
-  
-  for (var i = 0; i < 32; i++) {
-    rnd = Math.floor(Math.random() * len);
-    pass += chars.substring(rnd,rnd + 1);
-  }
-  
-  return '_' + pass;
-}
-
 function toggle(name) {
   var a = document.getElementById(name);
   a.style.display = ((a.style.display != 'block') ? 'block' : 'none');
@@ -910,9 +891,6 @@ function init() {
     }
 
   if (!error && document.forms.post) {
-    el = document.getElementById('delPassword');
-    el && (el.value = get_pass('4chan_pass'));
-    
     if (board != 'i' && board != 'ic' && board != 'f') {
       if (window.File && window.FileReader && window.FileList && window.Blob) {
         el = document.getElementById('postFile');
@@ -1457,7 +1435,6 @@ function contentLoaded() {
   if (document.post) {
     document.post.name.value = get_cookie("4chan_name");
     document.post.email.value = get_cookie("options");
-    document.post.pwd.value = get_pass("4chan_pass");
   }
   
   cloneTopNav();
