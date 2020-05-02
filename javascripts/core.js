@@ -429,6 +429,10 @@ function initAds(category, board) {
 function initAdsAT() {
   var i, s, el, nodes;
   
+  if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches) {
+    return;
+  }
+  
   nodes = document.getElementsByClassName('adt-800');
   
   for (i = 0; el = nodes[i]; ++i) {
