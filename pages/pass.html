@@ -144,7 +144,16 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#modal-bg').attr('style', 'display: none;');
     }
   });
+  
+  for (let k of ['email', 'emailverify', 'giftemail', 'giftemailverify']) {
+    let el = document.getElementById(k);
+    el && el.addEventListener('paste', onDummy, false);
+  }
 }, false);
+
+function onDummy(e) {
+  e.preventDefault();
+}
 
 function buttonClick(evt) {
   if( !hasCookie ) return;
