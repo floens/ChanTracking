@@ -437,7 +437,7 @@ function initAdsAT() {
   
   for (i = 0; el = nodes[i]; ++i) {
     s = document.createElement('script');
-    s.src = '//' + el.getAttribute('data-d') + '.pvclouds.com/' + el.id.replace('container-', '') + '/invoke.js';
+    s.src = '//' + el.getAttribute('data-d') + '/' + el.id.replace('container-', '') + '/invoke.js';
     document.body.appendChild(s);
   }
 }
