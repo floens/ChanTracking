@@ -6280,7 +6280,9 @@ ThreadUpdater.onload = function() {
       );
       
       if (window.chrome && document.activeElement) {
-        document.activeElement.blur();
+        if (document.activeElement.href || document.activeElement.type === 'checkbox') {
+          document.activeElement.blur();
+        }
       }
       
       frag = document.createDocumentFragment();
