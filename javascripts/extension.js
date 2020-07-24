@@ -6279,6 +6279,10 @@ ThreadUpdater.onload = function() {
         && doc.scrollHeight == Math.ceil(window.innerHeight + window.pageYOffset)
       );
       
+      if (window.chrome && document.activeElement) {
+        document.activeElement.blur();
+      }
+      
       frag = document.createDocumentFragment();
       for (i = nodes.length - 1; i >= 0; i--) {
         frag.appendChild(Parser.buildHTMLFromJSON(nodes[i], Main.board));
