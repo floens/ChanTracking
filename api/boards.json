@@ -496,9 +496,9 @@
         "bump_limit": 310,
         "image_limit": 150,
         "cooldowns": {
-            "threads": 60,
-            "replies": 15,
-            "images": 15
+            "threads": 600,
+            "replies": 60,
+            "images": 60
         },
         "meta_description": "\u0026quot;\/his\/ - History \u0026amp; Humanities\u0026quot; is 4chan's board for discussing and debating history.",
         "is_archived": 1
@@ -1311,6 +1311,27 @@
         "meta_description": "\u0026quot;\/vr\/ - Retro Games\u0026quot; is 4chan's imageboard for discussing retro console video games and classic arcade games.",
         "spoilers": 1,
         "custom_spoilers": 2,
+        "is_archived": 1
+    }, {
+        "board": "vrpg",
+        "title": "Video Games\/RPG",
+        "ws_board": 1,
+        "per_page": 15,
+        "pages": 10,
+        "max_filesize": 4194304,
+        "max_webm_filesize": 3145728,
+        "max_comment_chars": 2000,
+        "max_webm_duration": 120,
+        "bump_limit": 500,
+        "image_limit": 300,
+        "cooldowns": {
+            "threads": 600,
+            "replies": 60,
+            "images": 60
+        },
+        "meta_description": "\u0026quot;\/vrpg\/ - Vidya\/Role-playing Games\u0026quot; is 4chan's imageboard dedicated to the discussion of role-playing video games.",
+        "spoilers": 1,
+        "custom_spoilers": 1,
         "is_archived": 1
     }, {
         "board": "w",
