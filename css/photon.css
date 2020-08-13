@@ -85,6 +85,22 @@ body {
 	
 }
 
+.adc-resp {
+	margin: auto;
+	width: 728px;
+	height: 228px;
+	overflow: hidden;
+}
+
+@media only screen and (max-width: 480px) {
+	.adc-resp {
+		width: 300px;
+		height: 300px;
+	}
+	
+	
+}
+
 hr#op, #ctrl-top {
 	clear: both;
 }
