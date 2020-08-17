@@ -3536,7 +3536,7 @@ QR.onOpenInPainterClick = function(btn) {
   
   Feedback.notify('Loading…', 0);
   
-  img.src = el.href;
+  img.src = el.href.replace('is2.4chan.org', 'i.4cdn.org');
   
   QR.show(tid);
 };
