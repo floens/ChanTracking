@@ -2216,7 +2216,7 @@ var FC = function() {
       tip += '<p class="post-teaser">' + thread.teaser + '</p>';
     }
     
-    if (thread.r > 0) {
+    if (thread.lr.date) {
       tip += '<div class="post-last">Last reply by <span class="'
       + (thread.lr.capcode ? (thread.lr.capcode + '-capcode ') : '')
       + 'post-author">' + thread.lr.author;
@@ -2231,9 +2231,14 @@ var FC = function() {
           + thread.lr.capcode.slice(1);
       }
       
-      tip += '</span> <span class="post-ago">'
-        + getDuration(now - thread.lr.date)
-        + ' ago</span>';
+      if (thread.lr.date) {
+        tip += '</span> <span class="post-ago">'
+          + getDuration(now - thread.lr.date)
+          + ' ago</span>';
+      }
+      else {
+        tip += '</span>';
+      }
     }
     
     el = document.createElement('div');
