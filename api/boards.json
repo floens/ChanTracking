@@ -1229,7 +1229,7 @@
         "board": "vg",
         "title": "Video Game Generals",
         "ws_board": 1,
-        "per_page": 15,
+        "per_page": 20,
         "pages": 10,
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
