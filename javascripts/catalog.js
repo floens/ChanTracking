@@ -1699,10 +1699,12 @@ var FC = function() {
         return 0;
       });
     }
-    else if (order == 'alt') {
+    else if (order == 'absdate' && !catalog.no_lr) {
       threadList.sort(function(a, b) {
-        if (a.entry.b < b.entry.b) return -1;
-        if (a.entry.b > b.entry.b) return 1;
+        a = a.entry.lr.id;
+        b = b.entry.lr.id;
+        if (a > b) return -1;
+        if (a < b) return 1;
         return 0;
       });
     }
@@ -1716,12 +1718,10 @@ var FC = function() {
         return 0;
       });
     }
-    else {
+    else { // alt
       threadList.sort(function(a, b) {
-        a = a.entry.lr.id;
-        b = b.entry.lr.id;
-        if (a > b) return -1;
-        if (a < b) return 1;
+        if (a.entry.b < b.entry.b) return -1;
+        if (a.entry.b > b.entry.b) return 1;
         return 0;
       });
     }
