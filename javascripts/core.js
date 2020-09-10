@@ -442,6 +442,32 @@ function initAdsAT() {
   }
 }
 
+function initAdsBG() {
+  var i, s, el, div, nodes, m, idx;
+  
+  nodes = document.getElementsByClassName('adc-resp-bg');
+  
+  if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches) {
+    idx = 4;
+  }
+  else {
+    idx = 0;
+  }
+  
+  for (i = 0; el = nodes[i]; ++i) {
+    m = el.getAttribute('data-ad-bg').split(',').slice(idx);
+    
+    div = document.createElement('div');
+    div.id = 'bg_' + m[0] + m[1] + m[2];
+    el.appendChild(div);
+    
+    s = document.createElement('script');
+    s.setAttribute('async', '');
+    s.src = '//platform.bidgear.com/async.php?domainid=' + m[0] + '&sizeid=' + m[1] + '&zoneid=' + m[2] + '&k=' + m[3];
+    document.body.appendChild(s);
+  }
+}
+
 function initAdsAG() {
   var el, nodes, i, cls, s;
   
@@ -1436,6 +1462,8 @@ function contentLoaded() {
   
   initAdsAT();
   
+  initAdsBG();
+
   if (document.post) {
     document.post.name.value = get_cookie("4chan_name");
     document.post.email.value = get_cookie("options");

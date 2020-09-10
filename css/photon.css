@@ -92,10 +92,22 @@ body {
 	overflow: hidden;
 }
 
+.adc-resp-bg {
+	margin: auto;
+	width: 728px;
+	height: 90px;
+	overflow: hidden;
+}
+
 @media only screen and (max-width: 480px) {
 	.adc-resp {
 		width: 300px;
 		height: 300px;
+	}
+	
+	.adc-resp-bg {
+		width: 300px;
+		height: 250px;
 	}
 	
 	
