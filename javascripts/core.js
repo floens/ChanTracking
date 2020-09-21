@@ -867,7 +867,7 @@ tex2jax: { processRefs: false, processEnvironments: false, preview: 'none', inli
 Safe: { allow: { URLs: 'none', classes: 'none', cssIDs: 'none', styles: 'none', fontsize: 'none', require: 'none' } },\
 displayAlign: 'left', messageStyle: 'none', skipStartupTypeset: true,\
 'CHTML-preview': { disabled: true }, MathMenu: { showRenderer: false, showLocale: false },\
-TeX: { Macros: { newcommand: '{}', renewcommand: '{}', newenvironment: '{}', renewenvironment: '{}', def: '{}', let: '{}'}}});";
+TeX: { Macros: { color: '{}', newcommand: '{}', renewcommand: '{}', newenvironment: '{}', renewenvironment: '{}', def: '{}', let: '{}'}}});";
   head.appendChild(script);  
   
   script = document.createElement('script');
