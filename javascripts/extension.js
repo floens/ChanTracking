@@ -126,6 +126,33 @@ $.xhr = function(method, url, callbacks, data) {
   return xhr;
 };
 
+$.fit = function(w, h, maxW, maxH) {
+  var r, outW, outH;
+  
+  r = w / h;
+  
+  if (w > maxW) {
+    outW = maxW;
+    outH = Math.round(outW / r);
+    
+    if (outH > maxH) {
+      outH = maxH;
+      outW = Math.round(outH * r);
+    }
+  }
+  else if (h > maxH) {
+    outH = maxH;
+    outW = Math.round(outH * r);
+    
+    if (outW > maxW) {
+      outW = maxW;
+      outH = Math.round(outW / r);
+    }
+  }
+  
+  return [outW, outH];
+};
+
 $.ago = function(timestamp) {
   var delta, count, head, tail;
   
@@ -2947,8 +2974,8 @@ ImageExpansion.fitWebm = function() {
     imgWidth = imgWidth * ratio;
   }
   
-  this.style.maxWidth = (0 | imgWidth) + 'px';
-  this.style.maxHeight = (0 | imgHeight) + 'px';
+  this.style.width = (0 | imgWidth) + 'px';
+  this.style.height = (0 | imgHeight) + 'px';
   
   if (Config.centeredThreads) {
     left = this.getBoundingClientRect().left;
@@ -3191,7 +3218,7 @@ ImageHover.hide = function() {
 };
 
 ImageHover.showWebm = function(thumb) {
-  var el, bounds, limit;
+  var el;
   
   el = document.createElement('video');
   el.id = 'image-hover';
@@ -3213,10 +3240,6 @@ ImageHover.showWebm = function(thumb) {
   el.onerror = ImageHover.onLoadError;
   el.onloadedmetadata = function() { ImageHover.showWebMDuration(this, thumb); };
   
-  bounds = thumb.getBoundingClientRect();
-  limit = window.innerWidth - bounds.right - 20;
-  
-  el.style.maxWidth = limit + 'px';
   el.style.top = window.pageYOffset + 'px';
   
   document.body.appendChild(el);
@@ -3227,6 +3250,8 @@ ImageHover.showWebm = function(thumb) {
 };
 
 ImageHover.showWebMDuration = function(el, thumb) {
+  var w, h, aabb;
+  
   if (!el.parentNode) {
     return;
   }
@@ -3241,6 +3266,14 @@ ImageHover.showWebMDuration = function(el, thumb) {
   else {
     sound = '';
   }
+  
+  aabb = thumb.getBoundingClientRect();
+  
+  [w, h] = $.fit(el.videoWidth, el.videoHeight,
+    window.innerWidth - aabb.right - 20, window.innerHeight);
+  
+  el.style.width = w + 'px';
+  el.style.height = h + 'px';
   
   Tip.show(thumb, ms[0] + ':' + ('0' + ms[1]).slice(-2) + sound);
 };
