@@ -149,6 +149,10 @@ $.fit = function(w, h, maxW, maxH) {
       outH = Math.round(outW / r);
     }
   }
+  else {
+    outW = w;
+    outH = h;
+  }
   
   return [outW, outH];
 };
@@ -3240,8 +3244,6 @@ ImageHover.showWebm = function(thumb) {
   el.onerror = ImageHover.onLoadError;
   el.onloadedmetadata = function() { ImageHover.showWebMDuration(this, thumb); };
   
-  el.style.top = window.pageYOffset + 'px';
-  
   document.body.appendChild(el);
   
   if (Config.unmuteWebm) {
@@ -3293,7 +3295,6 @@ ImageHover.onLoadStart = function(img, thumb) {
   }
   
   img.style.display = '';
-  img.style.top = window.pageYOffset + 'px';
 };
 
 ImageHover.checkLoadStart = function(img, thumb) {
@@ -10497,7 +10498,7 @@ div.post-hidden:not(#quote-preview) blockquote.postMessage {\
   border-style: solid;\
 }\
 #image-hover {\
-  position: absolute;\
+  position: fixed;\
   max-width: 100%;\
   max-height: 100%;\
   top: 0px;\
