@@ -463,7 +463,7 @@ function initAdsBG() {
     
     s = document.createElement('script');
     s.setAttribute('async', '');
-    s.src = '//platform.bidgear.com/async.php?domainid=' + m[0] + '&sizeid=' + m[1] + '&zoneid=' + m[2] + '&k=' + m[3];
+    s.src = '//platform.bidgear.com/async.php?domainid=' + m[0] + '&sizeid=' + m[1] + '&zoneid=' + m[2] + '&k=' + Date.now();
     document.body.appendChild(s);
   }
 }
