@@ -9926,14 +9926,23 @@ img.pointer {\
   padding: 2px;\
   margin: 0 0 1px 0;\
 }\
+.tomorrow #quickReply input[type="text"],\
+.tomorrow #quickReply textarea,\
+.tomorrow #quickReply #recaptcha_response_field {\
+  border: 1px solid #515151;\
+  background-color: #282a2e;\
+  color: #c5c8c6;\
+}\
+.tomorrow #quickReply input[type="text"]:focus,\
+.tomorrow #quickReply textarea:focus {\
+  border: 1px solid #757575;\
+}\
 #quickReply textarea {\
   min-width: 296px;\
   float: left;\
 }\
-#quickReply input::-moz-placeholder,\
-#quickReply textarea::-moz-placeholder {\
-  color: #aaa !important;\
-  opacity: 1 !important;\
+.tomorrow #quickReply input::placeholder {\
+  color: 919191 !important;\
 }\
 #quickReply input[type="submit"] {\
   width: 75px;\

@@ -970,10 +970,26 @@ input[type=text], table.postForm > tbody textarea, input[type="password"], #reca
 	margin: 0;
 	margin-right: 2px;
 	padding: 2px 4px 3px 4px;
-	border: 1px solid #aaa;
+	border: 1px solid #000;
+	background-color: #282a2e;
+	color: #c5c8c6;
 	outline: none;
 	font-family: arial, helvetica, sans-serif;
 	font-size: 10pt;
+}
+
+input[type="checkbox"], input[type="submit"], input[type="file"], button {
+	filter: brightness(80%);
+}
+
+input::placeholder {
+	color: #919191;
+}
+
+select {
+	border: 1px solid #575a60;
+	background-color: #282a2e;
+	color: #c5c8c6;
 }
 
 #recaptcha_response_field:not(:focus) {
@@ -981,7 +997,7 @@ input[type=text], table.postForm > tbody textarea, input[type="password"], #reca
 }
 
 input[type=text]:focus, input[type=password]:focus, input:not([type]):focus, textarea:focus {
-	border: 1px solid #000 !important;
+	border: 1px solid #515151;
 }
 
 table.postForm > tbody > tr > td > input[type=text] {
@@ -1018,15 +1034,6 @@ div.closed {
 	display: block;
 	content: '';
 	clear: both;
-}
-
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-	tbody textarea {
-		margin-bottom: -3px !important;
-		width: 292px;
-	}
-	
-	
 }
 
 .commentpostername {
