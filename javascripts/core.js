@@ -468,6 +468,35 @@ function initAdsBG() {
   }
 }
 
+function initAdsLD() {
+  var i, j, p, el, div, nodes, m, idx;
+  
+  window.ldAdInit = window.ldAdInit || [];
+  
+  nodes = document.getElementsByClassName('adc-ld');
+  
+  if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches) {
+    idx = 1;
+  }
+  else {
+    idx = 0;
+  }
+  
+  for (i = 0; el = nodes[i]; ++i) {
+    m = el.getAttribute('data-ld').split(',').slice(idx);
+    window.ldAdInit.push({ slot: m, size: [0, 0], id: el.getAttribute('data-ld-id') });
+  }
+  
+  if (!document.getElementById('ld-ajs')) {
+    j = document.createElement('script');
+    p = document.getElementsByTagName('script')[0];
+    j.async = true;
+    j.src = '//cdn2.lockerdomecdn.com/_js/ajs.js';
+    j.id = 'ld-ajs';
+    p.parentNode.insertBefore(j, p);
+  }
+}
+
 function initAdsAG() {
   var el, nodes, i, cls, s;
   
@@ -1463,6 +1492,8 @@ function contentLoaded() {
   initAdsAT();
   
   initAdsBG();
+  
+  initAdsLD();
 
   if (document.post) {
     document.post.name.value = get_cookie("4chan_name");
