@@ -54,16 +54,18 @@ if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches) {
   s.setAttribute('height', '250');
   el.style.width = '300px';
   el.style.height = '250px';
+  s.setAttribute('name', 'spot_id_10011956');
+  s.src = 'https://a.adtng.com/get/10011956?time=' + Date.now();
 }
 else {
   s.setAttribute('width', '728');
   s.setAttribute('height', '90');
   el.style.width = '728px';
   el.style.height = '90px';
+  s.setAttribute('name', 'spot_id_10011955');
+  s.src = 'https://a.adtng.com/get/10011955?time=' + Date.now();
 }
 
-s.setAttribute('name', 'spot_id_' + el.getAttribute('data-abc'));
-s.src = 'https://a.adtng.com/get/' + el.getAttribute('data-abc') + '?time=' + Date.now();
 el.appendChild(s);
 </script>
 <div class="box-outer top-box" id="boards">
