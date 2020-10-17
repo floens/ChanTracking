@@ -546,8 +546,16 @@ function initAdsAG() {
       s.setAttribute('allowtransparency', 'true');
       s.setAttribute('marginheight', '0');
       s.setAttribute('marginwidth', '0');
-      s.setAttribute('width', '300');
-      s.setAttribute('height', '250');
+      
+      if (cls === 'adg') {
+        s.setAttribute('width', '728');
+        s.setAttribute('height', '90');
+      }
+      else {
+        s.setAttribute('width', '300');
+        s.setAttribute('height', '250');
+      }
+      
       s.setAttribute('name', 'spot_id_' + el.getAttribute('data-abc'));
       s.src = 'https://a.adtng.com/get/' + el.getAttribute('data-abc') + '?time=' + Date.now();
       el.appendChild(s);
@@ -1485,9 +1493,7 @@ function contentLoaded() {
   
   document.removeEventListener('DOMContentLoaded', contentLoaded, true);
   
-  if (window._adg) {
-    initAdsAG();
-  }
+  initAdsAG();
   
   initAdsAT();
   

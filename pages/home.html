@@ -37,8 +37,35 @@ ga('send','pageview')</script>
 <div id="wot-cnt"></div> </div>
 </div>
 </div>
-<script async="async" data-cfasync="false" src="//tumultrecast.com/0d81380df517f9c5e0e6d7e4573b0244/invoke.js"></script>
-<div id="container-0d81380df517f9c5e0e6d7e4573b0244"></div>
+<div id="abc-cnt" style="margin:10px auto 10px auto;"></div>
+<script>
+var el, s = document.createElement('iframe');
+
+el = document.getElementById('abc-cnt');
+
+s.setAttribute('scrolling', 'no');
+s.setAttribute('frameborder', '0');
+s.setAttribute('allowtransparency', 'true');
+s.setAttribute('marginheight', '0');
+s.setAttribute('marginwidth', '0');
+
+if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches) {
+  s.setAttribute('width', '300');
+  s.setAttribute('height', '250');
+  el.style.width = '300px';
+  el.style.height = '250px';
+}
+else {
+  s.setAttribute('width', '728');
+  s.setAttribute('height', '90');
+  el.style.width = '728px';
+  el.style.height = '90px';
+}
+
+s.setAttribute('name', 'spot_id_' + el.getAttribute('data-abc'));
+s.src = 'https://a.adtng.com/get/' + el.getAttribute('data-abc') + '?time=' + Date.now();
+el.appendChild(s);
+</script>
 <div class="box-outer top-box" id="boards">
 <div class="box-inner">
 <div class="boxbar">
