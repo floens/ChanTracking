@@ -497,17 +497,24 @@ function initAdsLD() {
   }
 }
 
+function initAdsBGLS() {
+  var i, s, el;
+  
+  nodes = document.getElementsByClassName('ad-bgls');
+  
+  for (i = 0; el = nodes[i]; ++i) {
+    s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://bid.glass/unit/' + el.getAttribute('data-u') + '.js';
+    document.head.appendChild(s);
+  }
+}
+
 function initAdsAG() {
   var el, nodes, i, cls, s;
   
   if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches && localStorage.getItem('4chan_never_show_mobile') != 'true') {
     cls = 'adg-m';
-    
-    if (el = document.getElementById('adg-ol')) {
-      s = document.createElement('script');
-      s.src = '//community4chan.engine.adglare.net/?' + el.getAttribute('data-id');
-      document.body.appendChild(s);
-    }
   }
   else {
     cls = 'adg';
@@ -1500,7 +1507,9 @@ function contentLoaded() {
   initAdsBG();
   
   initAdsLD();
-
+  
+  initAdsBGLS();
+  
   if (document.post) {
     document.post.name.value = get_cookie("4chan_name");
     document.post.email.value = get_cookie("options");
