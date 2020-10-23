@@ -475,6 +475,10 @@ function initAdsLD() {
   
   nodes = document.getElementsByClassName('adc-ld');
   
+  if (!nodes[0]) {
+    return;
+  }
+  
   if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches) {
     idx = 1;
   }
