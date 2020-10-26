@@ -457,6 +457,11 @@ function initAdsBG() {
   for (i = 0; el = nodes[i]; ++i) {
     m = el.getAttribute('data-ad-bg').split(',').slice(idx);
     
+    if (m[0] === '0') {
+      el.style.display = 'none';
+      continue;
+    }
+    
     div = document.createElement('div');
     div.id = 'bg_' + m[0] + m[1] + m[2];
     el.appendChild(div);
