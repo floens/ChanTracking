@@ -7,8 +7,8 @@ html {
 }
 
 body {
-	background: #0d1126;
-	color: #8f95b3;
+	background: #321f28;
+	color: #dfbaba;
 	font-family: arial, helvetica, sans-serif;
 	font-size: 10pt;
 	margin-left: 0;
@@ -563,7 +563,7 @@ div.boardBanner > div.boardSubtitle {
 }
 
 div#boardNavDesktop {
-	color: #140814;
+	color: #321f28;
 	font-size: 9pt;
 	display: block;
 }
@@ -620,7 +620,7 @@ div.post {
 
 
 div.reply {
-	background-color: #111733;
+	background-color: #4d2d30;
 	border: none;
 	display: table;
 	padding: 2px;
@@ -683,7 +683,7 @@ div.post blockquote.postMessage {
 }
 
 blockquote > span.quote {
-	color: #789922;
+	color: #b76d5e;
 }
 
 .quoteLink, .quotelink, .deadlink, .pageJump a {
@@ -736,6 +736,7 @@ div.post div.file .fileThumb {
 	margin-right: 20px;
 	margin-top: 3px;
 	margin-bottom: 5px;
+	filter: contrast(90%) brightness(90%);
 }
 
 span.fileThumb {
@@ -847,7 +848,7 @@ div.deleteform input[type=checkbox] {
 
 div#boardNavDesktopFoot {
 	font-size: 9pt;
-	color: #140814;
+	color: #321f28;
 	clear: both;
 	padding-top: 10px;
 	padding-bottom: 3px;
@@ -868,7 +869,6 @@ div#absbot {
 	font-size: x-small !important;
 	padding-bottom: 4px;
 	padding-top: 10px;
-	color: #8f95b3;
 	clear: both;
 }
 
@@ -904,7 +904,7 @@ td {
 }
 
 input[type="checkbox"] {
-	opacity: 0.5;
+	opacity: 0.75;
 }
 
 input[type=text], input[type=password], table.postForm > tbody textarea, #recaptcha_response_field {
@@ -1056,7 +1056,7 @@ div.closed {
 }
 
 .reply:target, .reply.highlight {
-	background-color: #161d40;
+	box-shadow: 0 0 4px 1px #e79e4f;
 	border: none;
 	padding: 2px;
 }
@@ -1454,15 +1454,15 @@ table.flashListing .subject {
 }
 
 #postForm tr > td > .desktop, #ctrl-top, .navLinks.desktop, .postNum.desktop > span {
-	color: #140814;
+	color: #321f28;
 }
 
 .open-qr-wrap {
-	color: #140814 !important;
+	color: #321f28 !important;
 }
 
 .navLinks.desktop > * {
-	color: #8f95b3;
+	color: #e79e4f;
 }
 
 td {
@@ -1475,7 +1475,7 @@ td {
 }
 
 #togglePostFormLink {
-	color: #140814;
+	color: #321f28;
 	font-size: 22px;
 	font-weight: bold;
 	text-align: center;
@@ -1565,7 +1565,7 @@ td {
 	padding: 0;
 	margin: 0;
 	white-space: nowrap;
-	border-color: #333;
+	border-color: #a05344;
 	border-bottom: 0;
 	border-right-width: 1px;
 }
@@ -1580,7 +1580,7 @@ td {
 	position: relative;
 	padding: 2px 4px;
 	vertical-align: middle;
-	border-bottom: 1px solid #333;
+	border-bottom: 1px solid #a05344;
 }
 
 .dd-menu li:hover {
@@ -1758,26 +1758,21 @@ div.sideArrows, hr {
 	}
 	
 	.quoteLink, .quotelink, .deadlink, a, a.visited, .button, .dd-menu li, .backlink span a.quotelink, #arc-list .quotelink, s .sjis {
-		color: #d98518 !important;
-	}
-	
-	.flag {
-		opacity: 0.7;
+		color: #e79e4f !important;
 	}
 	
 	.middlead a img, #bannerCnt {
-		opacity: 0.7;
+		filter: contrast(90%) brightness(90%);
 	}
 	
 	select {
-		border: 1px solid rgba(150, 180, 170, 0.3);
-		background-color: #111738;
-		color: #8f95b3;
+		border: 1px solid #734046;
+		background-color: #321f28;
+		color: #dfbaba;
 	}
 	
 	#qrForm textarea, .extPanel input[type="text"], .extPanel textarea {
-		background-color: #111738 !important;
-		border: 1px solid rgba(150, 180, 170, 0.3) !important;
+		background-color: #321f28 !important;
 	}
 	
 	.extPanel {
@@ -1789,12 +1784,12 @@ div.sideArrows, hr {
 		font-weight: bold;
 		padding: 0 5px;
 		font-size: 10pt;
-		background-color: #111738;
+		background-color: #4d2d30;
 		border: 1px solid rgba(150, 180, 170, 0.3);
 	}
 	
 	.dd-menu ul {
-		background-color: #111733;
+		background-color: #321f28;
 	}
 	
 	input::-moz-placeholder, textarea::-moz-placeholder, input::placeholder, textarea::placeholder, #quickReply #qrForm input::-moz-placeholder, #quickReply #qrForm input::placeholder, #quickReply #qrForm textarea::-moz-placeholder, #quickReply #qrForm textarea::placeholder {
@@ -1803,7 +1798,7 @@ div.sideArrows, hr {
 	}
 	
 	input[type=text]:focus, input[type=password]:focus, input:not([type]):focus, textarea:focus, .extPanel #qrForm textarea:focus {
-		border: 1px solid #96b4aa !important;
+		border: 1px solid #dfbaba !important;
 	}
 	
 	#quickReply textarea {
@@ -1811,8 +1806,8 @@ div.sideArrows, hr {
 	}
 	
 	input[type=text], input[type=password], table.postForm > tbody textarea, #recaptcha_response_field {
-		background-color: #111738;
-		color: #8f95b3;
+		background-color: #4d2d30;
+		color: #dfbaba;
 	}
 	
 	a.replylink:not(:hover), div#absbot a:not(:hover) {
@@ -1824,4 +1819,8 @@ div.sideArrows, hr {
 	}
 	
 	
+}
+
+.extButton, .settings-expand, .panelCtrl img.pointer {
+	filter: hue-rotate(90deg) !important;
 }
