@@ -74,6 +74,14 @@ body {
 	margin: 0 10px;
 }
 
+.adl {
+	font-size: 10px;
+}
+
+.adl + .ad-bgls, .ad-bgls + .adl {
+	margin-top: 8px;
+}
+
 .bsa-cnt {
 	margin: 20px 0;
 	height: 90px;
