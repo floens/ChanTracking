@@ -1388,6 +1388,8 @@ var FC = function() {
     }
     
     toggleBackdrop();
+    
+    document.dispatchEvent(new CustomEvent('4chanCatalogThemeEditorReady'));
   }
   
   function closeThemeEditor() {
@@ -1425,6 +1427,8 @@ var FC = function() {
     if (!nocss) {
       self.applyCSS(customTheme);
     }
+    
+    document.dispatchEvent(new CustomEvent('4chanCatalogThemeApplied'));
   }
   
   self.applyCSS = function(customTheme, style_group, css_version) {
