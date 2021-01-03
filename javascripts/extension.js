@@ -269,11 +269,6 @@ Parser.init = function() {
   
   this.prettify = typeof prettyPrint == 'function';
   
-  if (a = $.cls('board')[0]) {
-    this._ndi = a.getAttribute('data-ndi');
-    this._ndo = a.getAttribute('data-ndo'); 
-  }
-  
   this.customSpoiler = {};
   
   if (Config.localTime) {
@@ -1274,28 +1269,16 @@ Parser.parsePost = function(pid, tid) {
   }
   
   if (Config.localTime) {
-    
     if (hasMobileLayout) {
       el = pi.parentNode.getElementsByClassName('dateTime')[0];
-      
-      txt = Parser.getLocaleDate(new Date(el.getAttribute('data-utc') * 1000));
-      
-      if (Parser._ndo) {
-        txt = txt.replace(Parser._ndi, Parser._ndo);
-      }
-      
-      el.firstChild.nodeValue = txt + ' ';
+      el.firstChild.nodeValue
+        = Parser.getLocaleDate(new Date(el.getAttribute('data-utc') * 1000)) + ' ';
     }
     else {
       el = pi.getElementsByClassName('dateTime')[0];
-      
-      txt = Parser.getLocaleDate(new Date(el.getAttribute('data-utc') * 1000));
-      
-      if (Parser._ndo) {
-        txt = txt.replace(Parser._ndi, Parser._ndo);
-      }
-      
-      el.textContent = txt;
+      //el.title = this.utcOffset;
+      el.textContent
+        = Parser.getLocaleDate(new Date(el.getAttribute('data-utc') * 1000));
     }
   }
 };
