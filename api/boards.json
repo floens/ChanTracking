@@ -158,7 +158,7 @@
         "board": "biz",
         "title": "Business \u0026 Finance",
         "ws_board": 1,
-        "per_page": 15,
+        "per_page": 20,
         "pages": 10,
         "max_filesize": 4194304,
         "max_webm_filesize": 3145728,
@@ -1392,6 +1392,27 @@
             "images": 60
         },
         "meta_description": "\u0026quot;\/vst\/ - Video Games\/Strategy\u0026quot; is 4chan's imageboard dedicated to the discussion of strategy video games.",
+        "spoilers": 1,
+        "custom_spoilers": 1,
+        "is_archived": 1
+    }, {
+        "board": "vt",
+        "title": "Virtual YouTubers",
+        "ws_board": 1,
+        "per_page": 15,
+        "pages": 10,
+        "max_filesize": 4194304,
+        "max_webm_filesize": 3145728,
+        "max_comment_chars": 5000,
+        "max_webm_duration": 120,
+        "bump_limit": 310,
+        "image_limit": 300,
+        "cooldowns": {
+            "threads": 3600,
+            "replies": 60,
+            "images": 60
+        },
+        "meta_description": "\u0026quot;\/vt\/ - Virtual YouTubers\u0026quot; is 4chan's board for discussing virtual YouTubers (\u0026quot;VTubers\u0026quot;).",
         "spoilers": 1,
         "custom_spoilers": 1,
         "is_archived": 1
