@@ -7474,12 +7474,7 @@ SWFEmbed.toggleThread = function(e) {
   cnt = document.createElement('div');
   cnt.id = 'swf-embed';
   
-  el = document.createElement('embed');
-  el.setAttribute('allowScriptAccess', 'never');
-  el.type = 'application/x-shockwave-flash';
-  el.width = width;
-  el.height = height;
-  el.src = link.href;
+  el = SWFEmbed.getFrameNode(link.href, width, height);
   
   cnt.appendChild(el);
   
@@ -7526,11 +7521,7 @@ SWFEmbed.embedIndex = function(e) {
     cntWidth = Math.round(maxHeight * ratio);
   }
   
-  el = document.createElement('embed');
-  el.setAttribute('allowScriptAccess', 'never');
-  el.src = e.target.href;
-  el.width = '100%';
-  el.height = '100%';
+  el = SWFEmbed.getFrameNode(e.target.href, cntWidth, cntHeight);
   
   cnt = document.createElement('div');
   cnt.style.position = 'fixed';
@@ -7566,6 +7557,25 @@ SWFEmbed.embedIndex = function(e) {
   backdrop.addEventListener('click', SWFEmbed.onBackdropClick, false);
   
   document.body.appendChild(backdrop);
+};
+
+SWFEmbed.getFrameNode = function(file_url, width, height) {
+  var el, filename;
+  
+  filename = file_url.replace(/^https:\/\/i\.4cdn\.org\/f\//, '');
+  
+  el = document.createElement('iframe');
+  
+  el.setAttribute('allow', 'fullscreen');
+  el.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+  el.setAttribute('scrolling', 'no');
+  el.setAttribute('frameborder', '0');
+  el.setAttribute('width', +width);
+  el.setAttribute('height', +height);
+  
+  el.src = `//s.4cdn.org/media/flash/embed.html#${+width},${+height},${filename},1`;
+  
+  return el;
 };
 
 SWFEmbed.onBackdropClick = function(e) {
