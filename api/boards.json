@@ -883,6 +883,25 @@
         "is_archived": 1,
         "troll_flags": 1
     }, {
+        "board": "pw",
+        "title": "Professional Wrestling",
+        "ws_board": 1,
+        "per_page": 15,
+        "pages": 10,
+        "max_filesize": 4194304,
+        "max_webm_filesize": 3145728,
+        "max_comment_chars": 2000,
+        "max_webm_duration": 120,
+        "bump_limit": 310,
+        "image_limit": 150,
+        "cooldowns": {
+            "threads": 600,
+            "replies": 60,
+            "images": 60
+        },
+        "meta_description": "\u0026quot;\/pw\/ - Professional Wrestling\u0026quot; is 4chan's imageboard for the discussion of professional wrestling.",
+        "is_archived": 1
+    }, {
         "board": "qa",
         "title": "Question \u0026 Answer",
         "ws_board": 1,
@@ -1414,7 +1433,7 @@
         },
         "meta_description": "\u0026quot;\/vt\/ - Virtual YouTubers\u0026quot; is 4chan's board for discussing virtual YouTubers (\u0026quot;VTubers\u0026quot;).",
         "spoilers": 1,
-        "custom_spoilers": 1,
+        "custom_spoilers": 3,
         "is_archived": 1
     }, {
         "board": "w",
