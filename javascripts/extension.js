@@ -2918,6 +2918,7 @@ ImageExpansion.expandWebm = function(thumb) {
   el.autoplay = true;
   el.className = 'expandedWebm';
   el.onloadedmetadata = ImageExpansion.fitWebm;
+  el.onvolumechange = Main.getWebmVolumeChangeCb();
   el.onplay = ImageExpansion.onWebmPlay;
   
   link.style.display = 'none';
@@ -2926,7 +2927,7 @@ ImageExpansion.expandWebm = function(thumb) {
   el.src = href;
   
   if (Config.unmuteWebm) {
-    el.volume = 0.5;
+    el.volume = Main.getWebmVolume();
   }
   
   if (Main.hasMobileLayout) {
@@ -3243,11 +3244,12 @@ ImageHover.showWebm = function(thumb) {
   el.autoplay = true;
   el.onerror = ImageHover.onLoadError;
   el.onloadedmetadata = function() { ImageHover.showWebMDuration(this, thumb); };
+  el.onvolumechange = Main.getWebmVolumeChangeCb();
   
   document.body.appendChild(el);
   
   if (Config.unmuteWebm) {
-    el.volume = 0.5;
+    el.volume = Main.getWebmVolume();
   }
 };
 
@@ -9465,6 +9467,26 @@ Main.setPageNav = function() {
   cnt.appendChild(el);
   Draggable.set(el);
   document.body.appendChild(cnt);
+};
+
+Main.getWebmVolume = function() {
+  let vol = parseFloat(localStorage.getItem('4chan-volume'));
+  
+  if (vol !== NaN) {
+    return vol;
+  }
+  else {
+    return 0.5;
+  }
+};
+
+Main.getWebmVolumeChangeCb = function() {
+  let t;
+  
+  return (e) => {
+    clearTimeout(t);
+    t = setTimeout(() => { localStorage.setItem('4chan-volume', e.target.volume) }, 200);
+  };
 };
 
 Main.initGlobalMessage = function() {
