@@ -9472,7 +9472,7 @@ Main.setPageNav = function() {
 Main.getWebmVolume = function() {
   let vol = parseFloat(localStorage.getItem('4chan-volume'));
   
-  if (vol !== NaN) {
+  if (!isNaN(vol)) {
     return vol;
   }
   else {
