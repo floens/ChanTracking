@@ -7575,7 +7575,7 @@ SWFEmbed.getFrameNode = function(file_url, width, height) {
   el.setAttribute('width', +width);
   el.setAttribute('height', +height);
   
-  el.src = `//s.4cdn.org/media/flash/embed.html#${+width},${+height},${filename},1`;
+  el.src = `//s.4cdn.org/media/flash/embed.html?2#${+width},${+height},${filename},1`;
   
   return el;
 };
