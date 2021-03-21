@@ -7568,7 +7568,7 @@ SWFEmbed.getFrameNode = function(file_url, width, height) {
   
   el = document.createElement('iframe');
   
-  el.setAttribute('allow', 'fullscreen');
+  el.setAttribute('allow', 'autoplay; fullscreen');
   el.setAttribute('sandbox', 'allow-scripts allow-same-origin');
   el.setAttribute('scrolling', 'no');
   el.setAttribute('frameborder', '0');
