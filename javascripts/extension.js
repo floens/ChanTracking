@@ -696,6 +696,9 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
         + data.country.toLowerCase() + '"></span>';
     }
   }
+  else if (board === 'qb') {
+    flag = ' <img src="//s.4cdn.org/image/country/ca.gif" alt="CA" title="Canada" class="countryFlag">';
+  }
   else {
     flag = '';
   }
@@ -886,6 +889,7 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
         '<span class="postNum desktop">' +
           '<a href="' + noLink + '" title="Link to this post">No.</a><a href="' +
           quoteLink + '" title="Reply to this post">' + data.no + '</a>'
+            + '<a data-cmd="rake-post" href="#" class="rake-btn"></a>'
             + threadIcons + replySpan +
         '</span>' +
       '</div>' +
@@ -4270,8 +4274,6 @@ QR.submit = function(force) {
       }
       
       if (ids = this.responseText.match(/<!-- thread:([0-9]+),no:([0-9]+) -->/)) {
-        //PostLiker.onPostSubmit(this.responseText);
-        
         tid = ids[1];
         pid = ids[2];
         
@@ -9034,6 +9036,186 @@ var Feedback = {
   }
 };
 
+var PostRaker = {
+  state: {},
+  
+  captchaId: null,
+  
+  activeBtn: null,
+  
+  cd: 120,
+  
+  init: function() {
+    PostRaker.loadState();
+  },
+  
+  onRakeClick: function(btn) {
+    var left, self = PostRaker;
+    
+    if (self.state.ts && (left = Math.ceil((Date.now() - self.state.ts) / 1000)) < self.cd) {
+      alert("You need to wait a while before doing this again (" + (self.cd - left) + 's left)');
+      return;
+    }
+    
+    self.activeBtn = btn;
+    self.captchaId = null;
+    
+    if (!self.state.known && !window.passEnabled) {
+      if (confirm("Are you sure you want to report this user for being Canadian?\nFalse reports may result in deportation.")) {
+        self.showCaptcha();
+      }
+      else {
+        self.activeBtn = null;
+      }
+    }
+    else {
+      self.rake();
+    }
+  },
+  
+  rake: function() {
+    var params, self, pid;
+    
+    self = PostRaker;
+    
+    pid = self.activeBtn.parentNode.parentNode.id.slice(2 + (Main.hasMobileLayout ? 1 : 0));
+    
+    params = {
+      mode: 'rake_post',
+      post_id: pid
+    }
+    
+    if (self.captchaId !== null) {
+      params['g-recaptcha-response'] = grecaptcha.getResponse(self.captchaId);
+    }
+    
+    window.createCookie('xa21', pid, 1, '.' + $L.d(Main.board));
+    
+    self.activeBtn.style.opacity = '0.25';
+    
+    $.xhr('POST', 'https://sys.' + $L.d(Main.board) + '/' + Main.board + '/imgboard.php',
+      {
+        onload: self.onPostRaked,
+        onerror: self.onError,
+        withCredentials: true,
+        btn: self.activeBtn,
+      },
+      params
+    );
+  },
+  
+  onPostRaked: function() {
+    var data, self;
+    
+    self = PostRaker;
+    
+    self.closeCaptcha();
+    
+    if (!this.responseText) {
+      return;
+    }
+    
+    data = this.responseText;
+    
+    if (data[0] === '0') {
+      console.log(data.slice(2));
+      this.btn.style.opacity = '1';
+      return;
+    }
+    
+    if (data[0] === '2') {
+      alert(data.slice(2));
+      this.btn.style.opacity = '1';
+      return;
+    }
+    
+    if (data[0] === '1') {
+      this.btn.style.display = 'none';
+      self.state.known = true;
+      self.state.ts = Date.now();
+      self.saveState();
+      return;
+    }
+    
+    self.state.known = false;
+    self.saveState();
+    
+    self.onError();
+  },
+  
+  onError: function() {
+    console.log('PostRaker: error');
+    PostRaker.closeCaptcha();
+  },
+  
+  showCaptcha: function() {
+    var self, cnt, btnPos, btn;
+    
+    self = PostRaker;
+    
+    self.closeCaptcha();
+    
+    btn = self.activeBtn;
+    
+    cnt = $.el('div');
+    cnt.id = 'js-rake-captcha';
+    cnt.innerHTML = '<div style="margin-bottom: 2px">Please solve the captcha. ' +
+      'This is done only once.</div><div id="js-rake-captcha-cnt"></div>';
+    
+    cnt.className = 'reply';
+    
+    btnPos = btn.getBoundingClientRect();
+    
+    cnt.style.padding = '4px';
+    cnt.style.position = 'absolute';
+    cnt.style.boxShadow = '0 0 4px 2px rgba(0, 0, 0, 0.5)';
+    cnt.style.top = (btnPos.top - 120 + window.pageYOffset) + 'px';
+    cnt.style.left = (btnPos.left + window.pageXOffset) + 'px';
+    
+    document.addEventListener('click', self.closeCaptcha, false);
+    
+    document.body.appendChild(cnt);
+    
+    self.captchaId = grecaptcha.render(
+      $.id('js-rake-captcha-cnt'),
+      {
+        sitekey: window.recaptchaKey,
+        'callback' : self.onCaptchaDone,
+      }
+    );
+  },
+  
+  closeCaptcha: function() {
+    var el;
+    
+    if (el = $.id('js-rake-captcha')) {
+      PostRaker.captchaId = null;
+      PostRaker.activeBtn = null;
+      el.parentNode.removeChild(el);
+      document.removeEventListener('click', PostRaker.closeCaptcha, false);
+    }
+  },
+  
+  onCaptchaDone: function() {
+    PostRaker.rake()
+  },
+  
+  saveState: function() {
+    localStorage.setItem('4chan-event-xa21', JSON.stringify(PostRaker.state));
+    StorageSync.sync('4chan-event-xa21');
+  },
+  
+  loadState: function() {
+    var data;
+    
+    localStorage.removeItem('4chan-event')
+    
+    if (data = localStorage.getItem('4chan-event-xa21')) {
+      PostRaker.state = JSON.parse(data);
+    }
+  }
+};
+
 /**
  * Main
  */
@@ -9098,6 +9280,8 @@ Main.init = function() {
   }
   
   QR.noCaptcha = QR.noCaptcha || window.passEnabled;
+  
+  PostRaker.init();
   
   Main.initIcons();
   
@@ -9625,6 +9809,10 @@ Main.onclick = function(e) {
       case 'update':
         e.preventDefault();
         ThreadUpdater.forceUpdate();
+        break;
+      case 'rake-post':
+        e.preventDefault();
+        PostRaker.onRakeClick(t);
         break;
       case 'post-menu':
         e.preventDefault();
@@ -10775,6 +10963,15 @@ div.collapseWebm { text-align: center; margin-top: 10px; }\
 #yt-preview { position: absolute; }\
 #yt-preview img { display: block; }\
 .autohide-nav { transition: top 0.2s ease-in-out }\
+.rake-btn {\
+  display: inline-block;\
+  width: 32px;\
+  height: 32px;\
+  background-image: url(\'https://s.4cdn.org/image/rake.png\');\
+  margin-left: 8px;\
+  margin-bottom: -10px;\
+}\
+.m-dark .rake-btn, .tomorrow .rake-btn { filter: invert(100%); }\
 #feedback {\
   position: fixed;\
   top: 10px;\
