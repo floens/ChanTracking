@@ -1333,6 +1333,7 @@ var PainterCore = {
     this.btnFile = document.getElementById('postFile');
     this.btnSubmit = document.forms.post.querySelector('input[type="submit"]');
     this.inputNodes = cnt.getElementsByTagName('input');
+    this.replayCb = cnt.getElementsByClassName('oe-r-cb')[0];
     
     btns[0].addEventListener('click', this.onDrawClick, false);
     btns[1].addEventListener('click', this.onCancel, false);
