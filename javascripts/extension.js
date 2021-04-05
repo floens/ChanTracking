@@ -696,9 +696,6 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
         + data.country.toLowerCase() + '"></span>';
     }
   }
-  else if (board === 'qb') {
-    flag = ' <img src="//s.4cdn.org/image/country/ca.gif" alt="CA" title="Canada" class="countryFlag">';
-  }
   else {
     flag = '';
   }
