@@ -7457,7 +7457,7 @@ SWFEmbed.toggleThread = function(e) {
   
   link = $.tag('a', e.target.parentNode)[0];
   
-  maxWidth = document.documentElement.clientWidth - 100;
+  maxWidth = document.documentElement.clientWidth - (!Main.hasMobileLayout ? 100 : 30);
   
   width = +link.getAttribute('data-width');
   height = +link.getAttribute('data-height');
