@@ -1482,15 +1482,15 @@ PostMenu.open = function(btn) {
           + '" data-cmd="del-file">Delete file</a></li>'
           + '<li><a href="//www.google.com/searchbyimage?image_url=' + href
           + '" target="_blank">Search image on Google</a></li>'
-          + '<li><a href="https://iqdb.org/?url='
-          + href + '" target="_blank">Search image on iqdb</a></li>';
+          + '<li><a href="https://saucenao.com/search.php?url='
+          + href + '" target="_blank">Search image on SauceNAO</a></li>';
       }
       else {
         html += '<li><ul>'
           + '<li><a href="//www.google.com/searchbyimage?image_url=' + href
           + '" target="_blank">Google</a></li>'
-          + '<li><a href="https://iqdb.org/?url='
-          + href + '" target="_blank">iqdb</a></li></ul>Image search &raquo</li>';
+          + '<li><a href="https://saucenao.com/search.php?url='
+          + href + '" target="_blank">SauceNAO</a></li></ul>Image search &raquo</li>';
       }
     }
   }
