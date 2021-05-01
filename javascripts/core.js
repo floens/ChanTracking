@@ -1572,7 +1572,9 @@ function contentLoaded() {
   
   // Selectable flags
   if ((el = document.forms.post) && el.flag) {
-    if ((val = readCookie('4chan_flag')) && (el2 = el.querySelector('option[value="' + val + '"]'))) {
+    el.flag.addEventListener('change', onBoardFlagChanged, false);
+    
+    if ((val = localStorage.getItem('4chan_flag_' + board)) && (el2 = el.querySelector('option[value="' + val + '"]'))) {
       el2.setAttribute('selected', 'selected');
     }
   }
@@ -1670,6 +1672,17 @@ function contentLoaded() {
   if (window.css_event && activeStyleSheet === '_special') {
     fn = window['fc_' + window.css_event + '_init'];
     fn && fn();
+  }
+}
+
+function onBoardFlagChanged() {
+  var key = '4chan_flag_' + location.pathname.split(/\//)[1];
+  
+  if (this.value === '0') {
+    localStorage.removeItem(key);
+  }
+  else {
+    localStorage.setItem(key, this.value);
   }
 }
 

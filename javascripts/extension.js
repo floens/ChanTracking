@@ -685,16 +685,13 @@ Parser.buildHTMLFromJSON = function(data, board, standalone, fromQuote) {
     emailEnd = '</a>';
   }
   
-  if (data.country_name) {
-    if (data.troll_country) {
-      flag = ' <img src="//s.4cdn.org/image/country/troll/'
-        + data.troll_country.toLowerCase() + '.gif" alt="'
-        + data.troll_country + '" title="' + data.country_name + '" class="countryFlag">';
-    }
-    else {
-      flag = ' <span title="' + data.country_name + '" class="flag flag-'
-        + data.country.toLowerCase() + '"></span>';
-    }
+  if (data.flag_name) {
+    flag = ' <span title="' + data.flag_name + '" class="bfl bfl-'
+      + data.board_flag.toLowerCase() + '"></span>';
+  }
+  else if (data.country_name) {
+    flag = ' <span title="' + data.country_name + '" class="flag flag-'
+      + data.country.toLowerCase() + '"></span>';
   }
   else {
     flag = '';
@@ -3897,10 +3894,11 @@ QR.show = function(tid) {
           if (el2 = $.qs('option[selected]', el)) {
             el2.removeAttribute('selected');
           }
-          if ((cookie = Main.getCookie('4chan_flag')) &&
+          if ((cookie = localStorage.getItem('4chan_flag_' + Main.board)) &&
             (el2 = $.qs('option[value="' + cookie + '"]', el))) {
             el2.setAttribute('selected', 'selected');
           }
+          $.on(el, 'change', window.onBoardFlagChanged);
         }
       }
     }
