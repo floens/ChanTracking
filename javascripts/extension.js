@@ -360,6 +360,7 @@ Parser.pruneTrackedReplies = function() {
         flag = true;
         delete tracked[tid];
         localStorage.removeItem(pfx + tid);
+        StorageSync.queue.push(pfx + tid);
       }
     }
     
@@ -370,7 +371,11 @@ Parser.pruneTrackedReplies = function() {
         localStorage.setItem(pfx + 'ts', JSON.stringify(tracked));
         break;
       }
+      
+      StorageSync.queue.push(pfx + 'ts');
     }
+    
+    StorageSync.send();
   }
 };
 
