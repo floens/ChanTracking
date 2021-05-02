@@ -1424,6 +1424,13 @@ var FC = function() {
       }
     }
     
+    if (customTheme.nospoiler) {
+      $.addClass(document.body, 'reveal-img-spoilers');
+    }
+    else {
+      $.removeClass(document.body, 'reveal-img-spoilers');
+    }
+    
     if (!nocss) {
       self.applyCSS(customTheme);
     }
@@ -1869,8 +1876,9 @@ var FC = function() {
             'title="Watch" class="watchIcon"></span>');
       }
       
-      thread += '<a ' + newtab + 'href="' + provider + id
-        +'"><img loading="lazy" alt="" id="thumb-' + id + '" class="thumb';
+      thread += '<a ' + newtab + 'href="' + provider + id + '"'
+        + (entry.imgspoiler ? ' class="imgspoiler"' : '')
+        + '><img loading="lazy" alt="" id="thumb-' + id + '" class="thumb';
       
       if (hl.color) {
         pinhl = ' hl" style="border-color: ' + hl.color;
