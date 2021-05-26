@@ -3,7 +3,7 @@
     "description": "Tracking some website",
     "private": true,
     "dependencies": {
-        "request": "2.62.x",
+        "request": "2.88.x",
         "js-beautify": "1.5.x",
         "PrettyCSS": "0.3.x",
         "html": "0.0.7",
