@@ -1124,7 +1124,7 @@
         "max_comment_chars": 2000,
         "max_webm_duration": 120,
         "bump_limit": 310,
-        "image_limit": 150,
+        "image_limit": 250,
         "cooldowns": {
             "threads": 600,
             "replies": 60,
@@ -1249,8 +1249,7 @@
             "replies": 60,
             "images": 30
         },
-        "meta_description": "\u0026quot;\/trash\/ - Off-topic\u0026quot; is 4chan's imageboard jail for off-topic threads.",
-        "forced_anon": 1
+        "meta_description": "\u0026quot;\/trash\/ - Off-topic\u0026quot; is 4chan's imageboard jail for off-topic threads."
     }, {
         "board": "trv",
         "title": "Travel",
